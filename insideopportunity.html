@@ -1,0 +1,3229 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Client — Nisal Amarasekara</title>
+	<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&amp;display=swap" rel="stylesheet" />
+	<link
+		href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+		rel="stylesheet" />
+	<style type="text/tailwindcss">
+		:root {
+			--cu-light-blue: #3eb2ed;
+			--cu-dark-blue: #1b1e42;
+			--cu-light-grey: #799495;
+			--cu-dark-grey: #4f6566;
+			--cu-white: #ffffff;
+			--cu-light-blue-20: #d8f0fb;
+			--cu-light-blue-40: #b2e0f8;
+			--cu-light-blue-60: #8bd1f4;
+			--cu-light-blue-80: #65c1f1;
+			--cu-dark-blue-20: #d1d2d9;
+			--cu-dark-blue-40: #a4a5b3;
+			--cu-dark-blue-60: #76788e;
+			--cu-dark-blue-80: #494b68;
+			--color-primary: var(--cu-dark-blue);
+			--color-primary-text: var(--cu-white);
+			--color-primary-active: var(--cu-light-blue);
+			--color-secondary: var(--cu-light-grey);
+			--color-background: var(--cu-white);
+			--color-sidebar: var(--cu-dark-blue);
+			--color-card: var(--cu-dark-grey);
+			--color-card-text: var(--cu-white);
+			--color-text-primary: #0f172a;
+			--color-text-secondary: #64748b;
+			--color-text-inverted: var(--cu-white);
+			--color-border: #e2e8f0;
+			--bg-main: #ffffff;
+			--card-bg: #f8f9fa;
+			--card-border: rgba(255, 255, 255, 0.3);
+		}
+                                                                        
+																		/* Make Home/Details tab card larger for more content space */
+																		.tab-card-home{min-height:520px;padding:1rem 1.25rem !important}
+                                                                        
+																		</style>
+	<script>
+		tailwind.config = {
+			theme: {
+				extend: {
+					colors: {
+						'cu-light-blue': 'var(--cu-light-blue)',
+						'cu-dark-blue': 'var(--cu-dark-blue)',
+						background: 'var(--color-background)',
+						sidebar: 'var(--color-sidebar)'
+					},
+					fontFamily: {
+						display: ['Roboto', 'sans-serif'],
+						sans: ['Poppins', 'sans-serif']
+					}
+				}
+			}
+		};
+	</script>
+
+	<!-- New Case Modal (styled like Add Department) -->
+	<div id="newCaseModal" class="hidden fixed inset-0 bg-black/40 z-50 items-center justify-center px-4">
+		<div class="max-w-3xl w-full bg-white rounded-2xl overflow-hidden shadow-xl mt-8">
+			<div class="bg-[#1b2747] text-white px-6 py-4 rounded-t-2xl">
+				<div class="text-left text-lg font-semibold">New Case</div>
+			</div>
+			<style>
+				/* Arrow-style Process Stepper for Opportunity */
+				.opportunity-arrows {
+					display: flex;
+					flex-wrap: nowrap;
+					align-items: stretch;
+					justify-content: space-between;
+					width: 100%;
+					overflow: hidden
+				}
+
+				.opportunity-arrows .arrow-step {
+					position: relative;
+					display: inline-flex;
+					align-items: center;
+					justify-content: center;
+					padding: 0.65rem 1.25rem 0.65rem 2rem;
+					background: #94a3b8;
+					/* muted slate */
+					color: #fff;
+					font-size: 0.9rem;
+					font-weight: 600;
+					min-height: 46px;
+					flex: 1 1 0;
+					/* allow steps to share the available row space equally */
+					min-width: 0;
+					/* allow shrinking to fit container */
+					clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 50%, calc(100% - 18px) 100%, 0 100%, 18px 50%);
+					transition: all 0.22s ease;
+					cursor: pointer;
+					margin-right: 10px;
+					/* white gap between arrows to emulate separator */
+				}
+
+				.opportunity-arrows .arrow-step:first-child {
+					clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 50%, calc(100% - 18px) 100%, 0 100%);
+					padding-left: 1.5rem;
+					margin-left: 0;
+				}
+
+				.opportunity-arrows .arrow-step:last-child {
+					clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 18px 50%);
+					padding-right: 1.25rem;
+					margin-right: 0;
+				}
+
+				/* per-step placeholders */
+				.opportunity-arrows .arrow-step-1 {}
+
+				.opportunity-arrows .arrow-step-2 {}
+
+				.opportunity-arrows .arrow-step-3 {}
+
+				.opportunity-arrows .arrow-step-4 {}
+
+				.opportunity-arrows .arrow-step-5 {}
+
+				.opportunity-arrows .arrow-step-6 {}
+
+				.opportunity-arrows .arrow-step-7 {}
+
+				.opportunity-arrows .arrow-step-8 {}
+
+				.opportunity-arrows .arrow-step-9 {}
+
+				.opportunity-arrows .arrow-step.active {
+					background: #FBB13C !important;
+					transform: translateY(-2px) scale(1.02);
+					box-shadow: 0 6px 18px rgba(27, 39, 71, 0.08);
+				}
+
+				.opportunity-arrows .arrow-step.completed {
+					background: #31E981 !important;
+					box-shadow: 0 2px 8px rgba(49, 233, 129, 0.2);
+				}
+
+				@media (max-width: 640px) {
+					.opportunity-arrows .arrow-step {
+						padding: 0.55rem 1rem 0.55rem 1.2rem;
+						font-size: 0.78rem;
+						min-height: 44px;
+						min-width: 180px;
+						/* mobile-friendly reduced width but larger than before */
+					}
+
+					.opportunity-arrows .arrow-step:first-child {
+						padding-left: 0.9rem;
+					}
+
+					.opportunity-arrows .arrow-step span {
+						white-space: nowrap;
+						overflow: hidden;
+						text-overflow: ellipsis;
+						display: inline-block;
+						max-width: 10rem;
+					}
+				}
+
+				/* Allow the flex child that holds the steps to shrink so the card doesn't grow when the steps are long; enable horizontal scrolling for the step list. */
+				.progress-card>.flex-1 {
+					min-width: 0
+				}
+
+				#progressSteps {
+					overflow-x: auto
+				}
+
+				@media (max-width:900px) {
+					.progress-card {
+						padding-right: 0.8rem
+					}
+				}
+			</style>
+			</style>
+			<div class="p-6 grid grid-cols-1 gap-4">
+				<div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
+					<label class="text-sm text-slate-600">Contact Name</label>
+					<div class="md:col-span-2">
+						<input id="caseContact" class="mt-1 w-full border rounded px-3 py-2 text-sm"
+							placeholder="Search Contacts..." />
+					</div>
+				</div>
+				<div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
+					<label class="text-sm text-slate-600">Status <span class="text-red-500">*</span></label>
+					<div class="md:col-span-2">
+						<select id="caseStatus" class="mt-1 w-full border rounded px-3 py-2 text-sm">
+							<option>New</option>
+							<option>Open</option>
+							<option>Closed</option>
+						</select>
+					</div>
+				</div>
+				<div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
+					<label class="text-sm text-slate-600">Subject</label>
+					<div class="md:col-span-2">
+						<input id="caseSubject" class="mt-1 w-full border rounded px-3 py-2 text-sm" />
+					</div>
+				</div>
+				<div>
+					<label class="text-sm text-slate-600">Description</label>
+					<textarea id="caseDescription" class="mt-1 w-full border rounded px-3 py-2 text-sm h-36"></textarea>
+				</div>
+			</div>
+			<div class="flex items-center justify-end gap-3 px-6 py-4 border-t">
+				<button id="cancelNewCase"
+					class="w-12 h-12 rounded-full border border-cu-light-blue text-cu-light-blue bg-white flex items-center justify-center">
+					<span class="sr-only">Cancel</span>
+					<span class="material-symbols-outlined">close</span>
+				</button>
+				<button id="saveNewCase"
+					class="w-12 h-12 rounded-full bg-cu-light-blue text-white flex items-center justify-center">
+					<span class="sr-only">Save</span>
+					<span class="material-symbols-outlined">check</span>
+				</button>
+			</div>
+		</div>
+	</div>
+
+	<!-- New Note Modal (styled like Add Department) -->
+	<div id="newNoteModal" class="hidden fixed inset-0 bg-black/40 z-50 items-center justify-center px-4">
+		<div class="max-w-3xl w-full bg-white rounded-2xl overflow-hidden shadow-xl mt-8">
+			<div class="bg-[#1b2747] text-white px-6 py-4 rounded-t-2xl">
+				<div class="text-left text-lg font-semibold">New Note</div>
+			</div>
+			<div class="p-6 space-y-4">
+				<div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
+					<label class="text-sm text-slate-600">* Title</label>
+					<div class="md:col-span-2">
+						<input id="noteTitle" class="mt-1 w-full border rounded px-3 py-2 text-sm" />
+					</div>
+				</div>
+				<div class="flex items-center gap-6">
+					<label class="flex items-center gap-2"><input type="checkbox" id="notePrivate" /> Private</label>
+					<label class="flex items-center gap-2"><input type="checkbox" id="notePublic" /> Public</label>
+				</div>
+				<div>
+					<label class="text-sm text-slate-600">Body</label>
+					<textarea id="noteBody" class="mt-1 w-full border rounded px-3 py-2 text-sm h-36"></textarea>
+				</div>
+			</div>
+			<div class="flex items-center justify-end gap-3 px-6 py-4 border-t">
+				<button id="cancelNewNote"
+					class="w-12 h-12 rounded-full border-2 border-cu-light-blue text-cu-light-blue flex items-center justify-center hover:bg-cu-light-blue/10 transition">
+					<span class="sr-only">Cancel</span>
+					<span class="material-symbols-outlined">close</span>
+				</button>
+				<button id="saveNewNote"
+					class="w-12 h-12 rounded-full bg-cu-light-blue text-white flex items-center justify-center shadow-lg hover:brightness-95 transition">
+					<span class="sr-only">Save</span>
+					<span class="material-symbols-outlined">check</span>
+				</button>
+			</div>
+		</div>
+	</div>
+	<style>
+		.material-symbols-outlined {
+			font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24
+		}
+		#sgIcon {
+			color: #ffffff !important;
+		}
+	</style>
+
+	<!-- Global card and icon styles: 2D shadows & darker icon backgrounds -->
+	<style>
+		/* Apply 2D shadow surface to main cards */
+		main .bg-white.rounded-2xl,
+		main .bg-white.rounded-md,
+		main .card {
+			box-shadow: 0 8px 18px rgba(2, 6, 23, 0.06);
+			transition: transform .28s ease, box-shadow .28s ease;
+		}
+
+		/* Hover lift for cards (subtle) */
+		main .bg-white.rounded-2xl:hover,
+		main .bg-white.rounded-md:hover,
+		main .card:hover {
+			transform: translateY(-6px);
+			box-shadow: 0 18px 40px rgba(2, 6, 23, 0.08);
+		}
+
+		/* Slightly darken rounded icon backgrounds for higher contrast */
+		main [class*="rounded-full"] {
+			filter: brightness(.86) saturate(1.06);
+			transition: filter .18s ease, transform .18s ease;
+		}
+
+		main [class*="rounded-full"]:hover {
+			transform: translateY(-2px);
+			filter: brightness(.9) saturate(1.1);
+		}
+	</style>
+
+	<!-- Colorful icon backgrounds (per color family) inside main cards only -->
+	<style>
+		main [class*="w-"][class*="rounded-full"][class*="text-sky-"] {
+			background: linear-gradient(135deg, #06b6d4, #3b82f6);
+			color: #fff !important;
+			box-shadow: 0 6px 18px rgba(59, 130, 246, 0.12);
+		}
+
+		main [class*="w-"][class*="rounded-full"][class*="text-rose-"] {
+			background: linear-gradient(135deg, #f43f5e, #fb7185);
+			color: #fff !important;
+			box-shadow: 0 6px 18px rgba(244, 63, 94, 0.12);
+		}
+
+		main [class*="w-"][class*="rounded-full"][class*="text-pink-"] {
+			background: linear-gradient(135deg, #ec4899, #f97316);
+			color: #fff !important;
+			box-shadow: 0 6px 18px rgba(236, 72, 153, 0.12);
+		}
+
+		main [class*="w-"][class*="rounded-full"][class*="text-violet-"] {
+			background: linear-gradient(135deg, #7c3aed, #a78bfa);
+			color: #fff !important;
+			box-shadow: 0 6px 18px rgba(124, 58, 237, 0.12);
+		}
+
+		main [class*="w-"][class*="rounded-full"][class*="text-amber-"] {
+			background: linear-gradient(135deg, #f59e0b, #fbbf24);
+			color: #fff !important;
+			box-shadow: 0 6px 18px rgba(245, 158, 11, 0.12);
+		}
+
+		main [class*="w-"][class*="rounded-full"][class*="text-cyan-"] {
+			background: linear-gradient(135deg, #06b6d4, #14b8a6);
+			color: #fff !important;
+			box-shadow: 0 6px 18px rgba(6, 182, 212, 0.12);
+		}
+
+		main [class*="w-"][class*="rounded-full"][class*="text-emerald-"] {
+			background: linear-gradient(135deg, #10b981, #34d399);
+			color: #fff !important;
+			box-shadow: 0 6px 18px rgba(16, 185, 129, 0.12);
+		}
+
+		main [class*="w-"][class*="rounded-full"][class*="text-green-"] {
+			background: linear-gradient(135deg, #16a34a, #4ade80);
+			color: #fff !important;
+			box-shadow: 0 6px 18px rgba(22, 163, 74, 0.12);
+		}
+
+		/* fallback for neutral (slate) */
+		main [class*="w-"][class*="rounded-full"][class*="text-slate-"] {
+			background: #3eb2ed;
+			color: #ffffff !important;
+			box-shadow: 0 6px 18px rgba(62, 178, 237, 0.18);
+			filter: none !important;
+		}
+		main .rounded-full.bg-slate-100.text-slate-600,
+		main .rounded-full.bg-slate-100.text-slate-600 .material-symbols-outlined {
+			background: #3eb2ed !important;
+			color: #ffffff !important;
+		}
+
+		/* ensure inner icon keeps white color */
+		main [class*="w-"][class*="rounded-full"] .material-symbols-outlined {
+			color: inherit
+		}
+
+		/* Normalize card paddings and grid gaps for consistent layout (tighter) */
+		/* desktop: cards ~1rem, gaps 0.75rem; mobile: cards 0.5rem, gaps 0.35rem */
+		main .bg-white.rounded-2xl,
+		main .bg-white.rounded-md,
+		main .card {
+			padding: 1rem !important;
+		}
+
+		main .grid {
+			gap: 0.75rem !important;
+		}
+
+		@media (max-width: 640px) {
+
+			main .bg-white.rounded-2xl,
+			main .bg-white.rounded-md,
+			main .card {
+				padding: 0.5rem !important;
+			}
+
+			main .grid {
+				gap: 0.35rem !important;
+			}
+		}
+	</style>
+	</style>
+
+	<!-- Compact inline action bar styles -->
+	<style>
+		/* Compact inline action bar */
+		.inline-action-bar {
+			display: flex;
+			gap: .6rem;
+			align-items: center;
+			flex-wrap: nowrap;
+			justify-content: space-between;
+			margin: 0;
+			overflow: hidden
+		}
+
+		.inline-action-bar .action-btn {
+			flex: 1 1 0;
+			min-width: 0;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			gap: .45rem;
+			padding: .26rem .5rem;
+			border-radius: .6rem;
+			border: 1px solid rgba(2, 6, 23, 0.06);
+			background: #fff;
+			box-shadow: 0 6px 14px rgba(2, 6, 23, 0.04);
+			font-size: 12px;
+			overflow: hidden
+		}
+
+		.inline-action-bar .action-btn .icon {
+			width: 1.2rem;
+			height: 1.2rem;
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			border-radius: 999px;
+			font-size: 13px;
+			flex: 0 0 auto
+		}
+
+		.inline-action-bar .action-btn .label {
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			display: inline-block
+		}
+
+		@media (max-width:640px) {
+			.inline-action-bar {
+				gap: .4rem
+			}
+
+			.inline-action-bar .action-btn {
+				padding: .22rem .4rem;
+				font-size: 11px
+			}
+
+			.inline-action-bar .action-btn .icon {
+				width: 1.05rem;
+				height: 1.05rem;
+				font-size: 12px
+			}
+		}
+
+		/* Certification legend: small colored dots + compact labels */
+		.cert-legend {
+			display: flex;
+			gap: 0.85rem;
+			align-items: center;
+			margin-top: 0.25rem
+		}
+
+		.cert-legend .item {
+			display: inline-flex;
+			align-items: center;
+			gap: 0.45rem;
+			color: var(--color-text-secondary);
+			font-size: 0.75rem
+		}
+
+		.cert-legend .dot {
+			width: 6px;
+			height: 6px;
+			border-radius: 999px;
+			display: inline-block
+		}
+
+		@media (max-width:480px) {
+			.cert-legend {
+				gap: 0.6rem
+			}
+
+			.cert-legend .item {
+				font-size: 0.7rem
+			}
+		}
+
+		/* Certification card scoped styles */
+		.cert-card .cert-category {
+			display: inline-block;
+			background: #eff6ff;
+			color: #1e3a8a;
+			padding: 0.18rem 0.5rem;
+			border-radius: 6px;
+			font-weight: 600;
+			font-size: 0.78rem
+		}
+
+		.cert-card .cert-badges {
+			display: flex;
+			gap: 0.5rem;
+			flex-wrap: wrap;
+			margin-top: 0.5rem
+		}
+
+		.cert-card .cert-badge {
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			padding: 0.34rem 0.7rem;
+			border-radius: 999px;
+			font-size: 0.82rem;
+			font-weight: 600;
+			box-shadow: 0 6px 14px rgba(2, 6, 23, 0.04)
+		}
+
+		.cert-card .cert-badge.positive {
+			background: #10b981;
+			color: #fff
+		}
+
+		.cert-card .cert-badge.potential {
+			background: #f59e0b;
+			color: #1f2937
+		}
+
+		.cert-card .cert-badge.neutral {
+			background: #eef2ff;
+			color: #1e3a8a
+		}
+
+		@media (max-width:480px) {
+			.cert-card .cert-badge {
+				font-size: 0.74rem;
+				padding: 0.28rem 0.6rem
+			}
+		}
+
+		/* Card header inline layout (icon + title + count + actions) */
+		.card-header-inline {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			gap: 1rem;
+			flex-wrap: nowrap
+		}
+
+		.card-header-left {
+			display: flex;
+			align-items: center;
+			gap: 0.85rem;
+			min-width: 0
+		}
+
+		.card-header-left .title-wrap {
+			display: flex;
+			align-items: baseline;
+			gap: 0.5rem;
+			min-width: 0
+		}
+
+		.card-header-actions {
+			display: flex;
+			align-items: center;
+			gap: 0.75rem;
+			flex-wrap: nowrap
+		}
+
+		.card-header-actions .btn {
+			flex: 0 0 auto
+		}
+
+		.card-header-inline .text-xs {
+			margin-left: 0
+		}
+
+		/* Make primary action pills identical width/height for other primary buttons.
+   Notes/Upload will auto-size and be equalized via JS below. */
+		#newCaseBtn,
+		#newOpportunityBtn,
+		#newContactBtn {
+			min-width: 152px;
+			/* consistent width */
+			padding: 0.45rem 0.9rem;
+			/* slightly larger clickable area while preserving pill look */
+			box-shadow: 0 6px 14px rgba(2, 6, 23, 0.04);
+		}
+
+		@media (max-width:640px) {
+
+			#newCaseBtn,
+			#newOpportunityBtn,
+			#newContactBtn {
+				min-width: 120px;
+				padding: 0.36rem 0.7rem
+			}
+		}
+	</style>
+</head>
+
+<body class="font-display bg-background text-text-primary">
+	<div class="flex h-screen overflow-hidden">
+		<aside id="sidebar"
+			class="w-64 flex-shrink-0 bg-sidebar text-text-inverted flex flex-col transition-all duration-300">
+			<div
+				class="h-16 flex items-center justify-between px-6 border-b border-cu-dark-blue-80 flex-shrink-0 sidebar-header">
+				<div class="flex items-center gap-2">
+					<span class="text-2xl font-bold tracking-wider text-white">SOE</span>
+					<div class="w-8 h-1 bg-gradient-to-r from-cu-light-blue to-cu-light-blue-60 rounded"></div>
+				</div>
+				<button id="sidebarToggle"
+					class="p-1 rounded-full text-slate-400 hover:bg-cu-dark-blue-80 transition-colors">
+					<span class="material-symbols-outlined text-xl">keyboard_double_arrow_left</span>
+				</button>
+			</div>
+			<nav class="flex-1 overflow-y-auto p-4 space-y-1">
+				<!-- Dashboard -->
+				<div>
+					<button
+						class="menu-toggle flex items-center justify-between p-3 rounded-lg text-slate-300 hover:bg-cu-dark-blue-80 w-full text-left">
+						<div class="flex items-center gap-3">
+							<span class="material-symbols-outlined">dashboard</span>
+							<span class="font-medium text-sm">Dashboard</span>
+						</div>
+						<span
+							class="material-symbols-outlined text-lg transform transition-transform">expand_more</span>
+					</button>
+					<div class="submenu hidden ml-6 mt-1 space-y-1">
+						<a href="dashbord.html"
+							class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-400 hover:bg-cu-dark-blue-80 hover:text-white">
+							<span class="material-symbols-outlined text-base">arrow_right</span>
+							<span>My Dashboard</span>
+						</a>
+					</div>
+				</div>
+
+				<!-- Task -->
+				<div>
+					<button
+						class="menu-toggle flex items-center justify-between p-3 rounded-lg text-slate-300 hover:bg-cu-dark-blue-80 w-full text-left">
+						<div class="flex items-center gap-3">
+							<span class="material-symbols-outlined">task_alt</span>
+							<span class="font-medium text-sm">Task</span>
+						</div>
+						<span
+							class="material-symbols-outlined text-lg transform transition-transform">expand_more</span>
+					</button>
+					<div class="submenu hidden ml-6 mt-1 space-y-1">
+						<a href="#"
+							class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-400 hover:bg-cu-dark-blue-80 hover:text-white">
+							<span class="material-symbols-outlined text-base">arrow_right</span>
+							<span>My Tasks</span>
+						</a>
+						<a href="#"
+							class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-400 hover:bg-cu-dark-blue-80 hover:text-white">
+							<span class="material-symbols-outlined text-base">arrow_right</span>
+							<span>Team Tasks</span>
+						</a>
+						<a href="#"
+							class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-400 hover:bg-cu-dark-blue-80 hover:text-white">
+							<span class="material-symbols-outlined text-base">arrow_right</span>
+							<span>All Tasks</span>
+						</a>
+					</div>
+				</div>
+
+				<!-- CRM -->
+				<div>
+					<button
+						class="menu-toggle flex items-center justify-between p-3 rounded-lg text-slate-300 hover:bg-cu-dark-blue-80 w-full text-left">
+						<div class="flex items-center gap-3">
+							<span class="material-symbols-outlined">trending_up</span>
+							<span class="font-medium text-sm">CRM</span>
+						</div>
+						<span
+							class="material-symbols-outlined text-lg transform transition-transform">expand_more</span>
+					</button>
+					<div class="submenu hidden ml-6 mt-1 space-y-1">
+						<a href="allclient.html#home"
+							class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-400 hover:bg-cu-dark-blue-80 hover:text-white">
+							<span class="material-symbols-outlined text-base">arrow_right</span>
+							<span>Accounts</span>
+						</a>
+						<!-- <a href="code.html" class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-400 hover:bg-cu-dark-blue-80 hover:text-white">
+	            <span class="material-symbols-outlined text-base">arrow_right</span>
+				<span>CRM</span>
+	          </a> -->
+						<a href="#"
+							class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-400 hover:bg-cu-dark-blue-80 hover:text-white">
+							<span class="material-symbols-outlined text-base">arrow_right</span>
+							<span>Cer. Sales Progress</span>
+						</a>
+						<a href="#"
+							class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-400 hover:bg-cu-dark-blue-80 hover:text-white">
+							<span class="material-symbols-outlined text-base">arrow_right</span>
+							<span>Sales Report</span>
+						</a>
+					</div>
+				</div>
+
+				<!-- COEs / Regional Team / MarComs -->
+
+				<div>
+					<button
+						class="menu-toggle flex items-center justify-between p-3 rounded-lg text-slate-300 hover:bg-cu-dark-blue-80 w-full text-left">
+						<div class="flex items-center gap-3">
+							<span class="material-symbols-outlined">public</span>
+							<span class="font-medium text-sm">Regional & Global</span>
+						</div>
+						<span
+							class="material-symbols-outlined text-lg transform transition-transform">expand_more</span>
+					</button>
+					<div class="submenu hidden ml-6 mt-1 space-y-1">
+						<a href="COEdashboard.html"
+							class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-400 hover:bg-cu-dark-blue-80 hover:text-white">
+							<span class="material-symbols-outlined text-base">arrow_right</span>
+							<span>COEs</span>
+						</a>
+						<a href="#"
+							class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-400 hover:bg-cu-dark-blue-80 hover:text-white">
+							<span class="material-symbols-outlined text-base">arrow_right</span>
+							<span>Regional Team</span>
+						</a>
+						<a href="#"
+							class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-400 hover:bg-cu-dark-blue-80 hover:text-white">
+							<span class="material-symbols-outlined text-base">arrow_right</span>
+							<span>MarComs</span>
+						</a>
+					</div>
+				</div>
+
+				<!-- HR Manager -->
+				<div>
+					<button
+						class="menu-toggle flex items-center justify-between p-3 rounded-lg text-slate-300 hover:bg-cu-dark-blue-80 w-full text-left">
+						<div class="flex items-center gap-3">
+							<span class="material-symbols-outlined">groups</span>
+							<span class="font-medium text-sm">HR Manager</span>
+						</div>
+						<span
+							class="material-symbols-outlined text-lg transform transition-transform">expand_more</span>
+					</button>
+					<div class="submenu hidden ml-6 mt-1 space-y-1">
+						<a href="#"
+							class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-400 hover:bg-cu-dark-blue-80 hover:text-white">
+							<span class="material-symbols-outlined text-base">arrow_right</span>
+							<span>Employee Management</span>
+						</a>
+						<a href="#"
+							class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-400 hover:bg-cu-dark-blue-80 hover:text-white">
+							<span class="material-symbols-outlined text-base">arrow_right</span>
+							<span>Leave Management</span>
+						</a>
+					</div>
+				</div>
+
+				<!-- Department Manager -->
+				<a class="flex items-center gap-3 p-3 rounded-lg text-sm font-medium text-slate-300 hover:bg-cu-dark-blue-80"
+					href="#">
+					<span class="material-symbols-outlined">corporate_fare</span>Department Manager</a>
+
+				<!-- User Manager -->
+				<div>
+					<button
+						class="menu-toggle flex items-center justify-between p-3 rounded-lg text-slate-300 hover:bg-cu-dark-blue-80 w-full text-left">
+						<div class="flex items-center gap-3">
+							<span class="material-symbols-outlined">manage_accounts</span>
+							<span class="font-medium text-sm">User Manager</span>
+						</div>
+						<span
+							class="material-symbols-outlined text-lg transform transition-transform">expand_more</span>
+					</button>
+					<div class="submenu hidden ml-6 mt-1 space-y-1">
+						<a href="#"
+							class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-400 hover:bg-cu-dark-blue-80 hover:text-white">
+							<span class="material-symbols-outlined text-base">arrow_right</span>
+							<span>Add User</span>
+						</a>
+						<a href="#"
+							class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-400 hover:bg-cu-dark-blue-80 hover:text-white">
+							<span class="material-symbols-outlined text-base">arrow_right</span>
+							<span>Manage Users</span>
+						</a>
+					</div>
+				</div>
+
+				<!-- Working Days -->
+				<div>
+					<button
+						class="menu-toggle flex items-center justify-between p-3 rounded-lg text-slate-300 hover:bg-cu-dark-blue-80 w-full text-left">
+						<div class="flex items-center gap-3">
+							<span class="material-symbols-outlined">calendar_today</span>
+							<span class="font-medium text-sm">Working Days</span>
+						</div>
+						<span
+							class="material-symbols-outlined text-lg transform transition-transform">expand_more</span>
+					</button>
+					<div class="submenu hidden ml-6 mt-1 space-y-1">
+						<a href="#"
+							class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-400 hover:bg-cu-dark-blue-80 hover:text-white">
+							<span class="material-symbols-outlined text-base">arrow_right</span>
+							<span>Calendar</span>
+						</a>
+						<a href="#"
+							class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-400 hover:bg-cu-dark-blue-80 hover:text-white">
+							<span class="material-symbols-outlined text-base">arrow_right</span>
+							<span>Holidays</span>
+						</a>
+					</div>
+				</div>
+
+				<!-- Settings -->
+				<div>
+					<button
+						class="menu-toggle flex items-center justify-between p-3 rounded-lg text-slate-300 hover:bg-cu-dark-blue-80 w-full text-left">
+						<div class="flex items-center gap-3">
+							<span class="material-symbols-outlined">settings</span>
+							<span class="font-medium text-sm">Settings</span>
+						</div>
+						<span
+							class="material-symbols-outlined text-lg transform transition-transform">expand_more</span>
+					</button>
+					<div class="submenu hidden ml-6 mt-1 space-y-1">
+						<a href="#"
+							class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-400 hover:bg-cu-dark-blue-80 hover:text-white">
+							<span class="material-symbols-outlined text-base">arrow_right</span>
+							<span>KPI Manager</span>
+						</a>
+							<a href="configuration.html"
+							class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-400 hover:bg-cu-dark-blue-80 hover:text-white">
+							<span class="material-symbols-outlined text-base">arrow_right</span>
+							<span>Configuration</span>
+						</a>
+					</div>
+				</div>
+			</nav>
+		</aside>
+		<div class="flex-1 flex flex-col bg-bg-main">
+			<header
+				class="flex-shrink-0 bg-[#1b1e42] h-16 flex items-center justify-end px-6 border-b border-slate-200">
+				<div class="flex items-center space-x-4">
+					<button class="p-2 rounded-full text-slate-300 hover:bg-cu-dark-blue-80 relative">
+						<span class="material-symbols-outlined text-yellow-500">notifications</span>
+						<span class="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full"></span>
+					</button>
+					<div class="flex items-center space-x-3">
+						<img alt="User avatar" class="w-10 h-10 rounded-full object-cover"
+							src="https://lh3.googleusercontent.com/aida-public/AB6AXuBR8s_sRkD2uqrpzMyUfuQswvEJ6g6HmJbNWRFuxVQrSEUTQBKUCb8FrE4u1rNmdesirGmB0fSnXH0MsEurf7hmlhlkPED1n-AkkdeAQMAWAgU5wxVJTfUU6Pwf-Y8nQ1wskiHsPmWaCNPcrpBsa-iA4HqrI_cLqR3nfa1DafNqND7EBfLy1X75EULCpsRWFVLpztjMjkn6ufe2il3wB9_JOZuva2njUcWM0nJhERkc8yDkGPPP0eoFr5pSCqKx45WY1mn5_zVR" />
+						<div>
+							<div class="font-semibold text-sm text-white">Nisal Amarasekara</div>
+							<div class="text-xs text-slate-400">Sri Lanka</div>
+						</div>
+					</div>
+					<button class="p-2 rounded-full text-slate-300 hover:bg-cu-dark-blue-80">
+						<span class="material-symbols-outlined">lock</span>
+					</button>
+					<button class="p-2 rounded-full text-slate-300 hover:bg-cu-dark-blue-80">
+						<span class="material-symbols-outlined">expand_more</span>
+					</button>
+				</div>
+			</header>
+
+			<main class="flex-1 p-6 lg:p-8 overflow-y-auto">
+
+				<!-- Top hero: account-style header -->
+				<section class="mb-6">
+					<div class="relative">
+						<!-- Back button: navigates to allclient.html (Opportunities tab) -->
+						<a id="backToOpportunities" href="allclient.html#opportunities"
+							class="inline-flex items-center justify-center absolute left-6 top-4 bg-white/95 w-10 h-10 rounded-full shadow-sm hover:shadow-md transition z-10"
+							aria-label="Back to opportunities">
+							<span class="material-symbols-outlined">arrow_back</span>
+						</a>
+						<div
+							class="bg-gradient-to-r from-slate-50 via-white to-slate-50 rounded-3xl p-6 md:p-8 border border-transparent shadow-sm">
+							<div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+								<div class="flex flex-col items-center lg:flex-row lg:items-center gap-4">
+									<div
+										class="w-20 h-20 rounded-md overflow-hidden bg-white border flex items-center justify-center shadow-sm">
+										<img id="companyLogo" alt="Company logo" class="w-full h-full object-cover"
+											src="https://lh3.googleusercontent.com/aida-public/AB6AXuBR8s_sRkD2uqrpzMyUfuQswvEJ6g6HmJbNWRFuxVQrSEUTQBKUCb8FrE4u1rNmdesirGmB0fSnXH0MsEurf7hmlhlkPED1n-AkkdeAQMAWAgU5wxVJTfUU6Pwf-Y8nQ1wskiHsPmWaCNPcrpBsa-iA4HqrI_cLqR3nfa1DafNqND7EBfLy1X75EULCpsRWFVLpztjMjkn6ufe2il3wB9_JOZuva2njUcWM0nJhERkc8yDkGPPP0eoFr5pSCqKx45WY1mn5_zVR" />
+									</div>
+									<div class="flex flex-col items-center lg:items-start text-center lg:text-left">
+										<!-- <span class="inline-block py-1 text-xs font-semibold text-cu-dark-blue">O</span> -->
+										<div class="mt-2">
+											<div id="opportunityName"
+												class="mt-3 md:mt-2 text-2xl md:text-4xl font-extrabold tracking-tight text-slate-900">
+												RCS</div>
+											<div id="accountName"
+												class="text-base md:text-lg font-medium text-slate-600 mt-1">Meridian
+												Industries Limited</div>
+
+											<div
+												class="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-4 gap-x-6 text-sm text-slate-600 items-start">
+												<div>
+													<div class="text-xs text-slate-400">Country</div>
+													<div
+														class="font-medium text-slate-800 whitespace-nowrap flex items-center gap-2">
+														<img src="https://flagcdn.com/w20/hk.png"
+															srcset="https://flagcdn.com/w40/hk.png 2x" width="20"
+															alt="Hong Kong flag" class="rounded-sm">
+														<span>Hong Kong</span>
+													</div>
+												</div>
+												<div>
+													<div class="text-xs text-slate-400">Phone</div>
+													<div class="font-medium text-slate-800 whitespace-nowrap">+94 1234
+														56789</div>
+												</div>
+												<div>
+													<div class="text-xs text-slate-400">Email</div>
+													<div><a href="#" class="text-slate-800 font-medium">nisal@gmail.com
+														</a></div>
+												</div>
+												<div>
+													<div class="text-xs text-slate-400">Account Owner</div>
+													<div><a href="#" class="text-slate-800 font-medium">Nisal
+															Amarasekara</a></div>
+												</div>
+												<!-- <div class="flex items-center gap-2">
+												<div class="text-xs text-slate-400">Account Owner</div>
+												<div class="flex items-center">
+													<span class="w-2 h-2 rounded-full bg-emerald-400 mr-2"></span>
+													<a href="#" class="text-cu-light-blue font-medium">Nisal Amarasekara</a>
+												</div>
+												</div> -->
+											</div>
+										</div>
+									</div>
+
+									<!-- Confirmation modal for step navigation -->
+									<div id="confirmStepModal"
+										class="hidden fixed inset-0 bg-black/50 z-50 px-4 flex items-start justify-center"
+										style="padding-top: 40vh;">
+										<div class="max-w-sm w-full bg-white rounded-2xl overflow-hidden shadow-xl">
+											<div class="bg-[#1b2747] text-white px-6 py-4 rounded-t-2xl">
+												<div id="confirmStepTitle" class="text-left text-lg font-semibold">Move
+													to Verify?</div>
+											</div>
+											<div class="p-6 space-y-4">
+												<!-- Stage-specific explanation and guidance -->
+												<div id="confirmStepContent">
+													<p id="confirmStepExplanation" class="text-sm text-slate-700">Status
+														will change from Qualification to Needs Analysis. Are you sure?
+													</p>
+													<ul id="confirmStepBullets"
+														class="list-disc pl-5 mt-3 text-sm text-slate-700 space-y-1">
+													</ul>
+												</div>
+												<div class="flex gap-3 justify-end">
+													<button id="confirmStepNo"
+														class="px-4 py-2 rounded-full border border-slate-300 hover:bg-slate-50 transition">Cancel</button>
+													<button id="confirmStepYes"
+														class="px-4 py-2 rounded-full bg-emerald-600 text-white hover:bg-emerald-700 transition">Confirm</button>
+												</div>
+											</div>
+										</div>
+									</div>
+
+									<!-- Close Opportunity modal with dropdown -->
+									<div id="closeOpportunityModal"
+										class="hidden fixed inset-0 bg-black/50 z-50 px-4 flex items-start justify-center"
+										style="padding-top: 40vh;">
+										<div class="max-w-sm w-full bg-white rounded-2xl overflow-hidden shadow-xl">
+											<div class="bg-[#1b2747] text-white px-6 py-4 rounded-t-2xl">
+												<div class="text-left text-lg font-semibold">Close This Opportunity
+												</div>
+											</div>
+											<div class="p-6 space-y-4">
+												<div>
+													<label class="block text-sm text-slate-700 mb-1"><span
+															class="text-rose-500">*</span> Stage</label>
+													<select id="closeStageSelect"
+														class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+														<option value="">Select a closed stage...</option>
+														<option value="won">Closed - Won</option>
+														<option value="lost">Closed - Lost</option>
+													</select>
+												</div>
+												<div class="flex gap-3 justify-end">
+													<button id="closeOppCancel"
+														class="px-4 py-2 rounded-full border border-slate-300 hover:bg-slate-50 transition">Cancel</button>
+													<button id="closeOppSave"
+														class="px-4 py-2 rounded-full bg-emerald-600 text-white hover:bg-emerald-700 transition">Save</button>
+												</div>
+											</div>
+										</div>
+									</div>
+
+									<div class="absolute right-6 top-6 z-20">
+										<div class="flex items-center gap-3">
+											<button id="quickSaveBtn"
+												class="inline-flex items-center gap-2 px-3 py-2 rounded-md bg-cu-light-blue text-white text-sm shadow hover:brightness-95">
+												<span class="material-symbols-outlined text-sm">save</span>
+												<span>Save</span>
+											</button>
+											<div id="headerSaveCancel" class="hidden inline-flex items-center gap-3">
+												<button id="saveHeaderBtn"
+													class="px-4 py-2 rounded-md bg-cu-light-blue text-white text-sm shadow hover:brightness-95">Save</button>
+												<button id="cancelHeaderBtn"
+													class="px-3 py-2 rounded-md border border-gray-200 text-sm text-slate-600 bg-white">Cancel</button>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+				</section>
+
+				<!-- Tabs: Home / Details -->
+				<section class="mb-6">
+					<div class="bg-white rounded-2xl p-3 border tab-card-home">
+						<nav class="flex items-center gap-4">
+							<button id="tabHome"
+								class="px-4 py-2 text-sm font-medium text-cu-light-blue border-b-2 border-cu-light-blue">Home</button>
+							<button id="tabDetails" class="px-4 py-2 text-sm text-slate-600">Details</button>
+
+						</nav>
+						<div id="tabContent" class="mt-4">
+							<div id="paneHome" class="">
+								<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+									<!-- Shared informational alert spanning both cards -->
+
+
+									<!-- Interactive multi-step status bar + inline guidance (no informational modals) -->
+									<div class="lg:col-span-2 mb-2">
+										<!-- Arrow-style Process Stepper -->
+										<div class="bg-white rounded-2xl p-6 border shadow-sm">
+											<div class="flex items-center justify-between gap-4 mb-6">
+												<div class="flex items-center gap-0 flex-1 opportunity-arrows">
+													<div
+														class="arrow-step arrow-step-0 active flex items-center cursor-pointer px-4 py-3 rounded-md mr-2">
+														<span class="text-xs">Prospecting</span>
+													</div>
+													<div
+														class="arrow-step arrow-step-1 flex items-center cursor-pointer px-4 py-3 rounded-md mr-2">
+														<span class="text-xs">Qualification</span>
+													</div>
+													<div
+														class="arrow-step arrow-step-2 flex items-center cursor-pointer px-4 py-3 rounded-md mr-2">
+														<span class="text-xs">Needs Analysis</span>
+													</div>
+													<div
+														class="arrow-step arrow-step-3 flex items-center cursor-pointer px-4 py-3 rounded-md mr-2">
+														<span class="text-xs">Quotation</span>
+													</div>
+													<div
+														class="arrow-step arrow-step-4 flex items-center cursor-pointer px-4 py-3 rounded-md mr-2">
+														<span class="text-xs">Negotiation</span>
+													</div>
+													<div
+														class="arrow-step arrow-step-5 flex items-center cursor-pointer px-4 py-3 rounded-md">
+														<span class="text-xs">Closed</span>
+													</div>
+												</div>
+											</div>
+											<!-- Inline guidance area combined into a single parent card -->
+											<div class="bg-white rounded-2xl p-6 border shadow-sm">
+												<div class="grid grid-cols-1 lg:grid-cols-3 gap-4 items-start">
+													<div class="lg:col-span-2">
+														<div class="flex items-start gap-4">
+															<div class="w-10 h-10 rounded-full flex items-center justify-center"
+																style="background:#3eb2ed;">
+																<span id="sgIcon"
+																	class="material-symbols-outlined text-white">lightbulb</span>
+															</div>
+															<div class="flex-1">
+																<div id="sgStage" class="text-lg font-semibold">Stage:
+																	Prospecting</div>
+																<div class="mt-2">
+																	<div id="sgExpectationLabel"
+																		class="text-sm font-semibold text-slate-800">
+																		Stage expectation</div>
+																	<div id="sgExpectationText"
+																		class="text-sm text-slate-600 mt-1"></div>
+																	<div id="sgOpportunityExplanation"
+																		class="text-sm text-slate-500 mt-3">Opportunity
+																		has been created following lead conversion.
+																		Initial discussions and internal alignment are
+																		underway to confirm high-level client
+																		requirements.</div>
+																</div>
+																<div id="sgRules" class="mt-4 text-xs text-slate-500">
+																</div>
+															</div>
+														</div>
+													</div>
+													<aside class="lg:col-span-1">
+														<div class="text-sm font-semibold mb-3">What to do</div>
+														<ul id="sgRecommendedList"
+															class="list-disc list-inside text-sm text-slate-700 space-y-2 mb-4 font-semibold">
+														</ul>
+														<!-- Readiness checklist removed per request -->
+														<button id="statusCompleteBtn"
+															class="w-full px-4 py-2 rounded-full bg-cu-light-blue text-white hover:brightness-95">Mark
+															as Complete</button>
+														<style>
+															/* Make the primary action match the provided pill button visual */
+															#statusCompleteBtn {
+																height: 44px;
+																padding: 0.5rem 1.25rem;
+																border-radius: 10px;
+																background: #2fb6f2;
+																/* bright blue */
+																box-shadow: 0 2px 0 rgba(0, 0, 0, 0.06);
+																font-weight: 600;
+																text-align: center;
+																transition: transform .06s ease, filter .12s ease;
+															}
+
+															#statusCompleteBtn:active {
+																transform: translateY(1px);
+															}
+
+															#statusCompleteBtn:focus {
+																outline: 3px solid rgba(59, 130, 246, 0.18);
+																outline-offset: 2px;
+															}
+
+															/* Slightly bolder bullets and markers for recommended lists */
+															#sgRecommendedList,
+															#sgRecommendedList li {
+																font-weight: 600;
+															}
+
+															#sgRecommendedList li::marker {
+																color: currentColor;
+																font-weight: 600;
+															}
+														</style>
+														<div id="statusNote" class="text-xs text-slate-400 mt-3"></div>
+													</aside>
+												</div>
+											</div>
+										</div>
+
+										<script>
+											document.addEventListener('DOMContentLoaded', function () {
+												const arrowSteps = Array.from(document.querySelectorAll('.opportunity-arrows .arrow-step'));
+												const btn = document.getElementById('statusCompleteBtn');
+												const sgStage = document.getElementById('sgStage');
+												const sgExpectationText = document.getElementById('sgExpectationText');
+												const sgRecommendedList = document.getElementById('sgRecommendedList');
+												const sgIcon = document.getElementById('sgIcon');
+												const sgRules = document.getElementById('sgRules');
+												const sgOpportunityExplanation = document.getElementById('sgOpportunityExplanation');
+												const statusNote = document.getElementById('statusNote');
+
+												// Modal elements
+												const confirmStepModal = document.getElementById('confirmStepModal');
+												const confirmStepTitle = document.getElementById('confirmStepTitle');
+												const confirmStepExplanation = document.getElementById('confirmStepExplanation');
+												const confirmStepBullets = document.getElementById('confirmStepBullets');
+												const confirmStepYes = document.getElementById('confirmStepYes');
+												const confirmStepNo = document.getElementById('confirmStepNo');
+
+												// Close Opportunity modal elements
+												const closeOpportunityModal = document.getElementById('closeOpportunityModal');
+												const closeStageSelect = document.getElementById('closeStageSelect');
+												const closeOppCancel = document.getElementById('closeOppCancel');
+												const closeOppSave = document.getElementById('closeOppSave');
+
+												let current = 0; // index of active step
+												let lastPreview = null; // previewed step index
+												let pendingStepIndex = null; // step waiting for confirmation
+												let closedOutcome = null; // 'won' or 'lost' after closing opportunity
+												let selectedStage = 0; // Track which stage user clicked on
+
+												// Stage-specific modal info
+												const stageModalInfo = {
+													0: { modalTitle: 'Move to Prospecting?', purpose: 'Initial opportunity creation following lead conversion.' },
+													1: { modalTitle: 'Move to Qualification?', purpose: 'Technical, commercial, and delivery feasibility review.' },
+													2: { modalTitle: 'Move to Needs Analysis?', purpose: 'Detailed client requirements gathering and scope definition.' },
+													3: { modalTitle: 'Move to Quotation?', purpose: 'Proposal or quotation preparation based on agreed scope.' },
+													4: { modalTitle: 'Move to Negotiation?', purpose: 'Final pricing, terms, and approval discussions.' },
+													5: { modalTitle: 'Move to Closed?', purpose: 'Record the final outcome as Won or Lost.' }
+												};
+
+												// Per-stage metadata: expectation, recommended actions (3 bullets), required items for soft rules
+												const stageMeta = {
+													0: { name: 'Prospecting', icon: 'lightbulb', expected: '', opportunityExplanation: 'Opportunity has been created following lead conversion. Initial discussions and internal alignment are underway to confirm high-level client requirements.', recommended: ['Review opportunity details', 'Align internally on high-level scope', 'Confirm client interest', 'Move on once basic understanding is clear'], required: [{ key: 'owner', label: 'Assign an owner' }, { key: 'initialContact', label: 'Log initial contact' }], rulesText: '' },
+													1: { name: 'Qualification', icon: 'shield_person', expected: '', opportunityExplanation: 'Technical, commercial, and delivery feasibility are being reviewed, including service scope, accreditation, and internal capability.', recommended: ['Validate technical feasibility and accreditation', 'Check delivery capability and timelines', 'Confirm commercial viability', 'Involve technical or operations teams if needed'], required: [{ key: 'budget', label: 'Confirm budget' }, { key: 'decisionMaker', label: 'Identify decision makers' }], rulesText: '' },
+													2: { name: 'Needs Analysis', icon: 'forum', expected: '', opportunityExplanation: 'Detailed client requirements, locations, volumes, and service scope are being defined to prepare an accurate proposal.', recommended: ['Gather detailed client requirements', 'Confirm sites, volumes, and complexity', 'Finalize service scope', 'Prepare inputs for proposal or quotation'], required: [{ key: 'requirements', label: 'Document requirements' }], rulesText: '' },
+													3: { name: 'Quotation', icon: 'receipt_long', expected: '', opportunityExplanation: 'Proposal or quotation has been prepared and shared with the client based on the agreed scope and requirements.', recommended: ['Prepare proposal or quotation', 'Review internally if required', 'Share with the client', 'Record validity period and key terms'], required: [{ key: 'quotation', label: 'Attach quotation document' }], rulesText: '' },
+													4: { name: 'Negotiation', icon: 'handshake', expected: '', opportunityExplanation: 'Pricing, scope clarifications, commercial terms, and internal or client approvals are being discussed before the final decision.', recommended: ['Address pricing and scope questions', 'Discuss terms and conditions', 'Obtain internal and client approvals', 'Prepare for final decision'], required: [{ key: 'approval', label: 'Obtain approval if required' }], rulesText: '' },
+													5: { name: 'Closed', icon: 'check_circle', expected: '', opportunityExplanation: 'Opportunity is completed. Record the outcome as Won if the deal was successful or Lost if not.', recommended: ['Select Closed – Won or Closed – Lost', 'For Lost, select a loss reason (mandatory)', 'For Won, ensure handover to operations is initiated'], required: [], rulesText: '' }
+												};
+
+												// Readiness state for required items (dummy for now — can be wired to real form fields later)
+												const requiredState = {
+													owner: true,
+													initialContact: true,
+													budget: true,
+													decisionMaker: true,
+													requirements: true,
+													quotation: true,
+													approval: true
+												};
+
+												// Readiness checklist removed — soft rules still show note but are not enforced here
+
+												function render() {
+													arrowSteps.forEach((el, i) => {
+														el.classList.remove('active', 'completed', 'preview');
+														const existingBadge = el.querySelector('.outcome-badge');
+														if (existingBadge) existingBadge.remove();
+														if (i < current) {
+															el.classList.add('completed');
+															el.style.setProperty('background', '#4ade80', 'important');
+															el.style.color = '#ffffff';
+														} else if (i === current) {
+															// If Closed stage with outcome, don't add active class
+															if (i === 5 && closedOutcome) {
+																el.style.setProperty('background', closedOutcome === 'won' ? '#22c55e' : '#ef4444', 'important');
+																el.style.color = '#ffffff';
+																// Re-add badge if missing
+																const badge = document.createElement('span');
+																badge.className = 'outcome-badge ml-2 text-xs font-semibold';
+																badge.style.color = '#ffffff';
+																badge.textContent = closedOutcome === 'won' ? 'Won' : 'Lost';
+																el.appendChild(badge);
+															} else {
+																el.classList.add('active');
+																el.style.setProperty('background', '#f59e0b', 'important');
+																el.style.color = '#ffffff';
+															}
+														} else {
+															el.style.background = '';
+															el.style.color = '';
+														}
+														if (lastPreview === i) {
+															el.classList.add('preview');
+															el.style.boxShadow = '0 0 0 3px rgba(59,130,246,0.06)';
+														}
+													});
+
+													// update button state: no checklist enforcement (removed)
+													const meta = stageMeta[current] || {};
+													let ready = true;
+													if (!ready) {
+														btn.disabled = true; btn.classList.add('opacity-60', 'cursor-not-allowed'); btn.textContent = 'Mark as Complete';
+														statusNote.textContent = 'Soft rules prevent advancing until mandatory items are satisfied.';
+													} else {
+														btn.disabled = false; btn.classList.remove('opacity-60', 'cursor-not-allowed');
+														// Change button text if on Closed stage with outcome
+														if (current === 5 && closedOutcome) {
+															btn.textContent = 'Change Closed Stage';
+														} else {
+															btn.textContent = 'Mark as Complete';
+														}
+														statusNote.textContent = '';
+													}
+												}
+
+												function renderGuidance(idx) {
+													let meta = stageMeta[idx] || {};
+
+													// Override content for Closed stage based on outcome
+													if (idx === 5 && closedOutcome) {
+														if (closedOutcome === 'won') {
+															meta = {
+																name: 'Closed – Won',
+																icon: 'emoji_events',
+																expected: '',
+																opportunityExplanation: 'Great work! You\'ve closed a successful deal. Handover to operations should be initiated to start service delivery.',
+																recommended: [
+																	'Ensure all opportunity details are complete',
+																	'Confirm handover to operations',
+																	'Celebrate and log key lessons for future deals'
+																],
+																required: [],
+																rulesText: ''
+															};
+														} else {
+															meta = {
+																name: 'Closed – Lost',
+																icon: 'cancel',
+																expected: '',
+																opportunityExplanation: 'Opportunity was not converted. The reason for the loss is recorded. Schedule follow-ups if needed.',
+																recommended: [
+																	'Review and confirm that the loss reason is entered',
+																	'Capture any notes or feedback from the client',
+																	'Decide if the client should be added to a nurturing/follow-up plan',
+																	'Update next steps or schedule follow-up reminders if appropriate'
+																],
+																required: [],
+																rulesText: ''
+															};
+														}
+													}
+
+													sgStage.innerHTML = 'Stage: ' + (meta.name || 'Stage');
+													sgExpectationText.textContent = meta.expected || '';
+													sgIcon.textContent = meta.icon || 'help';
+
+													// Hide "Stage expectation" label when Closed Won/Lost
+													const sgExpectationLabel = document.getElementById('sgExpectationLabel');
+													if (sgExpectationLabel) {
+														if (idx === 5 && closedOutcome) {
+															sgExpectationLabel.style.display = 'none';
+														} else {
+															sgExpectationLabel.style.display = '';
+														}
+													}
+
+													// recommended list
+													sgRecommendedList.innerHTML = '';
+													(meta.recommended || []).forEach(t => {
+														const li = document.createElement('li'); li.textContent = t; sgRecommendedList.appendChild(li);
+													});
+													// readiness checklist removed from UI
+													// opportunity-level explanation (stage-specific) with special styling for Won/Lost
+													if (sgOpportunityExplanation) {
+														if (idx === 5 && closedOutcome) {
+															// Add icon and animation for Won/Lost
+															if (closedOutcome === 'won') {
+																sgOpportunityExplanation.innerHTML = '<span class="mr-2">🎉</span>' + meta.opportunityExplanation;
+																sgOpportunityExplanation.className = 'text-sm text-slate-700 mt-3';
+																sgOpportunityExplanation.style.background = '';
+																sgOpportunityExplanation.style.border = '';
+															} else {
+																sgOpportunityExplanation.innerHTML = '<span class="mr-2">📝</span>' + meta.opportunityExplanation;
+																sgOpportunityExplanation.className = 'text-sm text-slate-700 mt-3';
+																sgOpportunityExplanation.style.background = '';
+																sgOpportunityExplanation.style.border = '';
+															}
+															sgOpportunityExplanation.style.animation = 'fadeIn 0.5s ease-out';
+														} else {
+															// Reset to default styling
+															sgOpportunityExplanation.textContent = meta.opportunityExplanation || '';
+															sgOpportunityExplanation.className = 'text-sm text-slate-500 mt-3';
+															sgOpportunityExplanation.style.background = '';
+															sgOpportunityExplanation.style.border = '';
+															sgOpportunityExplanation.style.animation = '';
+														}
+													}
+													// rules text
+													sgRules.textContent = meta.rulesText || '';
+												}
+
+												// Show confirmation modal before changing stage
+												function showConfirmStep(targetIndex) {
+													pendingStepIndex = targetIndex;
+													const currentMeta = stageMeta[current] || {};
+													const targetMeta = stageMeta[targetIndex] || {};
+													const targetInfo = stageModalInfo[targetIndex] || {};
+
+													confirmStepTitle.textContent = targetInfo.modalTitle || 'Confirm Stage Change';
+
+													// Build explanation text
+													let explanationText = '';
+													if (targetIndex > current) {
+														// Advancing to a future stage
+														explanationText = `Status will change from <strong>${currentMeta.name}</strong> to <strong>${targetMeta.name}</strong>.`;
+													} else if (targetIndex === current) {
+														// Same stage (shouldn't happen normally)
+														explanationText = `You are already at <strong>${currentMeta.name}</strong>.`;
+													} else {
+														// Reverting
+														explanationText = `Status will revert from <strong>${currentMeta.name}</strong> back to <strong>${targetMeta.name}</strong>.`;
+													}
+													confirmStepExplanation.innerHTML = explanationText;
+
+													// Remove bullets for cleaner modal
+													confirmStepBullets.innerHTML = '';
+
+													confirmStepModal.classList.remove('hidden');
+													confirmStepModal.classList.add('flex');
+													document.body.style.overflow = 'hidden';
+												}
+
+												// Show Close Opportunity modal
+												function showCloseOpportunityModal() {
+													closeStageSelect.value = '';
+													// Reset Closed step color when opening modal
+													const closedEl = arrowSteps[5];
+													if (closedEl && current === 5) {
+														closedEl.style.background = '#f59e0b'; // amber (active)
+														closedEl.style.color = '#ffffff';
+														const existing = closedEl.querySelector('.outcome-badge');
+														if (existing) existing.remove();
+													}
+													closeOpportunityModal.classList.remove('hidden');
+													closeOpportunityModal.classList.add('flex');
+													document.body.style.overflow = 'hidden';
+												}
+
+												// Live preview: change Closed step color when dropdown selection changes
+												closeStageSelect.addEventListener('change', function () {
+													const closedEl = arrowSteps[5];
+													if (!closedEl) return;
+
+													const selectedStage = closeStageSelect.value;
+													if (selectedStage === 'won') {
+														closedEl.classList.remove('active');
+														closedEl.style.setProperty('background', '#22c55e', 'important');
+														closedEl.style.color = '#ffffff';
+													} else if (selectedStage === 'lost') {
+														closedEl.classList.remove('active');
+														closedEl.style.setProperty('background', '#ef4444', 'important');
+														closedEl.style.color = '#ffffff';
+													} else {
+														// Reset to amber if no selection - add active class back
+														if (current === 5) {
+															closedEl.classList.add('active');
+															closedEl.style.setProperty('background', '#f59e0b', 'important');
+															closedEl.style.color = '#ffffff';
+														}
+													}
+												});
+
+												// Hide Close Opportunity modal
+												function hideCloseOpportunityModal() {
+													closeOpportunityModal.classList.add('hidden');
+													closeOpportunityModal.classList.remove('flex');
+													document.body.style.overflow = '';
+													pendingStepIndex = null;
+													// Reset Closed step color if no outcome saved yet
+													if (current === 5 && !closedOutcome) {
+														const closedEl = arrowSteps[5];
+														if (closedEl) {
+															closedEl.style.background = '#f59e0b'; // amber
+															closedEl.style.color = '#ffffff';
+														}
+													}
+												}
+
+												// Wire Close Opportunity modal buttons
+												closeOppCancel.addEventListener('click', hideCloseOpportunityModal);
+												closeOppSave.addEventListener('click', function () {
+													const selectedStage = closeStageSelect.value;
+													if (!selectedStage) {
+														alert('Please select a closed stage.');
+														return;
+													}
+													// Save outcome and re-render stepper with the unified color rules:
+													// Won  => all stages green
+													// Lost => previous stages green, Closed stage red
+													closedOutcome = selectedStage;
+													current = 5;
+													lastPreview = null;
+													render();
+													renderGuidance(current);
+													// Update button text to 'Change Closed Stage'
+													btn.textContent = 'Change Closed Stage';
+													hideCloseOpportunityModal();
+												});
+
+												function hideConfirmStep() {
+													confirmStepModal.classList.add('hidden');
+													confirmStepModal.classList.remove('flex');
+													document.body.style.overflow = '';
+													pendingStepIndex = null;
+												}
+
+												// Wire modal buttons
+												confirmStepNo.addEventListener('click', hideConfirmStep);
+												confirmStepYes.addEventListener('click', function () {
+													if (pendingStepIndex === null) return;
+
+													const target = pendingStepIndex;
+
+													// If confirming on Closed stage, show Close Opportunity modal
+													if (target === 5) {
+														hideConfirmStep();
+														showCloseOpportunityModal();
+														return;
+													}
+
+													// Move to target stage
+													// All stages before target will be green (completed)
+													// Target stage will be amber (active)
+													current = target;
+													selectedStage = target; // sync selected stage
+
+													lastPreview = null;
+													render();
+													renderGuidance(current);
+													hideConfirmStep();
+												});
+
+												// wire arrow clicks to show guidance and track selected stage
+												arrowSteps.forEach((el, idx) => {
+													el.addEventListener('click', function (e) {
+														// Track which stage user clicked on
+														selectedStage = idx;
+														// Show guidance for the clicked stage
+														renderGuidance(idx);
+													});
+												});
+
+												// mark complete button: move to selected stage (forward or backward)
+												btn.addEventListener('click', function () {
+													// If Closed stage is selected, show Close Opportunity modal
+													if (selectedStage === 5) {
+														showCloseOpportunityModal();
+														return;
+													}
+
+													// Determine target stage
+													let targetStage;
+													if (selectedStage !== current) {
+														// User clicked on a different stage (forward or backward)
+														targetStage = selectedStage;
+													} else {
+														// User clicked on current stage, advance to next
+														targetStage = current + 1;
+													}
+
+													if (targetStage >= arrowSteps.length || targetStage < 0) {
+														return;
+													}
+
+													// Show confirmation modal
+													showConfirmStep(targetStage);
+												});
+
+												// initial render
+												render();
+												renderGuidance(current);
+											});
+										</script>
+									</div>
+
+									<!-- Services (wrap four subcards inside a parent card) -->
+									<div class="lg:col-span-2 mt-4">
+										<div class="bg-white rounded-2xl p-6 border">
+											<div class="flex items-center justify-between mb-4">
+												<div class="flex items-center gap-3">
+
+													<div>
+														<div class="text-lg font-semibold">Services</div>
+													</div>
+												</div>
+												<div>
+													<button id="addServicesBtn"
+														onclick="openServicesModalFromOpportunity()"
+														class="px-3 py-1 bg-[#2b9bd7] hover:bg-[#2389bf] text-white text-sm rounded-full shadow-sm">+
+														Add Services</button>
+												</div>
+											</div>
+											<div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+												<!-- Testing -->
+												<div class="bg-white rounded-2xl p-6 border">
+													<div class="flex items-center gap-3 mb-4">
+														<div
+															class="w-10 h-10 rounded-full bg-sky-50 text-sky-600 flex items-center justify-center">
+															<span class="material-symbols-outlined">article</span>
+														</div>
+														<div>
+															<div class="text-lg font-semibold">Testing</div>
+														</div>
+													</div>
+													<div class="border-t border-slate-100 pt-4">
+														<div
+															class="flex flex-col items-center justify-center h-44 text-center">
+															<div
+																class="w-14 h-14 rounded-xl bg-blue-50 flex items-center justify-center mb-3">
+																<span
+																	class="material-symbols-outlined text-blue-400">archive</span>
+															</div>
+															<div class="text-sm font-medium text-slate-700">No services
+																offered yet</div>
+															<div class="text-xs text-slate-400 mt-1">Services will
+																appear here once they’re added.</div>
+														</div>
+													</div>
+												</div>
+
+												<!-- Inspection -->
+												<div class="bg-white rounded-2xl p-6 border">
+													<div class="flex items-center gap-3 mb-4">
+														<div
+															class="w-10 h-10 rounded-full bg-sky-50 text-sky-600 flex items-center justify-center">
+															<svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+																xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+																<rect x="3" y="3" width="18" height="18" rx="3"
+																	stroke="currentColor" stroke-width="1.2"
+																	fill="none" />
+																<path d="M7.5 12.5l3 3 6-6" stroke="currentColor"
+																	stroke-width="1.6" stroke-linecap="round"
+																	stroke-linejoin="round" fill="none" />
+															</svg>
+														</div>
+														<div>
+															<div class="text-lg font-semibold">Inspection</div>
+														</div>
+													</div>
+													<div class="border-t pt-4">
+														<div
+															class="flex flex-col items-center justify-center h-44 text-center">
+															<div
+																class="w-14 h-14 rounded-xl bg-blue-50 flex items-center justify-center mb-3">
+																<span
+																	class="material-symbols-outlined text-blue-400">engineering</span>
+															</div>
+															<div class="text-sm font-medium text-slate-700">No services
+																offered yet</div>
+															<div class="text-xs text-slate-400 mt-1">Services will
+																appear here once they’re added.</div>
+														</div>
+													</div>
+												</div>
+
+												<!-- Certification -->
+												<div
+													class="bg-white rounded-2xl p-6 border border-blue-400 ring-1 ring-blue-100 cert-card hover:shadow-lg transition-shadow">
+													<div class="flex items-center gap-3 mb-4">
+														<div
+															class="w-10 h-10 rounded-full bg-sky-50 text-sky-600 flex items-center justify-center">
+															<span class="material-symbols-outlined">checklist_rtl</span>
+														</div>
+														<div>
+															<div class="text-lg font-semibold">Certification</div>
+														</div>
+													</div>
+													<div class="cert-legend mb-3">
+														<!-- <div class="item"><span class="dot" style="background:#22C55E"></span><span>Existing</span></div> -->
+														<div class="item"><span class="dot"
+																style="background:#FACC15"></span><span>Potential</span>
+														</div>
+													</div>
+													<div id="organicCard" class="mt-2 w-full bg-white rounded-lg p-3">
+														<div class="flex items-center justify-between">
+															<h3 class="text-lg font-semibold">Textile</h3>
+															<button id="organicToggle" aria-expanded="true"
+																aria-controls="organicList"
+																class="flex items-center gap-2 text-sm text-slate-500 hover:text-slate-700 focus:outline-none"
+																aria-label="Toggle Organic list">
+																<span id="organicIcon"
+																	class="material-symbols-outlined transform transition-transform">expand_more</span>
+															</button>
+														</div>
+
+														<ul id="organicList" class="mt-3" role="list">
+															<!-- <li class="py-3">
+			<div class="flex items-start gap-3">
+				<span class="inline-block w-3 h-3 rounded-full bg-[#22C55E] ring-1 ring-[#22C55E]" aria-hidden="true"></span>
+				<div class="overflow-hidden">
+					<div class="text-sm font-semibold text-slate-800 leading-tight">GRS</div>
+					<div class="flex items-center gap-2 mt-2">
+						<div class="meta-pill date inline-flex items-center gap-2 px-2 py-1 rounded-md text-xs text-slate-600 bg-slate-50 border border-slate-100">
+							<span class="material-symbols-outlined text-sky-500" style="font-size:14px;">calendar_month</span>
+							<span>2026-03-15</span>
+						</div>
+						<div class="meta-pill amount inline-flex items-center gap-2 px-2 py-1 rounded-md text-xs font-medium text-cu-dark-blue" style="background:#eaf6fb;border:1px solid #d1effa;">
+							<span class="material-symbols-outlined text-cu-light-blue" style="font-size:14px;">paid</span>
+							<span>$1,200</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</li> -->
+															<li class="py-3">
+																<div class="flex items-start gap-3">
+																	<span
+																		class="inline-block w-3 h-3 rounded-full bg-amber-400 ring-1 ring-amber-100"
+																		aria-hidden="true"></span>
+																	<div class="overflow-hidden">
+																		<div
+																			class="text-sm font-semibold text-slate-800 leading-tight">
+																			RCS</div>
+																		<div class="flex items-center gap-2 mt-2">
+																			<div
+																				class="meta-pill date inline-flex items-center gap-2 px-2 py-1 rounded-md text-xs text-slate-600 bg-slate-50 border border-slate-100">
+																				<span
+																					class="material-symbols-outlined text-amber-400"
+																					style="font-size:14px;">calendar_month</span>
+																				<span>2026-04-01</span>
+																			</div>
+																			<div class="meta-pill amount inline-flex items-center gap-2 px-2 py-1 rounded-md text-xs font-medium text-cu-dark-blue"
+																				style="background:#fff7e6;border:1px solid #ffefcf;">
+																				<span
+																					class="material-symbols-outlined text-amber-400"
+																					style="font-size:14px;">paid</span>
+																				<span>$950</span>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+															</li>
+														</ul>
+
+														<style>
+															/* subtle hover highlight for each item */
+															#organicList li {
+																transition: background .18s ease, transform .12s ease;
+															}
+
+															#organicList li:hover {
+																background: rgba(14, 165, 233, 0.03);
+																transform: translateY(-2px);
+															}
+														</style>
+
+														<script>
+															(function () {
+																var toggle = document.getElementById('organicToggle');
+																var list = document.getElementById('organicList');
+																var icon = document.getElementById('organicIcon');
+																if (!toggle || !list) return;
+
+																function setExpanded(exp) {
+																	toggle.setAttribute('aria-expanded', String(exp));
+																	if (exp) { list.classList.remove('hidden'); icon.classList.remove('rotate-180'); }
+																	else { list.classList.add('hidden'); icon.classList.add('rotate-180'); }
+																}
+
+																// default: expanded
+																setExpanded(true);
+
+																toggle.addEventListener('click', function (e) {
+																	var cur = toggle.getAttribute('aria-expanded') === 'true';
+																	setExpanded(!cur);
+																});
+
+																// keyboard support (Enter/Space)
+																toggle.addEventListener('keydown', function (e) {
+																	if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle.click(); }
+																});
+															})();
+														</script>
+													</div>
+												</div>
+
+												<!-- Acedemy -->
+												<div class="bg-white rounded-2xl p-6 border">
+													<div class="flex items-center gap-3 mb-4">
+														<div
+															class="w-10 h-10 rounded-full bg-sky-50 text-sky-600 flex items-center justify-center">
+															<span class="material-symbols-outlined">menu_book</span>
+														</div>
+														<div>
+															<div class="text-lg font-semibold">Academy</div>
+														</div>
+													</div>
+													<div class="border-t pt-4">
+														<div
+															class="flex flex-col items-center justify-center h-44 text-center">
+															<div
+																class="w-14 h-14 rounded-xl bg-blue-50 flex items-center justify-center mb-3">
+																<span
+																	class="material-symbols-outlined text-blue-400">menu_book</span>
+															</div>
+															<div class="text-sm font-medium text-slate-700">No services
+																offered yet</div>
+															<div class="text-xs text-slate-400 mt-1">Services will
+																appear here once they’re added.</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+
+									<!-- Activity card (left) -->
+									<div class="bg-white rounded-2xl p-6 border">
+										<div class="flex items-center justify-between mb-4">
+											<div class="flex items-center gap-3">
+												<div
+													class="w-10 h-10 rounded-full bg-sky-50 text-sky-600 flex items-center justify-center">
+													<span class="material-symbols-outlined">history</span>
+												</div>
+												<div>
+													<div class="text-lg font-semibold">Activity</div>
+												</div>
+
+												<!-- Finance pane -->
+												<div id="paneFinance" class="hidden space-y-6">
+													<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+														<!-- Outstanding (detailed list + mini chart) -->
+														<div class="bg-white rounded-2xl p-6 border">
+															<div class="flex items-center justify-between mb-4">
+																<div class="flex items-center gap-3">
+																	<div
+																		class="w-10 h-10 rounded-full bg-rose-50 text-rose-600 flex items-center justify-center">
+																		<span
+																			class="material-symbols-outlined">receipt_long</span>
+																	</div>
+																	<div>
+																		<div class="text-lg font-semibold">Outstanding
+																		</div>
+																		<div class="text-xs text-slate-400">Open
+																			invoices and due dates</div>
+																	</div>
+																</div>
+															</div>
+															<div class="border-t pt-4">
+																<div class="space-y-3 text-sm">
+																	<div class="flex justify-between">
+																		<div class="font-medium">INV-2026-1001</div>
+																		<div class="text-slate-500">Due: 2026-02-15
+																		</div>
+																	</div>
+																	<div class="text-lg font-bold">$234,567.00</div>
+																</div>
+																<div class="mt-4">
+																	<!-- Simple timeline: due vs paid (static) -->
+																	<svg class="w-full h-16" viewBox="0 0 200 40"
+																		preserveAspectRatio="none">
+																		<rect x="0" y="18" width="200" height="2"
+																			fill="#e6e6e6" />
+																		<circle cx="60" cy="19" r="6" fill="#f97316" />
+																		<text x="60" y="8" font-size="8"
+																			fill="#374151">Due</text>
+																		<circle cx="140" cy="19" r="6" fill="#34d399" />
+																		<text x="140" y="8" font-size="8"
+																			fill="#374151">Paid</text>
+																	</svg>
+																</div>
+															</div>
+														</div>
+
+														<!-- Revenue Generated (detailed + growth sparkline) -->
+														<div class="bg-white rounded-2xl p-6 border">
+															<div class="flex items-center justify-between mb-4">
+																<div class="flex items-center gap-3">
+																	<div
+																		class="w-10 h-10 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center">
+																		<span
+																			class="material-symbols-outlined">show_chart</span>
+																	</div>
+																	<div>
+																		<div class="text-lg font-semibold">Revenue
+																			Generated</div>
+																		<div class="text-xs text-slate-400">Invoices and
+																			settled dates</div>
+																	</div>
+																</div>
+															</div>
+															<div class="border-t pt-4">
+																<div class="space-y-3 text-sm">
+																	<div class="flex justify-between">
+																		<div class="font-medium">INV-2025-9876</div>
+																		<div class="text-slate-500">Due: 2025-12-31 •
+																			Settled: 2026-01-20</div>
+																	</div>
+																	<div class="text-lg font-bold">$1,234,000.00</div>
+																</div>
+																<div class="mt-4">
+																	<!-- Small sparkline chart -->
+																	<svg class="w-full h-16" viewBox="0 0 200 40"
+																		preserveAspectRatio="none">
+																		<polyline
+																			points="0,30 30,24 60,20 90,16 120,12 150,10 180,6 200,4"
+																			fill="none" stroke="#06b6d4"
+																			stroke-width="3" stroke-linecap="round"
+																			stroke-linejoin="round" />
+																	</svg>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="border-t pt-4"></div>
+
+										<div class="flex items-start mb-2">
+											<div class="w-full">
+												<div class="inline-action-bar" role="toolbar"
+													aria-label="Quick actions">
+													<button class="action-btn" aria-label="New Task"
+														onclick="window.location.href='addinquiry.html'">
+														<span
+															class="icon w-6 h-6 rounded-full bg-emerald-50 text-emerald-600 material-symbols-outlined">playlist_add</span>
+														<span class="label font-medium text-cu-dark-blue">New
+															Task</span>
+													</button>
+													<button class="action-btn" aria-label="Log a Call">
+														<span
+															class="icon w-6 h-6 rounded-full bg-cyan-50 text-cyan-600 material-symbols-outlined">call</span>
+														<span class="label font-medium text-cu-dark-blue">Log a
+															Call</span>
+													</button>
+													<button class="action-btn" aria-label="New Event">
+														<span
+															class="icon w-6 h-6 rounded-full bg-violet-100 text-violet-600 material-symbols-outlined">event</span>
+														<span class="label font-medium text-cu-dark-blue">New
+															Event</span>
+													</button>
+													<button class="action-btn" aria-label="Email">
+														<span
+															class="icon w-6 h-6 rounded-full bg-slate-100 text-slate-600 material-symbols-outlined">email</span>
+														<span class="label font-medium text-cu-dark-blue">Email</span>
+													</button>
+												</div>
+											</div>
+										</div>
+
+										<!-- Filters and quick actions removed per request -->
+
+										<div class="space-y-2">
+											<div class="border rounded-md">
+												<button data-collapse-target="#upcomingSection"
+													class="w-full px-3 py-2 text-left flex items-center justify-between">
+													<div class="flex items-center gap-2">
+														<span
+															class="material-symbols-outlined text-slate-600">expand_more</span>
+														<span class="text-sm font-medium">Upcoming & Overdue</span>
+													</div>
+													<span class="text-xs text-slate-500"></span>
+												</button>
+												<div id="upcomingSection" class="px-3 pb-3 pt-0">
+													<ul class="mt-2">
+														<li
+															class="flex items-start gap-3 pb-3 border-b last:border-b-0">
+															<div class="w-8 flex flex-col items-center">
+																<div
+																	class="w-7 h-7 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center material-symbols-outlined text-sm">
+																	email</div>
+															</div>
+															<div class="self-stretch w-px bg-slate-100 mx-2"
+																aria-hidden="true"></div>
+															<div class="flex-1">
+																<div class="flex items-center justify-between">
+																	<div
+																		class="flex items-center gap-2 text-sm font-medium text-cu-dark-blue">
+																		Email</div>
+																	<div class="text-xs text-slate-400">Today</div>
+																</div>
+																<div class="text-xs text-slate-500 mt-1">You have an
+																	upcoming task with <span
+																		class="underline text-cu-light-blue">Nisal
+																		Amarasekara</span></div>
+															</div>
+														</li>
+													</ul>
+												</div>
+											</div>
+
+
+
+											<div class="border rounded-md">
+												<button data-collapse-target="#monthSection"
+													class="w-full px-3 py-2 text-left flex items-center justify-between">
+													<div class="flex items-center gap-2">
+														<span
+															class="material-symbols-outlined text-slate-600">expand_more</span>
+														<span class="text-sm font-medium">Recent Activity</span>
+													</div>
+													<!-- <div class="text-xs text-cu-light-blue">This Month</div> -->
+												</button>
+												<div id="monthSection" class="px-3 pb-3 pt-0">
+													<ul class="mt-2">
+														<li
+															class="flex items-start gap-3 pb-3 border-b last:border-b-0">
+															<div class="w-8 flex flex-col items-center">
+																<div
+																	class="w-7 h-7 rounded-full bg-cyan-50 text-cyan-600 flex items-center justify-center material-symbols-outlined text-sm">
+																	call</div>
+															</div>
+															<div class="self-stretch w-px bg-slate-100 mx-2"
+																aria-hidden="true"></div>
+															<div class="flex-1">
+																<div class="flex items-center justify-between">
+																	<div
+																		class="flex items-center gap-2 text-sm font-medium text-cu-dark-blue">
+																		Call</div>
+																	<div class="text-xs text-slate-400">Today</div>
+																</div>
+																<div class="text-xs text-slate-500 mt-1">You logged a
+																	call</div>
+															</div>
+														</li>
+													</ul>
+												</div>
+											</div>
+										</div>
+
+										<div class="border-t mt-4 pt-3 text-center">
+											<a class="text-cu-light-blue">View All</a>
+										</div>
+									</div>
+
+									<!-- Contacts card (right) -->
+									<div class="bg-white rounded-2xl p-6 border">
+										<div class="flex items-center justify-between mb-4">
+											<div class="flex items-center gap-3">
+												<div
+													class="w-10 h-10 rounded-full bg-violet-50 text-violet-600 flex items-center justify-center">
+													<span class="material-symbols-outlined">groups</span>
+												</div>
+												<div>
+													<div class="text-lg font-semibold">Contacts</div>
+												</div>
+											</div>
+											<div class="flex items-center gap-2">
+												<button id="newContactBtn"
+													class="px-3 py-1 border rounded-full text-sm bg-[#3eb2ed] text-white inline-flex items-center gap-2"
+													aria-label="New Contact">
+													<span
+														class="material-symbols-outlined filled text-sm">person_add</span>
+													<span>New Contact</span>
+												</button>
+											</div>
+										</div>
+										<div class="border-t pt-4"></div>
+
+										<div class="space-y-3">
+											<!-- Placeholder contact items with position badges -->
+											<div class="flex items-center justify-between">
+												<div class="flex items-center gap-3">
+													<div
+														class="w-9 h-9 rounded-full bg-slate-100 flex items-center justify-center text-slate-600">
+														NA</div>
+													<div>
+														<div class="text-sm font-medium">Nisal Amarasekara</div>
+														<div class="text-xs text-slate-400">nisal@example.com</div>
+													</div>
+												</div>
+												<span
+													class="text-xs font-semibold px-2 py-1 rounded bg-blue-100 text-blue-700">CEO</span>
+											</div>
+											<div class="flex items-center justify-between">
+												<div class="flex items-center gap-3">
+													<div
+														class="w-9 h-9 rounded-full bg-slate-100 flex items-center justify-center text-slate-600">
+														AB</div>
+													<div>
+														<div class="text-sm font-medium">Amal Bandara</div>
+														<div class="text-xs text-slate-400">amal@example.com</div>
+													</div>
+												</div>
+												<span
+													class="text-xs font-semibold px-2 py-1 rounded bg-green-100 text-green-700">IT</span>
+											</div>
+										</div>
+										<div class="border-t mt-4 pt-3 text-center">
+											<a class="text-cu-light-blue">View All</a>
+										</div>
+									</div>
+								</div>
+
+								<!-- Secondary row: Opportunities (left) & Cases (right) -->
+								<div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-4">
+
+									<!-- Notes & Attachments (moved here) -->
+									<div class="bg-white rounded-2xl p-6 border">
+										<div class="card-header-inline mb-4">
+											<div class="card-header-left">
+												<div
+													class="w-10 h-10 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center">
+													<span class="material-symbols-outlined">attach_file</span>
+												</div>
+												<div class="title-wrap">
+													<div class="text-lg font-semibold">Notes & Attachments</div>
+													<div class="text-xs text-slate-400">(2)</div>
+												</div>
+											</div>
+											<div class="card-header-actions">
+												<button id="newNoteBtn" aria-label="New Note"
+													class="px-3 py-1 border rounded-full text-sm bg-[#3eb2ed] text-white inline-flex items-center gap-2">
+													<span
+														class="material-symbols-outlined filled text-sm">note_add</span>
+													<span>New Note</span>
+												</button>
+												<button id="uploadFilesBtn" aria-label="Upload Files"
+													class="px-3 py-1 border rounded-full text-sm bg-[#3eb2ed] text-white inline-flex items-center gap-2">
+													<span
+														class="material-symbols-outlined filled text-sm">upload_file</span>
+													<span>Upload Files</span>
+												</button>
+											</div>
+										</div>
+										<div class="border-t pt-4 pb-4">
+											<div class="grid grid-cols-1 sm:grid-cols-2 gap-4 items-start">
+												<div class="flex items-start gap-3">
+													<div
+														class="w-10 h-10 rounded-md bg-white border flex items-center justify-center">
+														<div
+															class="w-6 h-6 bg-red-50 text-red-600 flex items-center justify-center rounded-sm">
+															<span
+																class="material-symbols-outlined text-sm">picture_as_pdf</span>
+														</div>
+													</div>
+													<div>
+														<a href="#" class="text-cu-light-blue font-medium">Business
+															Registration</a>
+														<div class="text-xs text-slate-500 mt-1">Jan 7, 2026 • 15KB •
+															docx</div>
+													</div>
+												</div>
+												<div class="flex items-start gap-3">
+													<div
+														class="w-10 h-10 rounded-md bg-amber-100 flex items-center justify-center">
+														<div
+															class="w-6 h-6 bg-amber-50 text-amber-700 flex items-center justify-center rounded-sm">
+															<span
+																class="material-symbols-outlined text-sm">description</span>
+														</div>
+													</div>
+													<div>
+														<a href="#" class="text-cu-light-blue font-medium">This
+															Opportunity is very urgent.</a>
+														<div class="text-xs text-slate-500 mt-1">Jan 7, 2026 • Note
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="border-t mt-4 pt-3 text-center">
+											<a class="text-cu-light-blue">View All</a>
+										</div>
+									</div>
+
+
+									<!-- Cases card -->
+									<div class="bg-white rounded-2xl p-6 border">
+										<div class="flex items-center justify-between mb-4">
+											<div class="flex items-center gap-3">
+												<div
+													class="w-10 h-10 rounded-full bg-pink-50 text-pink-600 flex items-center justify-center">
+													<span class="material-symbols-outlined">work</span>
+												</div>
+												<div>
+													<div class="text-lg font-semibold">Cases <span
+															class="text-xs text-slate-400">(1)</span></div>
+												</div>
+											</div>
+											<button id="newCaseBtn"
+												class="px-3 py-1 border rounded-full text-sm bg-[#3eb2ed] text-white inline-flex items-center gap-2"
+												aria-label="New Case">
+												<span class="material-symbols-outlined filled text-sm">post_add</span>
+												<span>New Case</span>
+											</button>
+										</div>
+										<div class="border-t pt-4"></div>
+										<div class="text-sm">
+											<button id="caseIdToggle" type="button"
+												class="inline-flex items-center gap-2 text-cu-light-blue font-medium"
+												aria-expanded="false">
+												<span id="caseIdChevron"
+													class="material-symbols-outlined no-box-icon text-slate-500">expand_more</span>
+												<span class="underline">00001026</span>
+											</button>
+											<div id="caseDetails"
+												class="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm text-slate-600 hidden">
+												<div>
+													<div class="text-xs text-slate-400">Contact N...</div>
+													<div><a href="#" class="text-cu-light-blue underline">Nisal
+															Amarasekara</a></div>
+												</div>
+												<div>
+													<div class="text-xs text-slate-400">Subject:</div>
+													<div>Test 1</div>
+												</div>
+												<div>
+													<div class="text-xs text-slate-400">Priority:</div>
+													<div>Medium</div>
+												</div>
+											</div>
+										</div>
+										<div class="border-t mt-4 pt-3 text-center">
+											<a class="text-cu-light-blue">View All</a>
+										</div>
+									</div>
+								</div>
+
+								<!-- History card removed per request -->
+
+							</div>
+							<div id="paneDetails" class="hidden space-y-6">
+								<!-- Modernized Details layout -->
+								<div class="bg-white rounded-2xl p-6 shadow-xl">
+									<!-- Company Info section -->
+									<div class="flex items-center gap-4 mb-6 pb-6 border-b border-gray-100">
+										<div
+											class="w-14 h-14 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 text-white flex items-center justify-center shadow-md">
+											<span class="material-symbols-outlined text-3xl">domain</span>
+										</div>
+										<div>
+											<div class="text-2xl font-extrabold text-slate-900">Opportunity Info</div>
+											<!-- <div class="text-sm text-slate-400 mt-1">Edit company details and quick contacts</div> -->
+										</div>
+									</div>
+
+									<!-- Company header removed as requested -->
+									<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+										<div class="lg:col-span-3 bg-gray-50 rounded-lg p-4">
+											<form class="space-y-4">
+												<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+													<div>
+														<label class="block text-xs text-slate-500 mb-1">Account
+															Name</label>
+														<input id="accountName"
+															class="w-full border border-transparent rounded-md px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-cu-light-blue/30"
+															value="MERIDIAN INDUSTRIES LIMITED">
+													</div>
+													<div>
+														<label class="block text-xs text-slate-500 mb-1">Lead
+															Source</label>
+														<input id="leadSource"
+															class="w-full border border-transparent rounded-md px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-cu-light-blue/30"
+															value="Web">
+
+													</div>
+												</div>
+
+												<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+													<div>
+														<label class="block text-xs text-slate-500 mb-1">Type</label>
+														<input id="opportunityType"
+															class="w-full border border-transparent rounded-md px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-cu-light-blue/30"
+															value="New Customer">
+
+													</div>
+													<div>
+														<label class="block text-xs text-slate-500 mb-1">Close
+															Date</label>
+														<input id="closeDate"
+															class="w-full border border-transparent rounded-md px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-cu-light-blue/30"
+															value="-" />
+													</div>
+												</div>
+
+												<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+													<div>
+														<label class="block text-xs text-slate-500 mb-1">Opportunity
+															Status</label>
+														<input id="opportunityStatus"
+															class="w-full border border-transparent rounded-md px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-cu-light-blue/30"
+															value="Prospect" />
+
+													</div>
+													<div>
+														<label class="block text-xs text-slate-500 mb-1">Probability
+															(%)</label>
+														<input id="probability" type="number" min="0" max="100"
+															class="w-full border border-transparent rounded-md px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-cu-light-blue/30"
+															value="10" />
+													</div>
+												</div>
+											</form>
+										</div>
+
+									</div>
+								</div>
+
+								<!-- General Info section (modern) -->
+								<!-- <div class="bg-white rounded-2xl p-6 shadow-xl">
+										<div class="flex items-center gap-4 mb-6 pb-6 border-b border-gray-100">
+											<div class="w-14 h-14 rounded-xl bg-gradient-to-br from-cyan-500 to-teal-500 text-white flex items-center justify-center shadow-md">
+												<span class="material-symbols-outlined text-3xl">info</span>
+											</div>
+											<div>
+												<div class="text-2xl font-extrabold">General Info</div>
+												<div class="text-sm text-slate-400 mt-1">Registration, status and quick references</div>
+											</div>
+										</div>
+										<div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-4">
+											
+											<div class="col-span-1 p-4 rounded-lg bg-gradient-to-r from-slate-50 to-white border flex items-center gap-4">
+												<div class="w-10 h-10 rounded-md bg-white flex items-center justify-center text-cu-light-blue shadow-sm">
+													<span class="material-symbols-outlined">event</span>
+												</div>
+												<div>
+													<div class="text-xs text-slate-500">Registered</div>
+													<div class="font-medium">2026-01-04</div>
+												</div>
+											</div>
+											<div class="col-span-1 p-4 rounded-lg bg-gradient-to-r from-slate-50 to-white border flex items-center gap-4">
+												<div class="w-10 h-10 rounded-md bg-white flex items-center justify-center text-emerald-600 shadow-sm">
+													<span class="material-symbols-outlined">verified</span>
+												</div>
+												<div>
+													<div class="text-xs text-slate-500">Status</div>
+													<div class="font-medium">Prospect • Active</div>
+												</div>
+											</div>
+											<div class="col-span-1 p-4 rounded-lg bg-gradient-to-r from-slate-50 to-white border flex items-center gap-4">
+												<div class="w-10 h-10 rounded-md bg-white flex items-center justify-center text-sky-600 shadow-sm">
+													<span class="material-symbols-outlined">badge</span>
+												</div>
+												<div>
+													<div class="text-xs text-slate-500">Reference</div>
+													<div class="font-medium">REF-0001026</div>
+												</div>
+											</div>
+										</div>
+										<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+											<div class="lg:col-span-2 bg-gray-50 rounded-lg p-4">
+												<form class="space-y-4">
+													<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+														<div>
+															<label class="block text-xs text-slate-500 mb-1">Registered Date</label>
+															<input type="date" class="w-full rounded-md px-3 py-2 text-sm border border-transparent bg-white focus:outline-none focus:ring-2 focus:ring-cu-light-blue/30" value="2026-01-04" />
+														</div>
+														<div>
+															<label class="block text-xs text-slate-500 mb-1">Lead / Client Status</label>
+															<select class="w-full rounded-md px-3 py-2 text-sm border border-transparent bg-white focus:outline-none focus:ring-2 focus:ring-cu-light-blue/30"><option>Prospect</option><option>Active</option><option>Inactive</option></select>
+														</div>
+													</div>
+													<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+														<div>
+															<label class="block text-xs text-slate-500 mb-1">Source</label>
+															<select class="w-full rounded-md px-3 py-2 text-sm border border-transparent bg-white focus:outline-none focus:ring-2 focus:ring-cu-light-blue/30"><option>Email</option><option>Referral</option></select>
+														</div>
+														<div>
+															<label class="block text-xs text-slate-500 mb-1">Owner</label>
+															<input id="leadOwner" class="w-full rounded-md px-3 py-2 text-sm border border-transparent bg-white focus:outline-none focus:ring-2 focus:ring-cu-light-blue/30" value="Nisal Amarasekara" />
+														</div>
+													</div>
+													<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+														<div>
+															<label class="block text-xs text-slate-500 mb-1">Contracting Office</label>
+															<input class="w-full rounded-md px-3 py-2 text-sm border border-transparent bg-white focus:outline-none focus:ring-2 focus:ring-cu-light-blue/30" value="Sri Lanka" />
+														</div>
+														<div>
+															<label class="block text-xs text-slate-500 mb-1">Related Offices</label>
+															<select class="w-full rounded-md px-3 py-2 text-sm border border-transparent bg-white focus:outline-none focus:ring-2 focus:ring-cu-light-blue/30"><option>Sri Lanka</option></select>
+														</div>
+													</div>
+													<div>
+														<label class="block text-xs text-slate-500 mb-1">Description</label>
+														<textarea class="w-full rounded-md px-3 py-2 text-sm h-28 bg-white border border-transparent focus:outline-none focus:ring-2 focus:ring-cu-light-blue/30" placeholder="Enter description"></textarea>
+													</div>
+												</form>
+											</div>
+											<div class="space-y-4">
+												<div class="bg-white rounded-lg p-4 border">
+													<div class="text-xs text-slate-500 mb-2">Reference No</div>
+													<div class="font-medium text-lg">REF-0001026</div>
+													<div class="text-xs text-slate-400 mt-2">Use this ID for external references and invoices.</div>
+												</div>
+												<div class="bg-white rounded-lg p-4 border">
+													<div class="grid grid-cols-1 gap-3">
+														<div>
+															<label class="block text-xs text-slate-500 mb-1">ICU ID</label>
+															<input class="w-full rounded-md px-3 py-2 text-sm border border-transparent bg-white focus:outline-none focus:ring-2 focus:ring-cu-light-blue/30" placeholder="Enter ICU ID" />
+														</div>
+														<div>
+															<label class="block text-xs text-slate-500 mb-1">CUSI ID</label>
+															<input class="w-full rounded-md px-3 py-2 text-sm border border-transparent bg-white focus:outline-none focus:ring-2 focus:ring-cu-light-blue/30" placeholder="Enter CUSI ID" />
+														</div>
+														<div class="flex items-center gap-2">
+															<label class="flex items-center gap-2 text-sm"><input type="checkbox" class="rounded"/> TC Buyer</label>
+														</div>
+													</div>
+												</div>
+
+											</div>
+										</div>
+									</div> -->
+							</div>
+						</div>
+					</div>
+				</section>
+
+				<!-- Main grid: left column wide, right column narrow -->
+				<section class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+					<div class="lg:col-span-2 space-y-6">
+
+					</div>
+
+
+				</section>
+			</main>
+		</div>
+	</div>
+
+
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+			const menuBtn = document.getElementById('headerMenuBtn');
+			const menu = document.getElementById('headerMenu');
+
+			function closeMenu() {
+				if (menu) { menu.classList.add('hidden'); menuBtn && menuBtn.setAttribute('aria-expanded', 'false'); }
+			}
+
+			if (menuBtn && menu) {
+				menuBtn.addEventListener('click', function (e) {
+					e.stopPropagation();
+					const isHidden = menu.classList.contains('hidden');
+					document.querySelectorAll('#headerMenu, #globalActionsMenu').forEach(el => el.classList.add('hidden'));
+					if (isHidden) { menu.classList.remove('hidden'); menuBtn.setAttribute('aria-expanded', 'true'); }
+					else { closeMenu(); }
+				});
+
+				// action handlers
+				menu.addEventListener('click', function (e) {
+					const btn = e.target.closest('button[data-action]');
+					if (!btn) return;
+					const action = btn.getAttribute('data-action');
+					closeMenu();
+					switch (action) {
+						case 'new-opportunity': window.location.href = 'addopportunity.html'; break;
+						case 'change-owner': alert('Change Owner clicked'); break;
+						case 'submit-hod': alert('Submit for HOD approval clicked'); break;
+						case 'edit': alert('Edit clicked'); break;
+						case 'delete': if (confirm('Delete this account?')) { alert('Deleted (demo)'); } break;
+					}
+				});
+
+				// close on outside click
+				document.addEventListener('click', function (e) {
+					if (!menu.contains(e.target) && e.target !== menuBtn) closeMenu();
+				});
+			}
+		});
+	</script>
+
+	<!-- Opportunity close confirmation modal (Won / Lost) -->
+	<div id="oppCloseModal" class="hidden fixed inset-0 bg-black/50 z-50 items-center justify-center px-4">
+		<div class="max-w-md w-full bg-white rounded-2xl overflow-hidden shadow-xl mt-8">
+			<div class="bg-[#1b2747] text-white px-6 py-4 rounded-t-2xl">
+				<div class="text-left text-lg font-semibold">Complete Opportunity</div>
+			</div>
+			<div class="p-6 space-y-4 text-sm">
+				<div>How would you like to close this opportunity?</div>
+				<div class="text-xs text-slate-500">Selecting Won will mark this opportunity as won and trigger any
+					post-win workflows. Selecting Lost will mark it as lost.</div>
+				<div class="flex items-center justify-end gap-3">
+					<button id="oppCloseCancel" class="px-4 py-2 rounded-md border">Cancel</button>
+					<button id="oppMarkLost" class="px-4 py-2 rounded-md bg-rose-500 text-white">Mark Lost</button>
+					<button id="oppMarkWon" class="px-4 py-2 rounded-md bg-emerald-600 text-white">Mark Won</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+			const modal = document.getElementById('oppCloseModal');
+			const btnWon = document.getElementById('oppMarkWon');
+			const btnLost = document.getElementById('oppMarkLost');
+			const btnCancel = document.getElementById('oppCloseCancel');
+			const arrowSteps = Array.from(document.querySelectorAll('.opportunity-arrows .arrow-step'));
+
+			function closeModal() { if (modal) { modal.classList.add('hidden'); modal.style.display = 'none'; document.body.style.overflow = ''; } }
+
+			function finalizeOutcome(outcome) {
+				// mark as complete
+				try {
+					// find statusCompleteBtn script's current variable by re-running the completion logic: trigger click handler again to advance
+					const completeBtn = document.getElementById('statusCompleteBtn');
+					// Advance the stepper programmatically: simulate completing the final step
+					// Find the index of the last step and mark completed styles
+					const lastIdx = arrowSteps.length - 1;
+					arrowSteps.forEach((el, i) => { el.classList.remove('active'); if (i <= lastIdx) el.classList.add('completed'); });
+					// Optionally, decorate the Closed step with outcome label
+					const closedEl = arrowSteps[lastIdx];
+					if (closedEl) {
+						const badge = document.createElement('span'); badge.className = 'ml-2 text-xs font-semibold'; badge.style.color = outcome === 'won' ? '#059669' : '#dc2626'; badge.textContent = outcome === 'won' ? 'Won' : 'Lost';
+						// remove existing badge if any
+						const existing = closedEl.querySelector('.outcome-badge'); if (existing) existing.remove(); badge.classList.add('outcome-badge');
+						closedEl.appendChild(badge);
+					}
+					closeModal();
+					alert('Opportunity marked ' + outcome.toUpperCase());
+				} catch (e) { console.error(e); closeModal(); }
+			}
+
+			if (btnWon) btnWon.addEventListener('click', function () { finalizeOutcome('won'); });
+			if (btnLost) btnLost.addEventListener('click', function () { finalizeOutcome('lost'); });
+			if (btnCancel) btnCancel.addEventListener('click', function () { closeModal(); });
+			// close on outside click
+			if (modal) { modal.addEventListener('click', function (e) { if (e.target === modal) closeModal(); }); }
+		});
+	</script>
+
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+			const tabHome = document.getElementById('tabHome');
+			const tabDetails = document.getElementById('tabDetails');
+			const tabFinance = document.getElementById('tabFinance');
+			const paneHome = document.getElementById('paneHome');
+			const paneDetails = document.getElementById('paneDetails');
+			const paneFinance = document.getElementById('paneFinance');
+			const rightSidebar = document.getElementById('rightSidebar');
+
+			function resetTabs() {
+				[tabHome, tabDetails, tabFinance].forEach(t => { if (t) { t.classList.remove('bg-cu-light-blue/10', 'text-cu-dark-blue', 'border-b-2', 'border-cu-light-blue', 'text-cu-light-blue'); t.classList.add('text-slate-600'); } });
+			}
+
+			function hidePanes() {
+				[paneHome, paneDetails, paneFinance].forEach(p => { if (p) p.classList.add('hidden'); });
+			}
+
+			function showHome() {
+				resetTabs();
+				if (tabHome) { tabHome.classList.add('text-cu-light-blue', 'border-b-2', 'border-cu-light-blue'); tabHome.classList.remove('text-slate-600'); }
+				hidePanes();
+				if (paneHome) paneHome.classList.remove('hidden');
+				if (rightSidebar) rightSidebar.classList.remove('hidden');
+			}
+
+			function showDetails() {
+				resetTabs();
+				if (tabDetails) { tabDetails.classList.add('text-cu-light-blue', 'border-b-2', 'border-cu-light-blue'); tabDetails.classList.remove('text-slate-600'); }
+				hidePanes();
+				if (paneDetails) paneDetails.classList.remove('hidden');
+				if (rightSidebar) rightSidebar.classList.add('hidden');
+			}
+
+			function showFinance() {
+				resetTabs();
+				if (tabFinance) { tabFinance.classList.add('bg-cu-light-blue/10', 'text-cu-dark-blue'); tabFinance.classList.remove('text-slate-600'); }
+				hidePanes();
+				if (paneFinance) paneFinance.classList.remove('hidden');
+				if (rightSidebar) rightSidebar.classList.add('hidden');
+			}
+
+			if (tabHome) tabHome.addEventListener('click', showHome);
+			if (tabDetails) tabDetails.addEventListener('click', showDetails);
+			if (tabFinance) tabFinance.addEventListener('click', showFinance);
+		});
+	</script>
+
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+			// collapse toggles for activity sections
+			document.querySelectorAll('[data-collapse-target]').forEach(btn => {
+				btn.addEventListener('click', function (e) {
+					const target = document.querySelector(this.getAttribute('data-collapse-target'));
+					if (!target) return;
+					target.classList.toggle('hidden');
+					// toggle chevron rotate
+					const icon = this.querySelector('.material-symbols-outlined');
+					if (icon) icon.textContent = icon.textContent === 'expand_more' ? 'expand_less' : 'expand_more';
+				});
+			});
+			// ensure sections start collapsed by default
+			document.querySelectorAll('#upcomingSection, #monthSection').forEach(el => el.classList.add('hidden'));
+			// ensure chevrons show collapsed state
+			document.querySelectorAll('[data-collapse-target]').forEach(b => {
+				const ic = b.querySelector('.material-symbols-outlined'); if (ic) ic.textContent = 'expand_more';
+				// set aria-expanded where applicable
+				b.setAttribute('aria-expanded', 'false');
+			});
+			// Expand All button
+			const expandAll = document.getElementById('expandAllBtn');
+			if (expandAll) {
+				expandAll.addEventListener('click', function () {
+					document.querySelectorAll('#upcomingSection, #monthSection').forEach(el => el.classList.remove('hidden'));
+					document.querySelectorAll('[data-collapse-target]').forEach(b => {
+						const ic = b.querySelector('.material-symbols-outlined'); if (ic) ic.textContent = 'expand_less';
+					});
+				});
+			}
+		});
+	</script>
+
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+			const newTask = document.getElementById('newTaskBtn');
+			if (newTask) {
+				newTask.addEventListener('click', function (e) {
+					// Navigate to add inquiry page
+					window.location.href = 'addinquiry.html';
+				});
+			}
+		});
+	</script>
+
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+			const openCaseBtns = Array.from(document.querySelectorAll('#openNewCaseBtn, #newCaseBtn'));
+			const modal = document.getElementById('newCaseModal');
+			const cancelBtn = document.getElementById('cancelNewCase');
+			const saveBtn = document.getElementById('saveNewCase');
+
+			function openModal() { modal.classList.remove('hidden'); modal.classList.add('flex'); document.body.style.overflow = 'hidden'; }
+			function closeModal() { modal.classList.add('hidden'); modal.classList.remove('flex'); document.body.style.overflow = ''; }
+
+			if (openCaseBtns.length && modal) {
+				openCaseBtns.forEach(function (btn) {
+					if (btn) btn.addEventListener('click', function (e) { e.preventDefault(); openModal(); });
+				});
+			}
+			if (cancelBtn) { cancelBtn.addEventListener('click', function (e) { e.preventDefault(); closeModal(); }); }
+			if (saveBtn) {
+				saveBtn.addEventListener('click', function (e) {
+					e.preventDefault();
+					const payload = {
+						contact: document.getElementById('caseContact')?.value || '',
+						status: document.getElementById('caseStatus')?.value || '',
+						subject: document.getElementById('caseSubject')?.value || '',
+						description: document.getElementById('caseDescription')?.value || ''
+					};
+					console.log('New case:', payload);
+					alert('Case saved (demo)');
+					closeModal();
+				});
+			}
+
+			// close on outside click
+			if (modal) {
+				modal.addEventListener('click', function (e) { if (e.target === modal) closeModal(); });
+			}
+		});
+	</script>
+
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+			const openNoteBtns = Array.from(document.querySelectorAll('#openNewNoteBtn, #newNoteBtn'));
+			const modal = document.getElementById('newNoteModal');
+			const cancelBtn = document.getElementById('cancelNewNote');
+			const saveBtn = document.getElementById('saveNewNote');
+			const chkPrivate = document.getElementById('notePrivate');
+			const chkPublic = document.getElementById('notePublic');
+
+			function openModal() { modal.classList.remove('hidden'); modal.classList.add('flex'); document.body.style.overflow = 'hidden'; }
+			function closeModal() { modal.classList.add('hidden'); modal.classList.remove('flex'); document.body.style.overflow = ''; }
+
+			if (openNoteBtns.length && modal) {
+				openNoteBtns.forEach(function (b) { if (b) b.addEventListener('click', function (e) { e.preventDefault(); openModal(); }); });
+			}
+			if (cancelBtn) { cancelBtn.addEventListener('click', function (e) { e.preventDefault(); closeModal(); }); }
+
+			// Make Private/Public mutually exclusive
+			if (chkPrivate && chkPublic) {
+				chkPrivate.addEventListener('change', function () { if (this.checked) chkPublic.checked = false; });
+				chkPublic.addEventListener('change', function () { if (this.checked) chkPrivate.checked = false; });
+			}
+
+			if (saveBtn) {
+				saveBtn.addEventListener('click', function (e) {
+					e.preventDefault();
+					const payload = {
+						title: document.getElementById('noteTitle')?.value || '',
+						private: !!document.getElementById('notePrivate')?.checked,
+						public: !!document.getElementById('notePublic')?.checked,
+						body: document.getElementById('noteBody')?.value || ''
+					};
+					console.log('New note:', payload);
+					alert('Note saved (demo)');
+					closeModal();
+				});
+			}
+
+			if (modal) { modal.addEventListener('click', function (e) { if (e.target === modal) closeModal(); }); }
+		});
+	</script>
+
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+			const changeBtn = document.getElementById('changeLogoBtn');
+			const removeBtn = document.getElementById('removeLogoBtn');
+			const fileInput = document.getElementById('companyLogoInput');
+			const logoImg = document.getElementById('companyLogo');
+
+			if (changeBtn && fileInput && logoImg) {
+				changeBtn.addEventListener('click', function (e) { e.preventDefault(); fileInput.click(); });
+				fileInput.addEventListener('change', function () {
+					const f = this.files && this.files[0];
+					if (!f) return;
+					const url = URL.createObjectURL(f);
+					logoImg.src = url;
+				});
+			}
+			if (removeBtn && logoImg) {
+				removeBtn.addEventListener('click', function (e) { e.preventDefault(); logoImg.src = 'https://via.placeholder.com/150?text=No+Logo'; });
+			}
+		});
+	</script>
+
+	<script>
+		// Header edit/save toggle: shows Save/Cancel when editing the header title
+		document.addEventListener('DOMContentLoaded', function () {
+			const editBtn = document.getElementById('editBtn');
+			const headerSaveCancel = document.getElementById('headerSaveCancel');
+			const saveBtn = document.getElementById('saveHeaderBtn');
+			const cancelBtn = document.getElementById('cancelHeaderBtn');
+			const companyHeader = document.getElementById('companyHeader');
+			let headerInput = null;
+
+			if (!editBtn || !headerSaveCancel || !companyHeader) return;
+
+			editBtn.addEventListener('click', function () {
+				editBtn.classList.add('hidden');
+				headerSaveCancel.classList.remove('hidden');
+				// create inline input for editing title
+				const current = companyHeader.textContent.trim();
+				headerInput = document.createElement('input');
+				headerInput.id = 'companyHeaderInput';
+				headerInput.className = 'border rounded px-3 py-2 text-lg md:text-2xl w-full';
+				headerInput.value = current;
+				companyHeader.style.display = 'none';
+				companyHeader.parentNode.insertBefore(headerInput, companyHeader);
+				headerInput.focus();
+			});
+
+			cancelBtn && cancelBtn.addEventListener('click', function () {
+				headerSaveCancel.classList.add('hidden');
+				editBtn.classList.remove('hidden');
+				if (headerInput) { headerInput.remove(); headerInput = null; }
+				companyHeader.style.display = '';
+			});
+
+			saveBtn && saveBtn.addEventListener('click', function () {
+				const newVal = headerInput ? headerInput.value.trim() : companyHeader.textContent.trim();
+				if (headerInput) { headerInput.remove(); headerInput = null; }
+				companyHeader.textContent = newVal || companyHeader.textContent;
+				companyHeader.style.display = '';
+				headerSaveCancel.classList.add('hidden');
+				editBtn.classList.remove('hidden');
+				// placeholder: actual save logic would go here (API call)
+				alert('Saved');
+			});
+
+			// Quick Save button (visible next to Edit): reuse same save behavior
+			const quickSave = document.getElementById('quickSaveBtn');
+			if (quickSave) {
+				quickSave.addEventListener('click', function () {
+					const headerInputElem = document.getElementById('companyHeaderInput');
+					if (headerInputElem) {
+						const newVal = headerInputElem.value.trim();
+						headerInputElem.remove();
+						companyHeader.textContent = newVal || companyHeader.textContent;
+						companyHeader.style.display = '';
+						if (headerSaveCancel) headerSaveCancel.classList.add('hidden');
+						if (editBtn) editBtn.classList.remove('hidden');
+						alert('Saved');
+					} else {
+						alert('Nothing to save');
+					}
+				});
+			}
+		});
+	</script>
+
+	<script>
+		// If opened with ?company=Name or #Name, update header and highlight
+		document.addEventListener('DOMContentLoaded', function () {
+			try {
+				const params = new URLSearchParams(location.search);
+				let name = params.get('company') || '';
+				if (!name && location.hash) { name = decodeURIComponent(location.hash.replace(/^#/, '')); }
+				name = (name || '').trim();
+				if (!name) return;
+				const header = document.getElementById('companyHeader');
+				if (header) { header.textContent = name; header.scrollIntoView({ behavior: 'smooth', block: 'center' }); header.style.transition = 'background-color 280ms ease'; header.style.backgroundColor = '#fffbeb'; setTimeout(() => header.style.backgroundColor = '', 1800); }
+				const input = document.getElementById('companyName');
+				if (input) input.value = name;
+			} catch (e) { console.error(e); }
+		});
+	</script>
+
+	<!-- Select Services Modal -->
+	<div id="selectServicesModal" class="fixed inset-0 z-[9999] hidden"
+		style="position: fixed !important; display: none;">
+		<div class="fixed inset-0 bg-black/50" onclick="closeServicesModal()"></div>
+
+		<div
+			class="fixed inset-0 md:inset-8 lg:inset-16 xl:inset-20 bg-white rounded-none md:rounded-xl shadow-2xl flex flex-col overflow-hidden z-[10000]">
+			<div class="bg-[#1b1e42] px-6 py-4 flex items-center justify-between flex-shrink-0">
+				<h2 class="text-white text-lg font-semibold">Select Services</h2>
+				<button onclick="closeServicesModal()" class="text-red-500 hover:text-red-400 transition">
+					<span class="material-symbols-outlined text-2xl">close</span>
+				</button>
+			</div>
+
+			<div class="flex-1 flex overflow-hidden bg-gray-50 p-4 gap-4">
+				<div class="flex-1 flex flex-col bg-white rounded-2xl shadow-sm overflow-hidden">
+					<div class="bg-[#1b1e42] px-6 py-3 rounded-t-2xl flex-shrink-0">
+						<h3 class="text-white font-semibold text-sm">Testing</h3>
+					</div>
+					<div class="flex-1 flex items-center justify-center p-8 bg-white">
+						<div class="text-center">
+							<div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-50 mb-3">
+								<span class="material-symbols-outlined text-blue-300"
+									style="font-size: 36px;">inbox</span>
+							</div>
+							<h4 class="text-gray-700 font-semibold text-sm mb-1">No categories available</h4>
+							<p class="text-xs text-gray-400">Check back later for updates</p>
+						</div>
+					</div>
+				</div>
+
+				<!-- Collapsible sidebar styles (icons-only mode, hover-expand, persistent toggle) -->
+				<style>
+					/* collapsed sidebar: keep a small width and show icons only */
+					#sidebar.collapsed {
+						width: 72px !important
+					}
+
+					#sidebar.collapsed .menu-toggle {
+						padding-left: 0.5rem;
+						padding-right: 0.5rem
+					}
+
+					#sidebar.collapsed .menu-toggle .flex.items-center>span:last-child {
+						display: none
+					}
+
+					#sidebar.collapsed nav a>span:last-child {
+						display: none
+					}
+
+					#sidebar.collapsed .submenu {
+						display: none !important
+					}
+
+					#sidebar .sidebar-header {
+						position: relative
+					}
+
+					/* keep toggle visible as a pill overlapping the edge */
+					#sidebar.collapsed #sidebarToggle {
+						position: absolute;
+						right: -14px;
+						top: 8px;
+						z-index: 40
+					}
+
+					/* temporary expanded state on hover */
+					#sidebar.expanded-temp {
+						width: 16rem !important
+					}
+
+					#sidebar.expanded-temp .menu-toggle .flex.items-center>span:last-child {
+						display: inline-block
+					}
+
+					#sidebar.expanded-temp nav a>span:last-child {
+						display: inline-block
+					}
+
+					/* subtle tooltip-like labels when collapsed on hover (accessibility) */
+					#sidebar.collapsed a[title] {
+						position: relative
+					}
+
+					#sidebar.collapsed a[title]:hover::after {
+						content: attr(title);
+						position: absolute;
+						left: 72px;
+						top: 50%;
+						transform: translateY(-50%);
+						background: #111827;
+						color: #fff;
+						padding: 6px 10px;
+						border-radius: 6px;
+						white-space: nowrap;
+						font-size: 12px;
+						box-shadow: 0 6px 18px rgba(2, 6, 23, 0.12)
+					}
+				</style>
+				<div class="flex-1 flex flex-col bg-white rounded-2xl shadow-sm overflow-hidden">
+					<div class="bg-[#1b1e42] px-6 py-3 rounded-t-2xl flex-shrink-0">
+						<h3 class="text-white font-semibold text-sm">Inspection</h3>
+					</div>
+					<div class="flex-1 flex items-center justify-center p-8 bg-white">
+						<div class="text-center">
+							<div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-50 mb-3">
+								<span class="material-symbols-outlined text-blue-300"
+									style="font-size: 36px;">inbox</span>
+							</div>
+							<h4 class="text-gray-700 font-semibold text-sm mb-1">No categories available</h4>
+							<p class="text-xs text-gray-400">Check back later for updates</p>
+						</div>
+					</div>
+				</div>
+
+				<div class="flex-1 flex flex-col bg-white rounded-2xl shadow-sm overflow-hidden">
+					<div class="bg-[#1b1e42] px-6 py-3 rounded-t-2xl flex-shrink-0">
+						<h3 class="text-white font-semibold text-sm">Certification</h3>
+					</div>
+					<div class="flex-1 overflow-y-auto p-6 bg-white">
+						<div class="space-y-3">
+							<div class="w-full">
+								<button onclick="toggleServiceCategory('organic')"
+									class="w-full flex items-center justify-between px-4 py-3 bg-[#42c5f5] hover:bg-[#38b4e3] text-white rounded-lg transition-all shadow-sm">
+									<div class="flex items-center gap-2.5">
+										<span class="material-symbols-outlined text-lg">eco</span>
+										<span class="font-medium text-sm">Organic</span>
+									</div>
+									<span id="organic-chevron"
+										class="material-symbols-outlined text-lg transition-transform">expand_more</span>
+								</button>
+								<div id="organic-content"
+									class="hidden mt-2 bg-white border border-gray-200 rounded-lg overflow-hidden">
+									<div class="px-4 py-3">
+										<div class="space-y-2">
+											<!-- Simple list of standards (checkbox only) -->
+											<div class="flex items-center gap-3 p-2">
+												<input type="checkbox"
+													class="w-4 h-4 border-2 border-gray-300 rounded cursor-pointer accent-cyan-500"
+													aria-label="Select NOP">
+												<span class="text-sm text-gray-800">NOP</span>
+											</div>
+
+											<div class="flex items-center gap-3 p-2">
+												<input type="checkbox"
+													class="w-4 h-4 border-2 border-gray-300 rounded cursor-pointer accent-cyan-500"
+													aria-label="Select SL Organic">
+												<span class="text-sm text-gray-800">SL Organic</span>
+											</div>
+
+											<div class="flex items-center gap-3 p-2">
+												<input type="checkbox"
+													class="w-4 h-4 border-2 border-gray-300 rounded cursor-pointer accent-cyan-500"
+													aria-label="Select ROC">
+												<span class="text-sm text-gray-800">ROC</span>
+											</div>
+
+											<div class="flex items-center gap-3 p-2">
+												<input type="checkbox"
+													class="w-4 h-4 border-2 border-gray-300 rounded cursor-pointer accent-cyan-500"
+													aria-label="Select GOLS">
+												<span class="text-sm text-gray-800">GOLS</span>
+											</div>
+
+											<div class="flex items-center gap-3 p-2">
+												<input type="checkbox"
+													class="w-4 h-4 border-2 border-gray-300 rounded cursor-pointer accent-cyan-500"
+													aria-label="Select BIOSuisse">
+												<span class="text-sm text-gray-800">BIOSuisse</span>
+											</div>
+
+											<div class="flex items-center gap-3 p-2">
+												<input type="checkbox"
+													class="w-4 h-4 border-2 border-gray-300 rounded cursor-pointer accent-cyan-500"
+													aria-label="Select Korean Organic">
+												<span class="text-sm text-gray-800">Korean Organic</span>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<!-- Textile section removed as requested -->
+
+							<button
+								class="w-full flex items-center justify-between px-4 py-3 bg-[#42c5f5] hover:bg-[#38b4e3] text-white rounded-lg transition-all shadow-sm">
+								<div class="flex items-center gap-2.5">
+									<span class="material-symbols-outlined text-lg">agriculture</span>
+									<span class="font-medium text-sm">Agriculture</span>
+								</div>
+								<span class="material-symbols-outlined text-lg">expand_more</span>
+							</button>
+
+							<button
+								class="w-full flex items-center justify-between px-4 py-3 bg-[#42c5f5] hover:bg-[#38b4e3] text-white rounded-lg transition-all shadow-sm">
+								<div class="flex items-center gap-2.5">
+									<span class="material-symbols-outlined text-lg">water_drop</span>
+									<span class="font-medium text-sm">Aqua</span>
+								</div>
+								<span class="material-symbols-outlined text-lg">expand_more</span>
+							</button>
+
+							<button
+								class="w-full flex items-center justify-between px-4 py-3 bg-[#42c5f5] hover:bg-[#38b4e3] text-white rounded-lg transition-all shadow-sm">
+								<div class="flex items-center gap-2.5">
+									<span class="material-symbols-outlined text-lg">groups</span>
+									<span class="font-medium text-sm">Social</span>
+								</div>
+								<span class="material-symbols-outlined text-lg">expand_more</span>
+							</button>
+
+							<button
+								class="w-full flex items-center justify-between px-4 py-3 bg-[#42c5f5] hover:bg-[#38b4e3] text-white rounded-lg transition-all shadow-sm">
+								<div class="flex items-center gap-2.5">
+									<span class="material-symbols-outlined text-lg">restaurant</span>
+									<span class="font-medium text-sm">Food safety</span>
+								</div>
+								<span class="material-symbols-outlined text-lg">expand_more</span>
+							</button>
+
+							<button
+								class="w-full flex items-center justify-between px-4 py-3 bg-[#42c5f5] hover:bg-[#38b4e3] text-white rounded-lg transition-all shadow-sm">
+								<div class="flex items-center gap-2.5">
+									<span class="material-symbols-outlined text-lg">more_horiz</span>
+									<span class="font-medium text-sm">Other</span>
+								</div>
+								<span class="material-symbols-outlined text-lg">expand_more</span>
+							</button>
+
+							<button
+								class="w-full flex items-center justify-between px-4 py-3 bg-[#42c5f5] hover:bg-[#38b4e3] text-white rounded-lg transition-all shadow-sm">
+								<div class="flex items-center gap-2.5">
+									<span class="material-symbols-outlined text-lg">settings</span>
+									<span class="font-medium text-sm">System</span>
+								</div>
+								<span class="material-symbols-outlined text-lg">expand_more</span>
+							</button>
+
+							<button
+								class="w-full flex items-center justify-between px-4 py-3 bg-[#42c5f5] hover:bg-[#38b4e3] text-white rounded-lg transition-all shadow-sm">
+								<div class="flex items-center gap-2.5">
+									<span class="material-symbols-outlined text-lg">travel_explore</span>
+									<span class="font-medium text-sm">Tourism</span>
+								</div>
+								<span class="material-symbols-outlined text-lg">expand_more</span>
+							</button>
+
+							<button
+								class="w-full flex items-center justify-between px-4 py-3 bg-[#42c5f5] hover:bg-[#38b4e3] text-white rounded-lg transition-all shadow-sm">
+								<div class="flex items-center gap-2.5">
+									<span class="material-symbols-outlined text-lg">verified_user</span>
+									<span class="font-medium text-sm">Assurance Services</span>
+								</div>
+								<span class="material-symbols-outlined text-lg">expand_more</span>
+							</button>
+
+							<button
+								class="w-full flex items-center justify-between px-4 py-3 bg-[#42c5f5] hover:bg-[#38b4e3] text-white rounded-lg transition-all shadow-sm">
+								<div class="flex items-center gap-2.5">
+									<span class="material-symbols-outlined text-lg">park</span>
+									<span class="font-medium text-sm">Forestry</span>
+								</div>
+								<span class="material-symbols-outlined text-lg">expand_more</span>
+							</button>
+						</div>
+					</div>
+				</div>
+
+				<!-- Academy Column -->
+				<div class="flex-1 flex flex-col bg-white rounded-2xl shadow-sm overflow-hidden">
+					<div class="bg-[#1b1e42] px-6 py-3 rounded-t-2xl flex-shrink-0">
+						<h3 class="text-white font-semibold text-sm">Academy</h3>
+					</div>
+					<div class="flex-1 flex items-center justify-center p-6 bg-white">
+						<div class="text-center">
+							<div
+								class="w-16 h-16 mx-auto mb-4 bg-blue-50 rounded-full flex items-center justify-center">
+								<span class="material-symbols-outlined text-3xl text-blue-300">inventory_2</span>
+							</div>
+							<p class="text-gray-800 font-medium text-sm mb-1">No categories available</p>
+							<p class="text-blue-400 text-xs">Check back later for updates</p>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div
+				class="bg-white border-t border-gray-200 px-6 py-3.5 flex items-center justify-end gap-3 flex-shrink-0">
+				<button onclick="saveServices()"
+					class="px-5 py-2.5 bg-[#1b1e42] hover:bg-[#1b1e42] text-white rounded-lg font-medium text-sm transition-all shadow-sm">Save</button>
+
+			</div>
+		</div>
+	</div>
+
+	<script>
+		function openServicesModalFromOpportunity() {
+			openServicesModal();
+		}
+
+		function openServicesModal() {
+			var modal = document.getElementById('selectServicesModal');
+			if (modal) {
+				modal.classList.remove('hidden');
+				modal.style.display = 'block';
+				document.body.style.overflow = 'hidden';
+			}
+		}
+
+		function closeServicesModal() {
+			var modal = document.getElementById('selectServicesModal');
+			if (modal) {
+				modal.classList.add('hidden');
+				modal.style.display = 'none';
+				document.body.style.overflow = '';
+			}
+		}
+
+		function toggleServiceCategory(categoryId) {
+			const content = document.getElementById(categoryId + '-content');
+			const chevron = document.getElementById(categoryId + '-chevron');
+
+			if (content && chevron) {
+				content.classList.toggle('hidden');
+				if (content.classList.contains('hidden')) {
+					chevron.style.transform = 'rotate(0deg)';
+				} else {
+					chevron.style.transform = 'rotate(180deg)';
+				}
+			}
+		}
+
+		function saveServices() {
+			const checkboxes = document.querySelectorAll('#selectServicesModal input[type="checkbox"]:checked');
+			console.log('Selected services:', checkboxes.length);
+			closeServicesModal();
+		}
+
+		function viewSelectedServices() {
+			console.log('View selected services');
+		}
+
+		document.addEventListener('keydown', function (e) {
+			if (e.key === 'Escape') {
+				closeServicesModal();
+			}
+		});
+	</script>
+
+	<script>
+		(function () {
+			function equalizeNoteUpload() {
+				const ids = ['#newNoteBtn', '#uploadFilesBtn'];
+				const els = ids.map(id => document.querySelector(id)).filter(Boolean);
+				if (els.length < 2) return;
+				els.forEach(e => e.style.width = ''); // reset to natural size
+				let max = 0;
+				els.forEach(e => {
+					const w = e.getBoundingClientRect().width;
+					if (w > max) max = Math.ceil(w);
+				});
+				els.forEach(e => e.style.width = max + 'px');
+			}
+
+			let resizeTimer;
+			window.addEventListener('load', equalizeNoteUpload);
+			window.addEventListener('resize', function () { clearTimeout(resizeTimer); resizeTimer = setTimeout(equalizeNoteUpload, 120); });
+
+			// Observe header changes (labels/icons may change) and re-run
+			const headerActions = document.querySelector('.card-header-actions');
+			if (headerActions) {
+				const mo = new MutationObserver(equalizeNoteUpload);
+				mo.observe(headerActions, { childList: true, subtree: true, characterData: true });
+			}
+		})();
+	</script>
+	<script>
+		// Ensure back button always navigates to Opportunities tab; use history.back() if possible
+		document.addEventListener('DOMContentLoaded', function () {
+
+			// Cases caseId toggle for left chevron
+			document.addEventListener('DOMContentLoaded', function () {
+				const idToggle = document.getElementById('caseIdToggle');
+				const d = document.getElementById('caseDetails');
+				const idChev = document.getElementById('caseIdChevron');
+				if (idToggle && d) {
+					// initialize
+					const hidden = d.classList.contains('hidden');
+					idToggle.setAttribute('aria-expanded', hidden ? 'false' : 'true');
+					if (idChev) idChev.textContent = hidden ? 'expand_more' : 'expand_less';
+
+					idToggle.addEventListener('click', function (e) {
+						e.preventDefault();
+						const wasHidden = d.classList.contains('hidden');
+						if (wasHidden) d.classList.remove('hidden'); else d.classList.add('hidden');
+						const nowHidden = d.classList.contains('hidden');
+						idToggle.setAttribute('aria-expanded', nowHidden ? 'false' : 'true');
+						if (idChev) { idChev.textContent = nowHidden ? 'expand_more' : 'expand_less'; idChev.style.transform = nowHidden ? 'rotate(0deg)' : 'rotate(180deg)'; }
+					});
+				}
+			});
+
+			const back = document.getElementById('backToOpportunities');
+			if (!back) return;
+			back.addEventListener('click', function (e) {
+				// try history.back() to preserve navigation if user came from app
+				try { if (window.history && history.length > 1) { history.back(); e.preventDefault(); setTimeout(() => { /* no-op */ }, 100); return; } } catch (_) { }
+				// fallback: go directly to opportunities tab
+				e.preventDefault();
+				location.href = 'allclient.html#opportunities';
+			});
+		});
+	</script>
+
+	<script>
+		// Sidebar functionality
+		document.addEventListener('DOMContentLoaded', function () {
+			// Menu toggle functionality
+			const menuToggles = document.querySelectorAll('.menu-toggle');
+			menuToggles.forEach(toggle => {
+				toggle.addEventListener('click', function () {
+					const submenu = this.nextElementSibling;
+					const arrow = this.querySelector('.material-symbols-outlined:last-child');
+
+					if (submenu && submenu.classList.contains('submenu')) {
+						submenu.classList.toggle('hidden');
+						arrow.style.transform = submenu.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)';
+					}
+				});
+			});
+
+			// Sidebar collapse/expand functionality
+			const sidebar = document.getElementById('sidebar');
+			const sidebarToggle = document.getElementById('sidebarToggle');
+
+			if (sidebar && sidebarToggle) {
+				// initialize state
+				const isCollapsed = sidebar.classList.contains('collapsed');
+				const icon = sidebarToggle.querySelector('.material-symbols-outlined');
+				if (icon) icon.textContent = isCollapsed ? 'keyboard_double_arrow_right' : 'keyboard_double_arrow_left';
+				sidebarToggle.setAttribute('aria-expanded', String(!isCollapsed));
+
+				// click toggles persistent collapse
+				sidebarToggle.addEventListener('click', function (e) {
+					const collapsed = !sidebar.classList.contains('collapsed');
+					sidebar.classList.toggle('collapsed', collapsed);
+					sidebar.classList.remove('expanded-temp');
+					// update icon and aria
+					if (icon) icon.textContent = collapsed ? 'keyboard_double_arrow_right' : 'keyboard_double_arrow_left';
+					sidebarToggle.setAttribute('aria-expanded', String(!collapsed));
+
+					// when collapsed, hide any open submenus to reduce noise
+					if (collapsed) { document.querySelectorAll('#sidebar .submenu').forEach(s => s.classList.add('hidden')); }
+				});
+
+				// hover-to-expand behavior: temporarily expand when hovering the collapsed sidebar
+				sidebar.addEventListener('mouseenter', function () {
+					if (sidebar.classList.contains('collapsed')) { sidebar.classList.add('expanded-temp'); }
+				});
+				sidebar.addEventListener('mouseleave', function () {
+					if (sidebar.classList.contains('collapsed')) { sidebar.classList.remove('expanded-temp'); }
+				});
+
+				// add title attributes for icon-only mode (helps users discover labels when collapsed)
+				document.querySelectorAll('#sidebar .menu-toggle').forEach(btn => {
+					const labelSpan = btn.querySelector('.flex.items-center span:not(.material-symbols-outlined)');
+					const label = labelSpan ? labelSpan.textContent.trim() : btn.textContent.trim();
+					if (label) btn.setAttribute('title', label);
+				});
+				document.querySelectorAll('#sidebar nav a').forEach(a => {
+					const labelSpan = a.querySelector('span:not(.material-symbols-outlined)');
+					const label = labelSpan ? labelSpan.textContent.trim() : a.textContent.trim();
+					if (label && !a.getAttribute('title')) a.setAttribute('title', label);
+				});
+			}
+		});
+	</script>

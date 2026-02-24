@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resources by Role and Engagement Model</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        :root {
+            --gradient-bg: linear-gradient(135deg, #eef2ff 0%, #faf5ff 50%, #fce7f3 100%);
+        }
+
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background: var(--gradient-bg);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .main-card {
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            border: none;
+            border-radius: 1rem;
+            overflow: hidden;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+        }
+
+        .card-header-custom {
+            border-bottom: 1px solid rgba(226, 232, 240, 0.6);
+            background: linear-gradient(to right, #ffffff, rgba(248, 250, 252, 0.5));
+            padding: 1.5rem 2rem;
+        }
+
+        .icon-wrapper {
+            width: 48px;
+            height: 48px;
+            border-radius: 0.75rem;
+            background: linear-gradient(135deg, #7c3aed, #9333ea, #4f46e5);
+            box-shadow: 0 10px 15px -3px rgba(124, 58, 237, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .main-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(to right, #0f172a, #475569);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin: 0;
+        }
+
+        .chart-content {
+            padding: 2rem;
+            background: linear-gradient(to bottom, #ffffff, rgba(248, 250, 252, 0.3));
+        }
+
+        .sunburst-container {
+            position: relative;
+            width: 100%;
+            max-width: 450px;
+            margin: 0 auto 2rem;
+            aspect-ratio: 1;
+        }
+
+        .sunburst-svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .sunburst-segment {
+            transition: opacity 0.2s ease;
+            cursor: pointer;
+        }
+
+        .sunburst-segment:hover {
+            opacity: 0.8;
+        }
+
+        .legend-container {
+            display: inline-flex;
+            align-items: center;
+            gap: 2rem;
+            background: white;
+            border-radius: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            border: 1px solid #e2e8f0;
+            margin: 0 auto;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .legend-dot {
+            width: 0.75rem;
+            height: 0.75rem;
+            border-radius: 50%;
+        }
+
+        .legend-text {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #475569;
+        }
+
+        .stats-section {
+            border-top: 1px solid rgba(226, 232, 240, 0.6);
+            background: linear-gradient(to bottom, rgba(248, 250, 252, 0.5), #ffffff);
+            padding: 1.5rem 2rem;
+        }
+
+        .stat-card {
+            border-radius: 0.75rem;
+            padding: 1rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-card-practices {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.2);
+        }
+
+        .stat-card-brand {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            box-shadow: 0 10px 15px -3px rgba(245, 158, 11, 0.2);
+        }
+
+        .stat-card-sales {
+            background: linear-gradient(135deg, #10b981, #059669);
+            box-shadow: 0 10px 15px -3px rgba(16, 185, 129, 0.2);
+        }
+
+        .stat-card-marketing {
+            background: linear-gradient(135deg, #ec4899, #db2777);
+            box-shadow: 0 10px 15px -3px rgba(236, 72, 153, 0.2);
+        }
+
+        .stat-card-it {
+            background: linear-gradient(135deg, #a855f7, #9333ea);
+            box-shadow: 0 10px 15px -3px rgba(168, 85, 247, 0.2);
+        }
+
+        .stat-card-support {
+            background: linear-gradient(135deg, #14b8a6, #0d9488);
+            box-shadow: 0 10px 15px -3px rgba(20, 184, 166, 0.2);
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+            opacity: 0.9;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .stat-percentage {
+            font-size: 0.75rem;
+            font-weight: 500;
+            margin-top: 0.25rem;
+            opacity: 0.9;
+        }
+
+        .summary-card {
+            border-radius: 0.75rem;
+            padding: 1.25rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .summary-card-fulltime {
+            background: linear-gradient(135deg, #334155, #1e293b);
+            box-shadow: 0 10px 15px -3px rgba(51, 65, 85, 0.2);
+        }
+
+        .summary-card-freelancers {
+            background: linear-gradient(135deg, #0891b2, #0e7490);
+            box-shadow: 0 10px 15px -3px rgba(8, 145, 178, 0.2);
+        }
+
+        .summary-card-roleshare {
+            background: linear-gradient(135deg, #7c3aed, #6d28d9);
+            box-shadow: 0 10px 15px -3px rgba(124, 58, 237, 0.2);
+        }
+
+        .summary-icon-wrapper {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .summary-label {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .summary-value {
+            font-size: 1.875rem;
+            font-weight: 700;
+            color: white;
+            margin: 0.5rem 0;
+        }
+
+        .summary-description {
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.9);
+            margin: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="main-container">
+        <div class="card main-card">
+            <!-- Header -->
+            <div class="card-header-custom">
+                <div class="d-flex align-items-center justify-content-center gap-3 mb-4">
+                    <div class="icon-wrapper">
+                        <i data-lucide="users" class="text-white" style="width: 24px; height: 24px;"></i>
+                    </div>
+                    <h1 class="main-title">Resources by role and engagement model</h1>
+                </div>
+            </div>
+
+            <!-- Chart Content -->
+            <div class="chart-content">
+                <div class="sunburst-container">
+                    <svg class="sunburst-svg" viewBox="0 0 500 500" role="img"
+                        aria-label="Resources distribution sunburst chart">
+
+                        <!-- Outer ring - Departments (radius: 110 to 170) -->
+                        <!-- Practices (Blue) - 32% = 115.2 degrees, starts at -90 -->
+                        <path class="sunburst-segment"
+                            d="M 250,80 A 170,170 0 0,1 389.8,139.8 L 334.4,175.9 A 110,110 0 0,0 250,140 Z"
+                            fill="#3b82f6" />
+                        <text x="340" y="125" fill="#ffffff" font-size="18" font-weight="700"
+                            text-anchor="middle">32</text>
+
+                        <!-- Support (Teal) - 15% = 54 degrees -->
+                        <path class="sunburst-segment"
+                            d="M 389.8,139.8 A 170,170 0 0,1 420,250 L 360,250 A 110,110 0 0,0 334.4,175.9 Z"
+                            fill="#14b8a6" />
+                        <text x="385" y="210" fill="#ffffff" font-size="18" font-weight="700"
+                            text-anchor="middle">15</text>
+
+                        <!-- IT (Purple) - 16% = 57.6 degrees -->
+                        <path class="sunburst-segment"
+                            d="M 420,250 A 170,170 0 0,1 389.8,360.2 L 334.4,324.1 A 110,110 0 0,0 360,250 Z"
+                            fill="#a855f7" />
+                        <text x="375" y="305" fill="#ffffff" font-size="18" font-weight="700"
+                            text-anchor="middle">16</text>
+
+                        <!-- Marketing (Pink) - 12% = 43.2 degrees -->
+                        <path class="sunburst-segment"
+                            d="M 389.8,360.2 A 170,170 0 0,1 310.2,410.2 L 281.1,354.1 A 110,110 0 0,0 334.4,324.1 Z"
+                            fill="#ec4899" />
+                        <text x="340" y="380" fill="#ffffff" font-size="18" font-weight="700"
+                            text-anchor="middle">12</text>
+
+                        <!-- Sales (Green) - 8% = 28.8 degrees -->
+                        <path class="sunburst-segment"
+                            d="M 310.2,410.2 A 170,170 0 0,1 250,420 L 250,360 A 110,110 0 0,0 281.1,354.1 Z"
+                            fill="#10b981" />
+                        <text x="275" y="395" fill="#ffffff" font-size="18" font-weight="700"
+                            text-anchor="middle">8</text>
+
+                        <!-- Brand (Orange) - 17% = 61.2 degrees -->
+                        <path class="sunburst-segment"
+                            d="M 250,420 A 170,170 0 0,1 139.8,389.8 L 175.9,334.4 A 110,110 0 0,0 250,360 Z"
+                            fill="#f97316" />
+                        <text x="195" y="385" fill="#ffffff" font-size="18" font-weight="700"
+                            text-anchor="middle">17</text>
+
+                        <!-- Other (Yellow) - 20% = 72 degrees -->
+                        <path class="sunburst-segment"
+                            d="M 139.8,389.8 A 170,170 0 0,1 80,250 L 140,250 A 110,110 0 0,0 175.9,334.4 Z"
+                            fill="#fbbf24" />
+                        <text x="110" y="320" fill="#ffffff" font-size="18" font-weight="700"
+                            text-anchor="middle">20</text>
+
+                        <!-- Remaining to complete circle -->
+                        <path class="sunburst-segment"
+                            d="M 80,250 A 170,170 0 0,1 250,80 L 250,140 A 110,110 0 0,0 140,250 Z" fill="#fde047" />
+
+                        <!-- Inner ring - Engagement types (radius: 50 to 110) -->
+                        <!-- Practices section - subdivided into FT, FR, Role Share -->
+                        <path class="sunburst-segment"
+                            d="M 250,140 L 250,200 A 50,50 0 0,1 285.4,214.6 L 314.6,185.4 A 110,110 0 0,0 250,140 Z"
+                            fill="#60a5fa" />
+                        <path class="sunburst-segment"
+                            d="M 285.4,214.6 L 314.6,185.4 A 110,110 0 0,1 334.4,175.9 L 300,200 A 50,50 0 0,0 285.4,214.6 Z"
+                            fill="#93c5fd" />
+
+                        <!-- Support section -->
+                        <path class="sunburst-segment"
+                            d="M 300,200 L 334.4,175.9 A 110,110 0 0,1 360,250 L 300,250 A 50,50 0 0,0 300,200 Z"
+                            fill="#5eead4" />
+
+                        <!-- IT section -->
+                        <path class="sunburst-segment"
+                            d="M 300,250 L 360,250 A 110,110 0 0,1 334.4,324.1 L 285.4,285.4 A 50,50 0 0,0 300,250 Z"
+                            fill="#c084fc" />
+
+                        <!-- Marketing section -->
+                        <path class="sunburst-segment"
+                            d="M 285.4,285.4 L 334.4,324.1 A 110,110 0 0,1 281.1,354.1 L 250,300 A 50,50 0 0,0 285.4,285.4 Z"
+                            fill="#f9a8d4" />
+
+                        <!-- Sales section -->
+                        <path class="sunburst-segment" d="M 250,300 L 281.1,354.1 A 110,110 0 0,1 250,360 L 250,300 Z"
+                            fill="#6ee7b7" />
+
+                        <!-- Brand section -->
+                        <path class="sunburst-segment"
+                            d="M 250,300 L 250,360 A 110,110 0 0,1 175.9,334.4 L 214.6,285.4 A 50,50 0 0,0 250,300 Z"
+                            fill="#fb923c" />
+
+                        <!-- Other section -->
+                        <path class="sunburst-segment"
+                            d="M 214.6,285.4 L 175.9,334.4 A 110,110 0 0,1 140,250 L 200,250 A 50,50 0 0,0 214.6,285.4 Z"
+                            fill="#fcd34d" />
+
+                        <!-- Remaining inner -->
+                        <path class="sunburst-segment"
+                            d="M 200,250 L 140,250 A 110,110 0 0,1 250,140 L 250,200 A 50,50 0 0,0 200,250 Z"
+                            fill="#fef08a" />
+
+                        <!-- Center circle -->
+                        <circle cx="250" cy="250" r="85" fill="#ffffff" stroke="none" />
+                        <text x="250" y="235" fill="#64748b" font-size="14" font-weight="600"
+                            text-anchor="middle">Resources</text>
+                        <text x="250" y="275" fill="#0f172a" font-size="36" font-weight="800"
+                            text-anchor="middle">100</text>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Legend -->
+            <div class="text-center">
+                <div class="legend-container">
+                    <div class="legend-item">
+                        <div class="legend-dot" style="background: #2563EB;"></div>
+                        <span class="legend-text">FT: Full time</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-dot" style="background: #60A5FA;"></div>
+                        <span class="legend-text">FR: Freelancers</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-dot" style="background: #BFDBFE;"></div>
+                        <span class="legend-text">Role share</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats Section -->
+        <div class="stats-section">
+            <!-- Category Breakdown -->
+            <div class="row g-3 mb-4">
+                <div class="col-6 col-md-2">
+                    <div class="stat-card stat-card-practices text-white">
+                        <p class="stat-label">Practices</p>
+                        <p class="stat-value">32</p>
+                        <p class="stat-percentage">32%</p>
+                    </div>
+                </div>
+                <div class="col-6 col-md-2">
+                    <div class="stat-card stat-card-brand text-white">
+                        <p class="stat-label">Brand</p>
+                        <p class="stat-value">17</p>
+                        <p class="stat-percentage">17%</p>
+                    </div>
+                </div>
+                <div class="col-6 col-md-2">
+                    <div class="stat-card stat-card-sales text-white">
+                        <p class="stat-label">Sales</p>
+                        <p class="stat-value">8</p>
+                        <p class="stat-percentage">8%</p>
+                    </div>
+                </div>
+                <div class="col-6 col-md-2">
+                    <div class="stat-card stat-card-marketing text-white">
+                        <p class="stat-label">Marketing</p>
+                        <p class="stat-value">12</p>
+                        <p class="stat-percentage">12%</p>
+                    </div>
+                </div>
+                <div class="col-6 col-md-2">
+                    <div class="stat-card stat-card-it text-white">
+                        <p class="stat-label">IT</p>
+                        <p class="stat-value">16</p>
+                        <p class="stat-percentage">16%</p>
+                    </div>
+                </div>
+                <div class="col-6 col-md-2">
+                    <div class="stat-card stat-card-support text-white">
+                        <p class="stat-label">Support</p>
+                        <p class="stat-value">15</p>
+                        <p class="stat-percentage">15%</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Summary Cards -->
+            <div class="row g-4">
+                <div class="col-12 col-md-4">
+                    <div class="summary-card summary-card-fulltime text-white">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div>
+                                <p class="summary-label">Full Time</p>
+                                <p class="summary-value">64</p>
+                            </div>
+                            <div class="summary-icon-wrapper">
+                                <i data-lucide="users" class="text-white" style="width: 24px; height: 24px;"></i>
+                            </div>
+                        </div>
+                        <p class="summary-description">64% of total resources</p>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4">
+                    <div class="summary-card summary-card-freelancers text-white">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div>
+                                <p class="summary-label">Freelancers</p>
+                                <p class="summary-value">17</p>
+                            </div>
+                            <div class="summary-icon-wrapper">
+                                <i data-lucide="users" class="text-white" style="width: 24px; height: 24px;"></i>
+                            </div>
+                        </div>
+                        <p class="summary-description">17% of total resources</p>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4">
+                    <div class="summary-card summary-card-roleshare text-white">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div>
+                                <p class="summary-label">Role Share</p>
+                                <p class="summary-value">19</p>
+                            </div>
+                            <div class="summary-icon-wrapper">
+                                <i data-lucide="users" class="text-white" style="width: 24px; height: 24px;"></i>
+                            </div>
+                        </div>
+                        <p class="summary-description">19% of total resources</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Initialize Lucide Icons -->
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+
+</html>

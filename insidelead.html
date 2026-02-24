@@ -1,0 +1,3761 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Client — Nisal Amarasekara</title>
+	<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&amp;display=swap" rel="stylesheet" />
+	<link
+		href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+		rel="stylesheet" />
+	<style type="text/tailwindcss">
+		:root {
+			--cu-light-blue: #3eb2ed;
+			--cu-dark-blue: #1b1e42;
+			--cu-light-grey: #799495;
+			--cu-dark-grey: #4f6566;
+			--cu-white: #ffffff;
+			--cu-light-blue-20: #d8f0fb;
+			--cu-light-blue-40: #b2e0f8;
+			--cu-light-blue-60: #8bd1f4;
+			--cu-light-blue-80: #65c1f1;
+			--cu-dark-blue-20: #d1d2d9;
+			--cu-dark-blue-40: #a4a5b3;
+			--cu-dark-blue-60: #76788e;
+			--cu-dark-blue-80: #494b68;
+			--color-primary: var(--cu-dark-blue);
+			--color-primary-text: var(--cu-white);
+			--color-primary-active: var(--cu-light-blue);
+			--color-secondary: var(--cu-light-grey);
+			--color-background: var(--cu-white);
+			--color-sidebar: var(--cu-dark-blue);
+			--color-card: var(--cu-dark-grey);
+			--color-card-text: var(--cu-white);
+			--color-text-primary: #0f172a;
+			--color-text-secondary: #64748b;
+			--color-text-inverted: var(--cu-white);
+			--color-border: #e2e8f0;
+			--bg-main: #ffffff;
+			--card-bg: #f8f9fa;
+			--card-border: rgba(255, 255, 255, 0.3);
+		}
+	</style>
+	<script>
+		tailwind.config = {
+			theme: {
+				extend: {
+					colors: {
+						'cu-light-blue': 'var(--cu-light-blue)',
+						'cu-dark-blue': 'var(--cu-dark-blue)',
+						background: 'var(--color-background)',
+						sidebar: 'var(--color-sidebar)'
+					},
+					fontFamily: {
+						display: ['Roboto', 'sans-serif'],
+						sans: ['Poppins', 'sans-serif']
+					}
+				}
+			}
+		};
+	</script>
+
+	<!-- New Case Modal (styled like Add Department) -->
+	<div id="newCaseModal" class="hidden fixed inset-0 bg-black/40 z-50 items-center justify-center px-4">
+		<div class="max-w-3xl w-full bg-white rounded-2xl overflow-hidden shadow-xl mt-8">
+			<div class="bg-[#1b2747] text-white px-6 py-4 rounded-t-2xl">
+				<div class="text-left text-lg font-semibold">New Case</div>
+			</div>
+			<div class="p-6 grid grid-cols-1 gap-4">
+				<div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
+					<label class="text-sm text-slate-600">Contact Name</label>
+					<div class="md:col-span-2">
+						<input id="caseContact" class="mt-1 w-full border rounded px-3 py-2 text-sm"
+							placeholder="Search Contacts..." />
+					</div>
+				</div>
+				<div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
+					<label class="text-sm text-slate-600">Status <span class="text-red-500">*</span></label>
+					<div class="md:col-span-2">
+						<select id="caseStatus" class="mt-1 w-full border rounded px-3 py-2 text-sm">
+							<option>New</option>
+							<option>Open</option>
+							<option>Closed</option>
+						</select>
+					</div>
+				</div>
+				<div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
+					<label class="text-sm text-slate-600">Subject</label>
+					<div class="md:col-span-2">
+						<input id="caseSubject" class="mt-1 w-full border rounded px-3 py-2 text-sm" />
+					</div>
+				</div>
+				<div>
+					<label class="text-sm text-slate-600">Description</label>
+					<textarea id="caseDescription" class="mt-1 w-full border rounded px-3 py-2 text-sm h-36"></textarea>
+				</div>
+			</div>
+			<div class="flex items-center justify-end gap-3 px-6 py-4 border-t">
+				<button id="cancelNewCase"
+					class="w-12 h-12 rounded-full border border-cu-light-blue text-cu-light-blue bg-white flex items-center justify-center">
+					<span class="sr-only">Cancel</span>
+					<span class="material-symbols-outlined">close</span>
+				</button>
+				<button id="saveNewCase"
+					class="w-12 h-12 rounded-full bg-cu-light-blue text-white flex items-center justify-center">
+					<span class="sr-only">Save</span>
+					<span class="material-symbols-outlined">check</span>
+				</button>
+			</div>
+		</div>
+	</div>
+
+	<!-- New Note Modal (styled like Add Department) -->
+	<div id="newNoteModal" class="hidden fixed inset-0 bg-black/40 z-50 items-center justify-center px-4">
+		<div class="max-w-3xl w-full bg-white rounded-2xl overflow-hidden shadow-xl mt-8">
+			<div class="bg-[#1b2747] text-white px-6 py-4 rounded-t-2xl">
+				<div class="text-left text-lg font-semibold">New Note</div>
+			</div>
+			<div class="p-6 space-y-4">
+				<div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
+					<label class="text-sm text-slate-600">* Title</label>
+					<div class="md:col-span-2">
+						<input id="noteTitle" class="mt-1 w-full border rounded px-3 py-2 text-sm" />
+					</div>
+				</div>
+				<div class="flex items-center gap-6">
+					<label class="flex items-center gap-2"><input type="checkbox" id="notePrivate" /> Private</label>
+					<label class="flex items-center gap-2"><input type="checkbox" id="notePublic" /> Public</label>
+				</div>
+				<div>
+					<label class="text-sm text-slate-600">Body</label>
+					<textarea id="noteBody" class="mt-1 w-full border rounded px-3 py-2 text-sm h-36"></textarea>
+				</div>
+			</div>
+			<div class="flex items-center justify-end gap-3 px-6 py-4 border-t">
+				<button id="cancelNewNote"
+					class="w-12 h-12 rounded-full border-2 border-cu-light-blue text-cu-light-blue flex items-center justify-center hover:bg-cu-light-blue/10 transition">
+					<span class="material-symbols-outlined">close</span>
+				</button>
+				<button id="saveNewNote"
+					class="w-12 h-12 rounded-full bg-cu-light-blue text-white flex items-center justify-center shadow-lg hover:brightness-95 transition">
+					<span class="material-symbols-outlined">check</span>
+				</button>
+			</div>
+		</div>
+	</div>
+	<style>
+		.material-symbols-outlined {
+			font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24
+		}
+	</style>
+
+	<!-- Global card and icon styles: 2D shadows & darker icon backgrounds -->
+	<style>
+		/* Apply 2D shadow surface to main cards */
+		main .bg-white.rounded-2xl,
+		main .bg-white.rounded-md,
+		main .card {
+			box-shadow: 0 8px 18px rgba(2, 6, 23, 0.06);
+			transition: transform .28s ease, box-shadow .28s ease;
+		}
+
+		/* Hover lift for cards (subtle) */
+		main .bg-white.rounded-2xl:hover,
+		main .bg-white.rounded-md:hover,
+		main .card:hover {
+			transform: translateY(-6px);
+			box-shadow: 0 18px 40px rgba(2, 6, 23, 0.08);
+		}
+
+		/* Slightly darken rounded icon backgrounds for higher contrast */
+		main [class*="rounded-full"] {
+			filter: brightness(.86) saturate(1.06);
+			transition: filter .18s ease, transform .18s ease;
+		}
+
+		main [class*="rounded-full"]:hover {
+			transform: translateY(-2px);
+			filter: brightness(.9) saturate(1.1);
+		}
+	</style>
+
+	<!-- Colorful icon backgrounds (per color family) inside main cards only -->
+	<style>
+		main [class*="w-"][class*="rounded-full"][class*="text-sky-"] {
+			background: linear-gradient(135deg, #06b6d4, #3b82f6);
+			color: #fff !important;
+			box-shadow: 0 6px 18px rgba(59, 130, 246, 0.12);
+		}
+
+		main [class*="w-"][class*="rounded-full"][class*="text-rose-"] {
+			background: linear-gradient(135deg, #f43f5e, #fb7185);
+			color: #fff !important;
+			box-shadow: 0 6px 18px rgba(244, 63, 94, 0.12);
+		}
+
+		main [class*="w-"][class*="rounded-full"][class*="text-pink-"] {
+			background: linear-gradient(135deg, #ec4899, #f97316);
+			color: #fff !important;
+			box-shadow: 0 6px 18px rgba(236, 72, 153, 0.12);
+		}
+
+		main [class*="w-"][class*="rounded-full"][class*="text-violet-"] {
+			background: linear-gradient(135deg, #7c3aed, #a78bfa);
+			color: #fff !important;
+			box-shadow: 0 6px 18px rgba(124, 58, 237, 0.12);
+		}
+
+		main [class*="w-"][class*="rounded-full"][class*="text-amber-"] {
+			background: linear-gradient(135deg, #f59e0b, #fbbf24);
+			color: #fff !important;
+			box-shadow: 0 6px 18px rgba(245, 158, 11, 0.12);
+		}
+
+		main [class*="w-"][class*="rounded-full"][class*="text-cyan-"] {
+			background: linear-gradient(135deg, #06b6d4, #14b8a6);
+			color: #fff !important;
+			box-shadow: 0 6px 18px rgba(6, 182, 212, 0.12);
+		}
+
+		main [class*="w-"][class*="rounded-full"][class*="text-emerald-"] {
+			background: linear-gradient(135deg, #10b981, #34d399);
+			color: #fff !important;
+			box-shadow: 0 6px 18px rgba(16, 185, 129, 0.12);
+		}
+
+		main [class*="w-"][class*="rounded-full"][class*="text-green-"] {
+			background: linear-gradient(135deg, #16a34a, #4ade80);
+			color: #fff !important;
+			box-shadow: 0 6px 18px rgba(22, 163, 74, 0.12);
+		}
+
+		/* fallback for neutral (slate) */
+		main [class*="w-"][class*="rounded-full"][class*="text-slate-"] {
+			background: linear-gradient(135deg, #64748b, #0ea5a4);
+			color: #fff !important;
+			box-shadow: 0 6px 18px rgba(16, 185, 129, 0.06);
+		}
+
+		/* ensure inner icon keeps white color */
+		main [class*="w-"][class*="rounded-full"] .material-symbols-outlined {
+			color: inherit
+		}
+
+		/* Normalize card paddings and grid gaps for consistent layout (tighter) */
+		/* desktop: cards ~1rem, gaps 0.75rem; mobile: cards 0.5rem, gaps 0.35rem */
+		main .bg-white.rounded-2xl,
+		main .bg-white.rounded-md,
+		main .card {
+			padding: 1rem !important;
+		}
+
+		main .grid {
+			gap: 0.75rem !important;
+		}
+
+		@media (max-width: 640px) {
+
+			main .bg-white.rounded-2xl,
+			main .bg-white.rounded-md,
+			main .card {
+				padding: 0.5rem !important;
+			}
+
+			main .grid {
+				gap: 0.35rem !important;
+			}
+		}
+	</style>
+	</style>
+
+	<!-- Compact inline action bar styles -->
+	<style>
+		/* Compact inline action bar */
+		.inline-action-bar {
+			display: flex;
+			gap: .6rem;
+			align-items: center;
+			flex-wrap: nowrap;
+			justify-content: space-between;
+			margin: 0;
+			overflow: hidden
+		}
+
+		.inline-action-bar .action-btn {
+			flex: 1 1 0;
+			min-width: 0;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			gap: .45rem;
+			padding: .26rem .5rem;
+			border-radius: .6rem;
+			border: 1px solid rgba(2, 6, 23, 0.06);
+			background: #fff;
+			box-shadow: 0 6px 14px rgba(2, 6, 23, 0.04);
+			font-size: 12px;
+			overflow: hidden
+		}
+
+		.inline-action-bar .action-btn .icon {
+			width: 1.2rem;
+			height: 1.2rem;
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			border-radius: 999px;
+			font-size: 13px;
+			flex: 0 0 auto
+		}
+
+		.inline-action-bar .action-btn .label {
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			display: inline-block
+		}
+
+		@media (max-width:640px) {
+			.inline-action-bar {
+				gap: .4rem
+			}
+
+			.inline-action-bar .action-btn {
+				padding: .22rem .4rem;
+				font-size: 11px
+			}
+
+			.inline-action-bar .action-btn .icon {
+				width: 1.05rem;
+				height: 1.05rem;
+				font-size: 12px
+			}
+		}
+
+		/* Certification legend: small colored dots + compact labels */
+		.cert-legend {
+			display: flex;
+			gap: 0.85rem;
+			align-items: center;
+			margin-top: 0.25rem
+		}
+
+		.cert-legend .item {
+			display: inline-flex;
+			align-items: center;
+			gap: 0.45rem;
+			color: var(--color-text-secondary);
+			font-size: 0.75rem
+		}
+
+		.cert-legend .dot {
+			width: 6px;
+			height: 6px;
+			border-radius: 999px;
+			display: inline-block
+		}
+
+		@media (max-width:480px) {
+			.cert-legend {
+				gap: 0.6rem
+			}
+
+			.cert-legend .item {
+				font-size: 0.7rem
+			}
+		}
+
+		/* Certification card scoped styles */
+		.cert-card .cert-category {
+			display: inline-block;
+			background: #eff6ff;
+			color: #1e3a8a;
+			padding: 0.18rem 0.5rem;
+			border-radius: 6px;
+			font-weight: 600;
+			font-size: 0.78rem
+		}
+
+		.cert-card .cert-badges {
+			display: flex;
+			gap: 0.5rem;
+			flex-wrap: wrap;
+			margin-top: 0.5rem
+		}
+
+		.cert-card .cert-badge {
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			padding: 0.34rem 0.7rem;
+			border-radius: 999px;
+			font-size: 0.82rem;
+			font-weight: 600;
+			box-shadow: 0 6px 14px rgba(2, 6, 23, 0.04)
+		}
+
+		.cert-card .cert-badge.positive {
+			background: #10b981;
+			color: #fff
+		}
+
+		.cert-card .cert-badge.potential {
+			background: #f59e0b;
+			color: #1f2937
+		}
+
+		.cert-card .cert-badge.neutral {
+			background: #eef2ff;
+			color: #1e3a8a
+		}
+
+		@media (max-width:480px) {
+			.cert-card .cert-badge {
+				font-size: 0.74rem;
+				padding: 0.28rem 0.6rem
+			}
+		}
+
+		/* Card header inline layout (icon + title + count + actions) */
+		.card-header-inline {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			gap: 1rem;
+			flex-wrap: nowrap
+		}
+
+		.card-header-left {
+			display: flex;
+			align-items: center;
+			gap: 0.85rem;
+			min-width: 0
+		}
+
+		.card-header-left .title-wrap {
+			display: flex;
+			align-items: baseline;
+			gap: 0.5rem;
+			min-width: 0
+		}
+
+		.card-header-actions {
+			display: flex;
+			align-items: center;
+			gap: 0.75rem;
+			flex-wrap: nowrap
+		}
+
+		.card-header-actions .btn {
+			flex: 0 0 auto
+		}
+
+		.card-header-inline .text-xs {
+			margin-left: 0
+		}
+
+		/* Make primary action pills identical width/height for other primary buttons.
+   Notes/Upload will auto-size and be equalized via JS below. */
+		#newCaseBtn,
+		#newOpportunityBtn,
+		#newContactBtn {
+			min-width: 152px;
+			/* consistent width */
+			padding: 0.45rem 0.9rem;
+			/* slightly larger clickable area while preserving pill look */
+			box-shadow: 0 6px 14px rgba(2, 6, 23, 0.04);
+		}
+
+		@media (max-width:640px) {
+
+			#newCaseBtn,
+			#newOpportunityBtn,
+			#newContactBtn {
+				min-width: 120px;
+				padding: 0.36rem 0.7rem
+			}
+		}
+
+		/* Arrow-style Process Stepper (updated to Image 2 style) */
+		.arrow-step {
+			position: relative;
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			padding: 0.65rem 1.25rem 0.65rem 2rem;
+			background: #94a3b8;
+			/* muted slate */
+			color: #fff;
+			font-size: 0.875rem;
+			font-weight: 600;
+			min-height: 48px;
+			flex: 1 1 0;
+			min-width: 0;
+			clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 50%, calc(100% - 18px) 100%, 0 100%, 18px 50%);
+			transition: all 0.22s ease;
+			cursor: pointer;
+			margin-right: 10px;
+			/* white gap between arrows to emulate separator */
+		}
+
+		.arrow-step:first-child {
+			clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 50%, calc(100% - 18px) 100%, 0 100%);
+			padding-left: 1.5rem;
+			margin-left: 0;
+		}
+
+		.arrow-step:last-child {
+			clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 18px 50%);
+			padding-right: 1.25rem;
+			margin-right: 0;
+		}
+
+		/* per-step overrides (keep defaults but available for future customization) */
+		.arrow-step-1 {}
+
+		.arrow-step-2 {}
+
+		.arrow-step-3 {}
+
+		.arrow-step-4 {}
+
+		.arrow-step-5 {}
+
+		.arrow-step.active {
+			background: #FBB13C !important;
+			/* orange highlight for active */
+			transform: translateY(-2px) scale(1.02);
+			box-shadow: 0 6px 18px rgba(27, 39, 71, 0.08);
+		}
+
+		/* Slightly reduce visual weight of inactive steps */
+		.arrow-step:not(.active) {
+			opacity: 0.95;
+		}
+
+		/* Ensure the parent background shows between clipped triangles (the white separators) */
+		.bg-white.rounded-2xl.p-6.border.shadow-sm {
+			background: #fff;
+		}
+
+		.arrow-step.completed {
+			background: #31E981 !important;
+			box-shadow: 0 2px 8px rgba(49, 233, 129, 0.2);
+		}
+
+		/* Disqualified state (red) for steps */
+		.arrow-step.disqualified {
+			background: #dc2626 !important;
+			/* red */
+			color: #fff !important;
+			box-shadow: 0 6px 18px rgba(220, 38, 38, 0.12);
+		}
+
+		/* Circular Status Indicators (Image 2 Style) */
+		.progress-step-circular {
+			transition: all 0.3s ease;
+		}
+
+		.step-circle-icon {
+			transition: all 0.3s ease;
+		}
+
+		.progress-step-circular.active .step-circle-icon {
+			background: #1b2747;
+			color: white;
+			border-color: #1b2747;
+			box-shadow: 0 4px 12px rgba(27, 39, 71, 0.3);
+		}
+
+		.progress-step-circular.completed .step-circle-icon {
+			background: #10b981;
+			color: white;
+			border-color: #10b981;
+		}
+
+		.progress-step-circular.completed .step-label-circle {
+			color: #10b981;
+			font-weight: 600;
+		}
+
+		@media (max-width: 640px) {
+			.arrow-step {
+				padding: 0.5rem 1rem 0.5rem 2rem;
+				font-size: 0.7rem;
+				min-height: 40px;
+			}
+
+			.arrow-step:first-child {
+				padding-left: 0.75rem;
+			}
+
+			.arrow-step span {
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
+			}
+
+			.progress-step-circular {
+				flex-basis: 100%;
+				margin-bottom: 0.5rem;
+			}
+		}
+	</style>
+</head>
+
+<body class="font-display bg-background text-text-primary">
+	<div class="flex h-screen overflow-hidden">
+		<aside id="sidebar"
+			class="w-64 flex-shrink-0 bg-sidebar text-text-inverted flex flex-col transition-all duration-300">
+			<div class="h-16 flex items-center justify-between px-6 border-b border-cu-dark-blue-80 flex-shrink-0">
+				<div class="flex items-center gap-2">
+					<span class="text-2xl font-bold tracking-wider text-white">SOE</span>
+					<div class="w-8 h-1 bg-gradient-to-r from-cu-light-blue to-cu-light-blue-60 rounded"></div>
+				</div>
+				<!-- toggle moved outside aside to keep it visible when sidebar is collapsed -->
+			</div>
+			<nav class="flex-1 overflow-y-auto p-4 space-y-1">
+				<!-- Collapsible sidebar styles (icons-only mode, hover-expand, persistent toggle) -->
+				<style>
+					/* collapsed sidebar: keep a small width and show icons only */
+					#sidebar.collapsed {
+						width: 64px !important;
+						min-width: 64px
+					}
+
+					#sidebar.collapsed .menu-toggle {
+						padding-left: 0.5rem;
+						padding-right: 0.5rem
+					}
+
+					#sidebar.collapsed .menu-toggle .flex.items-center>span:last-child {
+						display: none
+					}
+
+					#sidebar.collapsed nav a>span:last-child {
+						display: none
+					}
+
+					#sidebar.collapsed .submenu {
+						display: none !important
+					}
+
+					#sidebar .sidebar-header {
+						position: relative
+					}
+
+					/* keep toggle visible as a pill overlapping the edge when collapsed */
+					#sidebarToggle.sidebar-fixed,
+					#sidebarToggle.sidebar-fixed:hover {
+						position: fixed;
+						top: 10px;
+						z-index: 60;
+						display: flex;
+						align-items: center;
+						justify-content: center;
+						width: 36px;
+						height: 36px;
+						border-radius: 999px;
+						background: rgba(255, 255, 255, 0.06);
+						box-shadow: 0 6px 18px rgba(2, 6, 23, 0.12);
+						border: 0
+					}
+
+					#sidebarToggle.sidebar-fixed:focus {
+						outline: 2px solid rgba(255, 255, 255, 0.12)
+					}
+
+					/* temporary expanded state on hover */
+					#sidebar.expanded-temp {
+						width: 16rem !important
+					}
+
+					#sidebar.expanded-temp .menu-toggle .flex.items-center>span:last-child {
+						display: inline-block
+					}
+
+					#sidebar.expanded-temp nav a>span:last-child {
+						display: inline-block
+					}
+
+					/* slightly larger hover preview width for quick discoverability */
+					#sidebar.collapsed:hover {
+						width: 14rem !important
+					}
+
+					/* subtle tooltip-like labels when collapsed on hover (accessibility) */
+					#sidebar.collapsed a[title] {
+						position: relative
+					}
+
+					#sidebar.collapsed a[title]:hover::after {
+						content: attr(title);
+						position: absolute;
+						left: 72px;
+						top: 50%;
+						transform: translateY(-50%);
+						background: #111827;
+						color: #fff;
+						padding: 6px 10px;
+						border-radius: 6px;
+						white-space: nowrap;
+						font-size: 12px;
+						box-shadow: 0 6px 18px rgba(2, 6, 23, 0.12)
+					}
+
+					/* tooltip adjustment when we changed collapsed width */
+					#sidebar.collapsed a[title]:hover::after {
+						left: 64px
+					}
+				</style>
+				<!-- Dashboard -->
+				<div>
+					<button
+						class="menu-toggle flex items-center justify-between p-3 rounded-lg text-slate-300 hover:bg-cu-dark-blue-80 w-full text-left">
+						<div class="flex items-center gap-3">
+							<span class="material-symbols-outlined">dashboard</span>
+							<span class="font-medium text-sm">Dashboard</span>
+						</div>
+						<span
+							class="material-symbols-outlined text-lg transform transition-transform">expand_more</span>
+					</button>
+					<div class="submenu hidden ml-6 mt-1 space-y-1">
+						<a href="dashbord.html"
+							class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-400 hover:bg-cu-dark-blue-80 hover:text-white">
+							<span class="material-symbols-outlined text-base">arrow_right</span>
+							<span>My Dashboard</span>
+						</a>
+					</div>
+				</div>
+
+				<!-- Task -->
+				<div>
+					<button
+						class="menu-toggle flex items-center justify-between p-3 rounded-lg text-slate-300 hover:bg-cu-dark-blue-80 w-full text-left">
+						<div class="flex items-center gap-3">
+							<span class="material-symbols-outlined">task_alt</span>
+							<span class="font-medium text-sm">Task</span>
+						</div>
+						<span
+							class="material-symbols-outlined text-lg transform transition-transform">expand_more</span>
+					</button>
+					<div class="submenu hidden ml-6 mt-1 space-y-1">
+						<a href="#"
+							class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-400 hover:bg-cu-dark-blue-80 hover:text-white">
+							<span class="material-symbols-outlined text-base">arrow_right</span>
+							<span>My Tasks</span>
+						</a>
+						<a href="#"
+							class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-400 hover:bg-cu-dark-blue-80 hover:text-white">
+							<span class="material-symbols-outlined text-base">arrow_right</span>
+							<span>Team Tasks</span>
+						</a>
+						<a href="#"
+							class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-400 hover:bg-cu-dark-blue-80 hover:text-white">
+							<span class="material-symbols-outlined text-base">arrow_right</span>
+							<span>All Tasks</span>
+						</a>
+					</div>
+				</div>
+
+				<!-- CRM -->
+				<div>
+					<button
+						class="menu-toggle flex items-center justify-between p-3 rounded-lg text-slate-300 hover:bg-cu-dark-blue-80 w-full text-left">
+						<div class="flex items-center gap-3">
+							<span class="material-symbols-outlined">trending_up</span>
+							<span class="font-medium text-sm">CRM</span>
+						</div>
+						<span
+							class="material-symbols-outlined text-lg transform transition-transform">expand_more</span>
+					</button>
+					<div class="submenu hidden ml-6 mt-1 space-y-1">
+						<a href="allclient.html#home"
+							class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-400 hover:bg-cu-dark-blue-80 hover:text-white">
+							<span class="material-symbols-outlined text-base">arrow_right</span>
+							<span>Accounts</span>
+						</a>
+						<!-- <a href="code.html" class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-400 hover:bg-cu-dark-blue-80 hover:text-white">
+	            <span class="material-symbols-outlined text-base">arrow_right</span>
+				<span>CRM</span>
+	          </a> -->
+
+						<a href="#"
+							class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-400 hover:bg-cu-dark-blue-80 hover:text-white">
+							<span class="material-symbols-outlined text-base">arrow_right</span>
+							<span>Cer. Sales Progress</span>
+						</a>
+						<a href="#"
+							class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-400 hover:bg-cu-dark-blue-80 hover:text-white">
+							<span class="material-symbols-outlined text-base">arrow_right</span>
+							<span>Sales Report</span>
+						</a>
+					</div>
+				</div>
+
+				<!-- COEs / Regional Team / MarComs -->
+
+				<div>
+					<button
+						class="menu-toggle flex items-center justify-between p-3 rounded-lg text-slate-300 hover:bg-cu-dark-blue-80 w-full text-left">
+						<div class="flex items-center gap-3">
+							<span class="material-symbols-outlined">public</span>
+							<span class="font-medium text-sm">Regional & Global</span>
+						</div>
+						<span
+							class="material-symbols-outlined text-lg transform transition-transform">expand_more</span>
+					</button>
+					<div class="submenu hidden ml-6 mt-1 space-y-1">
+						<a href="COEdashboard.html"
+							class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-400 hover:bg-cu-dark-blue-80 hover:text-white">
+							<span class="material-symbols-outlined text-base">arrow_right</span>
+							<span>COEs</span>
+						</a>
+						<a href="#"
+							class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-400 hover:bg-cu-dark-blue-80 hover:text-white">
+							<span class="material-symbols-outlined text-base">arrow_right</span>
+							<span>Regional Team</span>
+						</a>
+						<a href="#"
+							class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-400 hover:bg-cu-dark-blue-80 hover:text-white">
+							<span class="material-symbols-outlined text-base">arrow_right</span>
+							<span>MarComs</span>
+						</a>
+					</div>
+				</div>
+
+				<!-- HR Manager -->
+				<div>
+					<button
+						class="menu-toggle flex items-center justify-between p-3 rounded-lg text-slate-300 hover:bg-cu-dark-blue-80 w-full text-left">
+						<div class="flex items-center gap-3">
+							<span class="material-symbols-outlined">groups</span>
+							<span class="font-medium text-sm">HR Manager</span>
+						</div>
+						<span
+							class="material-symbols-outlined text-lg transform transition-transform">expand_more</span>
+					</button>
+					<div class="submenu hidden ml-6 mt-1 space-y-1">
+						<a href="#"
+							class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-400 hover:bg-cu-dark-blue-80 hover:text-white">
+							<span class="material-symbols-outlined text-base">arrow_right</span>
+							<span>Employee Management</span>
+						</a>
+						<a href="#"
+							class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-400 hover:bg-cu-dark-blue-80 hover:text-white">
+							<span class="material-symbols-outlined text-base">arrow_right</span>
+							<span>Leave Management</span>
+						</a>
+					</div>
+				</div>
+
+				<!-- Department Manager -->
+				<a class="flex items-center gap-3 p-3 rounded-lg text-sm font-medium text-slate-300 hover:bg-cu-dark-blue-80"
+					href="#">
+					<span class="material-symbols-outlined">corporate_fare</span>Department Manager</a>
+
+				<!-- User Manager -->
+				<div>
+					<button
+						class="menu-toggle flex items-center justify-between p-3 rounded-lg text-slate-300 hover:bg-cu-dark-blue-80 w-full text-left">
+						<div class="flex items-center gap-3">
+							<span class="material-symbols-outlined">manage_accounts</span>
+							<span class="font-medium text-sm">User Manager</span>
+						</div>
+						<span
+							class="material-symbols-outlined text-lg transform transition-transform">expand_more</span>
+					</button>
+					<div class="submenu hidden ml-6 mt-1 space-y-1">
+						<a href="#"
+							class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-400 hover:bg-cu-dark-blue-80 hover:text-white">
+							<span class="material-symbols-outlined text-base">arrow_right</span>
+							<span>Add User</span>
+						</a>
+						<a href="#"
+							class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-400 hover:bg-cu-dark-blue-80 hover:text-white">
+							<span class="material-symbols-outlined text-base">arrow_right</span>
+							<span>Manage Users</span>
+						</a>
+					</div>
+				</div>
+
+				<!-- Working Days -->
+				<div>
+					<button
+						class="menu-toggle flex items-center justify-between p-3 rounded-lg text-slate-300 hover:bg-cu-dark-blue-80 w-full text-left">
+						<div class="flex items-center gap-3">
+							<span class="material-symbols-outlined">calendar_today</span>
+							<span class="font-medium text-sm">Working Days</span>
+						</div>
+						<span
+							class="material-symbols-outlined text-lg transform transition-transform">expand_more</span>
+					</button>
+					<div class="submenu hidden ml-6 mt-1 space-y-1">
+						<a href="#"
+							class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-400 hover:bg-cu-dark-blue-80 hover:text-white">
+							<span class="material-symbols-outlined text-base">arrow_right</span>
+							<span>Calendar</span>
+						</a>
+						<a href="#"
+							class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-400 hover:bg-cu-dark-blue-80 hover:text-white">
+							<span class="material-symbols-outlined text-base">arrow_right</span>
+							<span>Holidays</span>
+						</a>
+					</div>
+				</div>
+
+				<!-- Settings -->
+				<div>
+					<button
+						class="menu-toggle flex items-center justify-between p-3 rounded-lg text-slate-300 hover:bg-cu-dark-blue-80 w-full text-left">
+						<div class="flex items-center gap-3">
+							<span class="material-symbols-outlined">settings</span>
+							<span class="font-medium text-sm">Settings</span>
+						</div>
+						<span
+							class="material-symbols-outlined text-lg transform transition-transform">expand_more</span>
+					</button>
+					<div class="submenu hidden ml-6 mt-1 space-y-1">
+						<a href="#"
+							class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-400 hover:bg-cu-dark-blue-80 hover:text-white">
+							<span class="material-symbols-outlined text-base">arrow_right</span>
+							<span>KPI Manager</span>
+						</a>
+							<a href="configuration.html"
+							class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-400 hover:bg-cu-dark-blue-80 hover:text-white">
+							<span class="material-symbols-outlined text-base">arrow_right</span>
+							<span>Configuration</span>
+						</a>
+					</div>
+				</div>
+			</nav>
+		</aside>
+
+		<!-- Fixed toggle placed outside the sidebar so it remains visible even when the sidebar is collapsed -->
+		<button id="sidebarToggle"
+			class="sidebar-fixed p-1 rounded-full text-slate-400 hover:bg-cu-dark-blue-80 transition-colors"
+			aria-label="Toggle sidebar" title="Toggle sidebar">
+			<span class="material-symbols-outlined text-xl">keyboard_double_arrow_left</span>
+		</button>
+		<div class="flex-1 flex flex-col bg-bg-main">
+			<header
+				class="flex-shrink-0 bg-[#1b1e42] h-16 flex items-center justify-end px-6 border-b border-slate-200">
+				<div class="flex items-center space-x-4">
+					<button class="p-2 rounded-full text-slate-300 hover:bg-cu-dark-blue-80 relative">
+						<span class="material-symbols-outlined text-yellow-500">notifications</span>
+						<span class="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full"></span>
+					</button>
+					<div class="flex items-center space-x-3">
+						<img alt="User avatar" class="w-10 h-10 rounded-full object-cover"
+							src="https://lh3.googleusercontent.com/aida-public/AB6AXuBR8s_sRkD2uqrpzMyUfuQswvEJ6g6HmJbNWRFuxVQrSEUTQBKUCb8FrE4u1rNmdesirGmB0fSnXH0MsEurf7hmlhlkPED1n-AkkdeAQMAWAgU5wxVJTfUU6Pwf-Y8nQ1wskiHsPmWaCNPcrpBsa-iA4HqrI_cLqR3nfa1DafNqND7EBfLy1X75EULCpsRWFVLpztjMjkn6ufe2il3wB9_JOZuva2njUcWM0nJhERkc8yDkGPPP0eoFr5pSCqKx45WY1mn5_zVR" />
+						<div>
+							<div class="font-semibold text-sm text-white">Nisal Amarasekara</div>
+							<div class="text-xs text-slate-400">Sri Lanka</div>
+						</div>
+					</div>
+					<button class="p-2 rounded-full text-slate-300 hover:bg-cu-dark-blue-80">
+						<span class="material-symbols-outlined">lock</span>
+					</button>
+					<button class="p-2 rounded-full text-slate-300 hover:bg-cu-dark-blue-80">
+						<span class="material-symbols-outlined">expand_more</span>
+					</button>
+				</div>
+			</header>
+
+			<main class="flex-1 p-6 lg:p-8 overflow-y-auto">
+
+				<!-- Top hero: account-style header -->
+				<section class="mb-6">
+					<div class="relative">
+						<!-- Back button: navigates to allclient.html (#leads) -->
+						<a href="allclient.html#leads"
+							class="inline-flex items-center justify-center absolute left-6 top-6 bg-white/95 w-10 h-10 rounded-full shadow-sm hover:shadow-md transition z-10"
+							aria-label="Back to clients">
+							<span class="material-symbols-outlined">arrow_back</span>
+						</a>
+
+						<!-- Edit and Save buttons - top right -->
+						<div class="absolute right-6 top-6 z-10 flex items-center gap-3">
+							<button id="saveHeaderBtn"
+								class="px-4 py-2 rounded-md bg-cu-light-blue text-white text-sm shadow hover:brightness-95 transition flex items-center gap-2">
+								<span class="material-symbols-outlined text-lg">save</span>
+								Save
+							</button>
+						</div>
+
+						<div
+							class="bg-gradient-to-r from-slate-50 via-white to-slate-50 rounded-3xl p-6 md:p-8 border border-transparent shadow-sm">
+							<div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+								<div class="flex flex-col items-center lg:flex-row lg:items-center gap-4">
+									<div
+										class="w-20 h-20 rounded-md overflow-hidden bg-white border flex items-center justify-center shadow-sm">
+										<img id="companyLogo" alt="Company logo" class="w-full h-full object-cover"
+											src="https://lh3.googleusercontent.com/aida-public/AB6AXuBR8s_sRkD2uqrpzMyUfuQswvEJ6g6HmJbNWRFuxVQrSEUTQBKUCb8FrE4u1rNmdesirGmB0fSnXH0MsEurf7hmlhlkPED1n-AkkdeAQMAWAgU5wxVJTfUU6Pwf-Y8nQ1wskiHsPmWaCNPcrpBsa-iA4HqrI_cLqR3nfa1DafNqND7EBfLy1X75EULCpsRWFVLpztjMjkn6ufe2il3wB9_JOZuva2njUcWM0nJhERkc8yDkGPPP0eoFr5pSCqKx45WY1mn5_zVR" />
+									</div>
+									<div class="flex flex-col items-center lg:items-start text-center lg:text-left">
+										<span
+											class="inline-block py-1 text-xs font-semibold text-cu-dark-blue">LEAD</span>
+										<div class="mt-2">
+											<div
+												class="mt-3 md:mt-2 text-2xl md:text-4xl font-extrabold tracking-tight text-slate-900">
+												Mr. Nisal Amarasekara</div>
+											<div class="text-sm text-slate-500 mt-2">MERIDIAN INDUSTRIES LIMITED</div>
+
+											<div
+												class="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-4 gap-x-6 text-sm text-slate-600 items-start">
+
+												<div>
+													<div class="text-xs text-slate-400">Title/Job Role</div>
+													<div class="font-medium text-slate-800">Manager</div>
+												</div>
+												<div>
+													<div class="text-xs text-slate-400">Email</div>
+													<div><a href="#"
+															class="text-slate-800 font-medium">nisal@gmail.com</a></div>
+												</div>
+												<div>
+													<div class="text-xs text-slate-400">Account Owner</div>
+													<div class="font-medium text-slate-800">
+														<a href="#" class="text-slate-800">Nisal Amarasekara</a>
+													</div>
+												</div>
+												<div>
+													<div class="text-xs text-slate-400">Phone</div>
+													<div class="font-medium text-slate-800 whitespace-nowrap">+94 1234
+														56789</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+				</section>
+
+				<!-- Tabs: Home / Details -->
+				<section class="mb-6">
+					<div class="bg-white rounded-2xl p-3 border">
+						<nav class="flex items-center gap-4">
+							<button id="tabHome"
+								class="px-4 py-2 text-sm font-medium text-cu-light-blue border-b-2 border-cu-light-blue">Home</button>
+							<button id="tabDetails" class="px-4 py-2 text-sm text-slate-600">Details</button>
+
+						</nav>
+						<div id="tabContent" class="mt-4">
+							<div id="paneHome" class="">
+								<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+									<!-- Shared informational alert spanning both cards -->
+
+
+									<!-- Interactive multi-step status bar -->
+									<div class="lg:col-span-2 mb-2">
+										<!-- Arrow-style Process Stepper (Image 1 Style) -->
+										<div class="bg-white rounded-2xl p-6 border shadow-sm">
+											<div class="flex items-center justify-between gap-4 mb-6">
+												<div class="flex items-center gap-0 flex-1">
+													<div
+														class="arrow-step arrow-step-1 active flex items-center cursor-pointer">
+														<span class="text-xs">New</span>
+													</div>
+													<div
+														class="arrow-step arrow-step-2 flex items-center cursor-pointer">
+														<span class="text-xs">Verify</span>
+													</div>
+													<div
+														class="arrow-step arrow-step-3 flex items-center cursor-pointer">
+														<span class="text-xs">Contacted / WIP</span>
+													</div>
+													<div
+														class="arrow-step arrow-step-4 flex items-center cursor-pointer">
+														<span class="text-xs">Nurturing</span>
+													</div>
+													<!-- inserted: Qualify step after Nurturing -->
+													<div
+														class="arrow-step arrow-step-5 flex items-center cursor-pointer">
+														<span class="text-xs">Qualify</span>
+													</div>
+													<div
+														class="arrow-step arrow-step-6 flex items-center cursor-pointer">
+														<span class="text-xs">Convert</span>
+													</div>
+												</div>
+
+												<!-- Action button -->
+												<!-- Mark Status as Complete button removed -->
+											</div>
+										</div>
+
+										<!-- Inline stage guidance + actions combined into one parent card -->
+										<div class="mt-4 bg-white rounded-2xl p-6 border shadow-sm stage-card">
+											<div class="grid grid-cols-1 lg:grid-cols-3 gap-4 items-start">
+												<div class="lg:col-span-2" id="stageGuidancePanel">
+													<div class="flex items-start gap-4">
+														<div id="sgIcon"
+															class="w-14 h-14 rounded-full bg-sky-500 text-white flex items-center justify-center">
+															<span
+																class="material-symbols-outlined text-white text-2xl">lightbulb</span>
+														</div>
+														<div class="flex-1">
+															<div id="sgStage" class="text-xl font-bold">Stage: Verify
+															</div>
+															<div class="mt-2">
+																<div class="text-sm font-semibold text-slate-800">Stage
+																	expectation</div>
+																<div id="sgExpectationText"
+																	class="text-sm text-slate-600 mt-1 max-w-prose">The
+																	lead should be verified before moving forward.</div>
+																<div id="sgOpportunityExplanation"
+																	class="text-sm text-slate-500 mt-3 max-w-prose">
+																</div>
+															</div>
+															<div id="sgRules" class="mt-4 text-xs text-slate-500"></div>
+															<div id="sgRecommended" class="mt-4">
+																<div class="text-sm font-semibold">Recommended actions
+																</div>
+																<ul id="sgRecommendedList"
+																	class="list-disc pl-5 text-sm text-slate-700 mt-2 font-semibold">
+																</ul>
+															</div>
+														</div>
+													</div>
+												</div>
+												<aside class="lg:col-span-1 flex flex-col justify-between">
+													<div>
+														<div class="text-sm font-semibold mb-3">What to do</div>
+														<ul id="sgNextActions"
+															class="list-disc list-inside text-sm text-slate-700 space-y-2 mb-4">
+														</ul>
+													</div>
+													<div>
+														<button id="sgAdvance"
+															class="w-full px-4 py-2 rounded-full bg-[#2fb6f2] text-white font-semibold shadow-sm hover:brightness-95">Mark
+															as Complete</button>
+														<div class="mt-3 text-xs text-slate-400"></div>
+													</div>
+												</aside>
+											</div>
+										</div>
+										<style>
+											/* Scoped tweaks for the merged stage card to match reference visual */
+											.stage-card {
+												padding: 1.25rem;
+											}
+
+											.stage-card #sgStage {
+												letter-spacing: -0.2px;
+											}
+
+											.stage-card .max-w-prose {
+												max-width: 52ch;
+											}
+
+											.stage-card #sgAdvance {
+												height: 44px;
+												border-radius: 10px;
+											}
+
+											.stage-card #sgIcon {
+												box-shadow: 0 6px 16px rgba(14, 165, 233, 0.12);
+											}
+
+											/* Make list text and bullets slightly bolder for emphasis */
+											.stage-card ul {
+												font-weight: 600;
+											}
+
+											.stage-card ul li::marker {
+												color: currentColor;
+												font-weight: 600;
+											}
+
+											/* Nudge the right-side aside slightly left to tighten layout */
+											.stage-card aside {
+												transform: translateX(-6px);
+											}
+										</style>
+
+										<script>
+											(function () {
+												// Stage metadata with action-focused wording (no 'description' token)
+												var stageMeta = {
+													0: {
+														key: 'new', icon: 'lightbulb', whatNext: [], expectation: 'Lead has been received but not yet reviewed or actioned.', recommended: [
+															'Review the lead details',
+															'Check source and basic information',
+															'Decide if the lead is usable',
+															'Move to Verify once ready'
+														], readiness: [], rules: [], outcome: ''
+													},
+													// For the Verify stage we only want the single short expectation text to show
+													1: {
+														key: 'verify', icon: 'shield_person', whatNext: [], expectation: 'Lead details are being checked for accuracy.', recommended: [
+															'Confirm company name, contact details, and country',
+															'Check service relevance and scope',
+															'Check for duplicates',
+															'Select Verify if accurate or Invalidate if not (reason required)'
+														], readiness: [], rules: [], outcome: ''
+													},
+													2: {
+														key: 'contacted', icon: 'forum', whatNext: [], expectation: 'Lead has been contacted, and discussions are in progress, including follow-ups.', recommended: [
+															'Make initial contact (call/email)',
+															'Introduce Control Union services',
+															'Capture basic requirement details',
+															'Log activities and next follow-up'
+														], readiness: [], rules: [], outcome: ''
+													},
+													3: {
+														key: 'nurturing', icon: 'people', whatNext: [], expectation: 'Lead has a potential requirement but is not yet ready to proceed. Ongoing follow-ups, information sharing, and relationship building are in progress.', recommended: [
+															'Follow up periodically with the lead',
+															'Share relevant information or documents',
+															'Update notes and next follow-up date',
+															'Move to Qualify once the lead is ready'
+														], readiness: [], rules: [], outcome: ''
+													},
+													4: {
+														key: 'qualify', icon: 'how_to_reg', whatNext: [], expectation: 'Review the lead and decide whether it should be Qualified or Disqualified. Use the popup to confirm if the lead has a valid requirement and fits Control Union’s service scope.', recommended: [
+															'Review lead readiness and fit',
+															'Click Qualify to proceed or Disqualify if not suitable',
+															'Ensure mandatory fields are completed',
+															'Provide a reason if disqualifying'
+														], readiness: [], rules: [], outcome: ''
+													},
+													5: {
+														key: 'converted', icon: 'check_circle', whatNext: [], expectation: 'Lead is approved for conversion and will be converted into an Account, Contact, and Opportunity.', recommended: [
+															'Confirm lead is fully qualified',
+															'Click Convert',
+															'Ensure Account, Contact, and Opportunity are created correctly'
+														], readiness: [], rules: [], outcome: ''
+													}
+												};
+
+												var steps = Array.from(document.querySelectorAll('.arrow-step'));
+												var current = 0; // default to New on initial load
+
+												// helpers to render lists
+												function setList(id, items) {
+													var el = document.getElementById(id); if (!el) return; el.innerHTML = '';
+													items.forEach(function (i) { var li = document.createElement('div'); li.textContent = '• ' + i; el.appendChild(li); });
+												}
+
+												// renderPanel: update the guidance panel content for a given index without changing stepper visuals
+												function renderPanel(index) {
+													var idx = (typeof index !== 'undefined' && index !== null) ? index : current;
+													var meta = stageMeta[idx] || stageMeta[1];
+													var stageEl = document.getElementById('sgStage'); if (stageEl) stageEl.textContent = 'Stage: ' + meta.key.charAt(0).toUpperCase() + meta.key.slice(1);
+													var iconEl = document.getElementById('sgIcon'); if (iconEl) {
+														var iconName = meta.icon || 'lightbulb';
+														iconEl.innerHTML = '<span class="material-symbols-outlined text-white">' + iconName + '</span>';
+													}
+													var expEl = document.getElementById('sgExpectationText'); if (expEl) expEl.textContent = meta.expectation || '';
+													var outEl = document.getElementById('sgOutcomeText'); if (outEl) outEl.textContent = meta.outcome || '';
+													setList('sgWhatNextList', meta.whatNext || []);
+													setList('sgRecommendedList', meta.recommended || []);
+													setList('sgRulesList', meta.rules || []);
+													// readiness checklist uses check style
+													var readyEl = document.getElementById('sgReadinessList'); if (readyEl) { readyEl.innerHTML = ''; (meta.readiness || []).forEach(function (r) { var d = document.createElement('div'); d.className = 'flex items-center gap-2'; d.innerHTML = '<span class="text-emerald-600">✔</span><span class="text-sm text-slate-600">' + r + '</span>'; readyEl.appendChild(d); }); }
+
+													// hide empty sections to avoid showing empty headings
+													function toggleSection(containerId) { var el = document.getElementById(containerId); if (!el) return; var hasContent = el.querySelector('ul') ? el.querySelector('ul').children.length > 0 : (el.querySelector('#sgExpectationText') ? (el.querySelector('#sgExpectationText').textContent || '').trim().length > 0 : (el.textContent || '').trim().length > 0); el.style.display = hasContent ? '' : 'none'; }
+													toggleSection('sgWhatNext');
+													// hide the inline Recommended actions details per user preference (keep right-side tips)
+													var recEl = document.getElementById('sgRecommended'); if (recEl) recEl.style.display = 'none';
+													toggleSection('sgReadiness');
+													toggleSection('sgRules');
+													toggleSection('sgOutcome');
+													toggleSection('sgExpectation');
+
+													// populate right-side next-actions panel (no modal opening here)
+													var modalId = meta.key + 'Modal';
+													var modalExists = !!document.getElementById(modalId);
+													var sgNext = document.getElementById('sgNextActions'); if (sgNext) sgNext.innerHTML = '';
+													if (modalExists) {
+														(meta.recommended || []).forEach(function (a) { var div = document.createElement('div'); div.className = 'text-sm text-slate-700'; div.textContent = '• ' + a; sgNext.appendChild(div); });
+													} else {
+														if ((meta.outcome || '').trim().length > 0) { var o = document.createElement('div'); o.className = 'text-sm text-slate-700 font-medium'; o.textContent = meta.outcome; sgNext.appendChild(o); }
+														(meta.recommended || []).forEach(function (a) { var div = document.createElement('div'); div.className = 'text-sm text-slate-700'; div.textContent = '• ' + a; sgNext.appendChild(div); });
+														if (sgNext.children.length === 0 && (meta.expectation || '').trim().length > 0) { var e = document.createElement('div'); e.className = 'text-sm text-slate-700 font-medium'; e.textContent = meta.expectation; sgNext.appendChild(e); }
+													}
+												}
+
+												// step click wiring (allow back navigation always; forward only when ready)
+												steps.forEach(function (s, i) {
+													s.addEventListener('click', function () {
+														// simple readiness check: allow moving forward if i<=current or no strict rules
+														if (i <= current) { current = i; renderPanel(); return; }
+														var targetMeta = stageMeta[i];
+														var hasRules = targetMeta && (targetMeta.rules || []).length > 0;
+														if (!hasRules) { current = i; renderPanel(); }
+														else {
+															// highlight side panel to show missing items
+															var panel = document.getElementById('stageGuidancePanel'); panel.classList.add('ring', 'ring-amber-200'); setTimeout(function () { panel.classList.remove('ring', 'ring-amber-200'); }, 1200);
+														}
+													});
+												});
+
+												// Advance button (basic) — advances if no rules or we assume readiness
+												document.getElementById('sgAdvance')?.addEventListener('click', function () { var next = Math.min(current + 1, Object.keys(stageMeta).length - 1); current = next; renderPanel(); });
+
+												// initial render
+												renderPanel();
+												// expose helpers to the global scope for other scripts that interact with this panel
+												try { window.renderPanel = renderPanel; window.stageMeta = stageMeta; } catch (e) { /* ignore in strict environments */ }
+											})();
+										</script>
+
+										<!-- Verify Modal -->
+										<div id="verifyModal" class="hidden fixed inset-0 bg-black/50 z-50 px-4"
+											style="align-items: flex-start; justify-content: center; padding-top: 10vh;">
+											<div class="max-w-lg w-full bg-white rounded-2xl overflow-hidden shadow-xl">
+												<div class="bg-[#1b2747] text-white px-6 py-4 rounded-t-2xl">
+													<div class="text-left text-lg font-semibold">Verify Lead</div>
+												</div>
+												<div class="p-6 space-y-4">
+													<div class="text-sm text-slate-700">Please choose whether this lead
+														is valid. Selecting "Invalid" will freeze the pipeline.</div>
+													<div class="flex gap-3 justify-end">
+														<button id="verifyCancel"
+															class="px-4 py-2 rounded-full border border-slate-300 hover:bg-slate-50 transition">Cancel</button>
+														<button id="verifyInvalid"
+															class="px-4 py-2 rounded-full bg-rose-500 text-white hover:bg-rose-600 transition">Invalid</button>
+														<button id="verifyConfirm"
+															class="px-4 py-2 rounded-full bg-emerald-600 text-white hover:bg-emerald-700 transition">Verify</button>
+													</div>
+												</div>
+											</div>
+										</div>
+
+										<!-- Closed or Converted Modal -->
+										<div id="closeConvertModal" class="hidden fixed inset-0 bg-black/50 z-50 px-4"
+											style="align-items: flex-start; justify-content: center; padding-top: 10vh;">
+											<div class="max-w-lg w-full bg-white rounded-2xl overflow-hidden shadow-xl">
+												<div class="bg-[#1b2747] text-white px-6 py-4 rounded-t-2xl">
+													<div class="text-left text-lg font-semibold">Complete Lead</div>
+												</div>
+												<div class="p-6 space-y-4">
+													<div class="text-sm text-slate-700">How would you like to complete
+														this lead?</div>
+													<div class="flex gap-3 justify-end">
+														<button id="closeConvertCancel"
+															class="px-4 py-2 rounded-full border border-slate-300 hover:bg-slate-50 transition">Cancel</button>
+														<button id="selectClosed"
+															class="px-4 py-2 rounded-full bg-slate-600 text-white hover:bg-slate-700 transition">Closed</button>
+														<button id="selectConverted"
+															class="px-4 py-2 rounded-full bg-emerald-600 text-white hover:bg-emerald-700 transition">Converte</button>
+													</div>
+												</div>
+
+
+
+											</div>
+										</div>
+
+										<!-- Convert Lead Modal (attachment-style) -->
+										<div id="convertLeadModal" class="hidden fixed inset-0 bg-black/50 z-50 px-4"
+											style="display:none; align-items:flex-start; justify-content:center; padding-top:6vh;">
+											<div class="max-w-lg w-full bg-white rounded-2xl overflow-hidden shadow-xl"
+												role="dialog" aria-modal="true" aria-labelledby="convertLeadTitle">
+												<div class="relative">
+													<div
+														class="px-6 pt-10 pb-6 bg-gradient-to-r from-[#1b1e42] to-cyan-500 text-center">
+														<div
+															class="inline-flex items-center justify-center w-16 h-16 bg-white rounded-full mx-auto -mt-10 shadow-inner">
+															<span
+																class="material-symbols-outlined text-3xl text-emerald-600">account_box</span>
+														</div>
+														<h3 id="convertLeadTitle"
+															class="mt-4 text-lg font-semibold text-white">Convert Lead
+														</h3>
+													</div>
+												</div>
+												<div class="p-6">
+													<p class="text-sm text-slate-700 mb-4">Choose how you'd like to
+														create records for this lead.</p>
+													<div class="border rounded-lg p-4 bg-white">
+														<div class="flex items-center gap-3 mb-3">
+															<span
+																class="material-symbols-outlined text-slate-600">account_box</span>
+															<div class="font-semibold">Account</div>
+														</div>
+														<label class="flex items-center gap-2">
+															<input type="radio" name="conv_account" value="new"
+																checked />
+															<span>Create New Account</span>
+														</label>
+														<label class="flex items-center gap-2 mt-2">
+															<input type="radio" name="conv_account" value="existing" />
+															<span>Choose Existing Account</span>
+														</label>
+														<div class="mt-3">
+															<input id="convAccountName"
+																class="w-full border rounded px-3 py-2 text-sm"
+																placeholder="Account Name"
+																value="Search for matching accounts" />
+														</div>
+													</div>
+													<!-- contact/opportunity options intentionally omitted for compactness -->
+												</div>
+												<div class="bg-slate-50 px-6 py-4 flex items-center justify-end gap-3">
+													<button id="convertCancel"
+														class="px-4 py-2.5 bg-white text-slate-700 border rounded-lg hover:bg-slate-50 transition">Cancel</button>
+													<button id="convertConfirm"
+														class="px-5 py-2.5 bg-[#3eb2ed] text-white font-medium rounded-lg hover:bg-[#2da1d6] transition">Convert</button>
+												</div>
+											</div>
+										</div>
+
+										<!-- Conversion Result Modal (redesigned) -->
+										<div id="conversionResultModal"
+											class="hidden fixed inset-0 bg-black/50 z-50 px-4"
+											style="display:none; align-items:flex-start; justify-content:center; padding-top:6vh;">
+											<div class="max-w-md w-full bg-white rounded-2xl overflow-hidden shadow-2xl"
+												role="dialog" aria-modal="true" aria-labelledby="conversionResultTitle">
+												<div class="relative">
+													<div
+														class="px-6 pt-10 pb-6 bg-gradient-to-r from-[#1b1e42] to-cyan-500 text-center">
+														<div
+															class="inline-flex items-center justify-center w-16 h-16 bg-white rounded-full mx-auto -mt-10 shadow-inner">
+															<span
+																class="material-symbols-outlined text-4xl text-emerald-600">task_alt</span>
+														</div>
+														<h3 id="conversionResultTitle"
+															class="mt-4 text-lg font-semibold text-white">Lead
+															Conversion Complete</h3>
+													</div>
+												</div>
+												<div class="p-6">
+													<p class="text-sm text-slate-700 mb-4">Success! The lead has been
+														converted. The following records were created:</p>
+													<ul class="mb-4">
+														<li class="flex items-start gap-3 text-sm text-slate-700"><span
+																class="material-symbols-outlined text-emerald-500">account_box</span><span>Account</span>
+														</li>
+														<li class="flex items-start gap-3 text-sm text-slate-700"><span
+																class="material-symbols-outlined text-emerald-500">person</span><span>Contact</span>
+														</li>
+														<li class="flex items-start gap-3 text-sm text-slate-700"><span
+																class="material-symbols-outlined text-emerald-500">work</span><span>Opportunity</span>
+														</li>
+													</ul>
+													<p class="text-sm text-slate-600">You can now continue managing this
+														deal in the Opportunity pipeline.</p>
+												</div>
+												<div class="bg-slate-50 px-6 py-4 flex items-center justify-end gap-3">
+													<button id="goToOppBtn"
+														class="px-5 py-2.5 bg-[#3eb2ed] text-white font-medium rounded-lg hover:bg-[#2da1d6] transition">Go
+														to Opportunity</button>
+													<button id="conversionCloseBtn"
+														class="px-5 py-2.5 bg-white text-slate-700 border border-slate-200 font-medium rounded-lg hover:bg-slate-50 transition">Close</button>
+												</div>
+											</div>
+										</div>
+
+										<!-- Confirmation modal for step navigation -->
+										<div id="confirmStepModal" class="hidden fixed inset-0 bg-black/50 z-50 px-4"
+											style="align-items: flex-start; justify-content: center; padding-top: 8vh;">
+											<div class="max-w-sm w-full bg-white rounded-2xl overflow-hidden shadow-xl">
+												<div class="bg-[#1b2747] text-white px-6 py-4 rounded-t-2xl">
+													<div id="confirmStepTitle" class="text-left text-lg font-semibold">
+														Move to Verify?</div>
+												</div>
+												<div class="p-6 space-y-4">
+													<!-- Stage-specific explanation and guidance -->
+													<div id="confirmStepContent">
+														<p id="confirmStepExplanation" class="text-sm text-slate-700">
+															Status will change from Qualified to Verified. Are you sure?
+														</p>
+														<ul id="confirmStepBullets"
+															class="list-disc pl-5 mt-3 text-sm text-slate-700 space-y-1">
+														</ul>
+													</div>
+													<div class="flex gap-3 justify-end">
+														<button id="confirmStepNo"
+															class="px-4 py-2 rounded-full border border-slate-300 hover:bg-slate-50 transition">Cancel</button>
+														<button id="confirmStepDisqualify"
+															class="px-4 py-2 rounded-full bg-rose-600 text-white hover:bg-rose-700 transition hidden">Disqualify</button>
+														<button id="confirmStepYes"
+															class="px-4 py-2 rounded-full bg-emerald-600 text-white hover:bg-emerald-700 transition">Confirm</button>
+													</div>
+												</div>
+											</div>
+										</div>
+
+										<script>
+											document.addEventListener('DOMContentLoaded', function () {
+												const arrowSteps = Array.from(document.querySelectorAll('.arrow-step'));
+												const btn = document.getElementById('statusCompleteBtn');
+												const verifyModal = document.getElementById('verifyModal');
+												const confirmStepModal = document.getElementById('confirmStepModal');
+												const confirmStepExplanation = document.getElementById('confirmStepExplanation');
+												const confirmStepBullets = document.getElementById('confirmStepBullets');
+												const confirmStepYes = document.getElementById('confirmStepYes');
+												const confirmStepNo = document.getElementById('confirmStepNo');
+												const confirmStepDisqualify = document.getElementById('confirmStepDisqualify');
+												// wire Disqualify button to open the disqualify modal
+												if (confirmStepDisqualify) {
+													confirmStepDisqualify.addEventListener('click', function () {
+														// behave differently depending on which step opened the confirm modal
+														if (typeof pendingStepIndex === 'number' && pendingStepIndex === 1) {
+															// From Verify: open the Invalidate reason modal (require reason)
+															hideConfirmStep();
+															try { if (typeof showInvalidateModal === 'function') showInvalidateModal(pendingStepIndex); } catch (e) { console.error(e); }
+															return;
+														}
+														if (typeof pendingStepIndex === 'number' && pendingStepIndex === 4) {
+															// Qualify -> Disqualify: open the disqualify reason modal
+															hideConfirmStep();
+															try { if (typeof showDisqualifyModal === 'function') showDisqualifyModal(); } catch (e) { console.error(e); }
+															return;
+														}
+														// fallback: just open disqualify modal
+														hideConfirmStep();
+														try { if (typeof showDisqualifyModal === 'function') showDisqualifyModal(); } catch (e) { console.error(e); }
+													});
+												}
+												const verifyConfirm = document.getElementById('verifyConfirm');
+												const verifyInvalid = document.getElementById('verifyInvalid');
+												const verifyCancel = document.getElementById('verifyCancel');
+												const closeConvertModal = document.getElementById('closeConvertModal');
+												const selectClosed = document.getElementById('selectClosed');
+												const selectConverted = document.getElementById('selectConverted');
+												const closeConvertCancel = document.getElementById('closeConvertCancel');
+												let current = 0; // index of active step
+												let isInvalid = false; // frozen state when Invalid selected
+												let stage1Status = 'pending'; // 'pending' | 'invalid' | 'verified'
+												let hiddenStep = null; // track which step to hide (3=Closed, 4=Qualify, 5=Converted)
+												let pendingStepIndex = null; // index waiting for confirmation
+												let lastPreviewIndex = null; // track which step was last previewed via arrow click
+
+												function showModal() {
+													verifyModal.classList.remove('hidden');
+													verifyModal.style.display = 'flex';
+													console.log('Modal opened');
+												}
+												function hideModal() {
+													verifyModal.classList.add('hidden');
+													verifyModal.style.display = 'none';
+													console.log('Modal closed');
+												}
+												function showCloseConvertModal() {
+													closeConvertModal.classList.remove('hidden');
+													closeConvertModal.style.display = 'flex';
+												}
+												function hideCloseConvertModal() {
+													closeConvertModal.classList.add('hidden');
+													closeConvertModal.style.display = 'none';
+												}
+
+												// Stage-specific guidance for the confirmation modal
+												const stageInfo = {
+													0: {
+														modalTitle: 'Move to New?',
+														purpose: 'Initial intake: capture basic contact and lead source information before active engagement.',
+														bullets: ['Confirm contact name and company', 'Record source and priority', 'Add a brief note about the lead']
+													},
+													1: {
+														modalTitle: 'Verify Lead Before Proceeding',
+														purpose: 'Validate that the lead is real and contact details are correct. Verification avoids wasted effort later in the pipeline.',
+														bullets: ['Confirm phone and email are valid', 'Ensure company and role are accurate', 'Mark as Invalid if duplicate or clearly incorrect']
+													},
+													2: {
+														modalTitle: 'Move to Contacted / WIP?',
+														purpose: 'Active engagement stage where follow-ups, calls, and meetings are logged.',
+														bullets: ['Log the latest activity (call/email)', 'Schedule the next follow-up', 'Assign tasks or owners as needed']
+													},
+													3: {
+														modalTitle: 'Move to Nurturing?',
+														purpose: 'Longer-term engagement for leads that need time before qualifying.',
+														bullets: ['Add to a nurture sequence', 'Set long-term reminders', 'Update qualification notes']
+													},
+													4: {
+														modalTitle: 'Move to Qualify?',
+														purpose: 'Assess fit, budget, timeline and decision process to determine if this should become an opportunity.',
+														bullets: ['Confirm budget and timeline', 'Identify decision makers', 'Score the lead or update qualification fields']
+													},
+													5: {
+														modalTitle: 'Convert Lead?',
+														purpose: 'Convert this lead into the CRM objects (Account, Contact, Opportunity) when it is ready.',
+														bullets: ['Review conversion details', 'Choose target Account/Opportunity', 'Ensure required fields are complete']
+													}
+												};
+
+												// small helper to escape text inserted into innerHTML
+												function escapeHtml(str) {
+													return String(str || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+												}
+
+												function showConfirmStep(index) {
+													pendingStepIndex = index;
+													const label = arrowSteps[index] && arrowSteps[index].textContent.trim() || 'selected step';
+													const currentStepIdx = current;
+													const currentStepName = arrowSteps[currentStepIdx] && arrowSteps[currentStepIdx].textContent.trim();
+													const targetStepName = label;
+
+													const info = stageInfo[index] || { modalTitle: `Move to ${targetStepName}?`, purpose: `Move to ${targetStepName}.`, bullets: [] };
+
+													const titleEl = document.getElementById('confirmStepTitle');
+													if (titleEl) titleEl.textContent = info.modalTitle;
+
+													// Explanation: show concise status-change sentence; when reverting (target < current) use the selected step as 'to'
+													if (confirmStepExplanation) {
+														var fromName = currentStepName || 'current';
+														var toName = targetStepName || 'target';
+														if (typeof index === 'number') {
+															if (index < current) {
+																// reverting: the 'to' is the selected step itself
+																toName = (arrowSteps[index] && arrowSteps[index].textContent.trim()) || toName;
+															} else {
+																// advancing: show next stage as the 'to' name (index+1) but cap to last
+																var nextIdx = Math.min(index + 1, arrowSteps.length - 1);
+																toName = (arrowSteps[nextIdx] && arrowSteps[nextIdx].textContent.trim()) || toName;
+															}
+														}
+														var changeLine = '<div class="text-sm">Status will change from <strong>' + escapeHtml(fromName) + '</strong> to <strong>' + escapeHtml(toName) + '</strong>.</div>';
+														confirmStepExplanation.innerHTML = changeLine;
+													}
+
+													// Remove any bullet list — modal should only show the concise status-change sentence by default
+													if (confirmStepBullets) { confirmStepBullets.innerHTML = ''; }
+
+													// Special-case: when moving to Verify (index 1), customise title, explanation and buttons to match the Verify modal design
+													if (typeof index === 'number' && index === 1) {
+														if (titleEl) titleEl.textContent = (stageInfo[1] && stageInfo[1].modalTitle) || 'Verify Lead';
+														if (confirmStepExplanation) confirmStepExplanation.innerHTML = '<div class="text-sm text-slate-700">Please review this lead\'s details carefully.</div><ul class="mt-3 text-sm text-slate-700"><li><strong>Select Verify</strong> if the lead information is correct and complete.</li><li><strong>Select Invalidate</strong> if the lead is incorrect, incomplete, or not usable.</li></ul>';
+														// show the Invalidate button (reuse confirmStepDisqualify) and relabel Confirm to Verify Lead
+														if (confirmStepDisqualify) { confirmStepDisqualify.classList.remove('hidden'); confirmStepDisqualify.textContent = 'Invalidate'; }
+														if (confirmStepYes) confirmStepYes.textContent = 'Verify';
+													} else if (typeof index === 'number' && index === 4) {
+														// Special-case: when moving to Qualify (index 4), customise title, explanation and buttons
+														if (titleEl) titleEl.textContent = 'Qualify or Disqualify Lead';
+														if (confirmStepExplanation) confirmStepExplanation.innerHTML = '<div class="text-sm text-slate-700">Please review the lead details and choose an action.</div><div class="text-sm text-slate-700">Select <strong>Qualify</strong> to proceed with this lead.</div><div class="text-sm text-slate-700">Select <strong>Disqualify</strong> if the lead is not suitable. A disqualification reason is mandatory.</div>';
+														// show the Disqualify button and relabel Confirm to Qualify
+														if (confirmStepDisqualify) { confirmStepDisqualify.classList.remove('hidden'); confirmStepDisqualify.textContent = 'Disqualify'; }
+														if (confirmStepYes) confirmStepYes.textContent = 'Qualify';
+													} else {
+														// restore defaults for other stages
+														if (confirmStepDisqualify) confirmStepDisqualify.classList.add('hidden');
+														if (confirmStepYes) confirmStepYes.textContent = 'Confirm';
+													}
+
+
+													confirmStepModal.classList.remove('hidden');
+													confirmStepModal.style.display = 'flex';
+												}
+												function hideConfirmStep() {
+													pendingStepIndex = null;
+													confirmStepModal.classList.add('hidden');
+													confirmStepModal.style.display = 'none';
+												}
+
+												function render() {
+													// Update arrow stepper
+													arrowSteps.forEach((el, i) => {
+														el.classList.remove('active', 'completed');
+
+														// Hide the non-selected step
+														if (hiddenStep !== null && i === hiddenStep) {
+															el.style.display = 'none';
+															return;
+														} else {
+															el.style.display = '';
+														}
+
+														if (isInvalid && i === 1) {
+															// Verify step when invalid - red/dimmed
+															el.style.background = '#dc2626';
+															el.style.opacity = '0.7';
+															el.style.filter = '';
+														} else if (isInvalid && i > 1) {
+															// Future steps when invalid - locked gray
+															el.style.background = '#94a3b8';
+															el.style.opacity = '0.4';
+															el.style.filter = 'grayscale(1)';
+															el.style.pointerEvents = 'none';
+														} else {
+															el.style.background = '';
+															el.style.opacity = '';
+															el.style.filter = '';
+															el.style.pointerEvents = '';
+
+															if (i < current) {
+																// Completed steps - green
+																el.classList.add('completed');
+															} else if (i === current) {
+																// Current active step - orange
+																el.classList.add('active');
+															}
+															// else: future steps remain gray (default)
+														}
+													});
+
+													// Safely update the main action button if present
+													if (btn) {
+														if (isInvalid) {
+															btn.disabled = true;
+															btn.classList.add('opacity-60', 'cursor-not-allowed');
+															btn.innerHTML = '<span class="material-symbols-outlined">lock</span><span>Pipeline Frozen</span>';
+														} else if (current >= arrowSteps.length) {
+															btn.disabled = true;
+															btn.classList.add('opacity-60', 'cursor-not-allowed');
+															btn.innerHTML = '<span class="material-symbols-outlined">done_all</span><span>Completed</span>';
+														} else {
+															btn.disabled = false;
+															btn.classList.remove('opacity-60', 'cursor-not-allowed');
+															btn.innerHTML = '<span class="material-symbols-outlined">check_circle</span><span>Mark Status as Complete</span>';
+														}
+													}
+												}
+
+												function completeStep(index) {
+													if (index < 0 || index >= arrowSteps.length) return;
+													// If pipeline frozen, do not allow advancing beyond Verify
+													if (isInvalid && index > 1) return;
+													const willAdvance = index >= current;
+													if (willAdvance) current = index + 1;
+													render();
+												}
+
+												// click handlers for arrow steps — preview content but do NOT change colors or step state
+												// (side-panel 'Mark as Complete' still opens the confirmation flow and advances state)
+												arrowSteps.forEach((el, idx) => {
+													el.addEventListener('click', function (e) {
+														// If pipeline frozen, do not allow interacting beyond verify
+														if (isInvalid && idx > 1) return;
+
+														// remember this index as the last previewed step so side actions act on it
+														lastPreviewIndex = idx;
+														// Preview the stage content in the guidance panel without changing stepper visuals
+														renderPanel(idx);
+
+														// If forward navigation would be blocked by rules, visually hint in the side panel
+														var targetMeta = stageMeta[idx];
+														var hasRules = targetMeta && (targetMeta.rules || []).length > 0;
+														if (hasRules) {
+															var panel = document.getElementById('stageGuidancePanel');
+															if (panel) { panel.classList.add('ring', 'ring-amber-200'); setTimeout(function () { panel.classList.remove('ring', 'ring-amber-200'); }, 1200); }
+														}
+													});
+												});
+
+												// Confirmation modal handlers
+												confirmStepYes.addEventListener('click', function () {
+													if (pendingStepIndex === null) { hideConfirmStep(); return; }
+													var idx = pendingStepIndex;
+													hideConfirmStep();
+
+													// If the user confirmed a step that's before the current active step, treat this as a revert
+													if (typeof idx === 'number' && idx < current) {
+														// Revert to the selected step (make that the active step)
+														current = idx; // active becomes the selected step index
+													} else {
+														// Otherwise, advance as before: mark selected step completed and move to next
+														current = Math.max(current, idx + 1);
+														current = Math.min(current, arrowSteps.length);
+														// Special handling: when confirming Verify (index 1) mark stage1 as verified
+														if (typeof idx === 'number' && idx === 1) {
+															stage1Status = 'verified';
+															isInvalid = false;
+															// update arrow label and metadata to 'Verified'
+															try {
+																var vStep = arrowSteps && arrowSteps[1];
+																if (vStep) {
+																	var sp = vStep.querySelector('span'); if (sp) sp.textContent = 'Verified';
+																	vStep.classList.remove('disqualified', 'active');
+																	vStep.classList.add('completed');
+																}
+																if (window.stageMeta && window.stageMeta[1]) window.stageMeta[1].key = 'verified';
+															} catch (e) { console.error('Error updating Verify label', e); }
+														}
+														// Special handling: if the user confirmed Qualify (index 4), update the step label to 'Qualified'
+														try {
+															if (typeof idx === 'number' && idx === 4) {
+																// update the metadata key so guidance panel shows 'Qualified' when rendered
+																if (window.stageMeta && window.stageMeta[4]) {
+																	window.stageMeta[4].key = 'qualified';
+																}
+																// update the arrow-step label text
+																var stepEl = arrowSteps && arrowSteps[4];
+																if (stepEl) {
+																	var span = stepEl.querySelector('span');
+																	if (span) span.textContent = 'Qualified';
+																	// remove any disqualified styling and mark as completed
+																	stepEl.classList.remove('disqualified');
+																	stepEl.classList.add('completed');
+																}
+															}
+														} catch (e) { console.error('Error updating Qualify label', e); }
+													}
+													// clear preview target after action
+													lastPreviewIndex = null;
+													render();
+												});
+
+												confirmStepNo.addEventListener('click', function () { hideConfirmStep(); });
+
+												// modal handlers
+												verifyConfirm.addEventListener('click', function () {
+													stage1Status = 'verified';
+													isInvalid = false;
+													current = Math.max(current, 2);
+													hideModal();
+													render();
+												});
+
+												verifyInvalid.addEventListener('click', function () {
+													stage1Status = 'invalid';
+													isInvalid = true;
+													current = 1;
+													hideModal();
+													render();
+												});
+
+												verifyCancel.addEventListener('click', function () { hideModal(); });
+
+												// Close/Convert modal handlers
+												if (selectClosed) selectClosed.addEventListener('click', function () {
+													hiddenStep = 5; // Hide Converted (index 5)
+													current = 3; // Go to Closed (index 3)
+													hideCloseConvertModal();
+													render();
+												});
+
+												if (selectConverted) selectConverted.addEventListener('click', function () {
+													// Instead of immediately converting, show the Convert Lead modal for details
+													showConvertModal();
+													hideCloseConvertModal();
+												});
+
+												// Convert Lead modal handlers
+												const convertLeadModal = document.getElementById('convertLeadModal');
+												const convertCancel = document.getElementById('convertCancel');
+												const convertConfirm = document.getElementById('convertConfirm');
+
+												function showConvertModal() {
+													console.log('showConvertModal called, element=', convertLeadModal);
+													if (convertLeadModal) {
+														convertLeadModal.classList.remove('hidden');
+														convertLeadModal.style.display = 'flex';
+														convertLeadModal.style.zIndex = 100001;
+														document.body.style.overflow = 'hidden';
+													} else {
+														console.warn('convertLeadModal not found in DOM');
+													}
+												}
+												function hideConvertModal() {
+													console.log('hideConvertModal called');
+													if (convertLeadModal) {
+														convertLeadModal.classList.add('hidden');
+														convertLeadModal.style.display = 'none';
+														document.body.style.overflow = '';
+													}
+												}
+
+												if (convertCancel) convertCancel.addEventListener('click', function () { hideConvertModal(); });
+												// Conversion result modal helpers
+												const conversionResultModal = document.getElementById('conversionResultModal');
+												const conversionCloseBtn = document.getElementById('conversionCloseBtn');
+												const goToOppBtn = document.getElementById('goToOppBtn');
+
+												function showConversionResult(acctMode, contactMode, oppMode) {
+													// update any dynamic text if needed (currently static content)
+													if (conversionResultModal) {
+														conversionResultModal.classList.remove('hidden');
+														conversionResultModal.style.display = 'flex';
+														document.body.style.overflow = 'hidden';
+													}
+												}
+
+												function hideConversionResult() {
+													if (conversionResultModal) {
+														conversionResultModal.classList.add('hidden');
+														conversionResultModal.style.display = 'none';
+														document.body.style.overflow = '';
+													}
+												}
+
+												if (conversionCloseBtn) conversionCloseBtn.addEventListener('click', function () { hideConversionResult(); });
+												if (goToOppBtn) goToOppBtn.addEventListener('click', function () {
+													// Navigate to Opportunities list on All Clients page
+													hideConversionResult();
+													window.location.href = 'allclient.html#opportunities';
+												});
+
+												if (convertConfirm) convertConfirm.addEventListener('click', function () {
+													// Read selected options (demo), perform conversion
+													const acctMode = document.querySelector('input[name="conv_account"]:checked')?.value || 'new';
+													const contactMode = document.querySelector('input[name="conv_contact"]:checked')?.value || 'new';
+													const oppMode = document.querySelector('input[name="conv_opp"]:checked')?.value || 'new';
+													// For demo: commit the converted state - mark entire pipeline complete
+													hiddenStep = 3; // hide Closed
+													current = arrowSteps.length; // mark all steps completed
+													hideConvertModal();
+													render();
+													// Show the friendly conversion result modal instead of alert
+													showConversionResult(acctMode, contactMode, oppMode);
+												});
+
+												if (closeConvertCancel) closeConvertCancel.addEventListener('click', function () { hideCloseConvertModal(); });
+
+												if (btn) btn.addEventListener('click', function () {
+													if (isInvalid) return;
+													// If at verify step and not yet verified, show modal
+													if (current === 1 && stage1Status === 'pending') {
+														showModal();
+														return;
+													}
+													// If at Contacted/In Progress step (index 2), show close/convert modal
+													if (current === 2 && hiddenStep === null) {
+														showCloseConvertModal();
+														return;
+													}
+													if (current < arrowSteps.length) {
+														completeStep(current);
+													}
+													if (current >= arrowSteps.length) {
+														try {
+															const leadNameInput = document.getElementById('companyName');
+															const leadName = (leadNameInput && leadNameInput.value) || (document.querySelector('.text-2xl') && document.querySelector('.text-2xl').textContent.trim()) || '';
+															const target = 'allclient.html#leads?remove=' + encodeURIComponent(leadName);
+															setTimeout(() => { window.location.href = target; }, 250);
+														} catch (e) { console.error(e); }
+													}
+												});
+
+												// Side-panel 'Mark as Complete' button should open the same confirmation popup
+												const sideAdvanceBtn = document.getElementById('sgAdvance');
+												if (sideAdvanceBtn) {
+													sideAdvanceBtn.addEventListener('click', function () {
+														// prefer the last previewed index if present (user clicked an arrow to preview)
+														var target = (typeof lastPreviewIndex === 'number' && lastPreviewIndex !== null) ? lastPreviewIndex : current;
+														// If the target stage is Converted, open the full Convert Lead modal
+														if (target === 5) {
+															showConvertModal();
+															return;
+														}
+														// Otherwise open the confirm flow for that target
+														showConfirmStep(target);
+													});
+												}
+
+												render();
+											});
+										</script>
+									</div>
+
+									<!-- Services (wrap four subcards inside a parent card) -->
+									<div class="lg:col-span-2 mt-4">
+										<div class="bg-white rounded-2xl p-6 border">
+											<div class="flex items-center justify-between mb-4">
+												<div class="flex items-center gap-3">
+													<div>
+														<div class="text-lg font-semibold">Services</div>
+													</div>
+												</div>
+												<div class="flex items-center">
+													<button id="addServicesBtn" onclick="openServicesModalFromLead()"
+														class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#3eb2ed] text-white text-sm shadow hover:bg-[#2da1d6]">
+														<span class="material-symbols-outlined text-sm">add</span>
+														<span class="font-medium">Add Services</span>
+													</button>
+												</div>
+											</div>
+											<div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+												<!-- Testing -->
+												<div class="bg-white rounded-2xl p-6 border">
+													<div class="flex items-center gap-3 mb-4">
+														<div
+															class="w-10 h-10 rounded-full bg-sky-50 text-sky-600 flex items-center justify-center">
+															<span class="material-symbols-outlined">article</span>
+														</div>
+														<div>
+															<div class="text-lg font-semibold">Testing</div>
+														</div>
+													</div>
+													<div class="border-t border-slate-100 pt-4">
+														<div
+															class="flex flex-col items-center justify-center h-44 text-center">
+															<div
+																class="w-14 h-14 rounded-xl bg-blue-50 flex items-center justify-center mb-3">
+																<span
+																	class="material-symbols-outlined text-blue-400">archive</span>
+															</div>
+															<div class="text-sm font-medium text-slate-700">No services
+																offered yet</div>
+															<div class="text-xs text-slate-400 mt-1">Services will
+																appear here once they’re added.</div>
+														</div>
+													</div>
+												</div>
+
+												<!-- Inspection -->
+												<div class="bg-white rounded-2xl p-6 border">
+													<div class="flex items-center gap-3 mb-4">
+														<div
+															class="w-10 h-10 rounded-full bg-sky-50 text-sky-600 flex items-center justify-center">
+															<svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+																xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+																<rect x="3" y="3" width="18" height="18" rx="3"
+																	stroke="currentColor" stroke-width="1.2"
+																	fill="none" />
+																<path d="M7.5 12.5l3 3 6-6" stroke="currentColor"
+																	stroke-width="1.6" stroke-linecap="round"
+																	stroke-linejoin="round" fill="none" />
+															</svg>
+														</div>
+														<div>
+															<div class="text-lg font-semibold">Inspection</div>
+														</div>
+													</div>
+													<div class="border-t pt-4">
+														<div
+															class="flex flex-col items-center justify-center h-44 text-center">
+															<div
+																class="w-14 h-14 rounded-xl bg-blue-50 flex items-center justify-center mb-3">
+																<span
+																	class="material-symbols-outlined text-blue-400">engineering</span>
+															</div>
+															<div class="text-sm font-medium text-slate-700">No services
+																offered yet</div>
+															<div class="text-xs text-slate-400 mt-1">Services will
+																appear here once they’re added.</div>
+														</div>
+													</div>
+												</div>
+
+												<!-- Certification -->
+												<div
+													class="bg-white rounded-2xl p-6 border border-blue-400 ring-1 ring-blue-100 cert-card hover:shadow-lg transition-shadow">
+													<div class="flex items-center gap-3 mb-4">
+														<div
+															class="w-10 h-10 rounded-full bg-sky-50 text-sky-600 flex items-center justify-center">
+															<span class="material-symbols-outlined">checklist_rtl</span>
+														</div>
+														<div>
+															<div class="text-lg font-semibold">Certification</div>
+														</div>
+													</div>
+													<div class="cert-legend mb-3">
+														<!-- <div class="item"><span class="dot" style="background:#22C55E"></span><span>Existing</span></div> -->
+														<div class="item"><span class="dot"
+																style="background:#FACC15"></span><span>Potential</span>
+														</div>
+													</div>
+													<div class="border-t pt-4">
+														<!-- Converted Textile pill badges into an accordion-style list like image 2 -->
+														<div id="organicCard"
+															class="mt-2 w-full bg-white rounded-lg p-3">
+															<div class="flex items-center justify-between">
+																<h3 class="text-lg font-semibold">Textile</h3>
+																<button id="organicToggle" aria-expanded="true"
+																	aria-controls="organicList"
+																	class="flex items-center gap-2 text-sm text-slate-500 hover:text-slate-700 focus:outline-none"
+																	aria-label="Toggle Organic list">
+																	<span id="organicIcon"
+																		class="material-symbols-outlined transform transition-transform">expand_more</span>
+																</button>
+															</div>
+
+															<ul id="organicList" class="mt-3" role="list">
+																<!-- <li class="py-3">
+			<div class="flex items-start gap-3">
+				<span class="inline-block w-3 h-3 rounded-full bg-[#22C55E] ring-1 ring-[#22C55E]" aria-hidden="true"></span>
+				<div class="overflow-hidden">
+					<div class="text-sm font-semibold text-slate-800 leading-tight">GRS</div>
+					<div class="flex items-center gap-2 mt-2">
+						<div class="meta-pill date inline-flex items-center gap-2 px-2 py-1 rounded-md text-xs text-slate-600 bg-slate-50 border border-slate-100">
+							<span class="material-symbols-outlined text-sky-500" style="font-size:14px;">calendar_month</span>
+							<span>2026-03-15</span>
+						</div>
+						<div class="meta-pill amount inline-flex items-center gap-2 px-2 py-1 rounded-md text-xs font-medium text-cu-dark-blue" style="background:#eaf6fb;border:1px solid #d1effa;">
+							<span class="material-symbols-outlined text-cu-light-blue" style="font-size:14px;">paid</span>
+							<span>$1,200</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</li> -->
+																<li class="py-3">
+																	<div class="flex items-start gap-3">
+																		<span
+																			class="inline-block w-3 h-3 rounded-full bg-amber-400 ring-1 ring-amber-100"
+																			aria-hidden="true"></span>
+																		<div class="overflow-hidden">
+																			<div
+																				class="text-sm font-semibold text-slate-800 leading-tight">
+																				RCS</div>
+																			<div class="flex items-center gap-2 mt-2">
+																				<div
+																					class="meta-pill date inline-flex items-center gap-2 px-2 py-1 rounded-md text-xs text-slate-600 bg-slate-50 border border-slate-100">
+																					<span
+																						class="material-symbols-outlined text-amber-400"
+																						style="font-size:14px;">calendar_month</span>
+																					<span>2026-04-01</span>
+																				</div>
+																				<div class="meta-pill amount inline-flex items-center gap-2 px-2 py-1 rounded-md text-xs font-medium text-cu-dark-blue"
+																					style="background:#fff7e6;border:1px solid #ffefcf;">
+																					<span
+																						class="material-symbols-outlined text-amber-400"
+																						style="font-size:14px;">paid</span>
+																					<span>$950</span>
+																				</div>
+																			</div>
+																		</div>
+																	</div>
+																</li>
+															</ul>
+
+															<style>
+																/* subtle hover highlight for each item */
+																#organicList li {
+																	transition: background .18s ease, transform .12s ease;
+																}
+
+																#organicList li:hover {
+																	background: rgba(14, 165, 233, 0.03);
+																	transform: translateY(-2px);
+																}
+															</style>
+
+															<script>
+																(function () {
+																	var toggle = document.getElementById('organicToggle');
+																	var list = document.getElementById('organicList');
+																	var icon = document.getElementById('organicIcon');
+																	if (!toggle || !list) return;
+
+																	function setExpanded(exp) {
+																		toggle.setAttribute('aria-expanded', String(exp));
+																		if (exp) { list.classList.remove('hidden'); icon.classList.remove('rotate-180'); }
+																		else { list.classList.add('hidden'); icon.classList.add('rotate-180'); }
+																	}
+
+																	// default: expanded
+																	setExpanded(true);
+
+																	toggle.addEventListener('click', function (e) {
+																		var cur = toggle.getAttribute('aria-expanded') === 'true';
+																		setExpanded(!cur);
+																	});
+
+																	// keyboard support (Enter/Space)
+																	toggle.addEventListener('keydown', function (e) {
+																		if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle.click(); }
+																	});
+																})();
+															</script>
+														</div>
+													</div>
+												</div>
+
+												<!-- Acedemy -->
+												<div class="bg-white rounded-2xl p-6 border">
+													<div class="flex items-center gap-3 mb-4">
+														<div
+															class="w-10 h-10 rounded-full bg-sky-50 text-sky-600 flex items-center justify-center">
+															<span class="material-symbols-outlined">menu_book</span>
+														</div>
+														<div>
+															<div class="text-lg font-semibold">Academy</div>
+														</div>
+													</div>
+													<div class="border-t pt-4">
+														<div
+															class="flex flex-col items-center justify-center h-44 text-center">
+															<div
+																class="w-14 h-14 rounded-xl bg-blue-50 flex items-center justify-center mb-3">
+																<span
+																	class="material-symbols-outlined text-blue-400">menu_book</span>
+															</div>
+															<div class="text-sm font-medium text-slate-700">No services
+																offered yet</div>
+															<div class="text-xs text-slate-400 mt-1">Services will
+																appear here once they’re added.</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+
+									<!-- Activity card (left) -->
+									<div class="bg-white rounded-2xl p-6 border">
+										<div class="flex items-center justify-between mb-4">
+											<div class="flex items-center gap-3">
+												<div
+													class="w-10 h-10 rounded-full bg-sky-50 text-sky-600 flex items-center justify-center">
+													<span class="material-symbols-outlined">history</span>
+												</div>
+												<div>
+													<div class="text-lg font-semibold">Activity</div>
+												</div>
+
+												<!-- Finance pane -->
+												<div id="paneFinance" class="hidden space-y-6">
+													<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+														<!-- Outstanding (detailed list + mini chart) -->
+														<div class="bg-white rounded-2xl p-6 border">
+															<div class="flex items-center justify-between mb-4">
+																<div class="flex items-center gap-3">
+																	<div
+																		class="w-10 h-10 rounded-full bg-rose-50 text-rose-600 flex items-center justify-center">
+																		<span
+																			class="material-symbols-outlined">receipt_long</span>
+																	</div>
+																	<div>
+																		<div class="text-lg font-semibold">Outstanding
+																		</div>
+																		<div class="text-xs text-slate-400">Open
+																			invoices and due dates</div>
+																	</div>
+																</div>
+															</div>
+															<div class="border-t pt-4">
+																<div class="space-y-3 text-sm">
+																	<div class="flex justify-between">
+																		<div class="font-medium">INV-2026-1001</div>
+																		<div class="text-slate-500">Due: 2026-02-15
+																		</div>
+																	</div>
+																	<div class="text-lg font-bold">$234,567.00</div>
+																</div>
+																<div class="mt-4">
+																	<!-- Simple timeline: due vs paid (static) -->
+																	<svg class="w-full h-16" viewBox="0 0 200 40"
+																		preserveAspectRatio="none">
+																		<rect x="0" y="18" width="200" height="2"
+																			fill="#e6e6e6" />
+																		<circle cx="60" cy="19" r="6" fill="#f97316" />
+																		<text x="60" y="8" font-size="8"
+																			fill="#374151">Due</text>
+																		<circle cx="140" cy="19" r="6" fill="#34d399" />
+																		<text x="140" y="8" font-size="8"
+																			fill="#374151">Paid</text>
+																	</svg>
+																</div>
+															</div>
+														</div>
+
+														<!-- Revenue Generated (detailed + growth sparkline) -->
+														<div class="bg-white rounded-2xl p-6 border">
+															<div class="flex items-center justify-between mb-4">
+																<div class="flex items-center gap-3">
+																	<div
+																		class="w-10 h-10 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center">
+																		<span
+																			class="material-symbols-outlined">show_chart</span>
+																	</div>
+																	<div>
+																		<div class="text-lg font-semibold">Revenue
+																			Generated</div>
+																		<div class="text-xs text-slate-400">Invoices and
+																			settled dates</div>
+																	</div>
+																</div>
+															</div>
+															<div class="border-t pt-4">
+																<div class="space-y-3 text-sm">
+																	<div class="flex justify-between">
+																		<div class="font-medium">INV-2025-9876</div>
+																		<div class="text-slate-500">Due: 2025-12-31 •
+																			Settled: 2026-01-20</div>
+																	</div>
+																	<div class="text-lg font-bold">$1,234,000.00</div>
+																</div>
+																<div class="mt-4">
+																	<!-- Small sparkline chart -->
+																	<svg class="w-full h-16" viewBox="0 0 200 40"
+																		preserveAspectRatio="none">
+																		<polyline
+																			points="0,30 30,24 60,20 90,16 120,12 150,10 180,6 200,4"
+																			fill="none" stroke="#06b6d4"
+																			stroke-width="3" stroke-linecap="round"
+																			stroke-linejoin="round" />
+																	</svg>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="border-t pt-4"></div>
+
+										<div class="flex items-start mb-2">
+											<div class="w-full">
+												<div class="inline-action-bar" role="toolbar"
+													aria-label="Quick actions">
+													<button class="action-btn" aria-label="New Task"
+														onclick="window.location.href='addinquiry.html'">
+														<span
+															class="icon w-6 h-6 rounded-full bg-emerald-50 text-emerald-600 material-symbols-outlined">playlist_add</span>
+														<span class="label font-medium text-cu-dark-blue">New
+															Task</span>
+													</button>
+													<button class="action-btn" aria-label="Log a Call">
+														<span
+															class="icon w-6 h-6 rounded-full bg-cyan-50 text-cyan-600 material-symbols-outlined">call</span>
+														<span class="label font-medium text-cu-dark-blue">Log a
+															Call</span>
+													</button>
+													<button class="action-btn" aria-label="New Event">
+														<span
+															class="icon w-6 h-6 rounded-full bg-violet-100 text-violet-600 material-symbols-outlined">event</span>
+														<span class="label font-medium text-cu-dark-blue">New
+															Event</span>
+													</button>
+													<button class="action-btn" aria-label="Email">
+														<span
+															class="icon w-6 h-6 rounded-full bg-slate-100 text-slate-600 material-symbols-outlined">email</span>
+														<span class="label font-medium text-cu-dark-blue">Email</span>
+													</button>
+												</div>
+											</div>
+										</div>
+
+										<!-- Filters and quick actions removed per request -->
+
+										<div class="space-y-2">
+											<div class="border rounded-md">
+												<button data-collapse-target="#upcomingSection"
+													class="w-full px-3 py-2 text-left flex items-center justify-between">
+													<div class="flex items-center gap-2">
+														<span
+															class="material-symbols-outlined text-slate-600">expand_more</span>
+														<span class="text-sm font-medium">Upcoming & Overdue</span>
+													</div>
+													<span class="text-xs text-slate-500"></span>
+												</button>
+												<div id="upcomingSection" class="px-3 pb-3 pt-0">
+													<ul class="mt-2">
+														<li
+															class="flex items-start gap-3 pb-3 border-b last:border-b-0">
+															<div class="w-8 flex flex-col items-center">
+																<div
+																	class="w-7 h-7 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center material-symbols-outlined text-sm">
+																	email</div>
+															</div>
+															<div class="self-stretch w-px bg-slate-100 mx-2"
+																aria-hidden="true"></div>
+															<div class="flex-1">
+																<div class="flex items-center justify-between">
+																	<div
+																		class="flex items-center gap-2 text-sm font-medium text-cu-dark-blue">
+																		Email</div>
+																	<div class="text-xs text-slate-400">Today</div>
+																</div>
+																<div class="text-xs text-slate-500 mt-1">You have an
+																	upcoming task with <span
+																		class="underline text-cu-light-blue">Nisal
+																		Amarasekara</span></div>
+															</div>
+														</li>
+													</ul>
+												</div>
+											</div>
+
+											<div class="border rounded-md">
+												<button data-collapse-target="#monthSection"
+													class="w-full px-3 py-2 text-left flex items-center justify-between">
+													<div class="flex items-center gap-2">
+														<span
+															class="material-symbols-outlined text-slate-600">expand_more</span>
+														<span class="text-sm font-medium">Recent Activity</span>
+													</div>
+													<!-- <div class="text-xs text-cu-light-blue">This Month</div> -->
+												</button>
+												<div id="monthSection" class="px-3 pb-3 pt-0">
+													<ul class="mt-2">
+														<li
+															class="flex items-start gap-3 pb-3 border-b last:border-b-0">
+															<div class="w-8 flex flex-col items-center">
+																<div
+																	class="w-7 h-7 rounded-full bg-cyan-50 text-cyan-600 flex items-center justify-center material-symbols-outlined text-sm">
+																	call</div>
+															</div>
+															<div class="self-stretch w-px bg-slate-100 mx-2"
+																aria-hidden="true"></div>
+															<div class="flex-1">
+																<div class="flex items-center justify-between">
+																	<div
+																		class="flex items-center gap-2 text-sm font-medium text-cu-dark-blue">
+																		Call</div>
+																	<div class="text-xs text-slate-400">Today</div>
+																</div>
+																<div class="text-xs text-slate-500 mt-1">You logged a
+																	call</div>
+															</div>
+														</li>
+													</ul>
+												</div>
+											</div>
+										</div>
+
+										<div class="border-t mt-4 pt-3 text-center">
+											<a class="text-cu-light-blue">View All</a>
+										</div>
+									</div>
+
+									<!-- Contacts card (right) -->
+									<div class="bg-white rounded-2xl p-6 border">
+										<div class="flex items-center justify-between mb-4">
+											<div class="flex items-center gap-3">
+												<div
+													class="w-10 h-10 rounded-full bg-violet-50 text-violet-600 flex items-center justify-center">
+													<span class="material-symbols-outlined">groups</span>
+												</div>
+												<div>
+													<div class="text-lg font-semibold">Contacts</div>
+												</div>
+											</div>
+											<div class="flex items-center gap-2">
+												<button id="newContactBtn"
+													class="px-3 py-1 border rounded-full text-sm bg-[#3eb2ed] text-white inline-flex items-center gap-2"
+													aria-label="New Contact">
+													<span
+														class="material-symbols-outlined filled text-sm">person_add</span>
+													<span>New Contact</span>
+												</button>
+											</div>
+										</div>
+										<div class="border-t pt-4"></div>
+
+										<div class="space-y-3">
+											<!-- Placeholder contact items -->
+											<div class="flex items-center justify-between">
+												<div class="flex items-center gap-3">
+													<div
+														class="w-9 h-9 rounded-full bg-slate-100 flex items-center justify-center text-slate-600">
+														NA</div>
+													<div>
+														<div class="text-sm font-medium">Nisal Amarasekara</div>
+														<div class="text-xs text-slate-400">nisal@example.com</div>
+													</div>
+												</div>
+												<span
+													class="text-xs font-semibold px-2 py-1 rounded bg-blue-100 text-blue-700">CEO</span>
+											</div>
+											<div class="flex items-center justify-between">
+												<div class="flex items-center gap-3">
+													<div
+														class="w-9 h-9 rounded-full bg-slate-100 flex items-center justify-center text-slate-600">
+														AB</div>
+													<div>
+														<div class="text-sm font-medium">Amal Bandara</div>
+														<div class="text-xs text-slate-400">amal@example.com</div>
+													</div>
+												</div>
+												<span
+													class="text-xs font-semibold px-2 py-1 rounded bg-green-100 text-green-700">IT</span>
+											</div>
+											<div class="flex items-center justify-between">
+												<div class="flex items-center gap-3">
+													<div
+														class="w-9 h-9 rounded-full bg-slate-100 flex items-center justify-center text-slate-600">
+														MS</div>
+													<div>
+														<div class="text-sm font-medium">Maya Senanayake</div>
+														<div class="text-xs text-slate-400">maya.s@example.com</div>
+													</div>
+												</div>
+												<span
+													class="text-xs font-semibold px-2 py-1 rounded bg-yellow-100 text-yellow-700">Finance</span>
+											</div>
+											<div class="flex items-center justify-between">
+												<div class="flex items-center gap-3">
+													<div
+														class="w-9 h-9 rounded-full bg-slate-100 flex items-center justify-center text-slate-600">
+														RK</div>
+													<div>
+														<div class="text-sm font-medium">Ruwan Karunaratne</div>
+														<div class="text-xs text-slate-400">ruwan.k@example.com</div>
+													</div>
+												</div>
+												<span
+													class="text-xs font-semibold px-2 py-1 rounded bg-purple-100 text-purple-700">HR</span>
+											</div>
+											<div class="flex items-center justify-between">
+												<div class="flex items-center gap-3">
+													<div
+														class="w-9 h-9 rounded-full bg-slate-100 flex items-center justify-center text-slate-600">
+														SP</div>
+													<div>
+														<div class="text-sm font-medium">Saroja Perera</div>
+														<div class="text-xs text-slate-400">saroja.p@example.com</div>
+													</div>
+												</div>
+												<span
+													class="text-xs font-semibold px-2 py-1 rounded bg-pink-100 text-pink-700">Admin</span>
+											</div>
+										</div>
+										<div class="border-t mt-4 pt-3 text-center">
+											<a class="text-cu-light-blue">View All</a>
+										</div>
+									</div>
+								</div>
+
+								<!-- Secondary row: Opportunities (left) & Cases (right) -->
+								<div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-4">
+
+									<!-- Notes & Attachments (moved here) -->
+									<div class="bg-white rounded-2xl p-6 border">
+										<div class="card-header-inline mb-4">
+											<div class="card-header-left">
+												<div
+													class="w-10 h-10 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center">
+													<span class="material-symbols-outlined">attach_file</span>
+												</div>
+												<div class="title-wrap">
+													<div class="text-lg font-semibold">Notes & Attachments</div>
+													<div class="text-xs text-slate-400">(2)</div>
+												</div>
+											</div>
+											<div class="card-header-actions">
+												<button id="newNoteBtn" aria-label="New Note"
+													class="px-3 py-1 border rounded-full text-sm bg-[#3eb2ed] text-white inline-flex items-center gap-2">
+													<span
+														class="material-symbols-outlined filled text-sm">note_add</span>
+													<span>New Note</span>
+												</button>
+												<button id="uploadFilesBtn" aria-label="Upload Files"
+													class="px-3 py-1 border rounded-full text-sm bg-[#3eb2ed] text-white inline-flex items-center gap-2">
+													<span
+														class="material-symbols-outlined filled text-sm">upload_file</span>
+													<span>Upload Files</span>
+												</button>
+											</div>
+										</div>
+										<div class="border-t pt-4 pb-4">
+											<div class="grid grid-cols-1 sm:grid-cols-2 gap-4 items-start">
+												<div class="flex items-start gap-3">
+													<div
+														class="w-10 h-10 rounded-md bg-white border flex items-center justify-center">
+														<div
+															class="w-6 h-6 bg-red-50 text-red-600 flex items-center justify-center rounded-sm">
+															<span
+																class="material-symbols-outlined text-sm">picture_as_pdf</span>
+														</div>
+													</div>
+													<div>
+														<a href="#" class="text-cu-light-blue font-medium">Business
+															Registration</a>
+														<div class="text-xs text-slate-500 mt-1">Jan 7, 2026 • 15KB •
+															docx</div>
+													</div>
+												</div>
+												<div class="flex items-start gap-3">
+													<div
+														class="w-10 h-10 rounded-md bg-amber-100 flex items-center justify-center">
+														<div
+															class="w-6 h-6 bg-amber-50 text-amber-700 flex items-center justify-center rounded-sm">
+															<span
+																class="material-symbols-outlined text-sm">description</span>
+														</div>
+													</div>
+													<div>
+														<a href="#" class="text-cu-light-blue font-medium">This Lead is
+															very sensitive.</a>
+														<div class="text-xs text-slate-500 mt-1">Jan 7, 2026 • Note
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="border-t mt-4 pt-3 text-center">
+											<a class="text-cu-light-blue">View All</a>
+										</div>
+									</div>
+
+
+									<!-- Cases card -->
+									<div class="bg-white rounded-2xl p-6 border">
+										<div class="flex items-center justify-between mb-4">
+											<div class="flex items-center gap-3">
+												<div
+													class="w-10 h-10 rounded-full bg-pink-50 text-pink-600 flex items-center justify-center">
+													<span class="material-symbols-outlined">work</span>
+												</div>
+												<div>
+													<div class="text-lg font-semibold">Cases <span
+															class="text-xs text-slate-400">(1)</span></div>
+												</div>
+											</div>
+											<button id="newCaseBtn"
+												class="px-3 py-1 border rounded-full text-sm bg-[#3eb2ed] text-white inline-flex items-center gap-2"
+												aria-label="New Case">
+												<span class="material-symbols-outlined filled text-sm">post_add</span>
+												<span>New Case</span>
+											</button>
+										</div>
+										<div class="border-t pt-4"></div>
+										<div class="text-sm">
+											<button id="caseIdToggle" type="button"
+												class="inline-flex items-center gap-2 text-cu-light-blue font-medium"
+												aria-expanded="false">
+												<span id="caseIdChevron"
+													class="material-symbols-outlined no-box-icon text-slate-500">expand_more</span>
+												<span class="underline">00001026</span>
+											</button>
+											<div id="caseDetails"
+												class="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm text-slate-600 hidden">
+												<div>
+													<div class="text-xs text-slate-400">Contact N...</div>
+													<div><a href="#" class="text-cu-light-blue underline">Nisal
+															Amarasekara</a></div>
+												</div>
+												<div>
+													<div class="text-xs text-slate-400">Subject:</div>
+													<div>Test 1</div>
+												</div>
+												<div>
+													<div class="text-xs text-slate-400">Priority:</div>
+													<div>Medium</div>
+												</div>
+											</div>
+										</div>
+										<div class="border-t mt-4 pt-3 text-center">
+											<a class="text-cu-light-blue">View All</a>
+										</div>
+									</div>
+								</div>
+
+								<!-- History card removed per request -->
+
+							</div>
+							<div id="paneDetails" class="hidden space-y-6">
+								<!-- Modernized Details layout -->
+								<div class="bg-white rounded-2xl p-6 shadow-xl">
+									<!-- Company Info section -->
+									<div class="flex items-center gap-4 mb-6 pb-6 border-b border-gray-100">
+										<div
+											class="w-14 h-14 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 text-white flex items-center justify-center shadow-md">
+											<span class="material-symbols-outlined text-3xl">domain</span>
+										</div>
+										<div>
+											<div class="text-2xl font-extrabold text-slate-900">Lead Info</div>
+											<!-- <div class="text-sm text-slate-400 mt-1">Edit company details and quick contacts</div> -->
+										</div>
+									</div>
+
+									<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+										<div
+											class="lg:col-span-3 bg-gray-50 rounded-lg p-8 min-h-[340px] flex flex-col justify-center w-full">
+											<form class="space-y-4">
+												<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+													<div>
+														<label class="block text-xs text-slate-500 mb-1">Select
+															Account</label>
+														<input id="companyPhone"
+															class="w-full border border-transparent rounded-md px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-cu-light-blue/30"
+															value="MERIDIAN INDUSTRIES LIMITED" />
+													</div>
+													<div>
+														<label class="block text-xs text-slate-500 mb-1">Website
+															URL</label>
+														<input id="companyWebsite"
+															class="w-full border border-transparent rounded-md px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-cu-light-blue/30"
+															value="www.acme.com" />
+													</div>
+												</div>
+												<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+													<div>
+														<label class="block text-xs text-slate-500 mb-1">First
+															Name</label>
+														<input
+															class="w-full border border-transparent rounded-md px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-cu-light-blue/30"
+															value="Nisal" />
+													</div>
+													<div>
+														<label class="block text-xs text-slate-500 mb-1">Last
+															Name</label>
+														<input
+															class="w-full border border-transparent rounded-md px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-cu-light-blue/30"
+															value="Amarasekara" />
+													</div>
+												</div>
+												<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+													<div>
+														<label
+															class="block text-xs text-slate-500 mb-1">Industry</label>
+														<input
+															class="w-full border border-transparent rounded-md px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-cu-light-blue/30"
+															value="Manufacturing" />
+													</div>
+													<div>
+														<label class="block text-xs text-slate-500 mb-1">Lead
+															Status</label>
+														<input
+															class="w-full border border-transparent rounded-md px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-cu-light-blue/30"
+															value="Open - Not Contacted" />
+													</div>
+												</div>
+												<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+													<div>
+														<label class="block text-xs text-slate-500 mb-1">Title/Job
+															Role</label>
+														<input
+															class="w-full border border-transparent rounded-md px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-cu-light-blue/30"
+															value="CEO" />
+													</div>
+													<div>
+														<label class="block text-xs text-slate-500 mb-1">Email
+															Address</label>
+														<input
+															class="w-full border border-transparent rounded-md px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-cu-light-blue/30"
+															value="nisal@gmail.com" />
+													</div>
+													<div>
+														<label class="block text-xs text-slate-500 mb-1">Lead
+															Source</label>
+														<input
+															class="w-full border border-transparent rounded-md px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-cu-light-blue/30"
+															value="Web" />
+													</div>
+												</div>
+											</form>
+										</div>
+
+
+										<!-- Address Info section (duplicated and renamed) -->
+										<div
+											class="lg:col-span-3 bg-gray-50 rounded-lg p-8 min-h-[340px] flex flex-col justify-center w-full">
+											<div class="flex items-center gap-4 mb-6 pb-6 border-b border-gray-100">
+												<div
+													class="w-14 h-14 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 text-white flex items-center justify-center shadow-md">
+													<span class="material-symbols-outlined text-3xl">location_on</span>
+												</div>
+												<div>
+													<div class="text-2xl font-extrabold text-slate-900">Address Info
+													</div>
+												</div>
+											</div>
+											<form class="space-y-8">
+												<!-- Shipping Address -->
+												<div>
+													<label
+														class="block text-sm font-semibold text-slate-700 mb-2">Address</label>
+													<div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+														<div>
+															<input
+																class="w-full border border-transparent rounded-md px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-cu-light-blue/30"
+																placeholder="Street Address" value="123 Main Street" />
+														</div>
+														<div>
+															<input
+																class="w-full border border-transparent rounded-md px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-cu-light-blue/30"
+																placeholder="City" value="Colombo" />
+														</div>
+														<div>
+															<input
+																class="w-full border border-transparent rounded-md px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-cu-light-blue/30"
+																placeholder="State/Province" value="Western" />
+														</div>
+														<div>
+															<input
+																class="w-full border border-transparent rounded-md px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-cu-light-blue/30"
+																placeholder="Postal Code" value="10000" />
+														</div>
+													</div>
+												</div>
+												<!-- Billing Address -->
+												<div>
+													<label
+														class="block text-sm font-semibold text-slate-700 mb-2">Billing
+														Address</label>
+													<div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+														<div>
+															<input
+																class="w-full border border-transparent rounded-md px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-cu-light-blue/30"
+																placeholder="Street Address" value="456 Market Road" />
+														</div>
+														<div>
+															<input
+																class="w-full border border-transparent rounded-md px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-cu-light-blue/30"
+																placeholder="City" value="Kandy" />
+														</div>
+														<div>
+															<input
+																class="w-full border border-transparent rounded-md px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-cu-light-blue/30"
+																placeholder="State/Province" value="Central" />
+														</div>
+														<div>
+															<input
+																class="w-full border border-transparent rounded-md px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-cu-light-blue/30"
+																placeholder="Postal Code" value="20000" />
+														</div>
+													</div>
+												</div>
+											</form>
+										</div>
+										<!-- Right: compact contacts card -->
+									</div>
+								</div>
+
+								<!-- General Info section (modern) -->
+								<!-- <div class="bg-white rounded-2xl p-6 shadow-xl">
+										<div class="flex items-center gap-4 mb-6 pb-6 border-b border-gray-100">
+											<div class="w-14 h-14 rounded-xl bg-gradient-to-br from-cyan-500 to-teal-500 text-white flex items-center justify-center shadow-md">
+												<span class="material-symbols-outlined text-3xl">info</span>
+											</div>
+											<div>
+												<div class="text-2xl font-extrabold">General Info</div>
+												<div class="text-sm text-slate-400 mt-1">Registration, status and references</div>
+											</div>
+										</div>
+										<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+											<div class="lg:col-span-2 space-y-4">
+												<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+													<div>
+														<label class="block text-xs text-slate-500 mb-1">Registered Date *</label>
+														<input type="date" class="w-full border border-gray-200 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-cu-light-blue/30" value="2026-01-04" />
+													</div>
+													<div>
+														<label class="block text-xs text-slate-500 mb-1">Lead/Client Status *</label>
+														<select class="w-full border border-gray-200 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-cu-light-blue/30"><option>Prospect</option></select>
+													</div>
+												</div>
+												<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+													<div>
+														<label class="block text-xs text-slate-500 mb-1">Lead/Client Source *</label>
+														<select class="w-full border border-gray-200 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-cu-light-blue/30"><option>Email</option></select>
+													</div>
+													<div>
+														<label class="block text-xs text-slate-500 mb-1">Lead/Client Owner *</label>
+														<input id="leadOwner" class="w-full border border-gray-200 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-cu-light-blue/30" value="Nisal Amarasekara" />
+													</div>
+													</div>
+												<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+													<div>
+														<label class="block text-xs text-slate-500 mb-1">Contracting Office *</label>
+														<input class="w-full border border-gray-200 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-cu-light-blue/30" value="Sri Lanka" />
+													</div>
+													<div>
+														<label class="block text-xs text-slate-500 mb-1">Related Offices *</label>
+														<select class="w-full border border-gray-200 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-cu-light-blue/30"><option>Sri Lanka</option></select>
+													</div>
+												</div>
+												<div>
+													<label class="block text-xs text-slate-500 mb-1">Description</label>
+													<textarea class="w-full border border-gray-200 rounded-md px-3 py-2 text-sm h-28 focus:outline-none focus:ring-2 focus:ring-cu-light-blue/30" placeholder="Enter description"></textarea>
+												</div>
+											</div>
+											<div class="space-y-4">
+												<div>
+													<label class="block text-xs text-slate-500 mb-1">Reference No</label>
+													<input class="w-full border border-gray-200 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-cu-light-blue/30" placeholder="Enter Reference ID" />
+												</div>
+												<div>
+													<label class="block text-xs text-slate-500 mb-1">ICU ID</label>
+													<input class="w-full border border-gray-200 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-cu-light-blue/30" placeholder="Enter ICU ID" />
+												</div>
+												<div>
+													<label class="block text-xs text-slate-500 mb-1">CUSI ID</label>
+													<input class="w-full border border-gray-200 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-cu-light-blue/30" placeholder="Enter CUSI ID" />
+												</div>
+												<div class="flex items-center gap-2">
+													<label class="flex items-center gap-2 text-sm"><input type="checkbox" class="rounded"/> TC Buyer</label>
+												</div>
+											</div>
+										</div>
+									</div> -->
+							</div>
+						</div>
+					</div>
+				</section>
+
+				<!-- Main grid: left column wide, right column narrow -->
+				<section class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+					<div class="lg:col-span-2 space-y-6">
+
+					</div>
+
+
+				</section>
+			</main>
+		</div>
+	</div>
+
+
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+			const menuBtn = document.getElementById('headerMenuBtn');
+			const menu = document.getElementById('headerMenu');
+
+			function closeMenu() {
+				if (menu) { menu.classList.add('hidden'); menuBtn && menuBtn.setAttribute('aria-expanded', 'false'); }
+			}
+
+			if (menuBtn && menu) {
+				menuBtn.addEventListener('click', function (e) {
+					e.stopPropagation();
+					const isHidden = menu.classList.contains('hidden');
+					document.querySelectorAll('#headerMenu, #globalActionsMenu').forEach(el => el.classList.add('hidden'));
+					if (isHidden) { menu.classList.remove('hidden'); menuBtn.setAttribute('aria-expanded', 'true'); }
+					else { closeMenu(); }
+				});
+
+				// action handlers
+				menu.addEventListener('click', function (e) {
+					const btn = e.target.closest('button[data-action]');
+					if (!btn) return;
+					const action = btn.getAttribute('data-action');
+					closeMenu();
+					switch (action) {
+						case 'new-opportunity': alert('New Opportunity clicked'); break;
+						case 'change-owner': alert('Change Owner clicked'); break;
+						case 'submit-hod': alert('Submit for HOD approval clicked'); break;
+						case 'edit': alert('Edit clicked'); break;
+						case 'delete': if (confirm('Delete this account?')) { alert('Deleted (demo)'); } break;
+					}
+				});
+
+				// close on outside click
+				document.addEventListener('click', function (e) {
+					if (!menu.contains(e.target) && e.target !== menuBtn) closeMenu();
+				});
+			}
+		});
+	</script>
+
+	<!-- Invalidate Reason Modal -->
+	<div id="invalidateModal" class="hidden fixed inset-0 bg-black/50 z-50 px-4"
+		style="align-items: flex-start; justify-content: center; padding-top: 14vh;">
+		<div class="max-w-sm w-full bg-white rounded-2xl overflow-hidden shadow-xl">
+			<div class="bg-[#1b2747] text-white px-6 py-4 rounded-t-2xl">
+				<div class="text-left text-lg font-semibold">Validation for Invalidate</div>
+			</div>
+			<div class="p-6 space-y-4">
+				<div class="text-sm text-slate-700">A reason is required to invalidate this lead. Please select or enter
+					a reason before continuing.</div>
+				<div class="bg-gray-50 border rounded p-3 text-sm text-slate-700">
+					<ul class="list-disc pl-5 space-y-1">
+						<li><strong>Lead is incorrect</strong></li>
+						<li><strong>Lead is incomplete</strong></li>
+						<li><strong>Lead is not usable</strong></li>
+					</ul>
+				</div>
+				<div>
+					<select id="invalidateReasonSelect" class="w-full border rounded px-3 py-2 text-sm">
+						<option value="">-- Select a reason --</option>
+						<option value="incorrect">Lead is incorrect</option>
+						<option value="incomplete">Lead is incomplete</option>
+						<option value="not_usable">Lead is not usable</option>
+						<option value="other">Other (enter below)</option>
+					</select>
+				</div>
+				<div>
+					<textarea id="invalidateReasonText" placeholder="Optional details or a custom reason"
+						class="w-full border rounded px-3 py-2 text-sm h-20"></textarea>
+					<div id="invalidateError" class="text-sm text-rose-600 mt-2 hidden">A reason is required to
+						invalidate this lead. Please select or enter a reason before continuing.</div>
+				</div>
+				<div class="flex gap-3 justify-end">
+					<button id="invalidateCancel"
+						class="px-4 py-2 rounded-full border border-slate-300 hover:bg-slate-50 transition">Cancel</button>
+					<button id="invalidateConfirm"
+						class="px-4 py-2 rounded-full bg-rose-600 text-white hover:bg-rose-700 transition">Invalidate
+						Lead</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		function showInvalidateModal(originIndex) {
+			window.invalidateOriginIndex = typeof originIndex === 'number' ? originIndex : (window.invalidateOriginIndex || 1);
+			var m = document.getElementById('invalidateModal'); if (!m) return; m.classList.remove('hidden'); m.style.display = 'flex';
+			var sel = document.getElementById('invalidateReasonSelect'); if (sel) sel.value = '';
+			var txt = document.getElementById('invalidateReasonText'); if (txt) txt.value = '';
+			var err = document.getElementById('invalidateError'); if (err) err.classList.add('hidden');
+		}
+		function hideInvalidateModal() {
+			var m = document.getElementById('invalidateModal'); if (!m) return; m.classList.add('hidden'); m.style.display = 'none';
+		}
+		document.addEventListener('DOMContentLoaded', function () {
+			var invCancel = document.getElementById('invalidateCancel');
+			var invConfirm = document.getElementById('invalidateConfirm');
+			var invSelect = document.getElementById('invalidateReasonSelect');
+			var invText = document.getElementById('invalidateReasonText');
+			var invError = document.getElementById('invalidateError');
+			if (invCancel) invCancel.addEventListener('click', function () { hideInvalidateModal(); });
+			if (invConfirm) invConfirm.addEventListener('click', function () {
+				var reason = (invSelect && invSelect.value) || '';
+				var freeText = (invText && invText.value || '').trim();
+				if (!reason && !freeText) { if (invError) invError.classList.remove('hidden'); return; }
+				var finalReason = (reason === 'other' ? freeText : (reason || freeText));
+				console.log('Invalidate reason:', finalReason);
+				// apply invalidate: same as verifyInvalid
+				try {
+					// mark previous steps (before origin) as completed/green
+					var origin = (window.invalidateOriginIndex != null) ? window.invalidateOriginIndex : 1;
+					var steps = document.querySelectorAll('.arrow-step');
+					for (var i = 0; i < Math.min(origin, steps.length); i++) {
+						try { var s = steps[i]; if (s) { s.classList.remove('disqualified', 'active'); s.classList.add('completed'); } } catch (e) { }
+					}
+					// apply invalidate to the origin step (usually Verify)
+					stage1Status = 'invalid';
+					isInvalid = true;
+					current = origin;
+					var vStep = steps[origin];
+					if (vStep) { vStep.classList.remove('completed', 'active'); vStep.classList.add('disqualified'); var sp = vStep.querySelector('span'); if (sp) sp.textContent = 'Invalid'; }
+				} catch (e) { console.error(e); }
+				hideInvalidateModal();
+				render();
+			});
+		});
+	</script>
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+			const tabHome = document.getElementById('tabHome');
+			const tabDetails = document.getElementById('tabDetails');
+			const tabFinance = document.getElementById('tabFinance');
+			const paneHome = document.getElementById('paneHome');
+			const paneDetails = document.getElementById('paneDetails');
+			const paneFinance = document.getElementById('paneFinance');
+			const rightSidebar = document.getElementById('rightSidebar');
+
+			function resetTabs() {
+				[tabHome, tabDetails, tabFinance].forEach(t => { if (t) { t.classList.remove('bg-cu-light-blue/10', 'text-cu-dark-blue', 'border-b-2', 'border-cu-light-blue', 'text-cu-light-blue'); t.classList.add('text-slate-600'); } });
+			}
+
+			function hidePanes() {
+				[paneHome, paneDetails, paneFinance].forEach(p => { if (p) p.classList.add('hidden'); });
+			}
+
+			function showHome() {
+				resetTabs();
+				if (tabHome) { tabHome.classList.add('text-cu-light-blue', 'border-b-2', 'border-cu-light-blue'); tabHome.classList.remove('text-slate-600'); }
+				hidePanes();
+				if (paneHome) paneHome.classList.remove('hidden');
+				if (rightSidebar) rightSidebar.classList.remove('hidden');
+			}
+
+			function showDetails() {
+				resetTabs();
+				if (tabDetails) { tabDetails.classList.add('text-cu-light-blue', 'border-b-2', 'border-cu-light-blue'); tabDetails.classList.remove('text-slate-600'); }
+				hidePanes();
+				if (paneDetails) paneDetails.classList.remove('hidden');
+				if (rightSidebar) rightSidebar.classList.add('hidden');
+			}
+
+			function showFinance() {
+				resetTabs();
+				if (tabFinance) { tabFinance.classList.add('bg-cu-light-blue/10', 'text-cu-dark-blue'); tabFinance.classList.remove('text-slate-600'); }
+				hidePanes();
+				if (paneFinance) paneFinance.classList.remove('hidden');
+				if (rightSidebar) rightSidebar.classList.add('hidden');
+			}
+
+			if (tabHome) tabHome.addEventListener('click', showHome);
+			if (tabDetails) tabDetails.addEventListener('click', showDetails);
+			if (tabFinance) tabFinance.addEventListener('click', showFinance);
+		});
+	</script>
+
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+			// collapse toggles for activity sections
+			document.querySelectorAll('[data-collapse-target]').forEach(btn => {
+				btn.addEventListener('click', function (e) {
+					const target = document.querySelector(this.getAttribute('data-collapse-target'));
+					if (!target) return;
+					target.classList.toggle('hidden');
+					// toggle chevron rotate
+					const icon = this.querySelector('.material-symbols-outlined');
+					if (icon) icon.textContent = icon.textContent === 'expand_more' ? 'expand_less' : 'expand_more';
+				});
+			});
+			// ensure sections start collapsed by default
+			document.querySelectorAll('#upcomingSection, #monthSection').forEach(el => el.classList.add('hidden'));
+			// ensure chevrons show collapsed state and set aria
+			document.querySelectorAll('[data-collapse-target]').forEach(b => {
+				const ic = b.querySelector('.material-symbols-outlined'); if (ic) ic.textContent = 'expand_more';
+				b.setAttribute('aria-expanded', 'false');
+			});
+			// Expand All button
+			const expandAll = document.getElementById('expandAllBtn');
+			if (expandAll) {
+				expandAll.addEventListener('click', function () {
+					document.querySelectorAll('#upcomingSection, #monthSection').forEach(el => el.classList.remove('hidden'));
+					document.querySelectorAll('[data-collapse-target]').forEach(b => {
+						const ic = b.querySelector('.material-symbols-outlined'); if (ic) ic.textContent = 'expand_less';
+					});
+				});
+			}
+		});
+	</script>
+
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+			const newTask = document.getElementById('newTaskBtn');
+			if (newTask) {
+				newTask.addEventListener('click', function (e) {
+					// Navigate to add inquiry page
+					window.location.href = 'addinquiry.html';
+				});
+			}
+		});
+	</script>
+
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+			const openCaseBtns = Array.from(document.querySelectorAll('#openNewCaseBtn, #newCaseBtn'));
+			const modal = document.getElementById('newCaseModal');
+			const cancelBtn = document.getElementById('cancelNewCase');
+			const saveBtn = document.getElementById('saveNewCase');
+
+			function openModal() { modal.classList.remove('hidden'); modal.classList.add('flex'); document.body.style.overflow = 'hidden'; }
+			function closeModal() { modal.classList.add('hidden'); modal.classList.remove('flex'); document.body.style.overflow = ''; }
+
+			if (openCaseBtns.length && modal) {
+				openCaseBtns.forEach(function (btn) {
+					if (btn) btn.addEventListener('click', function (e) { e.preventDefault(); openModal(); });
+				});
+			}
+			if (cancelBtn) { cancelBtn.addEventListener('click', function (e) { e.preventDefault(); closeModal(); }); }
+			if (saveBtn) {
+				saveBtn.addEventListener('click', function (e) {
+					e.preventDefault();
+					const payload = {
+						contact: document.getElementById('caseContact')?.value || '',
+						status: document.getElementById('caseStatus')?.value || '',
+						subject: document.getElementById('caseSubject')?.value || '',
+						description: document.getElementById('caseDescription')?.value || ''
+					};
+					console.log('New case:', payload);
+					alert('Case saved (demo)');
+					closeModal();
+				});
+			}
+
+			// close on outside click
+			if (modal) {
+				modal.addEventListener('click', function (e) { if (e.target === modal) closeModal(); });
+			}
+		});
+	</script>
+
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+			const openNoteBtns = Array.from(document.querySelectorAll('#openNewNoteBtn, #newNoteBtn'));
+			const modal = document.getElementById('newNoteModal');
+			const cancelBtn = document.getElementById('cancelNewNote');
+			const saveBtn = document.getElementById('saveNewNote');
+			const chkPrivate = document.getElementById('notePrivate');
+			const chkPublic = document.getElementById('notePublic');
+
+			function openModal() { modal.classList.remove('hidden'); modal.classList.add('flex'); document.body.style.overflow = 'hidden'; }
+			function closeModal() { modal.classList.add('hidden'); modal.classList.remove('flex'); document.body.style.overflow = ''; }
+
+			if (openNoteBtns.length && modal) {
+				openNoteBtns.forEach(function (b) { if (b) b.addEventListener('click', function (e) { e.preventDefault(); openModal(); }); });
+			}
+			if (cancelBtn) { cancelBtn.addEventListener('click', function (e) { e.preventDefault(); closeModal(); }); }
+
+			// Make Private/Public mutually exclusive
+			if (chkPrivate && chkPublic) {
+				chkPrivate.addEventListener('change', function () { if (this.checked) chkPublic.checked = false; });
+				chkPublic.addEventListener('change', function () { if (this.checked) chkPrivate.checked = false; });
+			}
+
+			if (saveBtn) {
+				saveBtn.addEventListener('click', function (e) {
+					e.preventDefault();
+					const payload = {
+						title: document.getElementById('noteTitle')?.value || '',
+						private: !!document.getElementById('notePrivate')?.checked,
+						public: !!document.getElementById('notePublic')?.checked,
+						body: document.getElementById('noteBody')?.value || ''
+					};
+					console.log('New note:', payload);
+					alert('Note saved (demo)');
+					closeModal();
+				});
+			}
+
+			if (modal) { modal.addEventListener('click', function (e) { if (e.target === modal) closeModal(); }); }
+		});
+	</script>
+
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+			const changeBtn = document.getElementById('changeLogoBtn');
+			const removeBtn = document.getElementById('removeLogoBtn');
+			const fileInput = document.getElementById('companyLogoInput');
+			const logoImg = document.getElementById('companyLogo');
+
+			if (changeBtn && fileInput && logoImg) {
+				changeBtn.addEventListener('click', function (e) { e.preventDefault(); fileInput.click(); });
+				fileInput.addEventListener('change', function () {
+					const f = this.files && this.files[0];
+					if (!f) return;
+					const url = URL.createObjectURL(f);
+					logoImg.src = url;
+				});
+
+				// Disqualify button handler (for Qualify modal only) - open the disqualify reason modal
+				var __csd = document.getElementById('confirmStepDisqualify');
+				if (__csd) {
+					__csd.addEventListener('click', function () {
+						// close the confirm modal and open the disqualify flow
+						hideConfirmStep();
+						// show a modal to collect disqualification reason
+						try { if (typeof showDisqualifyModal === 'function') showDisqualifyModal(); } catch (e) { console.error(e); }
+					});
+				}
+			}
+			if (removeBtn && logoImg) {
+				removeBtn.addEventListener('click', function (e) { e.preventDefault(); logoImg.src = 'https://via.placeholder.com/150?text=No+Logo'; });
+			}
+		});
+	</script>
+	<!-- Disqualify Lead Modal -->
+	<div id="disqualifyModal" class="hidden fixed inset-0 bg-black/50 z-50 px-4"
+		style="align-items: flex-start; justify-content: center; padding-top: 18vh;">
+		<div class="max-w-sm w-full bg-white rounded-2xl overflow-hidden shadow-xl">
+			<div class="bg-[#1b2747] text-white px-6 py-4 rounded-t-2xl">
+				<div class="text-left text-lg font-semibold">Disqualify Lead</div>
+			</div>
+			<div class="p-6 space-y-4">
+				<div class="text-sm text-slate-700">You are disqualifying this lead. <strong>Please select or enter a
+						disqualification reason to continue.</strong></div>
+				<div>
+					<select id="disqualifyReasonSelect" class="w-full border rounded px-3 py-2 text-sm">
+						<option value="">-- Select a reason --</option>
+						<option value="not_relevant">Not relevant / out of scope</option>
+						<option value="duplicate">Duplicate lead</option>
+						<option value="invalid_contact">Invalid contact details</option>
+						<option value="no_budget">No budget / not willing to pay</option>
+						<option value="other">Other (enter below)</option>
+					</select>
+				</div>
+				<div>
+					<textarea id="disqualifyReasonText" placeholder="Optional details or a custom reason"
+						class="w-full border rounded px-3 py-2 text-sm h-24"></textarea>
+					<div id="disqualifyError" class="text-sm text-rose-600 mt-2 hidden">Please select or enter a
+						disqualification reason to continue.</div>
+				</div>
+				<div class="flex gap-3 justify-end">
+					<button id="disqualifyCancel"
+						class="px-4 py-2 rounded-full border border-slate-300 hover:bg-slate-50 transition">Cancel</button>
+					<button id="disqualifyConfirm"
+						class="px-4 py-2 rounded-full bg-rose-600 text-white hover:bg-rose-700 transition">Confirm
+						Disqualification</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		// Disqualify modal helpers and wiring
+		function showDisqualifyModal() {
+			var m = document.getElementById('disqualifyModal');
+			if (!m) return; m.classList.remove('hidden'); m.style.display = 'flex';
+			// reset fields
+			var sel = document.getElementById('disqualifyReasonSelect'); if (sel) sel.value = '';
+			var txt = document.getElementById('disqualifyReasonText'); if (txt) txt.value = '';
+			var err = document.getElementById('disqualifyError'); if (err) err.classList.add('hidden');
+		}
+		function hideDisqualifyModal() {
+			var m = document.getElementById('disqualifyModal'); if (!m) return; m.classList.add('hidden'); m.style.display = 'none';
+		}
+		document.addEventListener('DOMContentLoaded', function () {
+			var disqCancel = document.getElementById('disqualifyCancel');
+			var disqConfirm = document.getElementById('disqualifyConfirm');
+			var disqSelect = document.getElementById('disqualifyReasonSelect');
+			var disqText = document.getElementById('disqualifyReasonText');
+			var disqError = document.getElementById('disqualifyError');
+
+			if (disqCancel) disqCancel.addEventListener('click', function () { hideDisqualifyModal(); });
+
+			if (disqConfirm) {
+				disqConfirm.addEventListener('click', function () {
+					var reason = (disqSelect && disqSelect.value) || '';
+					var freeText = (disqText && disqText.value || '').trim();
+					if (!reason && !freeText) { if (disqError) disqError.classList.remove('hidden'); return; }
+					// if reason == other, prefer freeText
+					var finalReason = (reason === 'other' ? freeText : (reason || freeText));
+					console.log('Disqualification reason:', finalReason);
+					// Optional: update UI to show Disqualified state on the Qualify step
+					try {
+						var stepEl = document.querySelectorAll('.arrow-step')[4];
+						if (stepEl) {
+							var span = stepEl.querySelector('span'); if (span) span.textContent = 'Disqualified';
+							// apply disqualified styling
+							stepEl.classList.remove('completed', 'active');
+							stepEl.classList.add('disqualified');
+						}
+						if (window.stageMeta && window.stageMeta[4]) window.stageMeta[4].key = 'disqualified';
+					} catch (e) { console.error(e); }
+					hideDisqualifyModal();
+				});
+			}
+		});
+	</script>
+
+	<!-- Select Services Modal -->
+	<div id="selectServicesModal" class="fixed inset-0 z-[9999] hidden select-services-modal"
+		style="position: fixed !important; display: none;">
+		<style>
+			/* Modal layout tweaks to match design */
+			.select-services-modal .flex-1.flex.overflow-hidden {
+				padding: 20px;
+			}
+
+			.select-services-modal .services-column {
+				display: flex;
+				flex-direction: column;
+				border-radius: 12px;
+				overflow: hidden;
+				box-shadow: 0 6px 18px rgba(2, 6, 23, 0.04);
+			}
+
+			.select-services-modal .services-column>.col-header {
+				background: #151735;
+				color: #fff;
+				padding: 12px 18px;
+				font-weight: 600;
+				font-size: 0.9rem;
+			}
+
+			.select-services-modal .accordion-header {
+				background: linear-gradient(180deg, #5fd0f7, #42c5f5);
+				border-radius: 10px;
+				padding: 10px 14px;
+				color: #fff;
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				cursor: pointer;
+				box-shadow: 0 6px 14px rgba(59, 130, 246, 0.08);
+			}
+
+			.select-services-modal .accordion-body {
+				background: #fff;
+				border: 1px solid #eef2f6;
+				border-radius: 8px;
+				margin-top: 8px;
+				padding: 14px;
+			}
+
+			.select-services-modal .accordion-body .item {
+				display: flex;
+				align-items: center;
+				gap: 10px;
+				padding: 8px 4px;
+			}
+
+			.select-services-modal .accordion-body .item input[type=checkbox] {
+				width: 18px;
+				height: 18px
+			}
+
+			.select-services-modal .certification-scroll {
+				max-height: 520px;
+				overflow-y: auto;
+				padding-right: 6px
+			}
+
+			.select-services-modal .certification-scroll::-webkit-scrollbar {
+				width: 10px
+			}
+
+			.select-services-modal .certification-scroll::-webkit-scrollbar-thumb {
+				background: #cbd5e1;
+				border-radius: 999px
+			}
+
+			.select-services-modal .col-icon {
+				width: 56px;
+				height: 56px;
+				border-radius: 10px;
+				background: #f0f7fb;
+				display: flex;
+				align-items: center;
+				justify-content: center
+			}
+		</style>
+		<div class="fixed inset-0 bg-black/50" onclick="closeServicesModal()"></div>
+
+		<div
+			class="fixed inset-0 md:inset-8 lg:inset-16 xl:inset-20 bg-white rounded-none md:rounded-xl shadow-2xl flex flex-col overflow-hidden z-[10000]">
+			<div class="bg-[#1b1e42] px-6 py-4 flex items-center justify-between flex-shrink-0">
+				<h2 class="text-white text-lg font-semibold">Select Services</h2>
+				<button onclick="closeServicesModal()" class="text-red-500 hover:text-red-400 transition">
+					<span class="material-symbols-outlined text-2xl">close</span>
+				</button>
+			</div>
+
+			<div class="flex-1 flex overflow-hidden bg-gray-50 p-4 gap-4">
+				<div class="flex-1 flex flex-col bg-white rounded-2xl shadow-sm overflow-hidden">
+					<div class="bg-[#1b1e42] px-6 py-3 rounded-t-2xl flex-shrink-0">
+						<h3 class="text-white font-semibold text-sm">Testing</h3>
+					</div>
+					<div class="flex-1 flex items-center justify-center p-8 bg-white">
+						<div class="text-center">
+							<div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-50 mb-3">
+								<span class="material-symbols-outlined text-blue-300"
+									style="font-size: 36px;">inbox</span>
+							</div>
+							<h4 class="text-gray-700 font-semibold text-sm mb-1">No categories available</h4>
+							<p class="text-xs text-gray-400">Check back later for updates</p>
+						</div>
+					</div>
+				</div>
+
+				<div class="flex-1 flex flex-col bg-white rounded-2xl shadow-sm overflow-hidden">
+					<div class="bg-[#1b1e42] px-6 py-3 rounded-t-2xl flex-shrink-0">
+						<h3 class="text-white font-semibold text-sm">Inspection</h3>
+					</div>
+					<div class="flex-1 flex items-center justify-center p-8 bg-white">
+						<div class="text-center">
+							<div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-50 mb-3">
+								<span class="material-symbols-outlined text-blue-300"
+									style="font-size: 36px;">inbox</span>
+							</div>
+							<h4 class="text-gray-700 font-semibold text-sm mb-1">No categories available</h4>
+							<p class="text-xs text-gray-400">Check back later for updates</p>
+						</div>
+					</div>
+				</div>
+
+				<div class="flex-1 flex flex-col bg-white rounded-2xl shadow-sm overflow-hidden">
+					<div class="bg-[#1b1e42] px-6 py-3 rounded-t-2xl flex-shrink-0">
+						<h3 class="text-white font-semibold text-sm">Certification</h3>
+					</div>
+					<div class="flex-1 overflow-y-auto p-6 bg-white">
+						<div class="space-y-3">
+							<div class="w-full">
+								<button onclick="toggleServiceCategory('organic')"
+									class="w-full flex items-center justify-between px-4 py-3 bg-[#42c5f5] hover:bg-[#38b4e3] text-white rounded-lg transition-all shadow-sm">
+									<div class="flex items-center gap-2.5">
+										<span class="material-symbols-outlined text-lg">eco</span>
+										<span class="font-medium text-sm">Organic</span>
+									</div>
+									<span id="organic-chevron"
+										class="material-symbols-outlined text-lg transition-transform">expand_more</span>
+								</button>
+								<div id="organic-content" class="mt-2">
+									<div class="accordion-body">
+										<div class="text-xs text-slate-400 mb-3">Standard</div>
+										<div class="space-y-3">
+											<label class="item"><input type="checkbox" /> <span
+													class="text-sm">NOP</span></label>
+											<label class="item"><input type="checkbox" /> <span class="text-sm">SL
+													Organic</span></label>
+											<label class="item"><input type="checkbox" /> <span
+													class="text-sm">ROC</span></label>
+											<label class="item"><input type="checkbox" /> <span
+													class="text-sm">GOLS</span></label>
+											<label class="item"><input type="checkbox" /> <span
+													class="text-sm">BIOSuisse</span></label>
+											<label class="item"><input type="checkbox" /> <span class="text-sm">Korean
+													Organic</span></label>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="w-full">
+								<button onclick="toggleServiceCategory('textile')"
+									class="w-full flex items-center justify-between px-4 py-3 bg-[#42c5f5] hover:bg-[#38b4e3] text-white rounded-lg transition-all shadow-sm">
+									<div class="flex items-center gap-2.5">
+										<span class="material-symbols-outlined text-lg">checkroom</span>
+										<span class="font-medium text-sm">Textile</span>
+									</div>
+									<span id="textile-chevron"
+										class="material-symbols-outlined text-lg transition-transform">expand_more</span>
+								</button>
+								<div id="textile-content" class="hidden mt-2">
+									<div class="accordion-body">
+										<div class="text-xs text-slate-400 mb-3">Standard</div>
+										<div class="space-y-3">
+											<label class="item"><input type="checkbox" /> <span
+													class="text-sm">GOTS</span></label>
+											<label class="item"><input type="checkbox" /> <span
+													class="text-sm">GRS</span></label>
+											<label class="item"><input type="checkbox" /> <span
+													class="text-sm">OCS</span></label>
+											<label class="item"><input type="checkbox" /> <span
+													class="text-sm">RCS</span></label>
+											<label class="item"><input type="checkbox" /> <span
+													class="text-sm">CCS</span></label>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<button
+								class="w-full flex items-center justify-between px-4 py-3 bg-[#42c5f5] hover:bg-[#38b4e3] text-white rounded-lg transition-all shadow-sm">
+								<div class="flex items-center gap-2.5">
+									<span class="material-symbols-outlined text-lg">agriculture</span>
+									<span class="font-medium text-sm">Agriculture</span>
+								</div>
+								<span class="material-symbols-outlined text-lg">expand_more</span>
+							</button>
+
+							<button
+								class="w-full flex items-center justify-between px-4 py-3 bg-[#42c5f5] hover:bg-[#38b4e3] text-white rounded-lg transition-all shadow-sm">
+								<div class="flex items-center gap-2.5">
+									<span class="material-symbols-outlined text-lg">water_drop</span>
+									<span class="font-medium text-sm">Aqua</span>
+								</div>
+								<span class="material-symbols-outlined text-lg">expand_more</span>
+							</button>
+
+							<button
+								class="w-full flex items-center justify-between px-4 py-3 bg-[#42c5f5] hover:bg-[#38b4e3] text-white rounded-lg transition-all shadow-sm">
+								<div class="flex items-center gap-2.5">
+									<span class="material-symbols-outlined text-lg">groups</span>
+									<span class="font-medium text-sm">Social</span>
+								</div>
+								<span class="material-symbols-outlined text-lg">expand_more</span>
+							</button>
+
+							<button
+								class="w-full flex items-center justify-between px-4 py-3 bg-[#42c5f5] hover:bg-[#38b4e3] text-white rounded-lg transition-all shadow-sm">
+								<div class="flex items-center gap-2.5">
+									<span class="material-symbols-outlined text-lg">restaurant</span>
+									<span class="font-medium text-sm">Food safety</span>
+								</div>
+								<span class="material-symbols-outlined text-lg">expand_more</span>
+							</button>
+
+							<button
+								class="w-full flex items-center justify-between px-4 py-3 bg-[#42c5f5] hover:bg-[#38b4e3] text-white rounded-lg transition-all shadow-sm">
+								<div class="flex items-center gap-2.5">
+									<span class="material-symbols-outlined text-lg">more_horiz</span>
+									<span class="font-medium text-sm">Other</span>
+								</div>
+								<span class="material-symbols-outlined text-lg">expand_more</span>
+							</button>
+
+							<button
+								class="w-full flex items-center justify-between px-4 py-3 bg-[#42c5f5] hover:bg-[#38b4e3] text-white rounded-lg transition-all shadow-sm">
+								<div class="flex items-center gap-2.5">
+									<span class="material-symbols-outlined text-lg">settings</span>
+									<span class="font-medium text-sm">System</span>
+								</div>
+								<span class="material-symbols-outlined text-lg">expand_more</span>
+							</button>
+
+							<button
+								class="w-full flex items-center justify-between px-4 py-3 bg-[#42c5f5] hover:bg-[#38b4e3] text-white rounded-lg transition-all shadow-sm">
+								<div class="flex items-center gap-2.5">
+									<span class="material-symbols-outlined text-lg">travel_explore</span>
+									<span class="font-medium text-sm">Tourism</span>
+								</div>
+								<span class="material-symbols-outlined text-lg">expand_more</span>
+							</button>
+
+							<button
+								class="w-full flex items-center justify-between px-4 py-3 bg-[#42c5f5] hover:bg-[#38b4e3] text-white rounded-lg transition-all shadow-sm">
+								<div class="flex items-center gap-2.5">
+									<span class="material-symbols-outlined text-lg">verified_user</span>
+									<span class="font-medium text-sm">Assurance Services</span>
+								</div>
+								<span class="material-symbols-outlined text-lg">expand_more</span>
+							</button>
+
+							<button
+								class="w-full flex items-center justify-between px-4 py-3 bg-[#42c5f5] hover:bg-[#38b4e3] text-white rounded-lg transition-all shadow-sm">
+								<div class="flex items-center gap-2.5">
+									<span class="material-symbols-outlined text-lg">park</span>
+									<span class="font-medium text-sm">Forestry</span>
+								</div>
+								<span class="material-symbols-outlined text-lg">expand_more</span>
+							</button>
+						</div>
+					</div>
+				</div>
+
+				<div class="flex-1 flex flex-col bg-white rounded-2xl shadow-sm overflow-hidden">
+					<div class="bg-[#1b1e42] px-6 py-3 rounded-t-2xl flex-shrink-0">
+						<h3 class="text-white font-semibold text-sm">Academy</h3>
+					</div>
+					<div class="flex-1 flex items-center justify-center p-8 bg-white">
+						<div class="text-center">
+							<div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-50 mb-3">
+								<span class="material-symbols-outlined text-blue-300"
+									style="font-size: 36px;">menu_book</span>
+							</div>
+							<h4 class="text-gray-700 font-semibold text-sm mb-1">No categories available</h4>
+							<p class="text-xs text-gray-400">Check back later for updates</p>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div
+				class="bg-white border-t border-gray-200 px-6 py-3.5 flex items-center justify-end gap-3 flex-shrink-0">
+				<button onclick="saveServices()"
+					class="px-5 py-2.5 bg-[#1b1e42] hover:bg-[#1b1e42] text-white rounded-lg font-medium text-sm transition-all shadow-sm">Save</button>
+
+			</div>
+		</div>
+	</div>
+
+	<script>
+		function openServicesModalFromLead() {
+			openServicesModal();
+		}
+
+		function openServicesModal() {
+			var modal = document.getElementById('selectServicesModal');
+			if (modal) {
+				modal.classList.remove('hidden');
+				modal.style.display = 'block';
+				document.body.style.overflow = 'hidden';
+			}
+		}
+
+		function closeServicesModal() {
+			var modal = document.getElementById('selectServicesModal');
+			if (modal) {
+				modal.classList.add('hidden');
+				modal.style.display = 'none';
+				document.body.style.overflow = '';
+			}
+		}
+
+		function toggleServiceCategory(categoryId) {
+			const content = document.getElementById(categoryId + '-content');
+			const chevron = document.getElementById(categoryId + '-chevron');
+
+			if (content && chevron) {
+				content.classList.toggle('hidden');
+				if (content.classList.contains('hidden')) {
+					chevron.style.transform = 'rotate(0deg)';
+				} else {
+					chevron.style.transform = 'rotate(180deg)';
+				}
+			}
+		}
+
+		function saveServices() {
+			const checkboxes = document.querySelectorAll('#selectServicesModal input[type="checkbox"]:checked');
+			console.log('Selected services:', checkboxes.length);
+			closeServicesModal();
+		}
+
+		function viewSelectedServices() {
+			console.log('View selected services');
+		}
+
+		document.addEventListener('keydown', function (e) {
+			if (e.key === 'Escape') {
+				closeServicesModal();
+			}
+		});
+	</script>
+
+	<script>
+		// Sidebar functionality
+		document.addEventListener('DOMContentLoaded', function () {
+			// Menu toggle functionality
+			const menuToggles = document.querySelectorAll('.menu-toggle');
+			menuToggles.forEach(toggle => {
+				toggle.addEventListener('click', function () {
+					const submenu = this.nextElementSibling;
+					const arrow = this.querySelector('.material-symbols-outlined:last-child');
+
+					if (submenu && submenu.classList.contains('submenu')) {
+						submenu.classList.toggle('hidden');
+						arrow.style.transform = submenu.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)';
+					}
+				});
+			});
+
+			// Sidebar collapse/expand functionality
+			const sidebar = document.getElementById('sidebar');
+			const sidebarToggle = document.getElementById('sidebarToggle');
+
+			if (sidebarToggle) {
+				// initialize collapsed state and icon
+				// support persistent collapsed state via localStorage
+				const saved = localStorage.getItem('sidebarCollapsed');
+				const isCollapsed = saved === null ? sidebar.classList.contains('collapsed') : (saved === 'true');
+				sidebar.classList.toggle('collapsed', isCollapsed);
+				const icon = sidebarToggle.querySelector('.material-symbols-outlined');
+				if (icon) icon.textContent = isCollapsed ? 'keyboard_double_arrow_right' : 'keyboard_double_arrow_left';
+				sidebarToggle.setAttribute('aria-expanded', String(!isCollapsed));
+
+				// helper: position the fixed toggle just outside the sidebar edge so it's always visible
+				function updateSidebarTogglePosition() {
+					if (!sidebar || !sidebarToggle) return;
+					const rect = sidebar.getBoundingClientRect();
+					const btnW = sidebarToggle.offsetWidth || 36;
+					const left = Math.max(8, Math.round(rect.right - (btnW / 2) - 8));
+					sidebarToggle.style.left = left + 'px';
+					// keep a small top offset aligned with header
+					sidebarToggle.style.top = (rect.top + 10) + 'px';
+					sidebarToggle.classList.add('sidebar-fixed');
+				}
+
+				// initial position
+				updateSidebarTogglePosition();
+				window.addEventListener('resize', updateSidebarTogglePosition);
+
+				// click toggles persistent collapse
+				sidebarToggle.addEventListener('click', function (e) {
+					const collapsed = !sidebar.classList.contains('collapsed');
+					sidebar.classList.toggle('collapsed', collapsed);
+					sidebar.classList.remove('expanded-temp');
+					if (icon) icon.textContent = collapsed ? 'keyboard_double_arrow_right' : 'keyboard_double_arrow_left';
+					sidebarToggle.setAttribute('aria-expanded', String(!collapsed));
+					localStorage.setItem('sidebarCollapsed', String(collapsed));
+					if (collapsed) { document.querySelectorAll('#sidebar .submenu').forEach(s => s.classList.add('hidden')); }
+					// reposition the fixed toggle after layout changes
+					setTimeout(updateSidebarTogglePosition, 60);
+				});
+
+				// keyboard support: Enter/Space to toggle
+				sidebarToggle.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); sidebarToggle.click(); } });
+
+				// hover-to-expand behavior (temporary preview only when collapsed)
+				sidebar.addEventListener('mouseenter', function () { if (sidebar.classList.contains('collapsed')) sidebar.classList.add('expanded-temp'); });
+				sidebar.addEventListener('mouseleave', function () { if (sidebar.classList.contains('collapsed')) sidebar.classList.remove('expanded-temp'); });
+
+				// add title attributes for icon-only mode
+				document.querySelectorAll('#sidebar .menu-toggle').forEach(btn => {
+					const labelSpan = btn.querySelector('.flex.items-center span:not(.material-symbols-outlined)');
+					const label = labelSpan ? labelSpan.textContent.trim() : btn.textContent.trim();
+					if (label) btn.setAttribute('title', label);
+				});
+				document.querySelectorAll('#sidebar nav a').forEach(a => {
+					const labelSpan = a.querySelector('span:not(.material-symbols-outlined)');
+					const label = labelSpan ? labelSpan.textContent.trim() : a.textContent.trim();
+					if (label && !a.getAttribute('title')) a.setAttribute('title', label);
+				});
+			}
+		});
+	</script>
+
+</body>
+
+</html>
+
+<script>
+	document.addEventListener('DOMContentLoaded', function () {
+		const idToggle = document.getElementById('caseIdToggle');
+		const d = document.getElementById('caseDetails');
+		const idChev = document.getElementById('caseIdChevron');
+		if (!idToggle || !d) return;
+
+		// initialize
+		(function () {
+			const hidden = d.classList.contains('hidden');
+			idToggle.setAttribute('aria-expanded', hidden ? 'false' : 'true');
+			if (idChev) idChev.textContent = hidden ? 'expand_more' : 'expand_less';
+		})();
+
+		idToggle.addEventListener('click', function (e) {
+			e.preventDefault();
+			const wasHidden = d.classList.contains('hidden');
+			if (wasHidden) d.classList.remove('hidden'); else d.classList.add('hidden');
+			const nowHidden = d.classList.contains('hidden');
+			idToggle.setAttribute('aria-expanded', nowHidden ? 'false' : 'true');
+			if (idChev) { idChev.textContent = nowHidden ? 'expand_more' : 'expand_less'; idChev.style.transform = nowHidden ? 'rotate(0deg)' : 'rotate(180deg)'; }
+		});
+	});
+</script>

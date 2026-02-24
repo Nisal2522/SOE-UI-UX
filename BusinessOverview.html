@@ -1,0 +1,2619 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>Business Overview</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+    rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#3eb2ed',
+            'light-gray': '#F5F7FA',
+            'dark-text': '#1A1A1A',
+            'sidebar-dark': '#1b1e42',
+            'sidebar-light-blue': '#3eb2ed',
+            background: 'var(--color-background)',
+            sidebar: 'var(--color-sidebar)',
+            card: {
+              DEFAULT: 'var(--card-bg)',
+              border: 'var(--card-border)',
+            },
+            border: 'var(--color-border)',
+            'cu-light-blue': 'var(--cu-light-blue)',
+            'cu-dark-blue': 'var(--cu-dark-blue)',
+            'cu-light-grey': 'var(--cu-light-grey)',
+            'cu-dark-grey': 'var(--cu-dark-grey)',
+            'bg-main': 'var(--bg-main)',
+            text: {
+              primary: 'var(--color-text-primary)',
+              secondary: 'var(--color-text-secondary)',
+              inverted: 'var(--color-text-inverted)'
+            }
+          },
+          fontFamily: {
+            display: ['Inter', 'system-ui', 'sans-serif'],
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+          },
+          borderRadius: {
+            'xl': '18px',
+            '2xl': '24px',
+          },
+          boxShadow: {
+            'soft': '0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05)',
+            'glass': '0 4px 30px rgba(0, 0, 0, 0.1)',
+          }
+        },
+      },
+    };
+  </script>
+  <style type="text/tailwindcss">
+    :root {
+    --cu-light-blue: #3eb2ed;
+    --cu-dark-blue: #1b1e42;
+    --cu-light-grey: #799495;
+    --cu-dark-grey: #4f6566;
+    --cu-white: #ffffff;
+    --cu-light-blue-20: #d8f0fb;
+    --cu-light-blue-40: #b2e0f8;
+    --cu-light-blue-60: #8bd1f4;
+    --cu-light-blue-80: #65c1f1;
+    --cu-dark-blue-20: #d1d2d9;
+    --cu-dark-blue-40: #a4a5b3;
+    --cu-dark-blue-60: #76788e;
+    --cu-dark-blue-80: #494b68;
+    --color-primary: var(--cu-dark-blue);
+    --color-primary-text: var(--cu-white);
+    --color-primary-active: var(--cu-light-blue);
+    --color-secondary: var(--cu-light-grey);
+    --color-background: var(--cu-white);
+    --color-sidebar: var(--cu-dark-blue);
+    --color-card: var(--cu-dark-grey);
+    --color-card-text: var(--cu-white);
+    --color-text-primary: #0f172a;
+    --color-text-secondary: #64748b;
+    --color-text-inverted: var(--cu-white);
+    --color-border: #e2e8f0;
+    --bg-main: #ffffff;
+    --card-bg: #ffffff;
+    --card-border: #e2e8f0;
+    --accent-primary: #3eb2ed;
+    --accent-secondary: #1b1e42;
+}
+.material-symbols-outlined { font-variation-settings: "FILL" 0, "wght" 300, "GRAD" 0, "opsz" 24 }
+.material-symbols-outlined.filled { font-variation-settings: "FILL" 1 }
+.active-link { background-color: rgba(62, 178, 237, 0.1); color: #3eb2ed; font-weight: 500 }
+.active-link .material-symbols-outlined { font-variation-settings: "FILL" 1, "wght" 400 }
+/* Tabs: same design as allclient.html#home */
+button[role="tab"][aria-selected="true"] {
+  background: #ffffff !important;
+  color: var(--cu-dark-blue) !important;
+  transform: translateY(8px);
+  box-shadow: 0 8px 18px rgba(30, 41, 59, 0.06);
+  border-radius: 12px !important;
+  padding-left: 0.9rem !important;
+  padding-right: 0.9rem !important;
+  z-index: 40;
+  border: 1px solid rgba(15, 23, 42, 0.04);
+}
+button[role="tab"] {
+  transition: transform 160ms ease, box-shadow 160ms ease, background-color 160ms ease;
+}
+.business-overview-card {
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -2px rgba(0,0,0,0.05);
+}
+.business-overview-tabs {
+  min-height: 52px;
+}
+.business-overview-card section.business-overview-panel {
+  position: relative;
+  overflow: visible;
+  border: none;
+  background: transparent !important;
+  box-shadow: none;
+  border-radius: 0;
+}
+.business-overview-card section.business-overview-panel:not(.hidden)::before {
+  display: none;
+}
+main > section.business-overview-panel {
+  position: relative;
+  overflow: visible;
+  border: none;
+}
+main > section.business-overview-panel:not(.hidden)::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 24px;
+  border: 1px solid rgba(62, 178, 237, 0.18);
+  pointer-events: none;
+  z-index: 10;
+}
+main > section.business-overview-panel .panel-content,
+.business-overview-card section.business-overview-panel .panel-content {
+  margin-top: 1.5rem;
+}
+/* .business-overview-card #resources .panel-content,
+.business-overview-card #client-portfolio .panel-content,
+.business-overview-card #service-tat .panel-content,
+.business-overview-card #costing .panel-content,
+.business-overview-card #strategy .panel-content,
+.business-overview-card #revenue .panel-content {
+  margin-top: 0;
+} */
+
+/* Resources panel - All Accounts style (white card, header, dark blue table) */
+#resources {
+  background: #ffffff !important;
+  border-radius: 16px;
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -2px rgba(0,0,0,0.05);
+  border: none;
+}
+.business-overview-card #resources {
+  background: transparent !important;
+  border-radius: 0;
+  box-shadow: none;
+  border: none;
+}
+#resources .panel-content { margin-top: 0; }
+#resources .resources-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.25rem;
+  margin-bottom: 1.5rem;
+  min-height: 48px;
+}
+#resources .resources-header-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+#resources .resources-header-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: #3eb2ed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+#resources .resources-header-icon .material-symbols-outlined {
+  font-size: 24px;
+  color: #fff;
+}
+#resources .resources-header-title { font-size: 1.125rem; font-weight: 700; color: #0f172a; margin: 0; }
+#resources .resources-header-subtitle { font-size: 0.875rem; color: #64748b; margin: 2px 0 0; }
+#resources .resources-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+#resources .btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1.25rem;
+  background: #3eb2ed;
+  color: #fff;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border: none;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+#resources .btn-primary:hover { background: #2a9fd9; box-shadow: 0 4px 12px rgba(62,178,237,0.35); }
+#resources .btn-export {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1.25rem;
+  background: linear-gradient(to right, #10b981, #14b8a6);
+  color: #fff;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border: none;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+#resources .btn-export:hover { opacity: 0.95; box-shadow: 0 4px 12px rgba(16,185,129,0.3); }
+#resources .resources-search-wrap {
+  position: relative;
+}
+#resources .resources-search-wrap .material-symbols-outlined {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 18px;
+  color: #94a3b8;
+}
+#resources .resources-search {
+  padding: 0.5rem 1rem 0.5rem 2.75rem;
+  width: 240px;
+  font-size: 0.875rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 9999px;
+  background: #fff;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+#resources .resources-search:focus {
+  border-color: #3eb2ed;
+  box-shadow: 0 0 0 3px rgba(62,178,237,0.15);
+}
+#resources .resources-table-wrapper {
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  margin-top: 0.25rem;
+}
+#resources .resources-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+#resources .resources-table thead {
+  background: #1b1e42;
+  border: none;
+}
+#resources .resources-table thead th {
+  padding: 14px 20px;
+  text-align: left;
+  font-weight: 700;
+  font-size: 0.7rem;
+  letter-spacing: 0.05em;
+  color: #fff;
+  text-transform: uppercase;
+  border: none;
+  border-right: 1px solid rgba(255,255,255,0.1);
+}
+#resources .resources-table thead th:last-child { border-right: none; }
+#resources .resources-table thead tr:first-child th:first-child { border-radius: 16px 0 0 0; }
+#resources .resources-table thead tr:first-child th:last-child { border-radius: 0 16px 0 0; }
+#resources .resources-table tbody tr {
+  border-bottom: 1px solid #f1f5f9;
+  transition: background 0.15s ease;
+}
+#resources .resources-table tbody tr:hover { background: #f8fafc; }
+#resources .resources-table tbody tr:last-child { border-bottom: none; }
+#resources .resources-table tbody td {
+  padding: 14px 20px;
+  color: #334155;
+  border: none;
+  border-right: 1px solid #f1f5f9;
+}
+#resources .resources-table tbody td:last-child { border-right: none; }
+#resources .resources-table .action-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  color: #3eb2ed;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+#resources .resources-table .action-btn:hover {
+  background: #e0f2fe;
+  color: #0284c7;
+}
+
+/* Client Portfolio & Market Share - same card/table style as Resources */
+#client-portfolio { background: #fff !important; border-radius: 16px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); border: none; }
+.business-overview-card #client-portfolio { background: transparent !important; border-radius: 0; box-shadow: none; border: none; }
+#client-portfolio .panel-content { margin-top: 0; }
+#client-portfolio .resources-header { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 1.5rem; }
+#client-portfolio .resources-header-left { display: flex; align-items: center; gap: 1rem; }
+#client-portfolio .resources-header-icon { width: 48px; height: 48px; border-radius: 12px; background: #3eb2ed; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+#client-portfolio .resources-header-icon .material-symbols-outlined { font-size: 24px; color: #fff; }
+#client-portfolio .resources-header-title { font-size: 1.125rem; font-weight: 700; color: #0f172a; margin: 0; }
+#client-portfolio .resources-header-subtitle { font-size: 0.875rem; color: #64748b; margin: 2px 0 0; }
+#client-portfolio .resources-header-actions { display: flex; align-items: center; gap: 0.75rem; }
+#client-portfolio .btn-primary { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1.25rem; background: #3eb2ed; color: #fff; font-size: 0.875rem; font-weight: 500; border: none; border-radius: 9999px; cursor: pointer; transition: all 0.2s ease; }
+#client-portfolio .btn-primary:hover { background: #2a9fd9; }
+#client-portfolio .btn-export { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1.25rem; background: linear-gradient(to right, #10b981, #14b8a6); color: #fff; font-size: 0.875rem; font-weight: 500; border: none; border-radius: 9999px; cursor: pointer; transition: all 0.2s ease; }
+#client-portfolio .btn-export:hover { opacity: 0.95; }
+#client-portfolio .resources-search-wrap { position: relative; }
+#client-portfolio .resources-search-wrap .material-symbols-outlined { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-size: 18px; color: #94a3b8; }
+#client-portfolio .resources-search { padding: 0.5rem 1rem 0.5rem 2.75rem; width: 240px; font-size: 0.875rem; border: 1px solid #e2e8f0; border-radius: 9999px; background: #fff; outline: none; }
+#client-portfolio .resources-table-wrapper { background: #fff; border-radius: 16px; overflow: hidden; border: 1px solid #e2e8f0; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+#client-portfolio .portfolio-table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
+#client-portfolio .portfolio-table thead { background: #1b1e42; }
+#client-portfolio .portfolio-table thead th { padding: 14px 16px; text-align: left; font-weight: 700; font-size: 0.7rem; letter-spacing: 0.05em; color: #fff; text-transform: uppercase; border-right: 1px solid rgba(255,255,255,0.1); }
+#client-portfolio .portfolio-table thead th:last-child { border-right: none; }
+#client-portfolio .portfolio-table thead tr:first-child th:first-child { border-radius: 16px 0 0 0; }
+#client-portfolio .portfolio-table thead tr:first-child th:last-child { border-radius: 0 16px 0 0; }
+#client-portfolio .portfolio-table tbody tr { border-bottom: 1px solid #f1f5f9; transition: background 0.15s ease; }
+#client-portfolio .portfolio-table tbody tr:hover { background: #f8fafc; }
+#client-portfolio .portfolio-table tbody td { padding: 14px 16px; color: #334155; border-right: 1px solid #f1f5f9; }
+#client-portfolio .portfolio-table tbody td:last-child { border-right: none; }
+#client-portfolio .portfolio-table tbody td.num { text-align: center; }
+#client-portfolio .portfolio-table .action-link { display: inline-flex; align-items: center; justify-content: center; color: #3eb2ed; text-decoration: none; cursor: pointer; padding: 4px; border-radius: 8px; transition: background 0.15s ease, color 0.15s ease; }
+#client-portfolio .portfolio-table .action-link:hover { background: #e0f2fe; color: #0284c7; }
+#client-portfolio .portfolio-table .action-link .material-symbols-outlined { font-size: 20px; color: inherit; }
+#client-portfolio .resources-table-wrapper { overflow-x: auto; }
+#client-portfolio .portfolio-table td.negative { color: #dc2626; }
+
+/* Service TAT - same card/table style */
+#service-tat { background: #fff !important; border-radius: 16px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); border: none; }
+.business-overview-card #service-tat { background: transparent !important; border-radius: 0; box-shadow: none; border: none; }
+#service-tat .panel-content { margin-top: 0; }
+#service-tat .resources-header { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 1.5rem; }
+#service-tat .resources-header-left { display: flex; align-items: center; gap: 1rem; }
+#service-tat .resources-header-icon { width: 48px; height: 48px; border-radius: 12px; background: #3eb2ed; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+#service-tat .resources-header-icon .material-symbols-outlined { font-size: 24px; color: #fff; }
+#service-tat .resources-header-title { font-size: 1.125rem; font-weight: 700; color: #0f172a; margin: 0; }
+#service-tat .resources-header-subtitle { font-size: 0.875rem; color: #64748b; margin: 2px 0 0; }
+#service-tat .resources-header-actions { display: flex; align-items: center; gap: 0.75rem; }
+#service-tat .btn-primary { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1.25rem; background: #3eb2ed; color: #fff; font-size: 0.875rem; font-weight: 500; border: none; border-radius: 9999px; cursor: pointer; transition: all 0.2s ease; }
+#service-tat .btn-primary:hover { background: #2a9fd9; }
+#service-tat .btn-export { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1.25rem; background: linear-gradient(to right, #10b981, #14b8a6); color: #fff; font-size: 0.875rem; font-weight: 500; border: none; border-radius: 9999px; cursor: pointer; transition: all 0.2s ease; }
+#service-tat .btn-export:hover { opacity: 0.95; }
+#service-tat .resources-search-wrap { position: relative; }
+#service-tat .resources-search-wrap .material-symbols-outlined { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-size: 18px; color: #94a3b8; }
+#service-tat .resources-search { padding: 0.5rem 1rem 0.5rem 2.75rem; width: 240px; font-size: 0.875rem; border: 1px solid #e2e8f0; border-radius: 9999px; background: #fff; outline: none; }
+#service-tat .resources-table-wrapper { background: #fff; border-radius: 16px; overflow: hidden; border: 1px solid #e2e8f0; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+#service-tat .tat-table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
+#service-tat .tat-table thead { background: #1b1e42; }
+#service-tat .tat-table thead th { padding: 14px 16px; text-align: center; font-weight: 700; font-size: 0.7rem; letter-spacing: 0.05em; color: #fff; text-transform: uppercase; border-right: 1px solid rgba(255,255,255,0.1); }
+#service-tat .tat-table thead th:last-child { border-right: none; }
+#service-tat .tat-table thead tr:first-child th:first-child { border-radius: 16px 0 0 0; }
+#service-tat .tat-table thead tr:first-child th:last-child { border-radius: 0 16px 0 0; }
+#service-tat .tat-table tbody tr { border-bottom: 1px solid #f1f5f9; transition: background 0.15s ease; }
+#service-tat .tat-table tbody tr:hover { background: #f8fafc; }
+#service-tat .tat-table tbody td { padding: 14px 16px; color: #334155; border-right: 1px solid #f1f5f9; text-align: center; vertical-align: middle; }
+#service-tat .tat-table tbody td:last-child { border-right: none; }
+#service-tat .tat-table tbody td:first-child { text-align: left; }
+#service-tat .tat-table tbody td:nth-child(2) { text-align: left; }
+#service-tat .tat-table tbody td:nth-child(3) { text-align: left; }
+#service-tat .tat-table tbody td:nth-child(4) { text-align: left; }
+#service-tat .tat-table .action-link { display: inline-flex; align-items: center; justify-content: center; color: #3eb2ed; text-decoration: none; cursor: pointer; padding: 4px; border-radius: 8px; transition: background 0.15s ease, color 0.15s ease; }
+#service-tat .tat-table .action-link:hover { background: #e0f2fe; color: #0284c7; }
+#service-tat .tat-table .action-link .material-symbols-outlined { font-size: 20px; color: inherit; }
+
+/* Costing - same card/table style */
+#costing { background: #fff !important; border-radius: 16px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); border: none; }
+.business-overview-card #costing { background: transparent !important; border-radius: 0; box-shadow: none; border: none; }
+#costing .panel-content { margin-top: 0; }
+#costing .resources-header { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 1.5rem; }
+#costing .resources-header-left { display: flex; align-items: center; gap: 1rem; }
+#costing .resources-header-icon { width: 48px; height: 48px; border-radius: 12px; background: #3eb2ed; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+#costing .resources-header-icon .material-symbols-outlined { font-size: 24px; color: #fff; }
+#costing .resources-header-title { font-size: 1.125rem; font-weight: 700; color: #0f172a; margin: 0; }
+#costing .resources-header-subtitle { font-size: 0.875rem; color: #64748b; margin: 2px 0 0; }
+#costing .resources-header-actions { display: flex; align-items: center; gap: 0.75rem; }
+#costing .btn-primary { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1.25rem; background: #3eb2ed; color: #fff; font-size: 0.875rem; font-weight: 500; border: none; border-radius: 9999px; cursor: pointer; transition: all 0.2s ease; }
+#costing .btn-primary:hover { background: #2a9fd9; }
+#costing .btn-export { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1.25rem; background: linear-gradient(to right, #10b981, #14b8a6); color: #fff; font-size: 0.875rem; font-weight: 500; border: none; border-radius: 9999px; cursor: pointer; transition: all 0.2s ease; }
+#costing .btn-export:hover { opacity: 0.95; }
+#costing .resources-search-wrap { position: relative; }
+#costing .resources-search-wrap .material-symbols-outlined { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-size: 18px; color: #94a3b8; }
+#costing .resources-search { padding: 0.5rem 1rem 0.5rem 2.75rem; width: 240px; font-size: 0.875rem; border: 1px solid #e2e8f0; border-radius: 9999px; background: #fff; outline: none; }
+#costing .resources-table-wrapper { background: #fff; border-radius: 16px; overflow: hidden; border: 1px solid #e2e8f0; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+#costing .costing-table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
+#costing .costing-table thead { background: #1b1e42; }
+#costing .costing-table thead th { padding: 14px 16px; text-align: left; font-weight: 700; font-size: 0.7rem; letter-spacing: 0.05em; color: #fff; text-transform: uppercase; border-right: 1px solid rgba(255,255,255,0.1); }
+#costing .costing-table thead th:last-child { border-right: none; }
+#costing .costing-table thead tr:first-child th:first-child { border-radius: 16px 0 0 0; }
+#costing .costing-table thead tr:first-child th:last-child { border-radius: 0 16px 0 0; }
+#costing .costing-table tbody tr { border-bottom: 1px solid #f1f5f9; transition: background 0.15s ease; }
+#costing .costing-table tbody tr:hover { background: #f8fafc; }
+#costing .costing-table tbody td { padding: 14px 16px; color: #334155; border-right: 1px solid #f1f5f9; }
+#costing .costing-table tbody td:last-child { border-right: none; }
+#costing .costing-table tbody td.num { text-align: center; }
+#costing .costing-table .action-link { display: inline-flex; align-items: center; justify-content: center; color: #3eb2ed; text-decoration: none; cursor: pointer; padding: 4px; border-radius: 8px; transition: background 0.15s ease, color 0.15s ease; }
+#costing .costing-table .action-link:hover { background: #e0f2fe; color: #0284c7; }
+#costing .costing-table .action-link.action-link-delete { margin-left: 8px; }
+#costing .costing-table .action-link.action-link-delete:hover { background: #fee2e2; color: #dc2626; }
+#costing .costing-table .action-link .material-symbols-outlined { font-size: 20px; color: inherit; }
+
+/* Strategy - same card/table style */
+#strategy { background: #fff !important; border-radius: 16px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); border: none; }
+.business-overview-card #strategy { background: transparent !important; border-radius: 0; box-shadow: none; border: none; }
+#strategy .panel-content { margin-top: 0; }
+#strategy .resources-header { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 1.5rem; }
+#strategy .resources-header-left { display: flex; align-items: center; gap: 1rem; }
+#strategy .resources-header-icon { width: 48px; height: 48px; border-radius: 12px; background: #3eb2ed; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+#strategy .resources-header-icon .material-symbols-outlined { font-size: 24px; color: #fff; }
+#strategy .resources-header-title { font-size: 1.125rem; font-weight: 700; color: #0f172a; margin: 0; }
+#strategy .resources-header-subtitle { font-size: 0.875rem; color: #64748b; margin: 2px 0 0; }
+#strategy .resources-header-actions { display: flex; align-items: center; gap: 0.75rem; }
+#strategy .btn-primary { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1.25rem; background: #3eb2ed; color: #fff; font-size: 0.875rem; font-weight: 500; border: none; border-radius: 9999px; cursor: pointer; transition: all 0.2s ease; }
+#strategy .btn-primary:hover { background: #2a9fd9; }
+#strategy .btn-export { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1.25rem; background: linear-gradient(to right, #10b981, #14b8a6); color: #fff; font-size: 0.875rem; font-weight: 500; border: none; border-radius: 9999px; cursor: pointer; transition: all 0.2s ease; }
+#strategy .btn-export:hover { opacity: 0.95; }
+#strategy .resources-search-wrap { position: relative; }
+#strategy .resources-search-wrap .material-symbols-outlined { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-size: 18px; color: #94a3b8; }
+#strategy .resources-search { padding: 0.5rem 1rem 0.5rem 2.75rem; width: 240px; font-size: 0.875rem; border: 1px solid #e2e8f0; border-radius: 9999px; background: #fff; outline: none; }
+#strategy .resources-table-wrapper { background: #fff; border-radius: 16px; overflow: hidden; border: 1px solid #e2e8f0; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+#strategy .strategy-table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
+#strategy .strategy-table thead { background: #1b1e42; }
+#strategy .strategy-table thead th { padding: 14px 16px; text-align: left; font-weight: 700; font-size: 0.7rem; letter-spacing: 0.05em; color: #fff; text-transform: uppercase; border-right: 1px solid rgba(255,255,255,0.1); }
+#strategy .strategy-table thead th:last-child { border-right: none; }
+#strategy .strategy-table thead tr:first-child th:first-child { border-radius: 16px 0 0 0; }
+#strategy .strategy-table thead tr:first-child th:last-child { border-radius: 0 16px 0 0; }
+#strategy .strategy-table tbody tr { border-bottom: 1px solid #f1f5f9; transition: background 0.15s ease; }
+#strategy .strategy-table tbody tr:hover { background: #f8fafc; }
+#strategy .strategy-table tbody td { padding: 14px 16px; color: #334155; border-right: 1px solid #f1f5f9; }
+#strategy .strategy-table tbody td:last-child { border-right: none; }
+#strategy .strategy-table tbody td.num { text-align: center; }
+#strategy .strategy-table tbody td:nth-child(2),
+#strategy .strategy-table tbody td:nth-child(3) { white-space: normal; vertical-align: top; }
+#strategy .strategy-table .strategy-category-list { display: block; line-height: 1.6; white-space: normal; }
+#strategy .strategy-table .action-link { display: inline-flex; align-items: center; justify-content: center; color: #3eb2ed; text-decoration: none; cursor: pointer; padding: 4px; border-radius: 8px; transition: background 0.15s ease, color 0.15s ease; }
+#strategy .strategy-table .action-link:hover { background: #e0f2fe; color: #0284c7; }
+#strategy .strategy-table .action-link .material-symbols-outlined { font-size: 20px; color: inherit; }
+
+/* Revenue - same card/table style */
+#revenue { background: #fff !important; border-radius: 16px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); border: none; }
+.business-overview-card #revenue { background: transparent !important; border-radius: 0; box-shadow: none; border: none; }
+#revenue .panel-content { margin-top: 0; }
+#revenue .resources-header { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 1.5rem; }
+#revenue .resources-header-left { display: flex; align-items: center; gap: 1rem; }
+#revenue .resources-header-icon { width: 48px; height: 48px; border-radius: 12px; background: #3eb2ed; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+#revenue .resources-header-icon .material-symbols-outlined { font-size: 24px; color: #fff; }
+#revenue .resources-header-title { font-size: 1.125rem; font-weight: 700; color: #0f172a; margin: 0; }
+#revenue .resources-header-subtitle { font-size: 0.875rem; color: #64748b; margin: 2px 0 0; }
+#revenue .resources-header-actions { display: flex; align-items: center; gap: 0.75rem; }
+#revenue .btn-primary { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1.25rem; background: #3eb2ed; color: #fff; font-size: 0.875rem; font-weight: 500; border: none; border-radius: 9999px; cursor: pointer; transition: all 0.2s ease; }
+#revenue .btn-primary:hover { background: #2a9fd9; }
+#revenue .btn-export { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1.25rem; background: linear-gradient(to right, #10b981, #14b8a6); color: #fff; font-size: 0.875rem; font-weight: 500; border: none; border-radius: 9999px; cursor: pointer; transition: all 0.2s ease; }
+#revenue .btn-export:hover { opacity: 0.95; }
+#revenue .resources-search-wrap { position: relative; }
+#revenue .resources-search-wrap .material-symbols-outlined { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-size: 18px; color: #94a3b8; }
+#revenue .resources-search { padding: 0.5rem 1rem 0.5rem 2.75rem; width: 240px; font-size: 0.875rem; border: 1px solid #e2e8f0; border-radius: 9999px; background: #fff; outline: none; }
+#revenue .resources-table-wrapper { background: #fff; border-radius: 16px; overflow: hidden; border: 1px solid #e2e8f0; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+#revenue .revenue-table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
+#revenue .revenue-table thead { background: #1b1e42; }
+#revenue .revenue-table thead th { padding: 14px 16px; text-align: left; font-weight: 700; font-size: 0.7rem; letter-spacing: 0.05em; color: #fff; text-transform: uppercase; border-right: 1px solid rgba(255,255,255,0.1); }
+#revenue .revenue-table thead th:last-child { border-right: none; }
+#revenue .revenue-table thead tr:first-child th:first-child { border-radius: 16px 0 0 0; }
+#revenue .revenue-table thead tr:first-child th:last-child { border-radius: 0 16px 0 0; }
+#revenue .revenue-table tbody tr { border-bottom: 1px solid #f1f5f9; transition: background 0.15s ease; }
+#revenue .revenue-table tbody tr:hover { background: #f8fafc; }
+#revenue .revenue-table tbody td { padding: 14px 16px; color: #334155; border-right: 1px solid #f1f5f9; }
+#revenue .revenue-table tbody td:last-child { border-right: none; }
+#revenue .revenue-table tbody td.num { text-align: center; }
+#revenue .revenue-table .action-link { display: inline-flex; align-items: center; justify-content: center; color: #3eb2ed; text-decoration: none; cursor: pointer; padding: 4px; border-radius: 8px; transition: background 0.15s ease, color 0.15s ease; }
+#revenue .revenue-table .action-link:hover { background: #e0f2fe; color: #0284c7; }
+#revenue .revenue-table .action-link.action-link-delete { margin-left: 8px; }
+#revenue .revenue-table .action-link.action-link-delete:hover { background: #fee2e2; color: #dc2626; }
+#revenue .revenue-table .action-link .material-symbols-outlined { font-size: 20px; color: inherit; }
+
+/* Back button (top of main content) */
+.page-back-link { display: inline-flex; align-items: center; gap: 8px; font-size: 0.875rem; font-weight: 500; color: #64748b; text-decoration: none; margin-bottom: 8px; transition: color 0.2s; }
+.page-back-link:hover { color: #0f172a; }
+.page-back-link .material-symbols-outlined { font-size: 20px; }
+
+/* 8px grid: 40px padding, 32px gap */
+.main-content-wrap { padding: 40px; display: flex; flex-direction: column; gap: 32px; }
+.coe-main-heading-wrap { display: flex; align-items: center; gap: 12px; }
+.coe-main-heading-icon { width: 44px; height: 44px; border-radius: 12px; background: #3eb2ed; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.coe-main-heading-icon .material-symbols-outlined { font-size: 24px; color: #fff; }
+.coe-main-heading { margin: 0; font-size: 2rem; line-height: 1.2; font-weight: 800; color: #0f172a; letter-spacing: 0.01em; }
+/* White sub-header bar */
+.sub-header-bar { 
+  background: #ffffff; 
+  border-radius: 12px; 
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04); 
+  border: 1px solid #e2e8f0; 
+  padding: 16px 24px; 
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center; 
+  gap: 24px; 
+}
+@media (max-width: 1024px) {
+  .sub-header-bar { flex-direction: column; align-items: stretch; gap: 16px; }
+  .sub-header-bar .segmented-toggle { align-self: center; }
+}
+.coe-category-section { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.coe-category-icon { width: 40px; height: 40px; border-radius: 12px; background: #3eb2ed; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.coe-category-icon .material-symbols-outlined { font-size: 22px; color: #fff; }
+.coe-category-heading-wrap { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.coe-category-title { font-size: 1rem; font-weight: 600; color: #0f172a; margin: 0; }
+.coe-select {
+  border-radius: 9999px; padding: 8px 16px 8px 16px; font-size: 0.875rem;
+  border: 1px solid #e2e8f0; border-style: solid;
+  min-width: 120px; background-color: #fff;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 12px center; background-size: 1rem;
+  appearance: none; -webkit-appearance: none; -moz-appearance: none;
+  color: #0f172a;
+}
+.period-trigger {
+  border-radius: 10px;
+  padding: 8px 14px;
+  font-size: 0.875rem;
+  border: 1px solid #1b1e42;
+  min-width: 220px;
+  background: #fff;
+  color: #1b1e42;
+  font-weight: 600;
+  text-align: left;
+}
+/* Segmented Toggle: Active #1b1e42, Inactive slate */
+.segmented-toggle { display: inline-flex; border-radius: 12px; overflow: hidden; border: 1px solid #e2e8f0; background: #fff; flex-shrink: 0; }
+.segmented-toggle .nav-btn { margin: 0; border: none; border-radius: 0; padding: 10px 20px; font-size: 0.875rem; font-weight: 500; transition: all 0.2s ease; }
+.segmented-toggle .nav-btn[href] { background: #fff; color: #64748b; }
+.segmented-toggle .nav-btn[href]:hover { background: #f8fafc; color: #0f172a; }
+.segmented-toggle .nav-btn[aria-current="page"] { background: #1b1e42; color: #fff; }
+
+/* Cards: white, 12px radius, subtle shadow, 4px left accent */
+.business-overview-card { background: #ffffff; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.04); border: 1px solid #e2e8f0; border-left: 4px solid #3eb2ed; }
+.card-accent { border-left: 4px solid #3eb2ed; }
+  </style>
+</head>
+
+<body class="font-display text-dark-text" style="background: #ffffff;">
+  <div class="flex h-screen overflow-hidden relative">
+    <aside id="sidebar"
+      class="w-64 flex-shrink-0 bg-sidebar text-text-inverted flex flex-col transition-all duration-300">
+      <div class="h-16 flex items-center justify-between px-6 border-b border-cu-dark-blue-80 flex-shrink-0">
+        <div class="flex items-center gap-2">
+          <span class="text-2xl font-bold tracking-wider">SOE</span>
+          <div class="w-8 h-1 bg-gradient-to-r from-cu-light-blue to-cu-light-blue-60 rounded"></div>
+        </div>
+      </div>
+      <nav class="flex-1 overflow-y-auto p-4 space-y-1">
+        <style>
+          #sidebar.collapsed {
+            width: 72px !important
+          }
+
+          #sidebar.collapsed .menu-toggle {
+            padding-left: 0.5rem;
+            padding-right: 0.5rem
+          }
+
+          #sidebar.collapsed .menu-toggle .flex.items-center>span:last-child {
+            display: none
+          }
+
+          #sidebar.collapsed nav a>span:last-child {
+            display: none
+          }
+
+          #sidebar.collapsed .submenu {
+            display: none !important
+          }
+
+          #sidebar .sidebar-header {
+            position: relative
+          }
+
+          #sidebarToggle {
+            position: absolute;
+            top: 8px;
+            z-index: 60;
+            display: inline-flex
+          }
+
+          #sidebar.expanded-temp {
+            width: 16rem !important
+          }
+
+          #sidebar.expanded-temp .menu-toggle .flex.items-center>span:last-child {
+            display: inline-block
+          }
+
+          #sidebar.expanded-temp nav a>span:last-child {
+            display: inline-block
+          }
+
+          #sidebar .menu-toggle {
+            position: relative
+          }
+
+          #sidebar.collapsed .menu-toggle>span.material-symbols-outlined.text-lg {
+            display: inline-flex;
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.85);
+            opacity: 0.95;
+          }
+
+          #sidebar.collapsed a[title] {
+            position: relative
+          }
+
+          #sidebar.collapsed a[title]:hover::after {
+            content: attr(title);
+            position: absolute;
+            left: 72px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #111827;
+            color: #fff;
+            padding: 6px 10px;
+            border-radius: 6px;
+            white-space: nowrap;
+            font-size: 12px;
+            box-shadow: 0 6px 18px rgba(2, 6, 23, 0.12);
+          }
+        </style>
+        <!-- Dashboard -->
+        <div>
+          <button
+            class="menu-toggle flex items-center justify-between p-3 rounded-lg text-slate-300 hover:bg-cu-dark-blue-80 w-full text-left">
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined">dashboard</span>
+              <span class="font-medium text-sm">Dashboard</span>
+            </div>
+            <span class="material-symbols-outlined text-lg transform transition-transform">expand_more</span>
+          </button>
+          <div class="submenu hidden ml-6 mt-1 space-y-1">
+            <a href="dashbord.html"
+              class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-400 hover:bg-cu-dark-blue-80 hover:text-white">
+              <span class="material-symbols-outlined text-base">arrow_right</span>
+              <span>My Dashboard</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Task -->
+        <div>
+          <button
+            class="menu-toggle flex items-center justify-between p-3 rounded-lg text-slate-300 hover:bg-cu-dark-blue-80 w-full text-left">
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined">task_alt</span>
+              <span class="font-medium text-sm">Task</span>
+            </div>
+            <span class="material-symbols-outlined text-lg transform transition-transform">expand_more</span>
+          </button>
+          <div class="submenu hidden ml-6 mt-1 space-y-1">
+            <a href="#"
+              class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-400 hover:bg-cu-dark-blue-80 hover:text-white">
+              <span class="material-symbols-outlined text-base">arrow_right</span>
+              <span>My Tasks</span>
+            </a>
+            <a href="#"
+              class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-400 hover:bg-cu-dark-blue-80 hover:text-white">
+              <span class="material-symbols-outlined text-base">arrow_right</span>
+              <span>Team Tasks</span>
+            </a>
+            <a href="#"
+              class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-400 hover:bg-cu-dark-blue-80 hover:text-white">
+              <span class="material-symbols-outlined text-base">arrow_right</span>
+              <span>All Tasks</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- CRM -->
+        <div>
+          <button
+            class="menu-toggle flex items-center justify-between p-3 rounded-lg text-slate-300 hover:bg-cu-dark-blue-80 w-full text-left">
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined">trending_up</span>
+              <span class="font-medium text-sm">CRM</span>
+            </div>
+            <span class="material-symbols-outlined text-lg transform transition-transform">expand_more</span>
+          </button>
+          <div class="submenu hidden ml-6 mt-1 space-y-1">
+            <a href="allclient.html#home"
+              class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-400 hover:bg-cu-dark-blue-80 hover:text-white">
+              <span class="material-symbols-outlined text-base">arrow_right</span>
+              <span>Accounts</span>
+            </a>
+            <a href="#"
+              class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-400 hover:bg-cu-dark-blue-80 hover:text-white">
+              <span class="material-symbols-outlined text-base">arrow_right</span>
+              <span>Cer. Sales Progress</span>
+            </a>
+            <a href="#"
+              class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-400 hover:bg-cu-dark-blue-80 hover:text-white">
+              <span class="material-symbols-outlined text-base">arrow_right</span>
+              <span>Sales Report</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- COEs / Regional Team / MarComs -->
+        <div>
+          <button
+            class="menu-toggle flex items-center justify-between p-3 rounded-lg text-slate-300 hover:bg-cu-dark-blue-80 w-full text-left"
+            aria-expanded="false">
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined">public</span>
+              <span class="font-medium text-sm">Regional & Global</span>
+            </div>
+            <span class="material-symbols-outlined text-lg transform transition-transform">expand_more</span>
+          </button>
+          <div class="submenu hidden ml-6 mt-1 space-y-1">
+            <a href="COEdashboard.html"
+              class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-400 hover:bg-cu-dark-blue-80 hover:text-white">
+              <span class="material-symbols-outlined text-base">arrow_right</span>
+              <span>COEs</span>
+            </a>
+            <a href="#"
+              class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-400 hover:bg-cu-dark-blue-80 hover:text-white">
+              <span class="material-symbols-outlined text-base">arrow_right</span>
+              <span>Regional Team</span>
+            </a>
+            <a href="#"
+              class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-400 hover:bg-cu-dark-blue-80 hover:text-white">
+              <span class="material-symbols-outlined text-base">arrow_right</span>
+              <span>MarComs</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- HR Manager -->
+        <div>
+          <button
+            class="menu-toggle flex items-center justify-between p-3 rounded-lg text-slate-300 hover:bg-cu-dark-blue-80 w-full text-left">
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined">groups</span>
+              <span class="font-medium text-sm">HR Manager</span>
+            </div>
+            <span class="material-symbols-outlined text-lg transform transition-transform">expand_more</span>
+          </button>
+          <div class="submenu hidden ml-6 mt-1 space-y-1">
+            <a href="#"
+              class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-400 hover:bg-cu-dark-blue-80 hover:text-white">
+              <span class="material-symbols-outlined text-base">arrow_right</span>
+              <span>Employee Management</span>
+            </a>
+            <a href="#"
+              class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-400 hover:bg-cu-dark-blue-80 hover:text-white">
+              <span class="material-symbols-outlined text-base">arrow_right</span>
+              <span>Leave Management</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Department Manager -->
+        <a class="flex items-center gap-3 p-3 rounded-lg text-sm font-medium text-slate-300 hover:bg-cu-dark-blue-80"
+          href="#">
+          <span class="material-symbols-outlined">corporate_fare</span>Department Manager</a>
+
+        <!-- User Manager -->
+        <div>
+          <button
+            class="menu-toggle flex items-center justify-between p-3 rounded-lg text-slate-300 hover:bg-cu-dark-blue-80 w-full text-left">
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined">manage_accounts</span>
+              <span class="font-medium text-sm">User Manager</span>
+            </div>
+            <span class="material-symbols-outlined text-lg transform transition-transform">expand_more</span>
+          </button>
+          <div class="submenu hidden ml-6 mt-1 space-y-1">
+            <a href="#"
+              class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-400 hover:bg-cu-dark-blue-80 hover:text-white">
+              <span class="material-symbols-outlined text-base">arrow_right</span>
+              <span>Add User</span>
+            </a>
+            <a href="#"
+              class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-400 hover:bg-cu-dark-blue-80 hover:text-white">
+              <span class="material-symbols-outlined text-base">arrow_right</span>
+              <span>Manage Users</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Working Days -->
+        <div>
+          <button
+            class="menu-toggle flex items-center justify-between p-3 rounded-lg text-slate-300 hover:bg-cu-dark-blue-80 w-full text-left">
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined">calendar_today</span>
+              <span class="font-medium text-sm">Working Days</span>
+            </div>
+            <span class="material-symbols-outlined text-lg transform transition-transform">expand_more</span>
+          </button>
+          <div class="submenu hidden ml-6 mt-1 space-y-1">
+            <a href="#"
+              class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-400 hover:bg-cu-dark-blue-80 hover:text-white">
+              <span class="material-symbols-outlined text-base">arrow_right</span>
+              <span>Calendar</span>
+            </a>
+            <a href="#"
+              class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-400 hover:bg-cu-dark-blue-80 hover:text-white">
+              <span class="material-symbols-outlined text-base">arrow_right</span>
+              <span>Holidays</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Settings -->
+        <div>
+          <button
+            class="menu-toggle flex items-center justify-between p-3 rounded-lg text-slate-300 hover:bg-cu-dark-blue-80 w-full text-left">
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined">settings</span>
+              <span class="font-medium text-sm">Settings</span>
+            </div>
+            <span class="material-symbols-outlined text-lg transform transition-transform">expand_more</span>
+          </button>
+          <div class="submenu hidden ml-6 mt-1 space-y-1">
+            <a href="#"
+              class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-400 hover:bg-cu-dark-blue-80 hover:text-white">
+              <span class="material-symbols-outlined text-base">arrow_right</span>
+              <span>KPI Manager</span>
+            </a>
+              <a href="configuration.html"
+              class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-400 hover:bg-cu-dark-blue-80 hover:text-white">
+              <span class="material-symbols-outlined text-base">arrow_right</span>
+              <span>Configuration</span>
+            </a>
+          </div>
+        </div>
+      </nav>
+    </aside>
+
+    <button id="sidebarToggle" aria-expanded="true"
+      class="p-2 rounded-full text-slate-400 hover:bg-cu-dark-blue-80 transition-colors"
+      style="position:absolute; z-index:60;">
+      <span class="material-symbols-outlined text-xl">keyboard_double_arrow_left</span>
+    </button>
+
+    <div class="flex-1 flex flex-col bg-bg-main">
+      <header class="flex-shrink-0 bg-[#1b1e42] h-16 flex items-center justify-end px-6 border-b border-slate-200">
+        <div class="flex items-center space-x-4">
+          <button class="p-2 rounded-full text-slate-300 hover:bg-cu-dark-blue-80 relative">
+            <span class="material-symbols-outlined text-yellow-500">notifications</span>
+            <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full"></span>
+          </button>
+          <div class="flex items-center space-x-3">
+            <img alt="User avatar" class="w-10 h-10 rounded-full object-cover"
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuBR8s_sRkD2uqrpzMyUfuQswvEJ6g6HmJbNWRFuxVQrSEUTQBKUCb8FrE4u1rNmdesirGmB0fSnXH0MsEurf7hmlhlkPED1n-AkkdeAQMAWAgU5wxVJTfUU6Pwf-Y8nQ1wskiHsPmWaCNPcrpBsa-iA4HqrI_cLqR3nfa1DafNqND7EBfLy1X75EULCpsRWFVLpztjMjkn6ufe2il3wB9_JOZuva2njUcWM0nJhERkc8yDkGPPP0eoFr5pSCqKx45WY1mn5_zVR" />
+            <div>
+              <div class="font-semibold text-sm text-white">Nisal Amarasekara</div>
+              <div class="text-xs text-slate-400">Sri Lanka</div>
+            </div>
+          </div>
+          <button class="p-2 rounded-full text-slate-300 hover:bg-cu-dark-blue-80">
+            <span class="material-symbols-outlined">lock</span>
+          </button>
+          <button class="p-2 rounded-full text-slate-300 hover:bg-cu-dark-blue-80">
+            <span class="material-symbols-outlined">expand_more</span>
+          </button>
+        </div>
+      </header>
+
+      <main class="flex-1 overflow-y-auto">
+        <div class="main-content-wrap">
+          <div class="coe-main-heading-wrap">
+            <span class="coe-main-heading-icon" aria-hidden="true">
+              <span class="material-symbols-outlined">grid_view</span>
+            </span>
+            <h1 class="coe-main-heading">COE TEXTILE</h1>
+          </div>
+          <!-- White sub-header bar: COE Category (left) | Segmented Toggle (center) | View As (right) -->
+          <div class="sub-header-bar">
+            <div class="coe-category-section">
+              <div class="coe-category-heading-wrap">
+                <span class="coe-category-title" id="regionLabel">Region</span>
+                <select id="regionSelect" aria-labelledby="regionLabel" aria-label="Region"
+                  class="coe-select cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#3eb2ed] focus:ring-offset-2 pr-10 pl-4">
+                  <option value="APAC" selected>APAC</option>
+                  <option value="EMEA">EMEA</option>
+                  <option value="Americas">Americas</option>
+                  <option value="Global">Global</option>
+                </select>
+                <span class="coe-category-title" id="coeLabel">Category</span>
+                <select id="coeSelect" aria-labelledby="coeLabel" aria-label="COE Category"
+                  class="coe-select text-slate-800 cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#3eb2ed] focus:ring-offset-2 pr-10 pl-4">
+                  <option value="All">All</option>
+                  <option value="Textile" selected>Textile</option>
+                  <option value="Apparel">Apparel</option>
+                  <option value="Leather">Leather</option>
+                  <option value="Footwear">Footwear</option>
+                </select>
+                <span class="coe-category-title" id="countryLabel">Country</span>
+                <select id="countrySelect" aria-labelledby="countryLabel" aria-label="Country"
+                  class="coe-select text-slate-800 cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#3eb2ed] focus:ring-offset-2 pr-10 pl-4">
+                  <option value="All">All</option>
+                  <option value="Australia">Australia</option>
+                  <option value="India">India</option>
+                  <option value="Indonesia">Indonesia</option>
+                  <option value="UK">UK</option>
+                  <option value="Hungary">Hungary</option>
+                  <option value="Sri Lanka" selected>Sri Lanka</option>
+                </select>
+                <span class="coe-category-title">Period</span>
+                <button type="button" class="period-trigger">2026 Jan - 2026 Jan</button>
+              </div>
+            </div>
+            <nav class="segmented-toggle" aria-label="Dashboard and Reporting">
+              <a href="COEdashboard.html" class="nav-btn inline-flex items-center gap-2 no-underline">
+                <span class="material-symbols-outlined text-lg" aria-hidden="true">person</span>
+                Dashboard
+              </a>
+              <span class="nav-btn inline-flex items-center gap-2" aria-current="page">
+                <span class="material-symbols-outlined text-lg" aria-hidden="true">groups</span>
+                Reporting
+              </span>
+            </nav>
+          </div>
+
+          <div class="business-overview-card overflow-hidden">
+            <nav aria-label="Business Overview tabs"
+              class="business-overview-tabs flex items-center justify-between pr-8 overflow-auto bg-slate-50/80 border-b border-slate-200 px-8 pt-5 pb-4">
+              <ul role="tablist" class="flex items-center gap-2 flex-wrap">
+                <li role="presentation">
+                  <button data-tab="resources" role="tab" aria-selected="true"
+                    class="px-3 py-2 text-sm font-medium rounded-lg bg-cu-light-blue-20 text-cu-dark-blue shadow-soft transition-colors">Resources</button>
+                </li>
+                <li role="presentation">
+                  <button data-tab="client-portfolio" role="tab" aria-selected="false"
+                    class="px-3 py-2 text-sm font-medium rounded-lg text-slate-600 hover:bg-slate-100 transition-colors">Client
+                    Portfolio &amp; Market Share</button>
+                </li>
+                <li role="presentation">
+                  <button data-tab="service-tat" role="tab" aria-selected="false"
+                    class="px-3 py-2 text-sm font-medium rounded-lg text-slate-600 hover:bg-slate-100 transition-colors">Service
+                    TAT</button>
+                </li>
+                <li role="presentation">
+                  <button data-tab="costing" role="tab" aria-selected="false"
+                    class="px-3 py-2 text-sm font-medium rounded-lg text-slate-600 hover:bg-slate-100 transition-colors">Costing</button>
+                </li>
+                <li role="presentation">
+                  <button data-tab="strategy" role="tab" aria-selected="false"
+                    class="px-3 py-2 text-sm font-medium rounded-lg text-slate-600 hover:bg-slate-100 transition-colors">Strategy</button>
+                </li>
+                <li role="presentation">
+                  <button data-tab="revenue" role="tab" aria-selected="false"
+                    class="px-3 py-2 text-sm font-medium rounded-lg text-slate-600 hover:bg-slate-100 transition-colors">Revenue</button>
+                </li>
+              </ul>
+              <a href="COE-Dashboard.html" id="businessOverviewBackLink" target="_self"
+                class="flex items-center gap-2 px-4 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 bg-white border border-slate-200 rounded-full shadow-soft transition-all hover:shadow-md no-underline cursor-pointer">
+                <span class="material-symbols-outlined text-lg">arrow_back</span>
+                Back
+              </a>
+            </nav>
+
+            <section id="resources" class="business-overview-panel">
+              <div class="panel-content px-8 pt-6 pb-8">
+                <div class="resources-header">
+                  <div class="resources-header-left">
+                    <div class="resources-header-icon">
+                      <span class="material-symbols-outlined">account_balance</span>
+                    </div>
+                    <div>
+                      <h2 class="resources-header-title">Resources</h2>
+                      <p class="resources-header-subtitle">Manage resources and roles</p>
+                    </div>
+                  </div>
+                  <div class="resources-header-actions">
+                    <button type="button" class="btn-export">
+                      <span class="material-symbols-outlined filled" style="font-size:18px">download</span>
+                      Export
+                    </button>
+                    <div class="resources-search-wrap">
+                      <span class="material-symbols-outlined">search</span>
+                      <input type="text" class="resources-search" placeholder="Search..."
+                        aria-label="Search resources" />
+                    </div>
+                  </div>
+                </div>
+                <div class="resources-table-wrapper">
+                  <table class="resources-table" role="grid">
+                    <thead>
+                      <tr>
+                        <th>Role</th>
+                        <th>Work type</th>
+                        <th>Employee Count</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>Certifier</td>
+                        <td>Full-time</td>
+                        <td>1</td>
+                      </tr>
+                      <tr>
+                        <td>Auditor</td>
+                        <td>Full-time</td>
+                        <td>2</td>
+                      </tr>
+                      <tr>
+                        <td>Planner</td>
+                        <td>Full-time</td>
+                        <td>1</td>
+                      </tr>
+                      <tr>
+                        <td>Contractor</td>
+                        <td>Part-time</td>
+                        <td>5</td>
+                      </tr>
+                      <tr>
+                        <td>Reviewer</td>
+                        <td>Full-time</td>
+                        <td>1</td>
+                      </tr>
+                      <tr>
+                        <td>TC Issuer</td>
+                        <td>Full-time</td>
+                        <td>1</td>
+                      </tr>
+                      <tr>
+                        <td>Marketing</td>
+                        <td>Full-time</td>
+                        <td>1</td>
+                      </tr>
+                      <tr>
+                        <td>others</td>
+                        <td>Part-time</td>
+                        <td>0.5</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </section>
+            <section id="client-portfolio" class="business-overview-panel hidden">
+              <div class="panel-content px-8 pt-6 pb-8">
+                <div class="resources-header">
+                  <div class="resources-header-left">
+                    <div class="resources-header-icon">
+                      <span class="material-symbols-outlined">account_balance</span>
+                    </div>
+                    <div>
+                      <h2 class="resources-header-title">Client Portfolio &amp; Market Share</h2>
+                      <p class="resources-header-subtitle">Manage portfolio and market share data</p>
+                    </div>
+                  </div>
+                  <div class="resources-header-actions">
+                    <button type="button" id="openAddClientPortfolioModal" class="btn-primary">
+                      <span class="material-symbols-outlined filled" style="font-size:18px">add</span>
+                      Add New
+                    </button>
+                    <button type="button" class="btn-export">
+                      <span class="material-symbols-outlined filled" style="font-size:18px">download</span>
+                      Export
+                    </button>
+                    <div class="resources-search-wrap">
+                      <span class="material-symbols-outlined">search</span>
+                      <input type="text" class="resources-search" placeholder="Search..." aria-label="Search" />
+                    </div>
+                  </div>
+                </div>
+                <div class="resources-table-wrapper">
+                  <table class="portfolio-table" role="grid">
+                    <thead>
+                      <tr>
+                        <th>Year</th>
+                        <th>Program</th>
+                        <th>Active CLIENT YDT</th>
+                        <th>Withdrawn CLIENT YDT</th>
+                        <th>Next Year Projection</th>
+                        <th>Market Share</th>
+                        <th>Remark</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td class="num">2025</td>
+                        <td>GOTS</td>
+                        <td class="num">30</td>
+                        <td class="num">6</td>
+                        <td class="num">27</td>
+                        <td class="num">3%</td>
+                        <td></td>
+                        <td><a href="#" class="action-link" title="Edit" aria-label="Edit"><span
+                              class="material-symbols-outlined" style="font-size:20px">edit</span></a></td>
+                      </tr>
+                      <tr>
+                        <td class="num">2025</td>
+                        <td>OCS</td>
+                        <td class="num">11</td>
+                        <td class="num">4</td>
+                        <td class="num">10</td>
+                        <td class="num">0%</td>
+                        <td></td>
+                        <td><a href="#" class="action-link" title="Edit" aria-label="Edit"><span
+                              class="material-symbols-outlined" style="font-size:20px">edit</span></a></td>
+                      </tr>
+                      <tr>
+                        <td class="num">2025</td>
+                        <td>GRS</td>
+                        <td class="num">27</td>
+                        <td class="num">1</td>
+                        <td class="num">26</td>
+                        <td class="num">42%</td>
+                        <td></td>
+                        <td><a href="#" class="action-link" title="Edit" aria-label="Edit"><span
+                              class="material-symbols-outlined" style="font-size:20px">edit</span></a></td>
+                      </tr>
+                      <tr>
+                        <td class="num">2025</td>
+                        <td>RCS</td>
+                        <td class="num">15</td>
+                        <td class="num">3</td>
+                        <td class="num">14</td>
+                        <td class="num">37%</td>
+                        <td></td>
+                        <td><a href="#" class="action-link" title="Edit" aria-label="Edit"><span
+                              class="material-symbols-outlined" style="font-size:20px">edit</span></a></td>
+                      </tr>
+                      <tr>
+                        <td class="num">2025</td>
+                        <td>RWS</td>
+                        <td class="num">8</td>
+                        <td class="num">2</td>
+                        <td class="num">7</td>
+                        <td class="num">8%</td>
+                        <td></td>
+                        <td><a href="#" class="action-link" title="Edit" aria-label="Edit"><span
+                              class="material-symbols-outlined" style="font-size:20px">edit</span></a></td>
+                      </tr>
+                      <tr>
+                        <td class="num">2025</td>
+                        <td>RDS</td>
+                        <td class="num">3</td>
+                        <td class="num">0</td>
+                        <td class="num">3</td>
+                        <td class="num">0%</td>
+                        <td></td>
+                        <td><a href="#" class="action-link" title="Edit" aria-label="Edit"><span
+                              class="material-symbols-outlined" style="font-size:20px">edit</span></a></td>
+                      </tr>
+                      <tr>
+                        <td class="num">2025</td>
+                        <td>Regenagri</td>
+                        <td class="num">6</td>
+                        <td class="num">1</td>
+                        <td class="num">6</td>
+                        <td class="num">5%</td>
+                        <td></td>
+                        <td><a href="#" class="action-link" title="Edit" aria-label="Edit"><span
+                              class="material-symbols-outlined" style="font-size:20px">edit</span></a></td>
+                      </tr>
+                      <tr>
+                        <td class="num">2025</td>
+                        <td>OBP</td>
+                        <td class="num">4</td>
+                        <td class="num">1</td>
+                        <td class="num">4</td>
+                        <td class="num">2%</td>
+                        <td></td>
+                        <td><a href="#" class="action-link" title="Edit" aria-label="Edit"><span
+                              class="material-symbols-outlined" style="font-size:20px">edit</span></a></td>
+                      </tr>
+                      <tr>
+                        <td class="num">2025</td>
+                        <td>SRCCS</td>
+                        <td class="num">2</td>
+                        <td class="num">0</td>
+                        <td class="num">2</td>
+                        <td class="num">0%</td>
+                        <td></td>
+                        <td><a href="#" class="action-link" title="Edit" aria-label="Edit"><span
+                              class="material-symbols-outlined" style="font-size:20px">edit</span></a></td>
+                      </tr>
+                      <tr>
+                        <td class="num">2025</td>
+                        <td>BCI</td>
+                        <td class="num">15</td>
+                        <td class="num">5</td>
+                        <td class="num">12</td>
+                        <td class="num">35%</td>
+                        <td></td>
+                        <td><a href="#" class="action-link" title="Edit" aria-label="Edit"><span
+                              class="material-symbols-outlined" style="font-size:20px">edit</span></a></td>
+                      </tr>
+                      <tr>
+                        <td class="num">2025</td>
+                        <td>Others</td>
+                        <td class="num">0</td>
+                        <td class="num">0</td>
+                        <td class="num">0</td>
+                        <td class="num">0%</td>
+                        <td></td>
+                        <td><a href="#" class="action-link" title="Edit" aria-label="Edit"><span
+                              class="material-symbols-outlined" style="font-size:20px">edit</span></a></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </section>
+            <section id="service-tat" class="business-overview-panel hidden">
+              <div class="panel-content px-8 pt-6 pb-8">
+                <div class="resources-header">
+                  <div class="resources-header-left">
+                    <div class="resources-header-icon">
+                      <span class="material-symbols-outlined">schedule</span>
+                    </div>
+                    <div>
+                      <h2 class="resources-header-title">Service TAT</h2>
+                      <p class="resources-header-subtitle">Turnaround time by service category and group</p>
+                    </div>
+                  </div>
+                  <div class="resources-header-actions">
+                    <button type="button" id="openAddServiceTatModal" class="btn-primary">
+                      <span class="material-symbols-outlined filled" style="font-size:18px">add</span>
+                      Add New
+                    </button>
+                    <button type="button" class="btn-export">
+                      <span class="material-symbols-outlined filled" style="font-size:18px">download</span>
+                      Export
+                    </button>
+                    <div class="resources-search-wrap">
+                      <span class="material-symbols-outlined">search</span>
+                      <input type="text" class="resources-search" placeholder="Search..."
+                        aria-label="Search Service TAT" />
+                    </div>
+                  </div>
+                </div>
+                <div class="resources-table-wrapper">
+                  <table class="tat-table" role="grid">
+                    <thead>
+                      <tr>
+                        <th>Year</th>
+                        <th>Service category</th>
+                        <th>Service criteria</th>
+                        <th>Program - Group</th>
+                        <th>TAT (No. of Days)</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td class="num">2026</td>
+                        <td>Audits</td>
+                        <td>offer letter</td>
+                        <td>GOTS</td>
+                        <td class="num">10</td>
+                        <td><a href="#" class="action-link" title="Edit" aria-label="Edit"><span
+                              class="material-symbols-outlined" style="font-size:20px">edit</span></a></td>
+                      </tr>
+                      <tr>
+                        <td class="num">2026</td>
+                        <td>Audits</td>
+                        <td>Audit plan</td>
+                        <td>TE</td>
+                        <td class="num">5</td>
+                        <td><a href="#" class="action-link" title="Edit" aria-label="Edit"><span
+                              class="material-symbols-outlined" style="font-size:20px">edit</span></a></td>
+                      </tr>
+                      <tr>
+                        <td class="num">2026</td>
+                        <td>Audits</td>
+                        <td>re-audit before the expiration date.</td>
+                        <td>Regenagri</td>
+                        <td class="num">8</td>
+                        <td><a href="#" class="action-link" title="Edit" aria-label="Edit"><span
+                              class="material-symbols-outlined" style="font-size:20px">edit</span></a></td>
+                      </tr>
+                      <tr>
+                        <td class="num">2026</td>
+                        <td>Audits</td>
+                        <td>reporting</td>
+                        <td>SRCCS</td>
+                        <td class="num">6</td>
+                        <td><a href="#" class="action-link" title="Edit" aria-label="Edit"><span
+                              class="material-symbols-outlined" style="font-size:20px">edit</span></a></td>
+                      </tr>
+                      <tr>
+                        <td class="num">2026</td>
+                        <td>Scope Certificates</td>
+                        <td>report review and finalization</td>
+                        <td>GOTS</td>
+                        <td class="num">7</td>
+                        <td><a href="#" class="action-link" title="Edit" aria-label="Edit"><span
+                              class="material-symbols-outlined" style="font-size:20px">edit</span></a></td>
+                      </tr>
+                      <tr>
+                        <td class="num">2026</td>
+                        <td>Scope Certificates</td>
+                        <td>Issuance of SC</td>
+                        <td>TE</td>
+                        <td class="num">4</td>
+                        <td><a href="#" class="action-link" title="Edit" aria-label="Edit"><span
+                              class="material-symbols-outlined" style="font-size:20px">edit</span></a></td>
+                      </tr>
+                      <tr>
+                        <td class="num">2026</td>
+                        <td>Transaction Certificates</td>
+                        <td>TC review</td>
+                        <td>GOTS</td>
+                        <td class="num">5</td>
+                        <td><a href="#" class="action-link" title="Edit" aria-label="Edit"><span
+                              class="material-symbols-outlined" style="font-size:20px">edit</span></a></td>
+                      </tr>
+                      <tr>
+                        <td class="num">2026</td>
+                        <td>Logo Approval</td>
+                        <td>Logo Approval</td>
+                        <td>GRS</td>
+                        <td class="num">3</td>
+                        <td><a href="#" class="action-link" title="Edit" aria-label="Edit"><span
+                              class="material-symbols-outlined" style="font-size:20px">edit</span></a></td>
+                      </tr>
+                      <tr>
+                        <td class="num">2026</td>
+                        <td>SC updates</td>
+                        <td>Product addition</td>
+                        <td>RCS</td>
+                        <td class="num">4</td>
+                        <td><a href="#" class="action-link" title="Edit" aria-label="Edit"><span
+                              class="material-symbols-outlined" style="font-size:20px">edit</span></a></td>
+                      </tr>
+                      <tr>
+                        <td class="num">2026</td>
+                        <td>SC updates</td>
+                        <td>Certified Sub contractor addition</td>
+                        <td>OCS</td>
+                        <td class="num">6</td>
+                        <td><a href="#" class="action-link" title="Edit" aria-label="Edit"><span
+                              class="material-symbols-outlined" style="font-size:20px">edit</span></a></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </section>
+            <section id="costing" class="business-overview-panel hidden">
+              <div class="panel-content px-8 pt-6 pb-8">
+                <div class="resources-header">
+                  <div class="resources-header-left">
+                    <div class="resources-header-icon">
+                      <span class="material-symbols-outlined">payments</span>
+                    </div>
+                    <div>
+                      <h2 class="resources-header-title">Costing</h2>
+                      <p class="resources-header-subtitle">Cost by category, program and unit</p>
+                    </div>
+                  </div>
+                  <div class="resources-header-actions">
+                    <button type="button" id="openAddCostModal" class="btn-primary">
+                      <span class="material-symbols-outlined filled" style="font-size:18px">add</span>
+                      Add New
+                    </button>
+                    <button type="button" class="btn-export">
+                      <span class="material-symbols-outlined filled" style="font-size:18px">download</span>
+                      Export
+                    </button>
+                    <div class="resources-search-wrap">
+                      <span class="material-symbols-outlined">search</span>
+                      <input type="text" class="resources-search" placeholder="Search..." aria-label="Search Costing" />
+                    </div>
+                  </div>
+                </div>
+                <div class="resources-table-wrapper">
+                  <table class="costing-table" role="grid">
+                    <thead>
+                      <tr>
+                        <th>Year</th>
+                        <th>Cost category</th>
+                        <th>Cost Criteria</th>
+                        <th>Program- Group</th>
+                        <th>Cost</th>
+                        <th>Currency</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td class="num">2026</td>
+                        <td>General COST</td>
+                        <td>Tavel time/day</td>
+                        <td>GOTS</td>
+                        <td class="num">10</td>
+                        <td>EUR</td>
+                        <td><a href="#" class="action-link action-link-delete" title="Delete" aria-label="Delete"><span
+                              class="material-symbols-outlined" style="font-size:20px">delete</span></a></td>
+                      </tr>
+                      <tr>
+                        <td class="num">2026</td>
+                        <td>General COST</td>
+                        <td>Audit fees/day</td>
+                        <td>TE</td>
+                        <td class="num">5</td>
+                        <td>EUR</td>
+                        <td><a href="#" class="action-link action-link-delete" title="Delete" aria-label="Delete"><span
+                              class="material-symbols-outlined" style="font-size:20px">delete</span></a></td>
+                      </tr>
+                      <tr>
+                        <td class="num">2026</td>
+                        <td>General COST</td>
+                        <td>Report &amp; Certification</td>
+                        <td>REGENAGRI</td>
+                        <td class="num">8</td>
+                        <td>EUR</td>
+                        <td><a href="#" class="action-link action-link-delete" title="Delete" aria-label="Delete"><span
+                              class="material-symbols-outlined" style="font-size:20px">delete</span></a></td>
+                      </tr>
+                      <tr>
+                        <td class="num">2026</td>
+                        <td>General COST</td>
+                        <td>Product Addition</td>
+                        <td>GRS</td>
+                        <td class="num">7</td>
+                        <td>EUR</td>
+                        <td><a href="#" class="action-link action-link-delete" title="Delete" aria-label="Delete"><span
+                              class="material-symbols-outlined" style="font-size:20px">delete</span></a></td>
+                      </tr>
+                      <tr>
+                        <td class="num">2026</td>
+                        <td>General COST</td>
+                        <td>Logo</td>
+                        <td>RCS</td>
+                        <td class="num">4</td>
+                        <td>EUR</td>
+                        <td><a href="#" class="action-link action-link-delete" title="Delete" aria-label="Delete"><span
+                              class="material-symbols-outlined" style="font-size:20px">delete</span></a></td>
+                      </tr>
+                      <tr>
+                        <td class="num">2026</td>
+                        <td>General COST</td>
+                        <td>TC- single shipment</td>
+                        <td>OCS</td>
+                        <td class="num">6</td>
+                        <td>EUR</td>
+                        <td><a href="#" class="action-link action-link-delete" title="Delete" aria-label="Delete"><span
+                              class="material-symbols-outlined" style="font-size:20px">delete</span></a></td>
+                      </tr>
+                      <tr>
+                        <td class="num">2026</td>
+                        <td>General COST</td>
+                        <td>TC-multiple shipment</td>
+                        <td>SRCCS</td>
+                        <td class="num">9</td>
+                        <td>EUR</td>
+                        <td><a href="#" class="action-link action-link-delete" title="Delete" aria-label="Delete"><span
+                              class="material-symbols-outlined" style="font-size:20px">delete</span></a></td>
+                      </tr>
+                      <tr>
+                        <td class="num">2026</td>
+                        <td>General COST</td>
+                        <td>others</td>
+                        <td>REGENAGRI</td>
+                        <td class="num">3</td>
+                        <td>EUR</td>
+                        <td><a href="#" class="action-link action-link-delete" title="Delete" aria-label="Delete"><span
+                              class="material-symbols-outlined" style="font-size:20px">delete</span></a></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </section>
+            <section id="strategy" class="business-overview-panel hidden">
+              <div class="panel-content px-8 pt-6 pb-8">
+                <div class="resources-header">
+                  <div class="resources-header-left">
+                    <div class="resources-header-icon">
+                      <span class="material-symbols-outlined">strategy</span>
+                    </div>
+                    <div>
+                      <h2 class="resources-header-title">Strategy</h2>
+                      <p class="resources-header-subtitle">Strategy categories and criteria</p>
+                    </div>
+                  </div>
+                  <div class="resources-header-actions">
+                    <button type="button" id="openAddStrategyModal" class="btn-primary">
+                      <span class="material-symbols-outlined filled" style="font-size:18px">add</span>
+                      Add New
+                    </button>
+                    <button type="button" class="btn-export">
+                      <span class="material-symbols-outlined filled" style="font-size:18px">download</span>
+                      Export
+                    </button>
+                    <div class="resources-search-wrap">
+                      <span class="material-symbols-outlined">search</span>
+                      <input type="text" class="resources-search" placeholder="Search..."
+                        aria-label="Search Strategy" />
+                    </div>
+                  </div>
+                </div>
+                <div class="resources-table-wrapper">
+                  <table class="strategy-table" role="grid">
+                    <thead>
+                      <tr>
+                        <th>Year</th>
+                        <th>Strategy Category</th>
+                        <th>Strategy Criteria</th>
+                        <th>Plan / Description</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td class="num">2025</td>
+                        <td>Marketing</td>
+                        <td>Dedicated Marketing team Size</td>
+                        <td></td>
+                        <td><a href="#" class="action-link" title="Edit" aria-label="Edit"><span
+                              class="material-symbols-outlined" style="font-size:20px">edit</span></a></td>
+                      </tr>
+                      <tr>
+                        <td class="num">2025</td>
+                        <td>Webinars</td>
+                        <td>Offline Marketing strategy</td>
+                        <td></td>
+                        <td><a href="#" class="action-link" title="Edit" aria-label="Edit"><span
+                              class="material-symbols-outlined" style="font-size:20px">edit</span></a></td>
+                      </tr>
+                      <tr>
+                        <td class="num">2025</td>
+                        <td>Opportunities</td>
+                        <td>Online Marketing Strategy</td>
+                        <td></td>
+                        <td><a href="#" class="action-link" title="Edit" aria-label="Edit"><span
+                              class="material-symbols-outlined" style="font-size:20px">edit</span></a></td>
+                      </tr>
+                      <tr>
+                        <td class="num">2025</td>
+                        <td>Sustainability</td>
+                        <td>ESG reporting criteria</td>
+                        <td></td>
+                        <td><a href="#" class="action-link" title="Edit" aria-label="Edit"><span
+                              class="material-symbols-outlined" style="font-size:20px">edit</span></a></td>
+                      </tr>
+                      <tr>
+                        <td class="num">2025</td>
+                        <td>Certifications</td>
+                        <td>Certification scope criteria</td>
+                        <td></td>
+                        <td><a href="#" class="action-link" title="Edit" aria-label="Edit"><span
+                              class="material-symbols-outlined" style="font-size:20px">edit</span></a></td>
+                      </tr>
+                      <tr>
+                        <td class="num">2025</td>
+                        <td>Partnerships</td>
+                        <td>Partnership engagement criteria</td>
+                        <td></td>
+                        <td><a href="#" class="action-link" title="Edit" aria-label="Edit"><span
+                              class="material-symbols-outlined" style="font-size:20px">edit</span></a></td>
+                      </tr>
+                      <tr>
+                        <td class="num">2026</td>
+                        <td>Digital</td>
+                        <td>Digital platform criteria</td>
+                        <td></td>
+                        <td><a href="#" class="action-link" title="Edit" aria-label="Edit"><span
+                              class="material-symbols-outlined" style="font-size:20px">edit</span></a></td>
+                      </tr>
+                      <tr>
+                        <td class="num">2026</td>
+                        <td>Training</td>
+                        <td>Training program criteria</td>
+                        <td></td>
+                        <td><a href="#" class="action-link" title="Edit" aria-label="Edit"><span
+                              class="material-symbols-outlined" style="font-size:20px">edit</span></a></td>
+                      </tr>
+                      <tr>
+                        <td class="num">2026</td>
+                        <td>Outreach</td>
+                        <td>Stakeholder outreach criteria</td>
+                        <td></td>
+                        <td><a href="#" class="action-link" title="Edit" aria-label="Edit"><span
+                              class="material-symbols-outlined" style="font-size:20px">edit</span></a></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </section>
+            <section id="revenue" class="business-overview-panel hidden">
+              <div class="panel-content px-8 pt-6 pb-8">
+                <div class="resources-header">
+                  <div class="resources-header-left">
+                    <div class="resources-header-icon">
+                      <span class="material-symbols-outlined">attach_money</span>
+                    </div>
+                    <div>
+                      <h2 class="resources-header-title">Revenue</h2>
+                      <p class="resources-header-subtitle">Revenue by source and financial year</p>
+                    </div>
+                  </div>
+                  <div class="resources-header-actions">
+                    <button type="button" id="openAddRevenueModal" class="btn-primary">
+                      <span class="material-symbols-outlined filled" style="font-size:18px">add</span>
+                      Add New
+                    </button>
+                    <button type="button" class="btn-export">
+                      <span class="material-symbols-outlined filled" style="font-size:18px">download</span>
+                      Export
+                    </button>
+                    <div class="resources-search-wrap">
+                      <span class="material-symbols-outlined">search</span>
+                      <input type="text" class="resources-search" placeholder="Search..." aria-label="Search Revenue" />
+                    </div>
+                  </div>
+                </div>
+                <div class="resources-table-wrapper">
+                  <table class="revenue-table" role="grid">
+                    <thead>
+                      <tr>
+                        <th>Year</th>
+                        <th>Revenue Source</th>
+                        <th>Program</th>
+                        <th>Revenue YTD (Current FY)</th>
+                        <th>Revenue (Last FY)</th>
+                        <th>Currency</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td class="num">2025</td>
+                        <td>Certification</td>
+                        <td>GOTS</td>
+                        <td class="num">1000</td>
+                        <td class="num">900</td>
+                        <td>EURO</td>
+                        <td><a href="#" class="action-link action-link-delete" title="Delete" aria-label="Delete"><span
+                              class="material-symbols-outlined" style="font-size:20px">delete</span></a></td>
+                      </tr>
+                      <tr>
+                        <td class="num">2025</td>
+                        <td>TC</td>
+                        <td>GRS</td>
+                        <td class="num">500</td>
+                        <td class="num">450</td>
+                        <td>EURO</td>
+                        <td><a href="#" class="action-link action-link-delete" title="Delete" aria-label="Delete"><span
+                              class="material-symbols-outlined" style="font-size:20px">delete</span></a></td>
+                      </tr>
+                      <tr>
+                        <td class="num">2026</td>
+                        <td>Certification</td>
+                        <td>GOTS</td>
+                        <td class="num">1100</td>
+                        <td class="num">1000</td>
+                        <td>EURO</td>
+                        <td><a href="#" class="action-link action-link-delete" title="Delete" aria-label="Delete"><span
+                              class="material-symbols-outlined" style="font-size:20px">delete</span></a></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Add Client Portfolio & Market Share Modal -->
+  <div id="addClientPortfolioModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/40"
+    aria-modal="true" role="dialog" aria-labelledby="addClientPortfolioModalTitle">
+    <div class="bg-white rounded-2xl shadow-lg w-full max-w-3xl mx-auto overflow-visible"
+      style="min-width:700px; min-height:360px; border-radius:20px;">
+      <div class="flex items-center justify-between px-6 py-4" style="background:#1b2540;">
+        <h2 id="addClientPortfolioModalTitle" class="text-lg font-semibold text-white">Add client portfolio &amp; Market
+          Share</h2>
+        <button type="button" id="closeAddClientPortfolioModal"
+          class="text-white p-2 text-xl bg-transparent hover:bg-white/10 rounded-full"
+          aria-label="Close">&#10005;</button>
+      </div>
+      <form id="addClientPortfolioForm" class="p-8 pt-6 space-y-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label for="clientPortfolioYear" class="block text-slate-700 font-medium text-[15px] mb-1">Year :</label>
+            <select id="clientPortfolioYear" class="w-full border border-slate-300 rounded px-3 py-2 text-sm bg-white"
+              style="height:42px;" required>
+              <option value="">Select Year</option>
+              <option value="2026">2026</option>
+              <option value="2025">2025</option>
+              <option value="2024">2024</option>
+            </select>
+          </div>
+          <div>
+            <label for="clientPortfolioService" class="block text-slate-700 font-medium text-[15px] mb-1">Program
+              :</label>
+            <select id="clientPortfolioService"
+              class="w-full border border-slate-300 rounded px-3 py-2 text-sm bg-white" style="height:42px;" required>
+              <option value="">Select Program</option>
+              <option value="GOTS">GOTS</option>
+              <option value="OCS">OCS</option>
+              <option value="GRS">GRS</option>
+              <option value="RCS">RCS</option>
+              <option value="RWS">RWS</option>
+            </select>
+          </div>
+        </div>
+        <div class="border border-slate-200 rounded-xl p-6 space-y-4 overflow-visible">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label for="clientPortfolioActiveYdt" class="block text-slate-700 font-medium text-[15px] mb-1">Active
+                CLIENT YDT :</label>
+              <input type="text" id="clientPortfolioActiveYdt"
+                class="w-full border border-slate-300 rounded px-3 py-2 text-sm bg-white" style="height:38px;"
+                placeholder="Enter" />
+            </div>
+            <div>
+              <label for="clientPortfolioWithdrawnYdt"
+                class="block text-slate-700 font-medium text-[15px] mb-1">Withdrawn CLIENT YDT :</label>
+              <input type="text" id="clientPortfolioWithdrawnYdt"
+                class="w-full border border-slate-300 rounded px-3 py-2 text-sm bg-white" style="height:38px;"
+                placeholder="Enter" />
+            </div>
+            <div>
+              <label for="clientPortfolioNextYearProjection"
+                class="block text-slate-700 font-medium text-[15px] mb-1">Next Year Projection :</label>
+              <input type="text" id="clientPortfolioNextYearProjection"
+                class="w-full border border-slate-300 rounded px-3 py-2 text-sm bg-white" style="height:38px;"
+                placeholder="Enter" />
+            </div>
+            <div>
+              <label for="clientPortfolioMarketShare" class="block text-slate-700 font-medium text-[15px] mb-1">Market
+                Share :</label>
+              <input type="text" id="clientPortfolioMarketShare"
+                class="w-full border border-slate-300 rounded px-3 py-2 text-sm bg-white" style="height:38px;"
+                placeholder="Enter %" />
+            </div>
+          </div>
+          <div>
+            <label for="clientPortfolioRemark" class="block text-slate-700 font-medium text-[15px] mb-1">Remark
+              :</label>
+            <input type="text" id="clientPortfolioRemark"
+              class="w-full border border-slate-300 rounded px-3 py-2 text-sm bg-white" style="height:38px;"
+              placeholder="Enter" />
+          </div>
+          <div class="flex justify-end gap-4 pt-4">
+            <button type="button" id="cancelAddClientPortfolioModal"
+              class="w-10 h-10 flex items-center justify-center rounded-full border-2 border-[#3eb2ed] text-[#3eb2ed] bg-white hover:bg-[#e6f6fd] text-2xl"
+              aria-label="Cancel">&#10005;</button>
+            <button type="submit"
+              class="w-10 h-10 flex items-center justify-center rounded-full bg-[#3eb2ed] text-white text-2xl hover:bg-[#2499d6]"
+              aria-label="Submit">&#10003;</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Add service TAT details Modal -->
+  <div id="addServiceTatModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/40"
+    aria-modal="true" role="dialog" aria-labelledby="addServiceTatModalTitle">
+    <div class="bg-white rounded-2xl shadow-lg w-full max-w-3xl mx-auto overflow-visible"
+      style="min-width:700px; min-height:360px; border-radius:20px;">
+      <div class="flex items-center justify-between px-6 py-4" style="background:#1b2540;">
+        <h2 id="addServiceTatModalTitle" class="text-lg font-semibold text-white">Add service TAT details</h2>
+        <button type="button" id="closeAddServiceTatModal"
+          class="text-white p-2 text-xl bg-transparent hover:bg-white/10 rounded-full"
+          aria-label="Close">&#10005;</button>
+      </div>
+      <form id="addServiceTatForm" class="p-8 pt-6 space-y-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label for="serviceTatPeriod" class="block text-slate-700 font-medium text-[15px] mb-1">Period :</label>
+            <select id="serviceTatPeriod" class="w-full border border-slate-300 rounded px-3 py-2 text-sm bg-white"
+              style="height:42px;">
+              <option value="">Select Year</option>
+              <option value="2026">2026</option>
+              <option value="2025">2025</option>
+              <option value="2024">2024</option>
+            </select>
+          </div>
+          <div>
+            <label for="serviceTatProgramGroup" class="block text-slate-700 font-medium text-[15px] mb-1">Program -
+              Group :</label>
+            <input type="text" id="serviceTatProgramGroup"
+              class="w-full border border-slate-300 rounded px-3 py-2 text-sm bg-white" style="height:42px;"
+              placeholder="Select" />
+          </div>
+        </div>
+        <div class="border border-slate-200 rounded-xl p-6 space-y-4 overflow-visible">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label for="serviceTatServiceCategory" class="block text-slate-700 font-medium text-[15px] mb-1">Service
+                Category</label>
+              <select id="serviceTatServiceCategory"
+                class="w-full border border-slate-300 rounded px-3 py-2 text-sm bg-white" style="height:38px;">
+                <option value="">Select</option>
+                <option value="Audits">Audits</option>
+                <option value="Scope Certificates">Scope Certificates</option>
+                <option value="Certification">Certification</option>
+              </select>
+            </div>
+            <div>
+              <label for="serviceTatServiceCriteria" class="block text-slate-700 font-medium text-[15px] mb-1">Service
+                Criteria</label>
+              <select id="serviceTatServiceCriteria"
+                class="w-full border border-slate-300 rounded px-3 py-2 text-sm bg-white" style="height:38px;">
+                <option value="">Select</option>
+                <option value="Initial certification">Initial certification</option>
+                <option value="Surveillance audit">Surveillance audit</option>
+                <option value="Recertification">Recertification</option>
+                <option value="Scope extension">Scope extension</option>
+                <option value="TC issuance">TC issuance</option>
+              </select>
+            </div>
+            <div>
+              <label for="serviceTatTat" class="block text-slate-700 font-medium text-[15px] mb-1">TAT</label>
+              <input type="text" id="serviceTatTat"
+                class="w-full border border-slate-300 rounded px-3 py-2 text-sm bg-white" style="height:38px;"
+                placeholder="Enter No Of Days" />
+            </div>
+          </div>
+          <div class="flex justify-end">
+            <button type="button" id="serviceTatAddBtn"
+              class="px-4 py-2 rounded-lg bg-[#3eb2ed] text-white text-sm font-medium hover:bg-[#2499d6]">Add</button>
+          </div>
+          <div class="overflow-x-auto mt-4 border border-slate-200 rounded-lg">
+            <table class="min-w-full text-sm">
+              <thead>
+                <tr class="bg-slate-100">
+                  <th class="border-b border-slate-200 px-3 py-2 text-left font-medium text-slate-700">Service Criteria
+                  </th>
+                  <th class="border-b border-slate-200 px-3 py-2 text-left font-medium text-slate-700">TAT (No. of Days)
+                  </th>
+                  <th class="border-b border-slate-200 px-3 py-2 text-left font-medium text-slate-700">Action</th>
+                </tr>
+              </thead>
+              <tbody id="addServiceTatModalTableBody">
+              </tbody>
+            </table>
+          </div>
+          <div class="flex justify-end gap-4 pt-4">
+            <button type="button" id="cancelAddServiceTatModal"
+              class="w-10 h-10 flex items-center justify-center rounded-full border-2 border-[#3eb2ed] text-[#3eb2ed] bg-white hover:bg-[#e6f6fd] text-2xl"
+              aria-label="Cancel">&#10005;</button>
+            <button type="submit"
+              class="w-10 h-10 flex items-center justify-center rounded-full bg-[#3eb2ed] text-white text-2xl hover:bg-[#2499d6]"
+              aria-label="Submit">&#10003;</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Add cost details Modal -->
+  <div id="addCostModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/40"
+    aria-modal="true" role="dialog" aria-labelledby="addCostModalTitle">
+    <div class="bg-white rounded-2xl shadow-lg w-full max-w-3xl mx-auto overflow-visible"
+      style="min-width:700px; min-height:360px; border-radius:20px;">
+      <div class="flex items-center justify-between px-6 py-4" style="background:#1b2540;">
+        <h2 id="addCostModalTitle" class="text-lg font-semibold text-white">Add cost details</h2>
+        <button type="button" id="closeAddCostModal"
+          class="text-white p-2 text-xl bg-transparent hover:bg-white/10 rounded-full"
+          aria-label="Close">&#10005;</button>
+      </div>
+      <form id="addCostForm" class="p-8 pt-6 space-y-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label for="costYear" class="block text-slate-700 font-medium text-[15px] mb-1">Year :</label>
+            <select id="costYear" class="w-full border border-slate-300 rounded px-3 py-2 text-sm bg-white"
+              style="height:42px;">
+              <option value="">Select Year</option>
+              <option value="2026">2026</option>
+              <option value="2025">2025</option>
+              <option value="2024">2024</option>
+            </select>
+          </div>
+          <div>
+            <label for="costProgramGroup" class="block text-slate-700 font-medium text-[15px] mb-1">Program - Group
+              :</label>
+            <input type="text" id="costProgramGroup"
+              class="w-full border border-slate-300 rounded px-3 py-2 text-sm bg-white" style="height:42px;"
+              placeholder="Select" />
+          </div>
+        </div>
+        <div class="border border-slate-200 rounded-xl p-6 space-y-4 overflow-visible">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label for="costCategory" class="block text-slate-700 font-medium text-[15px] mb-1">Cost Category</label>
+              <select id="costCategory" class="w-full border border-slate-300 rounded px-3 py-2 text-sm bg-white"
+                style="height:38px;">
+                <option value="">Select</option>
+                <option value="General COST">General COST</option>
+                <option value="Certification">Certification</option>
+                <option value="Audits">Audits</option>
+              </select>
+            </div>
+            <div>
+              <label for="costCriteria" class="block text-slate-700 font-medium text-[15px] mb-1">Cost Criteria</label>
+              <input type="text" id="costCriteria"
+                class="w-full border border-slate-300 rounded px-3 py-2 text-sm bg-white" style="height:38px;"
+                placeholder="Select" />
+            </div>
+            <div>
+              <label for="costAmount" class="block text-slate-700 font-medium text-[15px] mb-1">Cost</label>
+              <input type="number" id="costAmount"
+                class="w-full border border-slate-300 rounded px-3 py-2 text-sm bg-white" style="height:38px;"
+                placeholder="Enter" step="any" />
+            </div>
+            <div>
+              <label for="costCurrency" class="block text-slate-700 font-medium text-[15px] mb-1">Currency</label>
+              <select id="costCurrency" class="w-full border border-slate-300 rounded px-3 py-2 text-sm bg-white"
+                style="height:38px;">
+                <option value="">Select</option>
+                <option value="EURO">EURO</option>
+                <option value="USD">USD</option>
+                <option value="GBP">GBP</option>
+              </select>
+            </div>
+            <div>
+              <label for="costExchangeRate" class="block text-slate-700 font-medium text-[15px] mb-1">Exchange rate for
+                EURO</label>
+              <input type="text" id="costExchangeRate"
+                class="w-full border border-slate-300 rounded px-3 py-2 text-sm bg-white" style="height:38px;"
+                placeholder="Enter" />
+            </div>
+          </div>
+          <div class="flex justify-end">
+            <button type="button" id="costAddBtn"
+              class="px-4 py-2 rounded-lg bg-[#3eb2ed] text-white text-sm font-medium hover:bg-[#2499d6]">Add</button>
+          </div>
+          <div class="overflow-x-auto mt-4 border border-slate-200 rounded-lg">
+            <table class="min-w-full text-sm">
+              <thead>
+                <tr class="bg-slate-100">
+                  <th class="border-b border-slate-200 px-3 py-2 text-left font-medium text-slate-700">Cost Criteria
+                  </th>
+                  <th class="border-b border-slate-200 px-3 py-2 text-left font-medium text-slate-700">Cost</th>
+                  <th class="border-b border-slate-200 px-3 py-2 text-left font-medium text-slate-700">Currency</th>
+                  <th class="border-b border-slate-200 px-3 py-2 text-left font-medium text-slate-700">Exchange rate for
+                    EURO</th>
+                  <th class="border-b border-slate-200 px-3 py-2 text-left font-medium text-slate-700">Action</th>
+                </tr>
+              </thead>
+              <tbody id="addCostModalTableBody">
+              </tbody>
+            </table>
+          </div>
+          <div class="flex justify-end gap-4 pt-4">
+            <button type="button" id="cancelAddCostModal"
+              class="w-10 h-10 flex items-center justify-center rounded-full border-2 border-[#3eb2ed] text-[#3eb2ed] bg-white hover:bg-[#e6f6fd] text-2xl"
+              aria-label="Cancel">&#10005;</button>
+            <button type="submit"
+              class="w-10 h-10 flex items-center justify-center rounded-full bg-[#3eb2ed] text-white text-2xl hover:bg-[#2499d6]"
+              aria-label="Submit">&#10003;</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Add strategy details Modal -->
+  <div id="addStrategyModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/40"
+    aria-modal="true" role="dialog" aria-labelledby="addStrategyModalTitle">
+    <div class="bg-white rounded-2xl shadow-lg w-full max-w-3xl mx-auto overflow-visible"
+      style="min-width:700px; min-height:360px; border-radius:20px;">
+      <div class="flex items-center justify-between px-6 py-4" style="background:#1b2540;">
+        <h2 id="addStrategyModalTitle" class="text-lg font-semibold text-white">Add strategy details</h2>
+        <button type="button" id="closeAddStrategyModal"
+          class="text-white p-2 text-xl bg-transparent hover:bg-white/10 rounded-full"
+          aria-label="Close">&#10005;</button>
+      </div>
+      <form id="addStrategyForm" class="p-8 pt-6 space-y-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label for="strategyPeriod" class="block text-slate-700 font-medium text-[15px] mb-1">Year :</label>
+            <select id="strategyPeriod" class="w-full border border-slate-300 rounded px-3 py-2 text-sm bg-white"
+              style="height:42px;">
+              <option value="">Select Year</option>
+              <option value="2026">2026</option>
+              <option value="2025">2025</option>
+              <option value="2024">2024</option>
+            </select>
+          </div>
+        </div>
+        <div class="border border-slate-200 rounded-xl p-6 space-y-4 overflow-visible">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label for="strategyCategory" class="block text-slate-700 font-medium text-[15px] mb-1">Strategy
+                Category</label>
+              <select id="strategyCategory" class="w-full border border-slate-300 rounded px-3 py-2 text-sm bg-white"
+                style="height:38px;">
+                <option value="">Select</option>
+                <option value="Marketing">Marketing</option>
+                <option value="Webinars">Webinars</option>
+                <option value="Opportunities">Opportunities</option>
+                <option value="Sustainability">Sustainability</option>
+                <option value="Certifications">Certifications</option>
+                <option value="Partnerships">Partnerships</option>
+                <option value="Digital">Digital</option>
+                <option value="Training">Training</option>
+                <option value="Outreach">Outreach</option>
+              </select>
+            </div>
+            <div>
+              <label for="strategyCriteria" class="block text-slate-700 font-medium text-[15px] mb-1">Strategy
+                Criteria</label>
+              <input type="text" id="strategyCriteria"
+                class="w-full border border-slate-300 rounded px-3 py-2 text-sm bg-white" style="height:38px;"
+                placeholder="Select" />
+            </div>
+          </div>
+          <div>
+            <label for="strategyPlanDescription" class="block text-slate-700 font-medium text-[15px] mb-1">Plan /
+              Description</label>
+            <textarea id="strategyPlanDescription"
+              class="w-full border border-slate-300 rounded px-3 py-2 text-sm bg-white" rows="3"
+              placeholder="Enter"></textarea>
+          </div>
+          <div class="flex justify-end">
+            <button type="button" id="strategyAddBtn"
+              class="px-4 py-2 rounded-lg bg-[#3eb2ed] text-white text-sm font-medium hover:bg-[#2499d6]">Add</button>
+          </div>
+          <div class="overflow-x-auto mt-4 border border-slate-200 rounded-lg">
+            <table class="min-w-full text-sm">
+              <thead>
+                <tr class="bg-slate-100">
+                  <th class="border-b border-slate-200 px-3 py-2 text-left font-medium text-slate-700">Strategy Criteria
+                  </th>
+                  <th class="border-b border-slate-200 px-3 py-2 text-left font-medium text-slate-700">Plan /
+                    Description</th>
+                  <th class="border-b border-slate-200 px-3 py-2 text-left font-medium text-slate-700">Action</th>
+                </tr>
+              </thead>
+              <tbody id="addStrategyModalTableBody">
+              </tbody>
+            </table>
+          </div>
+          <div class="flex justify-end gap-4 pt-4">
+            <button type="button" id="cancelAddStrategyModal"
+              class="w-10 h-10 flex items-center justify-center rounded-full border-2 border-[#3eb2ed] text-[#3eb2ed] bg-white hover:bg-[#e6f6fd] text-2xl"
+              aria-label="Cancel">&#10005;</button>
+            <button type="submit"
+              class="w-10 h-10 flex items-center justify-center rounded-full bg-[#3eb2ed] text-white text-2xl hover:bg-[#2499d6]"
+              aria-label="Submit">&#10003;</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Add revenue Modal -->
+  <div id="addRevenueModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/40"
+    aria-modal="true" role="dialog" aria-labelledby="addRevenueModalTitle">
+    <div class="bg-white rounded-2xl shadow-lg w-full max-w-3xl mx-auto overflow-visible"
+      style="min-width:700px; min-height:360px; border-radius:20px;">
+      <div class="flex items-center justify-between px-6 py-4" style="background:#1b2540;">
+        <h2 id="addRevenueModalTitle" class="text-lg font-semibold text-white">Add revenue</h2>
+        <button type="button" id="closeAddRevenueModal"
+          class="text-white p-2 text-xl bg-transparent hover:bg-white/10 rounded-full"
+          aria-label="Close">&#10005;</button>
+      </div>
+      <form id="addRevenueForm" class="p-8 pt-6 space-y-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label for="revenueYear" class="block text-slate-700 font-medium text-[15px] mb-1">Year :</label>
+            <select id="revenueYear" class="w-full border border-slate-300 rounded px-3 py-2 text-sm bg-white"
+              style="height:42px;">
+              <option value="">Select Year</option>
+              <option value="2026">2026</option>
+              <option value="2025">2025</option>
+              <option value="2024">2024</option>
+            </select>
+          </div>
+          <div>
+            <label for="revenueSource" class="block text-slate-700 font-medium text-[15px] mb-1">Revenue Source</label>
+            <input type="text" id="revenueSource"
+              class="w-full border border-slate-300 rounded px-3 py-2 text-sm bg-white" style="height:42px;"
+              placeholder="Select" />
+          </div>
+        </div>
+        <div>
+          <label for="revenueExchangeRateGeneral" class="block text-slate-700 font-medium text-[15px] mb-1">Exchange
+            rate to EURO (General)</label>
+          <input type="text" id="revenueExchangeRateGeneral"
+            class="w-full border border-slate-300 rounded px-3 py-2 text-sm bg-white" style="height:38px;"
+            placeholder="Enter" />
+        </div>
+        <div class="border border-slate-200 rounded-xl p-6 space-y-4 overflow-visible">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label for="revenueProgram" class="block text-slate-700 font-medium text-[15px] mb-1">Program</label>
+              <select id="revenueProgram" class="w-full border border-slate-300 rounded px-3 py-2 text-sm bg-white"
+                style="height:38px;">
+                <option value="">Select</option>
+                <option value="GOTS">GOTS</option>
+                <option value="GRS">GRS</option>
+                <option value="OCS">OCS</option>
+                <option value="RCS">RCS</option>
+                <option value="RWS">RWS</option>
+              </select>
+            </div>
+            <div>
+              <label for="revenueCurrency" class="block text-slate-700 font-medium text-[15px] mb-1">Currency</label>
+              <select id="revenueCurrency" class="w-full border border-slate-300 rounded px-3 py-2 text-sm bg-white"
+                style="height:38px;">
+                <option value="">Select</option>
+                <option value="EURO">EURO</option>
+                <option value="USD">USD</option>
+                <option value="GBP">GBP</option>
+              </select>
+            </div>
+            <div>
+              <label for="revenueYtd" class="block text-slate-700 font-medium text-[15px] mb-1">Revenue YTD (Current
+                FY)</label>
+              <input type="text" id="revenueYtd"
+                class="w-full border border-slate-300 rounded px-3 py-2 text-sm bg-white" style="height:38px;"
+                placeholder="Enter" />
+            </div>
+            <div>
+              <label for="revenueExchangeRate" class="block text-slate-700 font-medium text-[15px] mb-1">Exchange rate
+                to EURO</label>
+              <input type="text" id="revenueExchangeRate"
+                class="w-full border border-slate-300 rounded px-3 py-2 text-sm bg-white" style="height:38px;"
+                placeholder="Enter" />
+            </div>
+            <div>
+              <label for="revenueLastFy" class="block text-slate-700 font-medium text-[15px] mb-1">Revenue (Last
+                FY)</label>
+              <input type="text" id="revenueLastFy"
+                class="w-full border border-slate-300 rounded px-3 py-2 text-sm bg-white" style="height:38px;"
+                placeholder="Enter" />
+            </div>
+          </div>
+          <div class="flex justify-end">
+            <button type="button" id="revenueAddBtn"
+              class="px-4 py-2 rounded-lg bg-[#3eb2ed] text-white text-sm font-medium hover:bg-[#2499d6]">Add</button>
+          </div>
+          <div class="overflow-x-auto mt-4 border border-slate-200 rounded-lg">
+            <table class="min-w-full text-sm">
+              <thead>
+                <tr class="bg-slate-100">
+                  <th class="border-b border-slate-200 px-3 py-2 text-left font-medium text-slate-700">Program</th>
+                  <th class="border-b border-slate-200 px-3 py-2 text-left font-medium text-slate-700">Currency</th>
+                  <th class="border-b border-slate-200 px-3 py-2 text-left font-medium text-slate-700">Revenue YTD
+                    (Current FY)</th>
+                  <th class="border-b border-slate-200 px-3 py-2 text-left font-medium text-slate-700">Revenue (Last FY)
+                  </th>
+                  <th class="border-b border-slate-200 px-3 py-2 text-left font-medium text-slate-700">Action</th>
+                </tr>
+              </thead>
+              <tbody id="addRevenueModalTableBody">
+              </tbody>
+            </table>
+          </div>
+          <div class="flex justify-end gap-4 pt-4">
+            <button type="button" id="cancelAddRevenueModal"
+              class="w-10 h-10 flex items-center justify-center rounded-full border-2 border-[#3eb2ed] text-[#3eb2ed] bg-white hover:bg-[#e6f6fd] text-2xl"
+              aria-label="Cancel">&#10005;</button>
+            <button type="submit"
+              class="w-10 h-10 flex items-center justify-center rounded-full bg-[#3eb2ed] text-white text-2xl hover:bg-[#2499d6]"
+              aria-label="Submit">&#10003;</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      // Ensure Back button navigates to COE-Dashboard (works with file:// and relative path)
+      var backLink = document.getElementById('businessOverviewBackLink');
+      if (backLink) {
+        var backHref = backLink.getAttribute('href');
+        if (backHref && backHref !== '#' && !backHref.startsWith('javascript:')) {
+          backLink.addEventListener('click', function (e) {
+            e.preventDefault();
+            window.location.href = backHref;
+          });
+        }
+      }
+      const menuToggles = document.querySelectorAll('.menu-toggle');
+      menuToggles.forEach(toggle => {
+        toggle.addEventListener('click', function () {
+          const submenu = this.nextElementSibling;
+          const arrow = this.querySelector('.material-symbols-outlined:last-child');
+          if (submenu && submenu.classList.contains('submenu')) {
+            submenu.classList.toggle('hidden');
+            const isExpanded = !submenu.classList.contains('hidden');
+            this.setAttribute('aria-expanded', String(isExpanded));
+            arrow.style.transform = isExpanded ? 'rotate(180deg)' : 'rotate(0deg)';
+          }
+        });
+      });
+
+      const sidebar = document.getElementById('sidebar');
+      const sidebarToggle = document.getElementById('sidebarToggle');
+      if (sidebar && sidebarToggle) {
+        const icon = sidebarToggle.querySelector('.material-symbols-outlined');
+        function positionToggle() {
+          try {
+            const left = (sidebar.offsetLeft || 0) + (sidebar.offsetWidth || 0) - Math.round((sidebarToggle.offsetWidth || 36) / 2) - 14;
+            const top = (sidebar.offsetTop || 0) + 8;
+            sidebarToggle.style.left = left + 'px';
+            sidebarToggle.style.top = top + 'px';
+          } catch (e) { }
+        }
+        const isCollapsed = sidebar.classList.contains('collapsed');
+        if (icon) icon.textContent = isCollapsed ? 'keyboard_double_arrow_right' : 'keyboard_double_arrow_left';
+        sidebarToggle.setAttribute('aria-expanded', String(!isCollapsed));
+        positionToggle();
+
+        sidebarToggle.addEventListener('click', function () {
+          const collapsed = !sidebar.classList.contains('collapsed');
+          sidebar.classList.toggle('collapsed', collapsed);
+          sidebar.classList.remove('expanded-temp');
+          if (icon) icon.textContent = collapsed ? 'keyboard_double_arrow_right' : 'keyboard_double_arrow_left';
+          sidebarToggle.setAttribute('aria-expanded', String(!collapsed));
+          if (collapsed) { document.querySelectorAll('#sidebar .submenu').forEach(s => s.classList.add('hidden')); }
+          positionToggle();
+        });
+
+        sidebar.addEventListener('mouseenter', function () {
+          if (sidebar.classList.contains('collapsed')) sidebar.classList.add('expanded-temp');
+          positionToggle();
+        });
+        sidebar.addEventListener('mouseleave', function () {
+          if (sidebar.classList.contains('collapsed')) sidebar.classList.remove('expanded-temp');
+          positionToggle();
+        });
+        window.addEventListener('resize', positionToggle);
+        window.addEventListener('scroll', positionToggle, true);
+
+        document.querySelectorAll('#sidebar .menu-toggle').forEach(btn => {
+          const labelSpan = btn.querySelector('.flex.items-center span:not(.material-symbols-outlined)');
+          const label = labelSpan ? labelSpan.textContent.trim() : btn.textContent.trim();
+          if (label) btn.setAttribute('title', label);
+        });
+        document.querySelectorAll('#sidebar nav a').forEach(a => {
+          const labelSpan = a.querySelector('span:not(.material-symbols-outlined)');
+          const label = labelSpan ? labelSpan.textContent.trim() : a.textContent.trim();
+          if (label && !a.getAttribute('title')) a.setAttribute('title', label);
+        });
+      }
+
+      const tabButtons = document.querySelectorAll('main [role="tab"]');
+      const tabIds = ['resources', 'client-portfolio', 'service-tat', 'costing', 'strategy', 'revenue'];
+      function showPanel(tab) {
+        tabIds.forEach(id => {
+          const el = document.getElementById(id);
+          if (el) el.classList.toggle('hidden', id !== tab);
+        });
+        tabButtons.forEach(btn => {
+          const isActive = btn.dataset.tab === tab;
+          btn.setAttribute('aria-selected', isActive ? 'true' : 'false');
+          btn.classList.toggle('bg-cu-light-blue-20', isActive);
+          btn.classList.toggle('text-cu-dark-blue', isActive);
+          btn.classList.toggle('shadow-soft', isActive);
+          btn.classList.toggle('text-slate-600', !isActive);
+        });
+      }
+      tabButtons.forEach(btn => {
+        btn.addEventListener('click', function () {
+          showPanel(btn.dataset.tab);
+          history.replaceState(null, '', '#' + btn.dataset.tab);
+        });
+      });
+      const hash = window.location.hash.replace('#', '');
+      if (hash && tabIds.includes(hash)) {
+        showPanel(hash);
+      } else {
+        showPanel('resources');
+      }
+
+      // Add Client Portfolio & Market Share modal: open/close
+      const addClientPortfolioModal = document.getElementById('addClientPortfolioModal');
+      const openAddClientPortfolioBtn = document.getElementById('openAddClientPortfolioModal');
+      const closeAddClientPortfolioBtn = document.getElementById('closeAddClientPortfolioModal');
+      const addClientPortfolioForm = document.getElementById('addClientPortfolioForm');
+      const portfolioTableBody = document.querySelector('#client-portfolio .portfolio-table tbody');
+
+      function showAddClientPortfolioModal(show) {
+        if (!addClientPortfolioModal) return;
+        addClientPortfolioModal.classList.toggle('hidden', !show);
+      }
+
+      if (openAddClientPortfolioBtn && addClientPortfolioModal) {
+        openAddClientPortfolioBtn.addEventListener('click', function () { showAddClientPortfolioModal(true); });
+      }
+      if (closeAddClientPortfolioBtn) {
+        closeAddClientPortfolioBtn.addEventListener('click', function () { showAddClientPortfolioModal(false); });
+      }
+      var cancelAddClientPortfolioBtn = document.getElementById('cancelAddClientPortfolioModal');
+      if (cancelAddClientPortfolioBtn) {
+        cancelAddClientPortfolioBtn.addEventListener('click', function () { showAddClientPortfolioModal(false); });
+      }
+      if (addClientPortfolioModal) {
+        addClientPortfolioModal.addEventListener('click', function (e) {
+          if (e.target === addClientPortfolioModal) showAddClientPortfolioModal(false);
+        });
+      }
+
+      function getSelectLabel(id) {
+        var el = document.getElementById(id);
+        if (!el || el.selectedIndex < 0) return '';
+        var opt = el.options[el.selectedIndex];
+        return opt ? (opt.text || opt.value) : '';
+      }
+      function escapeHtml(s) {
+        if (s == null) return '';
+        var div = document.createElement('div');
+        div.textContent = s;
+        return div.innerHTML;
+      }
+
+      if (addClientPortfolioForm && portfolioTableBody) {
+        addClientPortfolioForm.addEventListener('submit', function (e) {
+          e.preventDefault();
+          var year = escapeHtml(getSelectLabel('clientPortfolioYear') || document.getElementById('clientPortfolioYear').value || '');
+          var service = escapeHtml(getSelectLabel('clientPortfolioService') || document.getElementById('clientPortfolioService').value || '');
+          var activeYdt = escapeHtml(document.getElementById('clientPortfolioActiveYdt').value || '');
+          var withdrawnYdt = escapeHtml(document.getElementById('clientPortfolioWithdrawnYdt').value || '');
+          var nextYear = escapeHtml(document.getElementById('clientPortfolioNextYearProjection').value || '');
+          var marketShare = escapeHtml(document.getElementById('clientPortfolioMarketShare').value || '');
+          var remark = escapeHtml(document.getElementById('clientPortfolioRemark').value || '');
+          var tr = document.createElement('tr');
+          tr.innerHTML = '<td class="num">' + year + '</td><td>' + service + '</td><td class="num">' + activeYdt + '</td><td class="num">' + withdrawnYdt + '</td><td class="num">' + nextYear + '</td><td class="num">' + marketShare + '</td><td>' + remark + '</td><td><a href="#" class="action-link" title="Edit" aria-label="Edit"><span class="material-symbols-outlined" style="font-size:20px">edit</span></a></td>';
+          portfolioTableBody.appendChild(tr);
+          addClientPortfolioForm.reset();
+          showAddClientPortfolioModal(false);
+        });
+      }
+
+      // Add service TAT details modal
+      var addServiceTatModal = document.getElementById('addServiceTatModal');
+      var openAddServiceTatBtn = document.getElementById('openAddServiceTatModal');
+      var closeAddServiceTatBtn = document.getElementById('closeAddServiceTatModal');
+      var cancelAddServiceTatBtn = document.getElementById('cancelAddServiceTatModal');
+      var addServiceTatForm = document.getElementById('addServiceTatForm');
+      var addServiceTatModalTableBody = document.getElementById('addServiceTatModalTableBody');
+      var serviceTatMainTableBody = document.querySelector('#service-tat .tat-table tbody');
+
+      function showAddServiceTatModal(show) {
+        if (!addServiceTatModal) return;
+        addServiceTatModal.classList.toggle('hidden', !show);
+      }
+
+      if (openAddServiceTatBtn && addServiceTatModal) {
+        openAddServiceTatBtn.addEventListener('click', function () { showAddServiceTatModal(true); });
+      }
+      if (closeAddServiceTatBtn) closeAddServiceTatBtn.addEventListener('click', function () { showAddServiceTatModal(false); });
+      if (cancelAddServiceTatBtn) cancelAddServiceTatBtn.addEventListener('click', function () { showAddServiceTatModal(false); });
+      if (addServiceTatModal) {
+        addServiceTatModal.addEventListener('click', function (e) {
+          if (e.target === addServiceTatModal) showAddServiceTatModal(false);
+        });
+      }
+
+      var serviceTatAddBtn = document.getElementById('serviceTatAddBtn');
+      if (serviceTatAddBtn && addServiceTatModalTableBody) {
+        serviceTatAddBtn.addEventListener('click', function () {
+          var criteria = document.getElementById('serviceTatServiceCriteria').value || '';
+          var tat = document.getElementById('serviceTatTat').value || '';
+          if (!criteria.trim() && !tat.trim()) return;
+          var tr = document.createElement('tr');
+          tr.innerHTML = '<td class="border-b border-slate-100 px-3 py-2 text-slate-600">' + escapeHtml(criteria) + '</td><td class="border-b border-slate-100 px-3 py-2 text-slate-600">' + escapeHtml(tat) + '</td><td class="border-b border-slate-100 px-3 py-2"><button type="button" class="service-tat-modal-delete-row p-1 rounded text-[#3eb2ed] hover:bg-[#e0f2fe] inline-flex items-center justify-center" title="Delete" aria-label="Delete"><span class="material-symbols-outlined" style="font-size:20px">delete</span></button></td>';
+          addServiceTatModalTableBody.appendChild(tr);
+          document.getElementById('serviceTatServiceCriteria').value = '';
+          document.getElementById('serviceTatTat').value = '';
+        });
+      }
+      if (addServiceTatModalTableBody) {
+        addServiceTatModalTableBody.addEventListener('click', function (e) {
+          if (e.target.closest('.service-tat-modal-delete-row')) e.target.closest('tr').remove();
+        });
+      }
+
+      if (addServiceTatForm && serviceTatMainTableBody) {
+        addServiceTatForm.addEventListener('submit', function (e) {
+          e.preventDefault();
+          var year = escapeHtml(getSelectLabel('serviceTatPeriod') || document.getElementById('serviceTatPeriod').value || '');
+          var serviceCategory = escapeHtml(getSelectLabel('serviceTatServiceCategory') || document.getElementById('serviceTatServiceCategory').value || '');
+          var programGroup = escapeHtml(document.getElementById('serviceTatProgramGroup').value || '');
+          var rows = addServiceTatModalTableBody ? addServiceTatModalTableBody.querySelectorAll('tr') : [];
+          for (var i = 0; i < rows.length; i++) {
+            var cells = rows[i].querySelectorAll('td');
+            var criteria = cells[0] ? cells[0].textContent.trim() : '';
+            var tat = cells[1] ? cells[1].textContent.trim() : '';
+            var tr = document.createElement('tr');
+            tr.innerHTML = '<td class="num">' + year + '</td><td>' + serviceCategory + '</td><td>' + escapeHtml(criteria) + '</td><td>' + programGroup + '</td><td class="num">' + escapeHtml(tat) + '</td><td><a href="#" class="action-link" title="Edit" aria-label="Edit"><span class="material-symbols-outlined" style="font-size:20px">edit</span></a></td>';
+            serviceTatMainTableBody.appendChild(tr);
+          }
+          if (addServiceTatModalTableBody) addServiceTatModalTableBody.innerHTML = '';
+          addServiceTatForm.reset();
+          showAddServiceTatModal(false);
+        });
+      }
+
+      // Add cost details modal
+      var addCostModal = document.getElementById('addCostModal');
+      var openAddCostBtn = document.getElementById('openAddCostModal');
+      var closeAddCostBtn = document.getElementById('closeAddCostModal');
+      var cancelAddCostBtn = document.getElementById('cancelAddCostModal');
+      var addCostForm = document.getElementById('addCostForm');
+      var addCostModalTableBody = document.getElementById('addCostModalTableBody');
+      var costMainTableBody = document.querySelector('#costing .costing-table tbody');
+
+      function showAddCostModal(show) {
+        if (!addCostModal) return;
+        addCostModal.classList.toggle('hidden', !show);
+      }
+
+      if (openAddCostBtn && addCostModal) openAddCostBtn.addEventListener('click', function () { showAddCostModal(true); });
+      if (closeAddCostBtn) closeAddCostBtn.addEventListener('click', function () { showAddCostModal(false); });
+      if (cancelAddCostBtn) cancelAddCostBtn.addEventListener('click', function () { showAddCostModal(false); });
+      if (addCostModal) addCostModal.addEventListener('click', function (e) { if (e.target === addCostModal) showAddCostModal(false); });
+
+      var costAddBtn = document.getElementById('costAddBtn');
+      if (costAddBtn && addCostModalTableBody) {
+        costAddBtn.addEventListener('click', function () {
+          var criteria = document.getElementById('costCriteria').value || '';
+          var amount = document.getElementById('costAmount').value || '';
+          var currency = document.getElementById('costCurrency').value || '';
+          var exchangeRate = document.getElementById('costExchangeRate').value || '';
+          var exchangeLabel = exchangeRate;
+          if (!criteria.trim() && !amount && !currency.trim()) return;
+          var tr = document.createElement('tr');
+          tr.innerHTML = '<td class="border-b border-slate-100 px-3 py-2 text-slate-600">' + escapeHtml(criteria) + '</td><td class="border-b border-slate-100 px-3 py-2 text-slate-600">' + escapeHtml(amount) + '</td><td class="border-b border-slate-100 px-3 py-2 text-slate-600">' + escapeHtml(currency) + '</td><td class="border-b border-slate-100 px-3 py-2 text-slate-600">' + escapeHtml(exchangeLabel) + '</td><td class="border-b border-slate-100 px-3 py-2"><button type="button" class="cost-modal-delete-row p-1 rounded text-[#3eb2ed] hover:bg-[#e0f2fe] inline-flex items-center justify-center" title="Delete" aria-label="Delete"><span class="material-symbols-outlined" style="font-size:20px">delete</span></button></td>';
+          addCostModalTableBody.appendChild(tr);
+          document.getElementById('costCriteria').value = '';
+          document.getElementById('costAmount').value = '';
+          document.getElementById('costCurrency').value = '';
+        });
+      }
+      if (addCostModalTableBody) {
+        addCostModalTableBody.addEventListener('click', function (e) {
+          if (e.target.closest('.cost-modal-delete-row')) e.target.closest('tr').remove();
+        });
+      }
+
+      if (addCostForm && costMainTableBody) {
+        addCostForm.addEventListener('submit', function (e) {
+          e.preventDefault();
+          var year = escapeHtml(getSelectLabel('costYear') || document.getElementById('costYear').value || '');
+          var costCategory = escapeHtml(getSelectLabel('costCategory') || document.getElementById('costCategory').value || '');
+          var programGroup = escapeHtml(document.getElementById('costProgramGroup').value || '');
+          var rows = addCostModalTableBody ? addCostModalTableBody.querySelectorAll('tr') : [];
+          for (var i = 0; i < rows.length; i++) {
+            var cells = rows[i].querySelectorAll('td');
+            var criteria = cells[0] ? cells[0].textContent.trim() : '';
+            var cost = cells[1] ? cells[1].textContent.trim() : '';
+            var currency = cells[2] ? cells[2].textContent.trim() : '';
+            var tr = document.createElement('tr');
+            tr.innerHTML = '<td class="num">' + year + '</td><td>' + costCategory + '</td><td>' + escapeHtml(criteria) + '</td><td>' + programGroup + '</td><td class="num">' + escapeHtml(cost) + '</td><td>' + escapeHtml(currency) + '</td><td><a href="#" class="action-link action-link-delete" title="Delete" aria-label="Delete"><span class="material-symbols-outlined" style="font-size:20px">delete</span></a></td>';
+            costMainTableBody.appendChild(tr);
+          }
+          if (addCostModalTableBody) addCostModalTableBody.innerHTML = '';
+          addCostForm.reset();
+          showAddCostModal(false);
+        });
+      }
+
+      // Add strategy details modal
+      var addStrategyModal = document.getElementById('addStrategyModal');
+      var openAddStrategyBtn = document.getElementById('openAddStrategyModal');
+      var closeAddStrategyBtn = document.getElementById('closeAddStrategyModal');
+      var cancelAddStrategyBtn = document.getElementById('cancelAddStrategyModal');
+      var addStrategyForm = document.getElementById('addStrategyForm');
+      var addStrategyModalTableBody = document.getElementById('addStrategyModalTableBody');
+      var strategyMainTableBody = document.querySelector('#strategy .strategy-table tbody');
+
+      function showAddStrategyModal(show) {
+        if (!addStrategyModal) return;
+        addStrategyModal.classList.toggle('hidden', !show);
+      }
+
+      if (openAddStrategyBtn && addStrategyModal) openAddStrategyBtn.addEventListener('click', function () { showAddStrategyModal(true); });
+      if (closeAddStrategyBtn) closeAddStrategyBtn.addEventListener('click', function () { showAddStrategyModal(false); });
+      if (cancelAddStrategyBtn) cancelAddStrategyBtn.addEventListener('click', function () { showAddStrategyModal(false); });
+      if (addStrategyModal) addStrategyModal.addEventListener('click', function (e) { if (e.target === addStrategyModal) showAddStrategyModal(false); });
+
+      var strategyAddBtn = document.getElementById('strategyAddBtn');
+      if (strategyAddBtn && addStrategyModalTableBody) {
+        strategyAddBtn.addEventListener('click', function () {
+          var criteria = document.getElementById('strategyCriteria').value || '';
+          var planDesc = document.getElementById('strategyPlanDescription').value || '';
+          if (!criteria.trim() && !planDesc.trim()) return;
+          var tr = document.createElement('tr');
+          tr.innerHTML = '<td class="border-b border-slate-100 px-3 py-2 text-slate-600">' + escapeHtml(criteria) + '</td><td class="border-b border-slate-100 px-3 py-2 text-slate-600">' + escapeHtml(planDesc) + '</td><td class="border-b border-slate-100 px-3 py-2"><button type="button" class="strategy-modal-delete-row p-1 rounded text-[#3eb2ed] hover:bg-[#e0f2fe] inline-flex items-center justify-center" title="Delete" aria-label="Delete"><span class="material-symbols-outlined" style="font-size:20px">delete</span></button></td>';
+          addStrategyModalTableBody.appendChild(tr);
+          document.getElementById('strategyCriteria').value = '';
+          document.getElementById('strategyPlanDescription').value = '';
+        });
+      }
+      if (addStrategyModalTableBody) {
+        addStrategyModalTableBody.addEventListener('click', function (e) {
+          if (e.target.closest('.strategy-modal-delete-row')) e.target.closest('tr').remove();
+        });
+      }
+
+      if (addStrategyForm && strategyMainTableBody) {
+        addStrategyForm.addEventListener('submit', function (e) {
+          e.preventDefault();
+          var year = escapeHtml(getSelectLabel('strategyPeriod') || document.getElementById('strategyPeriod').value || '');
+          var strategyCategory = escapeHtml(getSelectLabel('strategyCategory') || document.getElementById('strategyCategory').value || '');
+          var rows = addStrategyModalTableBody ? addStrategyModalTableBody.querySelectorAll('tr') : [];
+          for (var i = 0; i < rows.length; i++) {
+            var cells = rows[i].querySelectorAll('td');
+            var criteria = cells[0] ? cells[0].textContent.trim() : '';
+            var tr = document.createElement('tr');
+            tr.innerHTML = '<td class="num">' + year + '</td><td>' + strategyCategory + '</td><td>' + escapeHtml(criteria) + '</td><td></td><td><a href="#" class="action-link" title="Edit" aria-label="Edit"><span class="material-symbols-outlined" style="font-size:20px">edit</span></a></td>';
+            strategyMainTableBody.appendChild(tr);
+          }
+          if (addStrategyModalTableBody) addStrategyModalTableBody.innerHTML = '';
+          addStrategyForm.reset();
+          showAddStrategyModal(false);
+        });
+      }
+
+      // Add revenue modal
+      var addRevenueModal = document.getElementById('addRevenueModal');
+      var openAddRevenueBtn = document.getElementById('openAddRevenueModal');
+      var closeAddRevenueBtn = document.getElementById('closeAddRevenueModal');
+      var cancelAddRevenueBtn = document.getElementById('cancelAddRevenueModal');
+      var addRevenueForm = document.getElementById('addRevenueForm');
+      var addRevenueModalTableBody = document.getElementById('addRevenueModalTableBody');
+      var revenueMainTableBody = document.querySelector('#revenue .revenue-table tbody');
+
+      function showAddRevenueModal(show) {
+        if (!addRevenueModal) return;
+        addRevenueModal.classList.toggle('hidden', !show);
+      }
+
+      if (openAddRevenueBtn && addRevenueModal) openAddRevenueBtn.addEventListener('click', function () { showAddRevenueModal(true); });
+      if (closeAddRevenueBtn) closeAddRevenueBtn.addEventListener('click', function () { showAddRevenueModal(false); });
+      if (cancelAddRevenueBtn) cancelAddRevenueBtn.addEventListener('click', function () { showAddRevenueModal(false); });
+      if (addRevenueModal) addRevenueModal.addEventListener('click', function (e) { if (e.target === addRevenueModal) showAddRevenueModal(false); });
+
+      var revenueAddBtn = document.getElementById('revenueAddBtn');
+      if (revenueAddBtn && addRevenueModalTableBody) {
+        revenueAddBtn.addEventListener('click', function () {
+          var program = escapeHtml(getSelectLabel('revenueProgram') || document.getElementById('revenueProgram').value || '');
+          var currency = escapeHtml(getSelectLabel('revenueCurrency') || document.getElementById('revenueCurrency').value || '');
+          var ytd = escapeHtml(document.getElementById('revenueYtd').value || '');
+          var lastFy = escapeHtml(document.getElementById('revenueLastFy').value || '');
+          if (!program.trim() && !ytd && !lastFy) return;
+          var tr = document.createElement('tr');
+          tr.innerHTML = '<td class="border-b border-slate-100 px-3 py-2 text-slate-600">' + program + '</td><td class="border-b border-slate-100 px-3 py-2 text-slate-600">' + currency + '</td><td class="border-b border-slate-100 px-3 py-2 text-slate-600">' + ytd + '</td><td class="border-b border-slate-100 px-3 py-2 text-slate-600">' + lastFy + '</td><td class="border-b border-slate-100 px-3 py-2"><button type="button" class="revenue-modal-delete-row p-1 rounded text-[#3eb2ed] hover:bg-[#e0f2fe] inline-flex items-center justify-center" title="Delete" aria-label="Delete"><span class="material-symbols-outlined" style="font-size:20px">delete</span></button></td>';
+          addRevenueModalTableBody.appendChild(tr);
+          document.getElementById('revenueYtd').value = '';
+          document.getElementById('revenueLastFy').value = '';
+        });
+      }
+      if (addRevenueModalTableBody) {
+        addRevenueModalTableBody.addEventListener('click', function (e) {
+          if (e.target.closest('.revenue-modal-delete-row')) e.target.closest('tr').remove();
+        });
+      }
+
+      if (addRevenueForm && revenueMainTableBody) {
+        addRevenueForm.addEventListener('submit', function (e) {
+          e.preventDefault();
+          var year = escapeHtml(getSelectLabel('revenueYear') || document.getElementById('revenueYear').value || '');
+          var revenueSource = escapeHtml(document.getElementById('revenueSource').value || '');
+          var rows = addRevenueModalTableBody ? addRevenueModalTableBody.querySelectorAll('tr') : [];
+          for (var i = 0; i < rows.length; i++) {
+            var cells = rows[i].querySelectorAll('td');
+            var program = cells[0] ? cells[0].textContent.trim() : '';
+            var currency = cells[1] ? cells[1].textContent.trim() : '';
+            var ytd = cells[2] ? cells[2].textContent.trim() : '';
+            var lastFy = cells[3] ? cells[3].textContent.trim() : '';
+            var tr = document.createElement('tr');
+            tr.innerHTML = '<td class="num">' + year + '</td><td>' + revenueSource + '</td><td>' + program + '</td><td class="num">' + ytd + '</td><td class="num">' + lastFy + '</td><td>' + currency + '</td><td><a href="#" class="action-link action-link-delete" title="Delete" aria-label="Delete"><span class="material-symbols-outlined" style="font-size:20px">delete</span></a></td>';
+            revenueMainTableBody.appendChild(tr);
+          }
+          if (addRevenueModalTableBody) addRevenueModalTableBody.innerHTML = '';
+          addRevenueForm.reset();
+          showAddRevenueModal(false);
+        });
+      }
+
+      // Mock data for filters (COE Category × View As)
+    });
+  </script>
+</body>
+
+</html>
+
+
+

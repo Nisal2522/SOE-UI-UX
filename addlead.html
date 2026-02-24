@@ -1,0 +1,1868 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>Unique Professional Add Client UI</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&amp;display=swap" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+    rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#3eb2ed',
+            'light-gray': '#F5F7FA',
+            'dark-text': '#1A1A1A',
+            'sidebar-dark': '#1b1e42',
+            'sidebar-light-blue': '#3eb2ed',
+            background: 'var(--color-background)',
+            sidebar: 'var(--color-sidebar)',
+            card: {
+              DEFAULT: 'var(--card-bg)',
+              border: 'var(--card-border)',
+            },
+            border: 'var(--color-border)',
+            'cu-light-blue': 'var(--cu-light-blue)',
+            'cu-dark-blue': 'var(--cu-dark-blue)',
+            'cu-light-grey': 'var(--cu-light-grey)',
+            'cu-dark-grey': 'var(--cu-dark-grey)',
+            'bg-main': 'var(--bg-main)',
+            text: {
+              primary: 'var(--color-text-primary)',
+              secondary: 'var(--color-text-secondary)',
+              inverted: 'var(--color-text-inverted)'
+            }
+          },
+          fontFamily: {
+            display: ['Roboto', 'sans-serif'],
+            sans: ['Poppins', 'sans-serif'],
+          },
+          borderRadius: {
+            'xl': '18px',
+            '2xl': '24px',
+          },
+          boxShadow: {
+            'soft': '0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05)',
+            'soft-lift': '0 10px 15px -3px rgba(0, 0, 0, 0.07), 0 4px 6px -4px rgba(0, 0, 0, 0.07)',
+            'glass': '0 4px 30px rgba(0, 0, 0, 0.1)',
+          }
+        },
+      },
+    };
+  </script>
+  <style type="text/tailwindcss">
+    :root {
+    --cu-light-blue: #3eb2ed;
+    --cu-dark-blue: #1b1e42;
+    --cu-light-grey: #799495;
+    --cu-dark-grey: #4f6566;
+    --cu-white: #ffffff;
+    --cu-light-blue-20: #d8f0fb;
+    --cu-light-blue-40: #b2e0f8;
+    --cu-light-blue-60: #8bd1f4;
+    --cu-light-blue-80: #65c1f1;
+    --cu-dark-blue-20: #d1d2d9;
+    --cu-dark-blue-40: #a4a5b3;
+    --cu-dark-blue-60: #76788e;
+    --cu-dark-blue-80: #494b68;
+    --color-primary: var(--cu-dark-blue);
+    --color-primary-text: var(--cu-white);
+    --color-primary-active: var(--cu-light-blue);
+    --color-secondary: var(--cu-light-grey);
+    --color-background: var(--cu-white);
+    --color-sidebar: var(--cu-dark-blue);
+    --color-card: var(--cu-dark-grey);
+    --color-card-text: var(--cu-white);
+    --color-text-primary: #0f172a;
+    --color-text-secondary: #64748b;
+    --color-text-inverted: var(--cu-white);
+    --color-border: #e2e8f0;
+    --color-urgent: #ef4444;
+    --color-urgent-bg: #fee2e2;
+    --color-overdue: #f97316;
+    --color-overdue-bg: #ffedd5;
+    --color-monitored: #8b5cf6;
+    --color-monitored-bg: #ede9fe;
+    --color-completed: #22c55e;
+    --color-completed-bg: #dcfce7;
+    --bg-main: #ffffff;
+    --card-bg: #f8f9fa;
+    --card-border: rgba(255, 255, 255, 0.3);
+}
+.material-symbols-outlined {
+    font-variation-settings: "FILL" 0, "wght" 300, "GRAD" 0, "opsz" 24
+    }
+.material-symbols-outlined.filled {
+    font-variation-settings: "FILL" 1
+    }
+.group:hover .group-hover\:fill {
+    font-variation-settings: "FILL" 1
+    }
+.group:hover .group-hover\:font-medium {
+    font-weight: 500
+    }
+.active-link {
+    background-color: rgba(62, 178, 237, 0.1);
+    color: #3eb2ed;
+    font-weight: 500
+    }
+.active-link .material-symbols-outlined {
+    font-variation-settings: "FILL" 1, "wght" 400
+    }
+input::placeholder, textarea::placeholder, select {
+    color: #9ca3af
+    }
+select {
+    background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuBec457fcw0MH7UDsJts3vVY8uaOEXlsdkOGLCPmj8a8yTCcpSqXucYTv1Xg1mZbfpmAbSWMvj5iXYsXk7N2vgg1kVO-GDC6r6zTnczGezf5jAv9GJDDpIOkNtwbipEWiZAMUc2LQ6VTwyAn-uUUbK38HnQNPht9Cv_t8bABuTtU6lSoYnFv8eT20FB9S_5J7IbFAh6FU0jw03YxXhFMqUzWURznfDkUAeNbCXiiremW3uSwsVMModkt6QQcf3gAem8nMvVSttm);
+    background-position: right 0.5rem center;
+    background-repeat: no-repeat;
+    background-size: 1.5em 1.5em;
+    padding-right: 2.5rem;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none
+    }
+    .glassmorphic-card {
+        background: white;
+        border: 1px solid #e5e7eb;
+    }
+    /* Client Services Summary custom layout */
+    .client-services-summary {
+        display: flex;
+        gap: 1.75rem;
+        justify-content: space-between;
+        align-items: stretch;
+        flex-wrap: wrap;
+    }
+    .service-column {
+        flex: 1;
+        min-width: 260px;
+        border-radius: 18px;
+        padding: 1.5rem 1.6rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        background: #ffffff;
+        border: 1px solid var(--color-border);
+        box-shadow: 0 4px 10px rgba(15, 23, 42, 0.04);
+        transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
+    }
+    .service-column:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 24px rgba(15,23,42,0.10);
+        border-color: var(--cu-light-blue-60);
+    }
+    .service-column--testing {
+        border-top: 3px solid var(--cu-light-blue);
+    }
+    .service-column--inspection {
+        border-top: 3px solid var(--cu-dark-blue-60);
+    }
+    .service-column--certification {
+        border-top: 3px solid var(--cu-light-blue-80);
+    }
+    .service-column h3 {
+        font-size: 0.75rem;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--cu-light-grey);
+        font-weight: 600;
+    }
+    .service-column h4 {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: var(--cu-dark-blue);
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    .service-status {
+        font-size: 0.7rem;
+        padding: 0.15rem 0.55rem;
+        border-radius: 999px;
+        background: var(--cu-light-blue-20);
+        color: var(--cu-dark-blue);
+        font-weight: 600;
+    }
+    .service-status--kickoff {
+        background: var(--cu-dark-blue-20);
+        color: var(--cu-dark-blue-80);
+    }
+    .service-column p {
+        font-size: 0.8rem;
+        color: var(--cu-dark-grey);
+    }
+    .service-action {
+        margin-top: 0.75rem;
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: var(--cu-dark-blue);
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+    }
+    .service-action .material-symbols-outlined {
+        font-size: 1rem;
+    }
+    .cert-card {
+        background: #f9fafb;
+        border-radius: 12px;
+        padding: 0.75rem 0.9rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border: 1px solid #e5e7eb;
+    }
+    .cert-card + .cert-card {
+        margin-top: 0.5rem;
+    }
+    .cert-card-title {
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: var(--cu-dark-blue);
+    }
+    .cert-card-sub {
+        font-size: 0.75rem;
+        color: var(--cu-dark-grey);
+    }
+  /* 3D styled card for the service boxes */
+  .card-3d {
+    background: linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
+    border: 1px solid #e9eef6;
+    border-radius: 14px;
+    box-shadow: 0 10px 24px rgba(14,40,80,0.04), inset 0 1px 0 rgba(255,255,255,0.65);
+    transition: transform 160ms ease, box-shadow 160ms ease;
+  }
+  .card-3d:hover { transform: translateY(-4px); box-shadow: 0 18px 44px rgba(14,40,80,0.07); }
+  .card-3d-head { padding: 0.9rem 1.5rem; border-bottom: 1px solid #eef6fc; border-top-left-radius: 13px; border-top-right-radius: 13px; }
+  .card-3d .card-body { padding: 1.25rem 1.5rem; min-height: 220px; }
+    .badge {
+        font-size: 0.7rem;
+        padding: 0.2rem 0.6rem;
+        border-radius: 999px;
+        color: #ffffff;
+        font-weight: 600;
+        white-space: nowrap;
+    }
+    .badge.existing {
+    /* changed to requested blue tone (#65c1f1) */
+    background-image: linear-gradient(135deg, #65c1f1, #4aa6e9);
+    box-shadow: 0 0 0 1px rgba(101, 193, 241, 0.35);
+    }
+  .badge.potential {
+    background-image: linear-gradient(135deg, #b2e0f8, #9fd6f5);
+    box-shadow: 0 0 0 1px rgba(178, 224, 248, 0.4);
+  }
+    @media (max-width: 768px) {
+        .client-services-summary {
+            flex-direction: column;
+        }
+    }</style>
+</head>
+
+<body class="font-display bg-white text-dark-text">
+  <div class="flex h-screen overflow-hidden">
+    <aside id="sidebar"
+      class="w-64 flex-shrink-0 bg-sidebar text-text-inverted flex flex-col transition-all duration-300">
+      <div class="h-16 flex items-center justify-between px-6 border-b border-cu-dark-blue-80 flex-shrink-0">
+        <div class="flex items-center gap-2">
+          <span class="text-2xl font-bold tracking-wider">SOE</span>
+          <div class="w-8 h-1 bg-gradient-to-r from-cu-light-blue to-cu-light-blue-60 rounded"></div>
+        </div>
+      </div>
+      <nav class="flex-1 overflow-y-auto p-4 space-y-1">
+        <style>
+          /* collapsed sidebar: keep a small width and show icons only */
+          #sidebar.collapsed {
+            width: 72px !important
+          }
+
+          #sidebar.collapsed .menu-toggle {
+            padding-left: 0.5rem;
+            padding-right: 0.5rem
+          }
+
+          /* hide textual labels but keep caret icons visible */
+          #sidebar.collapsed .menu-toggle .flex.items-center>span:last-child {
+            display: none
+          }
+
+          #sidebar.collapsed nav a>span:last-child {
+            display: none
+          }
+
+          #sidebar.collapsed .submenu {
+            display: none !important
+          }
+
+          /* temporary expanded state on hover */
+          #sidebar.expanded-temp {
+            width: 16rem !important
+          }
+
+          #sidebar.expanded-temp .menu-toggle .flex.items-center>span:last-child {
+            display: inline-block
+          }
+
+          #sidebar.expanded-temp nav a>span:last-child {
+            display: inline-block
+          }
+
+          /* tooltip labels when collapsed */
+          #sidebar.collapsed a[title] {
+            position: relative
+          }
+
+          #sidebar.collapsed a[title]:hover::after {
+            content: attr(title);
+            position: absolute;
+            left: 72px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #111827;
+            color: #fff;
+            padding: 6px 10px;
+            border-radius: 6px;
+            white-space: nowrap;
+            font-size: 12px;
+            box-shadow: 0 6px 18px rgba(2, 6, 23, 0.12)
+          }
+        </style>
+        <!-- Dashboard -->
+        <div>
+          <button
+            class="menu-toggle flex items-center justify-between p-3 rounded-lg text-slate-300 hover:bg-cu-dark-blue-80 w-full text-left">
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined">dashboard</span>
+              <span class="font-medium text-sm">Dashboard</span>
+            </div>
+            <span class="material-symbols-outlined text-lg transform transition-transform">expand_more</span>
+          </button>
+          <div class="submenu hidden ml-6 mt-1 space-y-1">
+            <a href="dashbord.html"
+              class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-400 hover:bg-cu-dark-blue-80 hover:text-white">
+              <span class="material-symbols-outlined text-base">arrow_right</span>
+              <span>My Dashboard</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Task -->
+        <div>
+          <button
+            class="menu-toggle flex items-center justify-between p-3 rounded-lg text-slate-300 hover:bg-cu-dark-blue-80 w-full text-left">
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined">task_alt</span>
+              <span class="font-medium text-sm">Task</span>
+            </div>
+            <span class="material-symbols-outlined text-lg transform transition-transform">expand_more</span>
+          </button>
+          <div class="submenu hidden ml-6 mt-1 space-y-1">
+            <a href="#"
+              class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-400 hover:bg-cu-dark-blue-80 hover:text-white">
+              <span class="material-symbols-outlined text-base">arrow_right</span>
+              <span>My Tasks</span>
+            </a>
+            <a href="#"
+              class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-400 hover:bg-cu-dark-blue-80 hover:text-white">
+              <span class="material-symbols-outlined text-base">arrow_right</span>
+              <span>Team Tasks</span>
+            </a>
+            <a href="#"
+              class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-400 hover:bg-cu-dark-blue-80 hover:text-white">
+              <span class="material-symbols-outlined text-base">arrow_right</span>
+              <span>All Tasks</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- CRM -->
+        <div>
+          <button
+            class="menu-toggle flex items-center justify-between p-3 rounded-lg text-slate-300 hover:bg-cu-dark-blue-80 w-full text-left">
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined">trending_up</span>
+              <span class="font-medium text-sm">CRM</span>
+            </div>
+            <span class="material-symbols-outlined text-lg transform transition-transform">expand_more</span>
+          </button>
+          <div class="submenu hidden ml-6 mt-1 space-y-1">
+            <a href="allclient.html#home"
+              class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-400 hover:bg-cu-dark-blue-80 hover:text-white">
+              <span class="material-symbols-outlined text-base">arrow_right</span>
+              <span>Accounts</span>
+            </a>
+            <!-- <a href="code.html" class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-400 hover:bg-cu-dark-blue-80 hover:text-white">
+<span class="material-symbols-outlined text-base">arrow_right</span>
+<span>CRM</span>
+</a> -->
+            <a href="#"
+              class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-400 hover:bg-cu-dark-blue-80 hover:text-white">
+              <span class="material-symbols-outlined text-base">arrow_right</span>
+              <span>Cer. Sales Progress</span>
+            </a>
+            <a href="#"
+              class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-400 hover:bg-cu-dark-blue-80 hover:text-white">
+              <span class="material-symbols-outlined text-base">arrow_right</span>
+              <span>Sales Report</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- COEs / Regional Team / MarComs -->
+
+        <div>
+          <button
+            class="menu-toggle flex items-center justify-between p-3 rounded-lg text-slate-300 hover:bg-cu-dark-blue-80 w-full text-left">
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined">public</span>
+              <span class="font-medium text-sm">Regional & Global</span>
+            </div>
+            <span class="material-symbols-outlined text-lg transform transition-transform">expand_more</span>
+          </button>
+          <div class="submenu hidden ml-6 mt-1 space-y-1">
+            <a href="COEdashboard.html"
+              class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-400 hover:bg-cu-dark-blue-80 hover:text-white">
+              <span class="material-symbols-outlined text-base">arrow_right</span>
+              <span>COEs</span>
+            </a>
+            <a href="#"
+              class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-400 hover:bg-cu-dark-blue-80 hover:text-white">
+              <span class="material-symbols-outlined text-base">arrow_right</span>
+              <span>Regional Team</span>
+            </a>
+            <a href="#"
+              class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-400 hover:bg-cu-dark-blue-80 hover:text-white">
+              <span class="material-symbols-outlined text-base">arrow_right</span>
+              <span>MarComs</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- HR Manager -->
+        <div>
+          <button
+            class="menu-toggle flex items-center justify-between p-3 rounded-lg text-slate-300 hover:bg-cu-dark-blue-80 w-full text-left">
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined">groups</span>
+              <span class="font-medium text-sm">HR Manager</span>
+            </div>
+            <span class="material-symbols-outlined text-lg transform transition-transform">expand_more</span>
+          </button>
+          <div class="submenu hidden ml-6 mt-1 space-y-1">
+            <a href="#"
+              class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-400 hover:bg-cu-dark-blue-80 hover:text-white">
+              <span class="material-symbols-outlined text-base">arrow_right</span>
+              <span>Employee Management</span>
+            </a>
+            <a href="#"
+              class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-400 hover:bg-cu-dark-blue-80 hover:text-white">
+              <span class="material-symbols-outlined text-base">arrow_right</span>
+              <span>Leave Management</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Department Manager -->
+        <a class="flex items-center gap-3 p-3 rounded-lg text-sm font-medium text-slate-300 hover:bg-cu-dark-blue-80"
+          href="#">
+          <span class="material-symbols-outlined">corporate_fare</span>Department Manager</a>
+
+        <!-- User Manager -->
+        <div>
+          <button
+            class="menu-toggle flex items-center justify-between p-3 rounded-lg text-slate-300 hover:bg-cu-dark-blue-80 w-full text-left">
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined">manage_accounts</span>
+              <span class="font-medium text-sm">User Manager</span>
+            </div>
+            <span class="material-symbols-outlined text-lg transform transition-transform">expand_more</span>
+          </button>
+          <div class="submenu hidden ml-6 mt-1 space-y-1">
+            <a href="#"
+              class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-400 hover:bg-cu-dark-blue-80 hover:text-white">
+              <span class="material-symbols-outlined text-base">arrow_right</span>
+              <span>Add User</span>
+            </a>
+            <a href="#"
+              class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-400 hover:bg-cu-dark-blue-80 hover:text-white">
+              <span class="material-symbols-outlined text-base">arrow_right</span>
+              <span>Manage Users</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Working Days -->
+        <div>
+          <button
+            class="menu-toggle flex items-center justify-between p-3 rounded-lg text-slate-300 hover:bg-cu-dark-blue-80 w-full text-left">
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined">calendar_today</span>
+              <span class="font-medium text-sm">Working Days</span>
+            </div>
+            <span class="material-symbols-outlined text-lg transform transition-transform">expand_more</span>
+          </button>
+          <div class="submenu hidden ml-6 mt-1 space-y-1">
+            <a href="#"
+              class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-400 hover:bg-cu-dark-blue-80 hover:text-white">
+              <span class="material-symbols-outlined text-base">arrow_right</span>
+              <span>Calendar</span>
+            </a>
+            <a href="#"
+              class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-400 hover:bg-cu-dark-blue-80 hover:text-white">
+              <span class="material-symbols-outlined text-base">arrow_right</span>
+              <span>Holidays</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Settings -->
+        <div>
+          <button
+            class="menu-toggle flex items-center justify-between p-3 rounded-lg text-slate-300 hover:bg-cu-dark-blue-80 w-full text-left">
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined">settings</span>
+              <span class="font-medium text-sm">Settings</span>
+            </div>
+            <span class="material-symbols-outlined text-lg transform transition-transform">expand_more</span>
+          </button>
+          <div class="submenu hidden ml-6 mt-1 space-y-1">
+            <a href="#"
+              class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-400 hover:bg-cu-dark-blue-80 hover:text-white">
+              <span class="material-symbols-outlined text-base">arrow_right</span>
+              <span>KPI Manager</span>
+            </a>
+              <a href="configuration.html"
+              class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-400 hover:bg-cu-dark-blue-80 hover:text-white">
+              <span class="material-symbols-outlined text-base">arrow_right</span>
+              <span>Configuration</span>
+            </a>
+          </div>
+        </div>
+      </nav>
+    </aside>
+
+    <!-- external toggle placed outside the collapsing sidebar so it is always visible -->
+    <button id="sidebarToggle" aria-expanded="true"
+      class="p-2 rounded-full text-slate-400 hover:bg-cu-dark-blue-80 transition-colors"
+      style="position:absolute; z-index:60;">
+      <span class="material-symbols-outlined text-xl">keyboard_double_arrow_left</span>
+    </button>
+
+    <div class="flex-1 flex flex-col bg-bg-main">
+      <header class="flex-shrink-0 bg-[#1b1e42] h-16 flex items-center justify-end px-6 border-b border-slate-200">
+        <div class="flex items-center space-x-4">
+          <button class="p-2 rounded-full text-slate-300 hover:bg-cu-dark-blue-80 relative">
+            <span class="material-symbols-outlined text-yellow-500">notifications</span>
+            <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full"></span>
+          </button>
+          <div class="flex items-center space-x-3">
+            <img alt="User avatar" class="w-10 h-10 rounded-full object-cover"
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuBR8s_sRkD2uqrpzMyUfuQswvEJ6g6HmJbNWRFuxVQrSEUTQBKUCb8FrE4u1rNmdesirGmB0fSnXH0MsEurf7hmlhlkPED1n-AkkdeAQMAWAgU5wxVJTfUU6Pwf-Y8nQ1wskiHsPmWaCNPcrpBsa-iA4HqrI_cLqR3nfa1DafNqND7EBfLy1X75EULCpsRWFVLpztjMjkn6ufe2il3wB9_JOZuva2njUcWM0nJhERkc8yDkGPPP0eoFr5pSCqKx45WY1mn5_zVR" />
+            <div>
+              <div class="font-semibold text-sm text-white">Nisal Amarasekara</div>
+              <div class="text-xs text-slate-400">Sri Lanka</div>
+            </div>
+          </div>
+          <button class="p-2 rounded-full text-slate-300 hover:bg-cu-dark-blue-80">
+            <span class="material-symbols-outlined">lock</span>
+          </button>
+          <button class="p-2 rounded-full text-slate-300 hover:bg-cu-dark-blue-80">
+            <span class="material-symbols-outlined">expand_more</span>
+          </button>
+        </div>
+      </header>
+      <main class="flex-1 p-6 lg:p-8 overflow-y-auto">
+        <div class="flex items-center justify-between mb-8">
+          <h2 id="addHeader" class="text-3xl font-bold text-dark-text">Add New Account</h2>
+          <div class="flex items-center space-x-2">
+            <a id="allClientsLink" href="allclient.html#leads"
+              class="px-4 h-10 flex items-center space-x-2 text-sm font-medium text-gray-600 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 shadow-soft transition-all duration-200">
+              <span class="material-symbols-outlined text-lg">list</span>
+              <span id="allClientsLabel">All Leads</span>
+            </a>
+            <button
+              class="px-4 h-10 flex items-center space-x-2 text-sm font-medium text-white bg-primary rounded-xl hover:bg-opacity-90 shadow-soft shadow-primary/30 transition-all duration-200">
+              <span class="material-symbols-outlined text-lg filled">save</span>
+              <span id="saveBtnLabel">Save Lead</span>
+            </button>
+          </div>
+        </div>
+        <form>
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Lead Information Card: spans 2 columns on large screens -->
+            <div class="lg:col-span-2 space-y-8 h-full">
+              <div class="glassmorphic-card p-6 rounded-2xl shadow-soft transition-shadow duration-300 h-full"
+                style="min-height:260px;">
+                <h3 class="flex items-center text-lg font-bold text-dark-text mb-6">
+                  <span class="material-symbols-outlined mr-3 text-primary filled">apartment</span>
+                  Lead Information
+                </h3>
+                <div class="grid grid-cols-2 gap-x-8 gap-y-6">
+                  <div>
+                    <label class="block text-sm font-medium text-gray-600 mb-2" for="account-name">Account Name <span
+                        class="text-red-500">*</span></label>
+                    <select class="w-full bg-light-gray border-none rounded-xl focus:ring-2 focus:ring-primary text-sm"
+                      id="account-name" required>
+                      <option value="">Select Account</option>
+                      <!-- Add account options here -->
+                    </select>
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium text-gray-600 mb-2" for="salutation">Salutation <span
+                        class="text-red-500">*</span></label>
+                    <select class="w-full bg-light-gray border-none rounded-xl focus:ring-2 focus:ring-primary text-sm"
+                      id="salutation" required>
+                      <option value="">Select salutation</option>
+                      <option value="Mr.">Mr.</option>
+                      <option value="Mrs.">Mrs.</option>
+                      <option value="Ms.">Ms.</option>
+                      <option value="Dr.">Dr.</option>
+                      <option value="Prof.">Prof.</option>
+                      <option value="Rev.">Rev.</option>
+                      <option value="Other">Other</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium text-gray-600 mb-2" for="first-name">First Name <span
+                        class="text-red-500">*</span></label>
+                    <input class="w-full bg-light-gray border-none rounded-xl focus:ring-2 focus:ring-primary text-sm"
+                      id="first-name" placeholder="Enter your first name" type="text" required />
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium text-gray-600 mb-2" for="last-name">Last Name <span
+                        class="text-red-500">*</span></label>
+                    <input class="w-full bg-light-gray border-none rounded-xl focus:ring-2 focus:ring-primary text-sm"
+                      id="last-name" placeholder="Enter your last name" type="text" required />
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium text-gray-600 mb-2" for="lead-title">Title/Job Role <span
+                        class="text-red-500">*</span></label>
+                    <input class="w-full bg-light-gray border-none rounded-xl focus:ring-2 focus:ring-primary text-sm"
+                      id="lead-title" placeholder="Enter the title" type="text" required />
+                  </div>
+                  <!-- The rest of the fields follow -->
+                  <div>
+                    <label class="block text-sm font-medium text-gray-600 mb-2" for="phone">Phone</label>
+                    <input class="w-full bg-light-gray border-none rounded-xl focus:ring-2 focus:ring-primary text-sm"
+                      id="phone" placeholder="Enter phone number" type="text" />
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium text-gray-600 mb-2" for="email">Email</label>
+                    <input class="w-full bg-light-gray border-none rounded-xl focus:ring-2 focus:ring-primary text-sm"
+                      id="email" placeholder="Enter email address" type="email" />
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium text-gray-600 mb-2" for="lead-source">Lead Source</label>
+                    <select class="w-full bg-light-gray border-none rounded-xl focus:ring-2 focus:ring-primary text-sm"
+                      id="lead-source">
+                      <option>--None--</option>
+                      <option>Web</option>
+                      <option>Phone Inquiry</option>
+                      <option>Email</option>
+                      <option>Partner</option>
+                      <option>Other</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium text-gray-600 mb-2" for="lead-industry">Industry</label>
+                    <select class="w-full bg-light-gray border-none rounded-xl focus:ring-2 focus:ring-primary text-sm"
+                      id="lead-industry">
+                      <option>--None--</option>
+                      <option>Manufacturing</option>
+                      <option>Services</option>
+                      <option>Retail</option>
+                      <option>Other</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium text-gray-600 mb-2" for="lead-status">Lead Status <span
+                        class="text-red-500">*</span></label>
+                    <select class="w-full bg-light-gray border-none rounded-xl focus:ring-2 focus:ring-primary text-sm"
+                      id="lead-status" required>
+                      <option>Unqualified</option>
+                      <option>New</option>
+                      <option>Working</option>
+                      <option>Nurturing</option>
+                      <option>Converted</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+            <!-- Address Information Card: sits to the right on large screens -->
+            <div class="h-full">
+              <div class="glassmorphic-card p-6 rounded-2xl shadow-soft transition-shadow duration-300 h-full"
+                style="min-height:260px;">
+                <h3 class="flex items-center text-lg font-bold text-dark-text mb-6">
+                  <span class="material-symbols-outlined mr-3 text-primary filled">folder_managed</span>
+                  Additional Information
+                </h3>
+                <div class="mt-4">
+                  <label class="block text-xs font-medium text-gray-600 mb-1">Notes and Attachments</label>
+                  <div class="flex flex-wrap gap-3 mt-2">
+                    <button type="button"
+                      class="px-4 py-2 bg-primary text-white rounded-lg text-xs font-semibold shadow-sm hover:bg-blue-500 transition-colors">New
+                      Note</button>
+                    <button type="button"
+                      class="px-4 py-2 bg-primary text-white rounded-lg text-xs font-semibold shadow-sm hover:bg-blue-500 transition-colors">Upload
+                      File</button>
+                  </div>
+                </div>
+              </div>
+              <!-- New Address Information Card below -->
+            </div>
+            <div class="lg:col-span-2 glassmorphic-card p-6 rounded-2xl shadow-soft transition-shadow duration-300"
+              style="min-height:260px;">
+              <h3 class="flex items-center text-lg font-bold text-dark-text mb-6">
+                <span class="material-symbols-outlined mr-3 text-primary filled">info</span>
+                Address Information
+              </h3>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-5">
+                <div class="col-span-2">
+                  <label class="block text-sm font-medium text-gray-600 mb-2">Address</label>
+                  <div class="grid grid-cols-4 gap-6">
+                    <input class="w-full bg-light-gray border-none rounded-xl focus:ring-2 focus:ring-primary text-sm"
+                      placeholder="Street" type="text" />
+                    <input class="w-full bg-light-gray border-none rounded-xl focus:ring-2 focus:ring-primary text-sm"
+                      placeholder="City" type="text" />
+                    <input class="w-full bg-light-gray border-none rounded-xl focus:ring-2 focus:ring-primary text-sm"
+                      placeholder="Province" type="text" />
+                    <input class="w-full bg-light-gray border-none rounded-xl focus:ring-2 focus:ring-primary text-sm"
+                      placeholder="Zip Code" type="text" />
+                  </div>
+                </div>
+                <div class="col-span-2">
+                  <div class="flex items-center mb-2">
+                    <label class="block text-sm font-medium text-gray-600 mr-4">Billing Address</label>
+                    <label class="flex items-center text-xs font-medium text-gray-500 cursor-pointer">
+                      <input type="checkbox" id="same-as-address" class="mr-2 rounded" />
+                      Billing address is same as above
+                    </label>
+                  </div>
+                  <div class="grid grid-cols-4 gap-6">
+                    <input class="w-full bg-light-gray border-none rounded-xl focus:ring-2 focus:ring-primary text-sm"
+                      placeholder="Billing Street" type="text" id="billing-street" />
+                    <input class="w-full bg-light-gray border-none rounded-xl focus:ring-2 focus:ring-primary text-sm"
+                      placeholder="Billing City" type="text" id="billing-city" />
+                    <input class="w-full bg-light-gray border-none rounded-xl focus:ring-2 focus:ring-primary text-sm"
+                      placeholder="Billing Province" type="text" id="billing-province" />
+                    <input class="w-full bg-light-gray border-none rounded-xl focus:ring-2 focus:ring-primary text-sm"
+                      placeholder="Billing Zip Code" type="text" id="billing-zip" />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="lg:col-span-2 glassmorphic-card p-8 rounded-2xl shadow-soft transition-shadow duration-300 bg-white services-wide">
+              <div class="mb-4">
+                <h3 class="flex items-center text-lg font-bold text-dark-text mb-6">
+                  <span
+                    class="inline-flex items-center justify-center w-7 h-7 rounded-full bg-[#65c1f1] text-white mr-3">
+                    <span class="material-symbols-outlined text-sm">info</span>
+                  </span>
+                  Services
+                </h3>
+              </div>
+              <div class="mb-6">
+                <nav aria-label="Tabs" class="flex items-center gap-4 border-b border-gray-200 pb-3"></nav>
+              </div>
+              <div class="flex flex-col md:flex-row gap-6">
+                <div class="flex-1 bg-white rounded-2xl border border-gray-200 shadow-sm flex flex-col card-3d">
+                  <div class="px-6 py-4 card-3d-head">
+                    <h4 class="flex items-center text-sm font-semibold text-[#1b1e42]"><span
+                        class="material-symbols-outlined mr-2 text-primary text-sm leading-none">science</span>Testing
+                    </h4>
+                  </div>
+                  <div class="flex-1 card-body px-6 py-6 min-h-[220px]"></div>
+                </div>
+                <div class="flex-1 bg-white rounded-2xl border border-gray-200 shadow-sm flex flex-col card-3d">
+                  <div class="px-6 py-4 card-3d-head">
+                    <h4 class="flex items-center text-sm font-semibold text-[#1b1e42]"><span
+                        class="material-symbols-outlined mr-2 text-primary text-sm leading-none">search</span>Inspection
+                    </h4>
+                  </div>
+                  <div class="flex-1 card-body px-6 py-6 min-h-[220px]"></div>
+                </div>
+                <div class="flex-1 bg-white rounded-2xl border border-gray-200 shadow-sm flex flex-col card-3d">
+                  <div class="px-6 py-4 card-3d-head">
+                    <h4 class="flex items-center text-sm font-semibold text-[#1b1e42]"><span
+                        class="material-symbols-outlined mr-2 text-primary text-sm leading-none">verified</span>Certification
+                    </h4>
+                  </div>
+                  <div class="flex-1 card-body px-6 py-6 min-h-[220px] flex items-center justify-center">
+                    <span class="text-gray-400 text-sm">No certifications selected</span>
+                  </div>
+                </div>
+                <div class="flex-1 bg-white rounded-2xl border border-gray-200 shadow-sm flex flex-col card-3d">
+                  <div class="px-6 py-4 card-3d-head">
+                    <h4 class="flex items-center text-sm font-semibold text-[#1b1e42]">
+                      <span
+                        class="material-symbols-outlined mr-2 text-primary text-sm leading-none">school</span>Academy
+                    </h4>
+                  </div>
+                  <div class="flex-1 card-body px-6 py-6 min-h-[220px] flex flex-col justify-center items-center">
+                    <span class="text-gray-400 text-sm">No Academy data</span>
+                  </div>
+                </div>
+              </div>
+              <div class="flex justify-end mt-6">
+                <button id="addMoreServicesBtn" type="button" onclick="openServicesModal()"
+                  class="px-5 h-10 inline-flex items-center justify-center rounded-full bg-[#3eb2ed] text-white text-xs font-semibold shadow-sm hover:bg-[#2ea2d6] transition-colors">
+                  <span class="material-symbols-outlined mr-2 text-sm">add</span>
+                  Add Services
+                </button>
+              </div>
+            </div>
+
+
+          </div>
+    </div>
+    <style>
+      /* Make only the Services card wider without affecting other boxes */
+      .services-wide {
+        width: calc(100% + 550px);
+        margin-right: -600px;
+      }
+
+      @media (max-width:1096px) {
+        .services-wide {
+          width: 100%;
+          margin-right: 0;
+        }
+      }
+    </style>
+    <style>
+      /* Certification toggles: hidden native input + visual square toggle */
+      .cert-toggle {
+        position: absolute;
+        opacity: 0;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        cursor: pointer;
+      }
+
+      .cert-toggle-wrapper {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 34px;
+        height: 20px;
+        cursor: pointer;
+      }
+
+      .toggle-ui {
+        display: inline-block;
+        width: 34px;
+        height: 20px;
+        border: 1px solid #e5e7eb;
+        background: #f1f5f9;
+        border-radius: 999px;
+        position: relative;
+        transition: background-color .12s ease, border-color .12s ease, box-shadow .12s ease;
+        cursor: pointer;
+      }
+
+      .toggle-ui::before {
+        content: '';
+        position: absolute;
+        left: 3px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 14px;
+        height: 14px;
+        background: #fff;
+        border-radius: 50%;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+        transition: left .12s ease, transform .12s ease;
+      }
+
+      .cert-toggle:focus+.toggle-ui {
+        box-shadow: 0 0 0 4px rgba(62, 178, 237, 0.12);
+      }
+
+      /* Existing (light blue) */
+      .cert-toggle-wrapper.existing .cert-toggle:checked+.toggle-ui {
+        background: #65c1f1;
+        border-color: #65c1f1;
+        box-shadow: 0 0 0 3px rgba(101, 193, 241, 0.16);
+      }
+
+      .cert-toggle-wrapper.existing .cert-toggle:checked+.toggle-ui::before {
+        left: 17px;
+      }
+
+      .cert-toggle-wrapper.existing .cert-toggle:focus+.toggle-ui {
+        box-shadow: 0 0 0 4px rgba(101, 193, 241, 0.18);
+      }
+
+      /* Potential (dark) - keep as fallback/different state */
+      .cert-toggle-wrapper.potential .cert-toggle:checked+.toggle-ui {
+        background: #111827;
+        border-color: #111827;
+        box-shadow: 0 0 0 3px rgba(17, 24, 39, 0.12);
+      }
+
+      .cert-toggle-wrapper.potential .cert-toggle:checked+.toggle-ui::before {
+        left: 17px;
+      }
+    </style>
+  </div>
+  <div class="space-y-8">
+  </div>
+  </form>
+  </div>
+  </main>
+  </div>
+  </div>
+
+  <!-- Select Services Modal -->
+  <div id="selectServicesModal" class="fixed inset-0 z-[9999] hidden"
+    style="position: fixed !important; display: none;">
+    <!-- Backdrop -->
+    <div class="fixed inset-0 bg-black/50" onclick="closeServicesModal()"></div>
+
+    <!-- Modal Content -->
+    <div
+      class="fixed inset-0 md:inset-8 lg:inset-16 xl:inset-20 bg-white rounded-none md:rounded-xl shadow-2xl flex flex-col overflow-hidden z-[10000]">
+      <!-- Header -->
+      <div class="bg-[#1b1e42] px-6 py-4 flex items-center justify-between flex-shrink-0">
+        <h2 class="text-white text-lg font-semibold">Select Services</h2>
+        <button onclick="closeServicesModal()" class="text-red-500 hover:text-red-400 transition">
+          <span class="material-symbols-outlined text-2xl">close</span>
+        </button>
+      </div>
+
+      <!-- Body with Three Columns -->
+      <div class="flex-1 flex overflow-hidden bg-gray-50 p-4 gap-4">
+        <!-- Testing Column -->
+        <div class="flex-1 flex flex-col bg-white rounded-2xl shadow-sm overflow-hidden">
+          <div class="bg-[#1b1e42] px-6 py-3 rounded-t-2xl flex-shrink-0">
+            <h3 class="text-white font-semibold text-sm">Testing</h3>
+          </div>
+          <div class="flex-1 flex items-center justify-center p-8 bg-white">
+            <div class="text-center">
+              <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-50 mb-3">
+                <span class="material-symbols-outlined text-blue-300" style="font-size: 36px;">inbox</span>
+              </div>
+              <h4 class="text-gray-700 font-semibold text-sm mb-1">No categories available</h4>
+              <p class="text-xs text-gray-400">Check back later for updates</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Inspection Column -->
+        <div class="flex-1 flex flex-col bg-white rounded-2xl shadow-sm overflow-hidden">
+          <div class="bg-[#1b1e42] px-6 py-3 rounded-t-2xl flex-shrink-0">
+            <h3 class="text-white font-semibold text-sm">Inspection</h3>
+          </div>
+          <div class="flex-1 flex items-center justify-center p-8 bg-white">
+            <div class="text-center">
+              <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-50 mb-3">
+                <span class="material-symbols-outlined text-blue-300" style="font-size: 36px;">inbox</span>
+              </div>
+              <h4 class="text-gray-700 font-semibold text-sm mb-1">No categories available</h4>
+              <p class="text-xs text-gray-400">Check back later for updates</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Certification Column -->
+        <div class="flex-1 flex flex-col bg-white rounded-2xl shadow-sm overflow-hidden">
+          <div class="bg-[#1b1e42] px-6 py-3 rounded-t-2xl flex-shrink-0">
+            <h3 class="text-white font-semibold text-sm">Certification</h3>
+          </div>
+          <div class="flex-1 overflow-y-auto p-6 bg-white">
+            <div class="space-y-3">
+              <!-- Organic -->
+              <div class="w-full">
+                <button onclick="toggleServiceCategory('organic')"
+                  class="w-full flex items-center justify-between px-4 py-3 bg-[#42c5f5] hover:bg-[#38b4e3] text-white rounded-lg transition-all shadow-sm">
+                  <div class="flex items-center gap-2.5">
+                    <span class="material-symbols-outlined text-lg">eco</span>
+                    <span class="font-medium text-sm">Organic</span>
+                  </div>
+                  <span id="organic-chevron"
+                    class="material-symbols-outlined text-lg transition-transform">expand_more</span>
+                </button>
+
+                <!-- Organic Expanded Content -->
+                <div id="organic-content"
+                  class="hidden mt-2 bg-white border border-gray-200 rounded-lg overflow-hidden">
+                  <div class="px-6 py-4">
+                    <!-- Standards List -->
+                    <div class="space-y-3">
+                      <!-- NOP -->
+                      <div class="flex items-center justify-between">
+                        <span class="text-sm text-gray-800">NOP</span>
+                        <form>
+                          <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                            <!-- Lead Information Card: spans 2 columns on large screens -->
+                            <div class="lg:col-span-2 space-y-8">
+                              <div class="glassmorphic-card p-6 rounded-2xl shadow-soft transition-shadow duration-300"
+                                style="min-height:260px;">
+                                <h3 class="flex items-center text-lg font-bold text-dark-text mb-6">
+                                  <span class="material-symbols-outlined mr-3 text-primary filled">apartment</span>
+                                  Lead Information
+                                </h3>
+                                <div class="grid grid-cols-2 gap-x-8 gap-y-6">
+                                  <div>
+                                    <label class="block text-sm font-medium text-gray-600 mb-2"
+                                      for="account-name">Account Name <span class="text-red-500">*</span></label>
+                                    <select
+                                      class="w-full bg-light-gray border-none rounded-xl focus:ring-2 focus:ring-primary text-sm"
+                                      id="account-name" required>
+                                      <option value="">Select Account</option>
+                                      <!-- Add account options here -->
+                                    </select>
+                                  </div>
+                                  <div>
+                                    <label class="block text-sm font-medium text-gray-600 mb-2"
+                                      for="salutation">Salutation <span class="text-red-500">*</span></label>
+                                    <select
+                                      class="w-full bg-light-gray border-none rounded-xl focus:ring-2 focus:ring-primary text-sm"
+                                      id="salutation" required>
+                                      <option value="">Select salutation</option>
+                                      <option value="Mr.">Mr.</option>
+                                      <option value="Mrs.">Mrs.</option>
+                                      <option value="Ms.">Ms.</option>
+                                      <option value="Dr.">Dr.</option>
+                                      <option value="Prof.">Prof.</option>
+                                      <option value="Rev.">Rev.</option>
+                                      <option value="Other">Other</option>
+                                    </select>
+                                  </div>
+                                  <div>
+                                    <label class="block text-sm font-medium text-gray-600 mb-2" for="first-name">First
+                                      Name <span class="text-red-500">*</span></label>
+                                    <input
+                                      class="w-full bg-light-gray border-none rounded-xl focus:ring-2 focus:ring-primary text-sm"
+                                      id="first-name" placeholder="Enter your first name" type="text" required />
+                                  </div>
+                                  <div>
+                                    <label class="block text-sm font-medium text-gray-600 mb-2" for="last-name">Last
+                                      Name <span class="text-red-500">*</span></label>
+                                    <input
+                                      class="w-full bg-light-gray border-none rounded-xl focus:ring-2 focus:ring-primary text-sm"
+                                      id="last-name" placeholder="Enter your last name" type="text" required />
+                                  </div>
+                                  <div>
+                                    <label class="block text-sm font-medium text-gray-600 mb-2" for="lead-title">Title
+                                      <span class="text-red-500">*</span></label>
+                                    <input
+                                      class="w-full bg-light-gray border-none rounded-xl focus:ring-2 focus:ring-primary text-sm"
+                                      id="lead-title" placeholder="Enter the title" type="text" required />
+                                  </div>
+                                  <!-- The rest of the fields follow -->
+                                  <div>
+                                    <label class="block text-sm font-medium text-gray-600 mb-2" for="fax">Fax</label>
+                                    <input
+                                      class="w-full bg-light-gray border-none rounded-xl focus:ring-2 focus:ring-primary text-sm"
+                                      id="fax" placeholder="Enter fax number" type="text" />
+                                  </div>
+                                  <div>
+                                    <label class="block text-sm font-medium text-gray-600 mb-2"
+                                      for="email">Email</label>
+                                    <input
+                                      class="w-full bg-light-gray border-none rounded-xl focus:ring-2 focus:ring-primary text-sm"
+                                      id="email" placeholder="Enter email address" type="email" />
+                                  </div>
+                                  <div>
+                                    <label class="block text-sm font-medium text-gray-600 mb-2" for="lead-source">Lead
+                                      Source</label>
+                                    <select
+                                      class="w-full bg-light-gray border-none rounded-xl focus:ring-2 focus:ring-primary text-sm"
+                                      id="lead-source">
+                                      <option>--None--</option>
+                                      <option>Web</option>
+                                      <option>Phone Inquiry</option>
+                                      <option>Email</option>
+                                      <option>Partner</option>
+                                      <option>Other</option>
+                                    </select>
+                                  </div>
+                                  <div>
+                                    <label class="block text-sm font-medium text-gray-600 mb-2"
+                                      for="lead-industry">Industry</label>
+                                    <select
+                                      class="w-full bg-light-gray border-none rounded-xl focus:ring-2 focus:ring-primary text-sm"
+                                      id="lead-industry">
+                                      <option>--None--</option>
+                                      <option>Manufacturing</option>
+                                      <option>Services</option>
+                                      <option>Retail</option>
+                                      <option>Other</option>
+                                    </select>
+                                  </div>
+                                  <div>
+                                    <label class="block text-sm font-medium text-gray-600 mb-2" for="lead-status">Lead
+                                      Status <span class="text-red-500">*</span></label>
+                                    <select
+                                      class="w-full bg-light-gray border-none rounded-xl focus:ring-2 focus:ring-primary text-sm"
+                                      id="lead-status" required>
+                                      <option>Unqualified</option>
+                                      <option>New</option>
+                                      <option>Working</option>
+                                      <option>Nurturing</option>
+                                      <option>Converted</option>
+                                    </select>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <!-- Address Information Card: sits to the right on large screens -->
+                            <div>
+                              <div class="glassmorphic-card p-6 rounded-2xl shadow-soft transition-shadow duration-300"
+                                style="min-height:260px;">
+                                <h3 class="flex items-center text-lg font-bold text-dark-text mb-6">
+                                  <span class="material-symbols-outlined mr-3 text-primary filled">info</span>
+                                  Address Information
+                                </h3>
+                                <label class="block text-sm font-medium text-gray-600 mb-2"
+                                  for="address-street">Address</label>
+                                <div class="grid grid-cols-4 gap-6 mb-6">
+                                  <input
+                                    class="w-full bg-light-gray border-none rounded-xl focus:ring-2 focus:ring-primary text-sm"
+                                    placeholder="Street" type="text" id="address-street" />
+                                  <input
+                                    class="w-full bg-light-gray border-none rounded-xl focus:ring-2 focus:ring-primary text-sm"
+                                    placeholder="City" type="text" id="address-city" />
+                                  <input
+                                    class="w-full bg-light-gray border-none rounded-xl focus:ring-2 focus:ring-primary text-sm"
+                                    placeholder="Province" type="text" id="address-province" />
+                                  <input
+                                    class="w-full bg-light-gray border-none rounded-xl focus:ring-2 focus:ring-primary text-sm"
+                                    placeholder="Zip Code" type="text" id="address-zip" />
+                                </div>
+                                <div>
+                                  <label class="block text-sm font-medium text-gray-600 mb-2"
+                                    for="description">Description:</label>
+                                  <textarea
+                                    class="w-full bg-light-gray border-none rounded-xl focus:ring-2 focus:ring-primary text-sm"
+                                    id="description" placeholder="Add a short description..." rows="3"></textarea>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <span id="textile-chevron"
+                            class="material-symbols-outlined text-lg transition-transform">expand_more</span>
+                          </button>
+
+                          <!-- Textile Expanded Content -->
+                          <div id="textile-content"
+                            class="hidden mt-2 bg-white border border-gray-200 rounded-lg overflow-hidden">
+                            <div class="px-6 py-4">
+                              <!-- Standards List -->
+                              <div class="space-y-3">
+                                <!-- GOTS -->
+                                <div class="flex items-center justify-between">
+                                  <span class="text-sm text-gray-800">GOTS</span>
+                                  <form>
+                                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                                      <!-- Lead Information Card: spans 2 columns on large screens -->
+                                      <div class="lg:col-span-2 space-y-8 h-full">
+                                        <div
+                                          class="glassmorphic-card p-6 rounded-2xl shadow-soft transition-shadow duration-300 h-full"
+                                          style="min-height:260px;">
+                                          <h3 class="flex items-center text-lg font-bold text-dark-text mb-6">
+                                            <span
+                                              class="material-symbols-outlined mr-3 text-primary filled">apartment</span>
+                                            Lead Information
+                                          </h3>
+                                          <div class="grid grid-cols-2 gap-x-8 gap-y-6">
+                                            <div>
+                                              <label class="block text-sm font-medium text-gray-600 mb-2"
+                                                for="account-name">Account Name <span
+                                                  class="text-red-500">*</span></label>
+                                              <select
+                                                class="w-full bg-light-gray border-none rounded-xl focus:ring-2 focus:ring-primary text-sm"
+                                                id="account-name" required>
+                                                <option value="">Select Account</option>
+                                                <!-- Add account options here -->
+                                              </select>
+                                            </div>
+                                            <div>
+                                              <label class="block text-sm font-medium text-gray-600 mb-2"
+                                                for="salutation">Salutation <span class="text-red-500">*</span></label>
+                                              <select
+                                                class="w-full bg-light-gray border-none rounded-xl focus:ring-2 focus:ring-primary text-sm"
+                                                id="salutation" required>
+                                                <option value="">Select salutation</option>
+                                                <option value="Mr.">Mr.</option>
+                                                <option value="Mrs.">Mrs.</option>
+                                                <option value="Ms.">Ms.</option>
+                                                <option value="Dr.">Dr.</option>
+                                                <option value="Prof.">Prof.</option>
+                                                <option value="Rev.">Rev.</option>
+                                                <option value="Other">Other</option>
+                                              </select>
+                                            </div>
+                                            <div>
+                                              <label class="block text-sm font-medium text-gray-600 mb-2"
+                                                for="first-name">First Name <span class="text-red-500">*</span></label>
+                                              <input
+                                                class="w-full bg-light-gray border-none rounded-xl focus:ring-2 focus:ring-primary text-sm"
+                                                id="first-name" placeholder="Enter your first name" type="text"
+                                                required />
+                                            </div>
+                                            <div>
+                                              <label class="block text-sm font-medium text-gray-600 mb-2"
+                                                for="last-name">Last Name <span class="text-red-500">*</span></label>
+                                              <input
+                                                class="w-full bg-light-gray border-none rounded-xl focus:ring-2 focus:ring-primary text-sm"
+                                                id="last-name" placeholder="Enter your last name" type="text"
+                                                required />
+                                            </div>
+                                            <div>
+                                              <label class="block text-sm font-medium text-gray-600 mb-2"
+                                                for="lead-title">Title <span class="text-red-500">*</span></label>
+                                              <input
+                                                class="w-full bg-light-gray border-none rounded-xl focus:ring-2 focus:ring-primary text-sm"
+                                                id="lead-title" placeholder="Enter the title" type="text" required />
+                                            </div>
+                                            <!-- The rest of the fields follow -->
+                                            <div>
+                                              <label class="block text-sm font-medium text-gray-600 mb-2"
+                                                for="fax">Fax</label>
+                                              <input
+                                                class="w-full bg-light-gray border-none rounded-xl focus:ring-2 focus:ring-primary text-sm"
+                                                id="fax" placeholder="Enter fax number" type="text" />
+                                            </div>
+                                            <div>
+                                              <label class="block text-sm font-medium text-gray-600 mb-2"
+                                                for="email">Email</label>
+                                              <input
+                                                class="w-full bg-light-gray border-none rounded-xl focus:ring-2 focus:ring-primary text-sm"
+                                                id="email" placeholder="Enter email address" type="email" />
+                                            </div>
+                                            <div>
+                                              <label class="block text-sm font-medium text-gray-600 mb-2"
+                                                for="lead-source">Lead Source</label>
+                                              <select
+                                                class="w-full bg-light-gray border-none rounded-xl focus:ring-2 focus:ring-primary text-sm"
+                                                id="lead-source">
+                                                <option>--None--</option>
+                                                <option>Web</option>
+                                                <option>Phone Inquiry</option>
+                                                <option>Email</option>
+                                                <option>Partner</option>
+                                                <option>Other</option>
+                                              </select>
+                                            </div>
+                                            <div>
+                                              <label class="block text-sm font-medium text-gray-600 mb-2"
+                                                for="lead-industry">Industry</label>
+                                              <select
+                                                class="w-full bg-light-gray border-none rounded-xl focus:ring-2 focus:ring-primary text-sm"
+                                                id="lead-industry">
+                                                <option>--None--</option>
+                                                <option>Manufacturing</option>
+                                                <option>Services</option>
+                                                <option>Retail</option>
+                                                <option>Other</option>
+                                              </select>
+                                            </div>
+                                            <div>
+                                              <label class="block text-sm font-medium text-gray-600 mb-2"
+                                                for="lead-status">Lead Status <span
+                                                  class="text-red-500">*</span></label>
+                                              <select
+                                                class="w-full bg-light-gray border-none rounded-xl focus:ring-2 focus:ring-primary text-sm"
+                                                id="lead-status" required>
+                                                <option>Unqualified</option>
+                                                <option>New</option>
+                                                <option>Working</option>
+                                                <option>Nurturing</option>
+                                                <option>Converted</option>
+                                              </select>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <!-- Address Information Card: sits to the right on large screens -->
+                                      <div class="h-full">
+                                        <div
+                                          class="glassmorphic-card p-6 rounded-2xl shadow-soft transition-shadow duration-300 h-full"
+                                          style="min-height:260px;">
+                                          <h3 class="flex items-center text-lg font-bold text-dark-text mb-6">
+                                            <span class="material-symbols-outlined mr-3 text-primary filled">info</span>
+                                            Address Information
+                                          </h3>
+                                          <label class="block text-sm font-medium text-gray-600 mb-2"
+                                            for="address-street">Address</label>
+                                          <div class="grid grid-cols-4 gap-6 mb-6">
+                                            <input
+                                              class="w-full bg-light-gray border-none rounded-xl focus:ring-2 focus:ring-primary text-sm"
+                                              placeholder="Street" type="text" id="address-street" />
+                                            <input
+                                              class="w-full bg-light-gray border-none rounded-xl focus:ring-2 focus:ring-primary text-sm"
+                                              placeholder="City" type="text" id="address-city" />
+                                            <input
+                                              class="w-full bg-light-gray border-none rounded-xl focus:ring-2 focus:ring-primary text-sm"
+                                              placeholder="Province" type="text" id="address-province" />
+                                            <input
+                                              class="w-full bg-light-gray border-none rounded-xl focus:ring-2 focus:ring-primary text-sm"
+                                              placeholder="Zip Code" type="text" id="address-zip" />
+                                          </div>
+                                          <div>
+                                            <label class="block text-sm font-medium text-gray-600 mb-2"
+                                              for="description">Description:</label>
+                                            <textarea
+                                              class="w-full bg-light-gray border-none rounded-xl focus:ring-2 focus:ring-primary text-sm"
+                                              id="description" placeholder="Add a short description..."
+                                              rows="3"></textarea>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <span class="font-medium text-sm">Social</span>
+                                </div>
+                                <span class="material-symbols-outlined text-lg">expand_more</span>
+                                </button>
+
+                                <!-- Food safety -->
+                                <button
+                                  class="w-full flex items-center justify-between px-4 py-3 bg-[#42c5f5] hover:bg-[#38b4e3] text-white rounded-lg transition-all shadow-sm">
+                                  <div class="flex items-center gap-2.5">
+                                    <span class="material-symbols-outlined text-lg">restaurant</span>
+                                    <span class="font-medium text-sm">Food safety</span>
+                                  </div>
+                                  <span class="material-symbols-outlined text-lg">expand_more</span>
+                                </button>
+
+                                <!-- Other -->
+                                <button
+                                  class="w-full flex items-center justify-between px-4 py-3 bg-[#42c5f5] hover:bg-[#38b4e3] text-white rounded-lg transition-all shadow-sm">
+                                  <div class="flex items-center gap-2.5">
+                                    <span class="material-symbols-outlined text-lg">more_horiz</span>
+                                    <span class="font-medium text-sm">Other</span>
+                                  </div>
+                                  <span class="material-symbols-outlined text-lg">expand_more</span>
+                                </button>
+
+                                <!-- System -->
+                                <button
+                                  class="w-full flex items-center justify-between px-4 py-3 bg-[#42c5f5] hover:bg-[#38b4e3] text-white rounded-lg transition-all shadow-sm">
+                                  <div class="flex items-center gap-2.5">
+                                    <span class="material-symbols-outlined text-lg">settings</span>
+                                    <span class="font-medium text-sm">System</span>
+                                  </div>
+                                  <span class="material-symbols-outlined text-lg">expand_more</span>
+                                </button>
+
+                                <!-- Tourism -->
+                                <button
+                                  class="w-full flex items-center justify-between px-4 py-3 bg-[#42c5f5] hover:bg-[#38b4e3] text-white rounded-lg transition-all shadow-sm">
+                                  <div class="flex items-center gap-2.5">
+                                    <span class="material-symbols-outlined text-lg">travel_explore</span>
+                                    <span class="font-medium text-sm">Tourism</span>
+                                  </div>
+                                  <span class="material-symbols-outlined text-lg">expand_more</span>
+                                </button>
+
+                                <!-- Assurance Services -->
+                                <button
+                                  class="w-full flex items-center justify-between px-4 py-3 bg-[#42c5f5] hover:bg-[#38b4e3] text-white rounded-lg transition-all shadow-sm">
+                                  <div class="flex items-center gap-2.5">
+                                    <span class="material-symbols-outlined text-lg">verified_user</span>
+                                    <span class="font-medium text-sm">Assurance Services</span>
+                                  </div>
+                                  <span class="material-symbols-outlined text-lg">expand_more</span>
+                                </button>
+
+                                <!-- Forestry -->
+                                <button
+                                  class="w-full flex items-center justify-between px-4 py-3 bg-[#42c5f5] hover:bg-[#38b4e3] text-white rounded-lg transition-all shadow-sm">
+                                  <div class="flex items-center gap-2.5">
+                                    <span class="material-symbols-outlined text-lg">park</span>
+                                    <span class="font-medium text-sm">Forestry</span>
+                                  </div>
+                                  <span class="material-symbols-outlined text-lg">expand_more</span>
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                      </div>
+
+                      <!-- Footer -->
+                      <div
+                        class="bg-white border-t border-gray-200 px-6 py-3.5 flex items-center justify-end gap-3 flex-shrink-0">
+                        <button onclick="saveServices()"
+                          class="px-5 py-2.5 bg-[#1b1e42] hover:bg-[#1b1e42] text-white rounded-lg font-medium text-sm transition-all shadow-sm">Save</button>
+
+                      </div>
+                    </div>
+
+                    <!-- Add Contact Modal -->
+                    <div id="addContactModal" class="fixed inset-0 z-[10001] hidden" aria-hidden="true">
+                      <div class="fixed inset-0 bg-black/50" onclick="closeAddContactModal()"></div>
+                      <div
+                        class="fixed left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[90%] md:w-3/4 lg:w-2/3 bg-white rounded-lg shadow-2xl overflow-hidden z-[10002]">
+                        <div class="bg-[#1b1e42] px-6 py-4 flex items-center justify-between">
+                          <form>
+                            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                              <!-- Lead Information Card: spans 2 columns on large screens -->
+                              <div class="lg:col-span-2 space-y-8 h-full">
+                                <div
+                                  class="glassmorphic-card p-6 rounded-2xl shadow-soft transition-shadow duration-300 h-full"
+                                  style="min-height:260px;">
+                                  <h3 class="flex items-center text-lg font-bold text-dark-text mb-6">
+                                    <span class="material-symbols-outlined mr-3 text-primary filled">apartment</span>
+                                    Lead Information
+                                  </h3>
+                                  <div class="grid grid-cols-2 gap-x-8 gap-y-6">
+                                    <div>
+                                      <label class="block text-sm font-medium text-gray-600 mb-2"
+                                        for="account-name">Account Name <span class="text-red-500">*</span></label>
+                                      <select
+                                        class="w-full bg-light-gray border-none rounded-xl focus:ring-2 focus:ring-primary text-sm"
+                                        id="account-name" required>
+                                        <option value="">Select Account</option>
+                                        <!-- Add account options here -->
+                                      </select>
+                                    </div>
+                                    <div>
+                                      <label class="block text-sm font-medium text-gray-600 mb-2"
+                                        for="salutation">Salutation <span class="text-red-500">*</span></label>
+                                      <select
+                                        class="w-full bg-light-gray border-none rounded-xl focus:ring-2 focus:ring-primary text-sm"
+                                        id="salutation" required>
+                                        <option value="">Select salutation</option>
+                                        <option value="Mr.">Mr.</option>
+                                        <option value="Mrs.">Mrs.</option>
+                                        <option value="Ms.">Ms.</option>
+                                        <option value="Dr.">Dr.</option>
+                                        <option value="Prof.">Prof.</option>
+                                        <option value="Rev.">Rev.</option>
+                                        <option value="Other">Other</option>
+                                      </select>
+                                    </div>
+                                    <div>
+                                      <label class="block text-sm font-medium text-gray-600 mb-2" for="first-name">First
+                                        Name <span class="text-red-500">*</span></label>
+                                      <input
+                                        class="w-full bg-light-gray border-none rounded-xl focus:ring-2 focus:ring-primary text-sm"
+                                        id="first-name" placeholder="Enter your first name" type="text" required />
+                                    </div>
+                                    <div>
+                                      <label class="block text-sm font-medium text-gray-600 mb-2" for="last-name">Last
+                                        Name <span class="text-red-500">*</span></label>
+                                      <input
+                                        class="w-full bg-light-gray border-none rounded-xl focus:ring-2 focus:ring-primary text-sm"
+                                        id="last-name" placeholder="Enter your last name" type="text" required />
+                                    </div>
+                                    <div>
+                                      <label class="block text-sm font-medium text-gray-600 mb-2" for="lead-title">Title
+                                        <span class="text-red-500">*</span></label>
+                                      <input
+                                        class="w-full bg-light-gray border-none rounded-xl focus:ring-2 focus:ring-primary text-sm"
+                                        id="lead-title" placeholder="Enter the title" type="text" required />
+                                    </div>
+                                    <!-- The rest of the fields follow -->
+                                    <div>
+                                      <label class="block text-sm font-medium text-gray-600 mb-2" for="fax">Fax</label>
+                                      <input
+                                        class="w-full bg-light-gray border-none rounded-xl focus:ring-2 focus:ring-primary text-sm"
+                                        id="fax" placeholder="Enter fax number" type="text" />
+                                    </div>
+                                    <div>
+                                      <label class="block text-sm font-medium text-gray-600 mb-2"
+                                        for="email">Email</label>
+                                      <input
+                                        class="w-full bg-light-gray border-none rounded-xl focus:ring-2 focus:ring-primary text-sm"
+                                        id="email" placeholder="Enter email address" type="email" />
+                                    </div>
+                                    <div>
+                                      <label class="block text-sm font-medium text-gray-600 mb-2" for="lead-source">Lead
+                                        Source</label>
+                                      <select
+                                        class="w-full bg-light-gray border-none rounded-xl focus:ring-2 focus:ring-primary text-sm"
+                                        id="lead-source">
+                                        <option>--None--</option>
+                                        <option>Web</option>
+                                        <option>Phone Inquiry</option>
+                                        <option>Email</option>
+                                        <option>Partner</option>
+                                        <option>Other</option>
+                                      </select>
+                                    </div>
+                                    <div>
+                                      <label class="block text-sm font-medium text-gray-600 mb-2"
+                                        for="lead-industry">Industry</label>
+                                      <select
+                                        class="w-full bg-light-gray border-none rounded-xl focus:ring-2 focus:ring-primary text-sm"
+                                        id="lead-industry">
+                                        <option>--None--</option>
+                                        <option>Manufacturing</option>
+                                        <option>Services</option>
+                                        <option>Retail</option>
+                                        <option>Other</option>
+                                      </select>
+                                    </div>
+                                    <div>
+                                      <label class="block text-sm font-medium text-gray-600 mb-2" for="lead-status">Lead
+                                        Status <span class="text-red-500">*</span></label>
+                                      <select
+                                        class="w-full bg-light-gray border-none rounded-xl focus:ring-2 focus:ring-primary text-sm"
+                                        id="lead-status" required>
+                                        <option>Unqualified</option>
+                                        <option>New</option>
+                                        <option>Working</option>
+                                        <option>Nurturing</option>
+                                        <option>Converted</option>
+                                      </select>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <!-- Address Information Card: sits to the right on large screens -->
+                              <div class="h-full">
+                                <div
+                                  class="glassmorphic-card p-6 rounded-2xl shadow-soft transition-shadow duration-300 h-full"
+                                  style="min-height:260px;">
+                                  <h3 class="flex items-center text-lg font-bold text-dark-text mb-6">
+                                    <span class="material-symbols-outlined mr-3 text-primary filled">info</span>
+                                    Address Information
+                                  </h3>
+                                  <label class="block text-sm font-medium text-gray-600 mb-2"
+                                    for="address-street">Address</label>
+                                  <div class="grid grid-cols-4 gap-6 mb-6">
+                                    <input
+                                      class="w-full bg-light-gray border-none rounded-xl focus:ring-2 focus:ring-primary text-sm"
+                                      placeholder="Street" type="text" id="address-street" />
+                                    <input
+                                      class="w-full bg-light-gray border-none rounded-xl focus:ring-2 focus:ring-primary text-sm"
+                                      placeholder="City" type="text" id="address-city" />
+                                    <input
+                                      class="w-full bg-light-gray border-none rounded-xl focus:ring-2 focus:ring-primary text-sm"
+                                      placeholder="Province" type="text" id="address-province" />
+                                    <input
+                                      class="w-full bg-light-gray border-none rounded-xl focus:ring-2 focus:ring-primary text-sm"
+                                      placeholder="Zip Code" type="text" id="address-zip" />
+                                  </div>
+                                  <div>
+                                    <label class="block text-sm font-medium text-gray-600 mb-2"
+                                      for="description">Description:</label>
+                                    <textarea
+                                      class="w-full bg-light-gray border-none rounded-xl focus:ring-2 focus:ring-primary text-sm"
+                                      id="description" placeholder="Add a short description..." rows="3"></textarea>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            </script>
+                            <script>
+                              // Moved from stray location in HTML
+                              function toggleServiceCategory(categoryId) {
+                                const content = document.getElementById(categoryId + '-content');
+                                const chevron = document.getElementById(categoryId + '-chevron');
+                                if (content && chevron) {
+                                  content.classList.toggle('hidden');
+                                  if (content.classList.contains('hidden')) {
+                                    chevron.style.transform = 'rotate(0deg)';
+                                  } else {
+                                    chevron.style.transform = 'rotate(180deg)';
+                                  }
+                                }
+                              }
+                            </script>
+
+                            // Set active section
+                            function toggleCategory(category) {
+                            const items = document.getElementById(category + '-items');
+                            const arrow = document.getElementById(category + '-arrow');
+                            if (items.classList.contains('hidden')) {
+                            items.classList.remove('hidden');
+                            arrow.style.transform = 'rotate(0deg)';
+                            } else {
+                            items.classList.add('hidden');
+                            arrow.style.transform = 'rotate(-90deg)';
+                            }
+                            }
+
+                            // Save services
+                            function saveServices() {
+                            // Collect all checked services
+                            const checkboxes = document.querySelectorAll('#selectServicesModal
+                            input[type="checkbox"]:checked');
+                            console.log('Selected services:', checkboxes.length);
+                            closeServicesModal();
+                            // Add your save logic here
+                            }
+
+                            // View selected services
+                            function viewSelectedServices() {
+                            // Implement view selected services logic
+                            console.log('View selected services');
+                            }
+
+                            // Close modal on Escape key
+                            document.addEventListener('keydown', function(e) {
+                            if (e.key === 'Escape') {
+                            closeServicesModal();
+                            }
+                            });
+
+                            // Diagnostic: ensure button exists and attach listener (safer than inline onclick only)
+                            window.addEventListener('load', function() {
+                            try {
+                            console.log('Page loaded: attaching modal handler');
+                            var btn = document.getElementById('addMoreServicesBtn');
+                            if (btn) {
+                            btn.addEventListener('click', function(ev) {
+                            console.log('Add More Services button clicked (listener)');
+                            // Prevent default just in case
+                            if (ev && ev.preventDefault) ev.preventDefault();
+                            openServicesModal();
+                            });
+                            // Ensure button is on top and clickable
+                            try {
+                            btn.style.position = btn.style.position || 'relative';
+                            btn.style.zIndex = 1001;
+                            } catch (e) { console.warn('Could not set style on button', e); }
+                            var rect = btn.getBoundingClientRect();
+                            console.log('Attached click listener to #addMoreServicesBtn', rect);
+                            } else {
+                            console.warn('Button #addMoreServicesBtn not found');
+                            }
+                            } catch (err) {
+                            console.error('Error attaching handler:', err);
+                            alert('JS error: ' + err.message);
+                            }
+                            });
+
+                            // Panel switching for the modal (testing/inspection/certification)
+                            function setActiveSection(section) {
+                            var secs = ['testing','inspection','certification'];
+                            secs.forEach(function(s){
+                            var btn = document.getElementById('sec-' + s);
+                            var panel = document.getElementById('panel-' + s);
+                            if (btn) {
+                            if (s === section) {
+                            btn.classList.add('bg-[#1b1e42]'); btn.classList.add('text-white');
+                            } else {
+                            btn.classList.remove('bg-[#1b1e42]'); btn.classList.remove('text-white');
+                            }
+                            }
+                            if (panel) {
+                            if (s === section) panel.classList.remove('hidden'); else panel.classList.add('hidden');
+                            }
+                            });
+                            }
+
+                            // Ensure default active section when modal opens and render certification panel
+                            (function(){
+                            var origOpen = openServicesModal;
+                            openServicesModal = function(){
+                            origOpen();
+                            try { setActiveSection('certification'); renderCertificationPanel(); } catch(e){
+                            console.warn(e); }
+                            }
+                            })();
+
+                            // Certification data (mirrors the React INITIAL_DATA)
+                            var CERT_CATEGORIES = [
+                            {
+                            id: 'organic',
+                            name: 'Organic Certification',
+                            icon: 'eco',
+                            description: 'Standards for organic production and processing',
+                            items: [
+                            { id: 'nop', name: 'National Organic Program (NOP)', existing: false, potential: true },
+                            { id: 'sl', name: 'SL Organic Standard', existing: false, potential: false },
+                            { id: 'roc', name: 'Regenerative Organic Certified (ROC)', existing: false, potential: false
+                            },
+                            { id: 'gols', name: 'Global Organic Latex Standard (GOLS)', existing: false, potential:
+                            false },
+                            { id: 'biosuisse', name: 'BIOSuisse Organic', existing: false, potential: false },
+                            { id: 'korean', name: 'Korean Organic Standard', existing: false, potential: false },
+                            { id: 'brasil', name: 'Brasil Organic', existing: false, potential: false },
+                            { id: 'chinese', name: 'Chinese Organic', existing: false, potential: false },
+                            { id: 'inputs', name: 'Organic Inputs', existing: false, potential: false },
+                            { id: 'gmp', name: 'GMP Coir', existing: false, potential: false },
+                            { id: 'demeter', name: 'Demeter Biodynamic', existing: false, potential: false },
+                            { id: 'fairwild', name: 'FairWild Standard', existing: false, potential: false },
+                            { id: 'usda', name: 'USDA-NOP', existing: false, potential: false },
+                            ],
+                            },
+                            { id: 'agriculture', name: 'Agriculture', icon: 'factory', description: 'Good Agricultural
+                            Practices (GAP) and sustainability', items: [ { id: 'gap', name: 'Global GAP', existing:
+                            false, potential: false }, { id: 'fs', name: 'Farm Sustainability Assessment', existing:
+                            false, potential: false } ] },
+                            { id: 'aqua', name: 'Aquaculture', icon: 'water_drop', description: 'Sustainable seafood and
+                            aquaculture', items: [] },
+                            { id: 'social', name: 'Social Compliance', icon: 'groups', description: 'Labor rights and
+                            social responsibility', items: [] },
+                            { id: 'food_safety', name: 'Food Safety', icon: 'verified', description: 'Safety management
+                            systems', items: [] },
+                            { id: 'other', name: 'Other Services', icon: 'public', description: 'Miscellaneous
+                            certification services', items: [] },
+                            ];
+
+                            var certExpanded = 'organic';
+
+                            // Toggle expand/collapse in certification panel
+                            function certToggle(catId) {
+                            certExpanded = certExpanded === catId ? null : catId;
+                            renderCertificationPanel();
+                            }
+
+                            // Toggle an item field (existing/potential)
+                            function certToggleItem(catId, itemId, field) {
+                            for (var i = 0; i < CERT_CATEGORIES.length; i++) { var cat=CERT_CATEGORIES[i]; if
+                              (cat.id===catId) { for (var j=0; j < cat.items.length; j++) { if
+                              (cat.items[j].id===itemId) { cat.items[j][field]=!cat.items[j][field]; break; } } break; }
+                              } renderCertificationPanel(); } // Wire search input to render
+                              document.addEventListener('input', function(e){ if (e.target && e.target.id==='certSearch'
+                              ) { renderCertificationPanel(); } }); // Render once on load so content is ready if modal
+                              is already open window.addEventListener('load', function(){ try {
+                              renderCertificationPanel(); } catch(e){} }); // Global click logger for diagnostics
+                              document.addEventListener('click', function(e){ try { var t=e.target; var tag=t.tagName ?
+                              t.tagName.toLowerCase() : '' ; var cls=t.className || '' ; console.log('Global click:',
+                              {x: e.clientX, y: e.clientY, target: tag, class: cls, id: t.id || null}); var
+                              btn=document.getElementById('addMoreServicesBtn'); if (btn) { var
+                              r=btn.getBoundingClientRect(); var inside=e.clientX>= r.left && e.clientX <= r.right &&
+                                e.clientY>= r.top && e.clientY <= r.bottom; if (inside) console.log('Click was inside
+                                  #addMoreServicesBtn rect'); } } catch (e) { console.error('click logger error', e); }
+                                  }, true); // Global error handler for debug window.addEventListener('error',
+                                  function(e) { console.error('Global error:', e.message, 'at' , e.filename + ':' +
+                                  e.lineno); // Uncomment next line to show error alerts while debugging //
+                                  alert('Error: ' + e.message + ' \nSee console for details'); }); // Add Contact modal
+                                  handlers function openAddContactModal() { var
+                                  m=document.getElementById('addContactModal'); if (!m) return;
+                                  m.classList.remove('hidden'); m.style.display='block' ; m.style.visibility='visible' ;
+                                  document.body.style.overflow='hidden' ; } function closeAddContactModal() { var
+                                  m=document.getElementById('addContactModal'); if (!m) return;
+                                  m.classList.add('hidden'); m.style.display='none' ; document.body.style.overflow='' ;
+                                  } function saveContact(){ // simple placeholder: close modal and show a small alert
+                                  try { var form=document.getElementById('addContactForm'); /* TODO: collect and save */
+                                  } catch(e){} closeAddContactModal(); try { alert('Contact saved (demo)'); } catch(e){}
+                                  } // Attach click handler to Contacts Add button window.addEventListener('load',
+                                  function(){ var openBtn=document.getElementById('openAddContactBtn'); if (openBtn)
+                                  openBtn.addEventListener('click', function(e){ e.preventDefault();
+                                  openAddContactModal(); }); }); </script>
+                                  <script>
+                                    document.addEventListener('DOMContentLoaded', function () {
+                                      var hdr = document.getElementById('addHeader');
+                                      if (!hdr) return;
+                                      try {
+                                        var params = new URLSearchParams(location.search);
+                                        var t = (params.get('type') || 'all').toLowerCase();
+                                        var map = { lead: 'Lead', account: 'Account', opportunity: 'Opportunity', all: 'Add New Lead' };
+                                        if (t === 'all') {
+                                          hdr.textContent = map.all;
+                                        } else {
+                                          var label = map[t] || 'Account';
+                                          hdr.textContent = 'Add New ' + label;
+                                        }
+                                        // update the small "All ..." label to reflect opened type
+                                        var allLabel = document.getElementById('allClientsLabel');
+                                        if (allLabel) {
+                                          var pluralMap = { lead: 'Leads', account: 'Accounts', opportunity: 'Opportunities', all: 'Leads' };
+                                          var plural = pluralMap[t] || 'Leads';
+                                          allLabel.textContent = 'All ' + plural;
+                                        }
+
+                                        // update Save button label to match type
+                                        var saveLabelEl = document.getElementById('saveBtnLabel');
+                                        if (saveLabelEl) {
+                                          var saveMap = { lead: 'Save Lead', account: 'Save Account', opportunity: 'Save Opportunity', all: 'Save Lead' };
+                                          saveLabelEl.textContent = saveMap[t] || 'Save Lead';
+                                        }
+
+                                        // Always set the All link to #leads
+                                        var allLink = document.getElementById('allClientsLink');
+                                        if (allLink) {
+                                          allLink.href = 'allclient.html#leads';
+                                        }
+                                      } catch (e) { /* ignore */ }
+                                    });
+                                  </script>
+
+                                  <script>
+                                    // Sidebar functionality
+                                    document.addEventListener('DOMContentLoaded', function () {
+                                      // Menu toggle functionality
+                                      const menuToggles = document.querySelectorAll('.menu-toggle');
+                                      menuToggles.forEach(toggle => {
+                                        toggle.addEventListener('click', function () {
+                                          const submenu = this.nextElementSibling;
+                                          const arrow = this.querySelector('.material-symbols-outlined:last-child');
+
+                                          if (submenu && submenu.classList.contains('submenu')) {
+                                            submenu.classList.toggle('hidden');
+                                            arrow.style.transform = submenu.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)';
+                                          }
+                                        });
+                                      });
+
+                                      // Sidebar collapse/expand functionality
+                                      const sidebar = document.getElementById('sidebar');
+                                      const sidebarToggle = document.getElementById('sidebarToggle');
+
+                                      if (sidebar && sidebarToggle) {
+                                        // initialize collapsed state and icon
+                                        const isCollapsed = sidebar.classList.contains('collapsed');
+                                        const icon = sidebarToggle.querySelector('.material-symbols-outlined');
+                                        if (icon) icon.textContent = isCollapsed ? 'keyboard_double_arrow_right' : 'keyboard_double_arrow_left';
+                                        sidebarToggle.setAttribute('aria-expanded', String(!isCollapsed));
+
+                                        // position the external toggle so it's always visible (absolute within the page shell)
+                                        function positionToggle() {
+                                          try {
+                                            const left = (sidebar.offsetLeft || 0) + (sidebar.offsetWidth || 0) - Math.round((sidebarToggle.offsetWidth || 36) / 2) - 14;
+                                            const top = (sidebar.offsetTop || 0) + 8;
+                                            sidebarToggle.style.left = left + 'px';
+                                            sidebarToggle.style.top = top + 'px';
+                                          } catch (e) {/* ignore */ }
+                                        }
+                                        // initial placement
+                                        positionToggle();
+
+                                        // click toggles persistent collapse
+                                        sidebarToggle.addEventListener('click', function (e) {
+                                          const collapsed = !sidebar.classList.contains('collapsed');
+                                          sidebar.classList.toggle('collapsed', collapsed);
+                                          sidebar.classList.remove('expanded-temp');
+                                          if (icon) icon.textContent = collapsed ? 'keyboard_double_arrow_right' : 'keyboard_double_arrow_left';
+                                          sidebarToggle.setAttribute('aria-expanded', String(!collapsed));
+                                          if (collapsed) { document.querySelectorAll('#sidebar .submenu').forEach(s => s.classList.add('hidden')); }
+                                          // reposition toggle after width change
+                                          positionToggle();
+                                        });
+
+                                        // hover-to-expand behavior (on the sidebar area)
+                                        sidebar.addEventListener('mouseenter', function () { if (sidebar.classList.contains('collapsed')) sidebar.classList.add('expanded-temp'); positionToggle(); });
+                                        sidebar.addEventListener('mouseleave', function () { if (sidebar.classList.contains('collapsed')) sidebar.classList.remove('expanded-temp'); positionToggle(); });
+
+                                        // Keep the toggle aligned when window resizes or content shifts
+                                        window.addEventListener('resize', positionToggle);
+                                        window.addEventListener('scroll', positionToggle, true);
+
+                                        // add title attributes for icon-only mode discovery
+                                        document.querySelectorAll('#sidebar .menu-toggle').forEach(btn => {
+                                          const labelSpan = btn.querySelector('.flex.items-center span:not(.material-symbols-outlined)');
+                                          const label = labelSpan ? labelSpan.textContent.trim() : btn.textContent.trim();
+                                          if (label) btn.setAttribute('title', label);
+                                        });
+                                        document.querySelectorAll('#sidebar nav a').forEach(a => {
+                                          const labelSpan = a.querySelector('span:not(.material-symbols-outlined)');
+                                          const label = labelSpan ? labelSpan.textContent.trim() : a.textContent.trim();
+                                          if (label && !a.getAttribute('title')) a.setAttribute('title', label);
+                                        });
+                                      }
+                                    });
+                                  </script>
+</body>
+
+</html>

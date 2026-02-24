@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>My Dashboard (Navbar Color Update)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&amp;display=swap"
+    rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+    rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com?plugins=forms,typography,container-queries"></script>
+  <style type="text/tailwindcss">
+    :root {
+      --cu-light-blue: #3eb2ed;
+      --cu-dark-blue: #1b1e42;
+      --cu-light-grey: #799495;
+      --cu-dark-grey: #4f6566;
+      --cu-white: #ffffff;
+      --cu-light-blue-20: #d8f0fb;
+      --cu-light-blue-40: #b2e0f8;
+      --cu-light-blue-60: #8bd1f4;
+      --cu-light-blue-80: #65c1f1;
+      --cu-dark-blue-20: #d1d2d9;
+      --cu-dark-blue-40: #a4a5b3;
+      --cu-dark-blue-60: #76788e;
+      --cu-dark-blue-80: #494b68;
+      --color-primary: var(--cu-dark-blue);
+      --color-primary-text: var(--cu-white);
+      --color-primary-active: var(--cu-light-blue);
+      --color-secondary: var(--cu-light-grey);
+      --color-background: var(--cu-white);
+      --color-sidebar: var(--cu-dark-blue);
+      --color-card: var(--cu-dark-grey);
+      --color-card-text: var(--cu-white);
+      --color-text-primary: #0f172a;
+      --color-text-secondary: #64748b;
+      --color-text-inverted: var(--cu-white);
+      --color-border: #e2e8f0;
+      --color-urgent: #ef4444;
+      --color-urgent-bg: #fee2e2;
+      --color-overdue: #f97316;
+      --color-overdue-bg: #ffedd5;
+      --color-monitored: #8b5cf6;
+      --color-monitored-bg: #ede9fe;
+      --color-completed: #22c55e;
+      --color-completed-bg: #dcfce7;
+      --bg-main: #ffffff;
+      --card-bg: #f8f9fa;
+      --card-border: rgba(255, 255, 255, 0.3);
+    }
+  </style>
+  <style>
+    /* Tasks Overview specific styles (height & spacing tuned) */
+    .tasks-overview .task-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px
+    }
+
+    .tasks-overview .task-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px;
+      border-radius: 14px;
+      background: #fff;
+      border: 1px solid rgba(15, 23, 42, 0.04);
+      box-shadow: 0 12px 32px rgba(2, 6, 23, 0.05);
+      min-height: 116px
+    }
+
+    .tasks-overview .task-item.primary {
+      background: #0f1530;
+      color: #fff;
+      border: none;
+      box-shadow: 0 22px 48px rgba(11, 20, 48, 0.08);
+      border-radius: 20px;
+      padding: 22px 20px;
+      min-height: 116px
+    }
+
+    .tasks-overview .task-left {
+      display: flex;
+      align-items: center;
+      gap: 16px
+    }
+
+    .tasks-overview .task-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #f4fbff;
+      color: var(--cu-light-blue);
+      font-size: 20px
+    }
+
+    .tasks-overview .task-item.primary .task-icon {
+      background: transparent;
+      color: var(--cu-light-blue);
+      width: 52px;
+      height: 52px;
+      border-radius: 12px
+    }
+
+    .tasks-overview .task-title {
+      font-weight: 600
+    }
+
+    .tasks-overview .task-right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      justify-content: flex-start;
+      min-width: 88px
+    }
+
+    .tasks-overview .task-left {
+      flex: 1;
+      min-width: 0
+    }
+
+    .tasks-overview .task-item {
+      align-items: center;
+      text-align: left
+    }
+
+    .tasks-overview .task-number {
+      font-weight: 800;
+      font-size: 18px;
+      color: var(--cu-dark-blue);
+      line-height: 1
+    }
+
+    .tasks-overview .task-item.primary .task-number {
+      color: #fff;
+      font-size: 20px
+    }
+
+    .tasks-overview .task-arrow {
+      display: inline-block;
+      margin-top: 8px;
+      color: rgba(79, 101, 102, 0.6);
+      font-size: 18px
+    }
+
+    .tasks-overview .task-item.primary .task-arrow {
+      color: rgba(255, 255, 255, 0.95)
+    }
+
+    .tasks-overview .task-item .task-sub {
+      font-size: 12px;
+      color: var(--color-text-secondary);
+      margin-top: 6px
+    }
+
+    @media (min-width:640px) {
+      .tasks-overview .task-list {
+        flex-direction: column
+      }
+    }
+  </style>
+  <style>
+    /* Tile cards (icon badge above title) */
+    .tile-card {
+      background: #fff;
+      border-radius: 14px;
+      padding: 22px 18px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 18px 40px rgba(2, 6, 23, 0.06);
+      min-height: 110px;
+      text-align: center;
+      border: 1px solid rgba(15, 23, 42, 0.04)
+    }
+
+    .tile-card .tile-icon {
+      margin-bottom: 12px;
+      margin-right: 0
+    }
+
+    @media(min-width:640px) {
+      .tile-card.align-left-sm {
+        flex-direction: row;
+        align-items: center
+      }
+
+      .tile-card.align-left-sm .tile-icon {
+        margin-bottom: 0;
+        margin-right: 12px
+      }
+    }
+
+    .tile-card.large {
+      min-height: 140px;
+      padding: 28px
+    }
+
+    .tile-icon {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #fff;
+      box-shadow: 0 8px 20px rgba(2, 6, 23, 0.06);
+    }
+
+    .tile-icon .material-symbols-outlined {
+      color: var(--cu-light-blue);
+      font-size: 28px
+    }
+
+    .tile-title {
+      margin-top: 12px;
+      font-weight: 600;
+      color: var(--cu-dark-blue)
+    }
+
+    .tile-sub {
+      font-size: 13px;
+      color: var(--color-text-secondary);
+      margin-top: 6px
+    }
+  </style>
+  <style>
+    /* Announcement card sizing to match meetings card */
+    .announcement-card {
+      min-height: 220px
+    }
+
+    .announcement-card .md\:col-span-3 {
+      height: 100%
+    }
+
+    .announcement-card img {
+      height: 100%;
+      width: 100%;
+      object-fit: cover
+    }
+  </style>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ["Poppins", "sans-serif"],
+          },
+          colors: {
+            background: 'var(--color-background)',
+            sidebar: 'var(--color-sidebar)',
+            card: {
+              DEFAULT: 'var(--card-bg)',
+              border: 'var(--card-border)',
+            },
+            border: 'var(--color-border)',
+            'cu-light-blue': 'var(--cu-light-blue)',
+            'cu-dark-blue': 'var(--cu-dark-blue)',
+            'cu-light-grey': 'var(--cu-light-grey)',
+            'cu-dark-grey': 'var(--cu-dark-grey)',
+            'bg-main': 'var(--bg-main)',
+            text: {
+              primary: 'var(--color-text-primary)',
+              secondary: 'var(--color-text-secondary)',
+              inverted: 'var(--color-text-inverted)'
+            }
+          },
+        },
+      },
+    };
+  </script>
+  <style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+      vertical-align: middle;
+    }
+  </style>
+</head>
+
+<body class="font-sans bg-background text-text-primary">
+  <div class="flex h-screen overflow-hidden">
+    <aside class="w-64 flex-shrink-0 bg-sidebar text-text-inverted flex flex-col">
+      <div class="h-16 flex items-center justify-between px-6 border-b border-cu-dark-blue-80 flex-shrink-0">
+        <div class="flex items-center gap-2">
+          <span class="text-2xl font-bold tracking-wider">SOE</span>
+          <div class="w-8 h-1 bg-gradient-to-r from-cu-light-blue to-cu-light-blue-60 rounded"></div>
+        </div>
+        <button class="p-1 rounded-full text-slate-400 hover:bg-cu-dark-blue-80 transition-colors">
+          <span class="material-symbols-outlined text-xl">keyboard_double_arrow_left</span>
+        </button>
+      </div>
+      <nav class="flex-1 overflow-y-auto p-4 space-y-1">
+        <div>
+          <a class="flex items-center justify-between p-3 rounded-lg bg-cu-dark-blue-80 text-white" href="#">
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined">dashboard</span>
+              <span class="font-medium text-sm">Dashboard</span>
+            </div>
+            <span class="material-symbols-outlined text-lg transform rotate-0 transition-transform">expand_more</span>
+          </a>
+          <ul class="pl-6 mt-2 space-y-1 text-sm hidden">
+            <li>
+              <a class="block p-2 rounded text-slate-400 hover:bg-cu-dark-blue-80 hover:text-slate-200" href="#">My
+                Dashboard</a>
+            </li>
+          </ul>
+        </div>
+        <div>
+          <a class="flex items-center justify-between p-3 rounded-lg text-slate-300 hover:bg-cu-dark-blue-80" href="#">
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined">task_alt</span>
+              <span class="font-medium text-sm">Task</span>
+            </div>
+            <span class="material-symbols-outlined text-lg">expand_more</span>
+          </a>
+          <ul class="pl-6 mt-2 space-y-1 text-sm hidden">
+            <li><a class="block p-2 rounded text-slate-400 hover:bg-cu-dark-blue-80 hover:text-slate-200" href="#">My
+                Tasks</a></li>
+            <li><a class="block p-2 rounded text-slate-400 hover:bg-cu-dark-blue-80 hover:text-slate-200" href="#">Team
+                Tasks</a></li>
+            <li><a class="block p-2 rounded text-slate-400 hover:bg-cu-dark-blue-80 hover:text-slate-200" href="#">All
+                Tasks</a></li>
+          </ul>
+        </div>
+        <div>
+          <a class="flex items-center justify-between p-3 rounded-lg text-slate-300 hover:bg-cu-dark-blue-80"
+            href="allclient.html#home">
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined">trending_up</span>
+              <span class="font-medium text-sm">CRM</span>
+            </div>
+            <span class="material-symbols-outlined text-lg">expand_more</span>
+          </a>
+          <ul class="pl-6 mt-2 space-y-1 text-sm hidden">
+            <li><a class="block p-2 rounded text-slate-400 hover:bg-cu-dark-blue-80 hover:text-slate-200"
+                href="allclient.html#home">Accounts</a></li>
+            <!-- <li><a class="block p-2 rounded text-slate-400 hover:bg-cu-dark-blue-80 hover:text-slate-200" href="#">CRM</a></li> -->
+            <li><a class="block p-2 rounded text-slate-400 hover:bg-cu-dark-blue-80 hover:text-slate-200" href="#">Cer.
+                Sales Progress</a></li>
+            <li><a class="block p-2 rounded text-slate-400 hover:bg-cu-dark-blue-80 hover:text-slate-200" href="#">Sales
+                Report</a></li>
+          </ul>
+        </div>
+
+        <!-- COEs / Regional Team / MarComs -->
+        <div>
+          <button
+            class="menu-toggle flex items-center justify-between p-3 rounded-lg text-slate-300 hover:bg-cu-dark-blue-80 w-full text-left">
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined">public</span>
+              <span class="font-medium text-sm">Regional & Global</span>
+            </div>
+            <span class="material-symbols-outlined text-lg transform transition-transform">chevron_right</span>
+          </button>
+          <div class="submenu hidden ml-6 mt-1 space-y-1">
+            <a href="COEdashboard.html"
+              class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-400 hover:bg-cu-dark-blue-80 hover:text-white">
+              <span class="material-symbols-outlined text-base">arrow_right</span>
+              <span>COEs</span>
+            </a>
+            <a href="#"
+              class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-400 hover:bg-cu-dark-blue-80 hover:text-white">
+              <span class="material-symbols-outlined text-base">arrow_right</span>
+              <span>Regional Team</span>
+            </a>
+            <a href="#"
+              class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-400 hover:bg-cu-dark-blue-80 hover:text-white">
+              <span class="material-symbols-outlined text-base">arrow_right</span>
+              <span>MarComs</span>
+            </a>
+          </div>
+        </div>
+
+
+
+        <div>
+          <a class="flex items-center justify-between p-3 rounded-lg text-slate-300 hover:bg-cu-dark-blue-80" href="#">
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined">groups</span>
+              <span class="font-medium text-sm">HR Manager</span>
+            </div>
+            <span class="material-symbols-outlined text-lg">expand_more</span>
+          </a>
+          <ul class="pl-6 mt-2 space-y-1 text-sm hidden">
+            <li><a class="block p-2 rounded text-slate-400 hover:bg-cu-dark-blue-80 hover:text-slate-200"
+                href="#">Employee Management</a></li>
+            <li><a class="block p-2 rounded text-slate-400 hover:bg-cu-dark-blue-80 hover:text-slate-200" href="#">Leave
+                Management</a></li>
+          </ul>
+        </div>
+        <a class="flex items-center gap-3 p-3 rounded-lg text-sm font-medium text-slate-300 hover:bg-cu-dark-blue-80"
+          href="#">
+          <span class="material-symbols-outlined">corporate_fare</span>Department Manager</a>
+        <div>
+          <a class="flex items-center justify-between p-3 rounded-lg text-slate-300 hover:bg-cu-dark-blue-80" href="#">
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined">manage_accounts</span>
+              <span class="font-medium text-sm">User Manager</span>
+            </div>
+            <span class="material-symbols-outlined text-lg">expand_more</span>
+          </a>
+          <ul class="pl-6 mt-2 space-y-1 text-sm hidden">
+            <li><a class="block p-2 rounded text-slate-400 hover:bg-cu-dark-blue-80 hover:text-slate-200" href="#">Add
+                User</a></li>
+            <li><a class="block p-2 rounded text-slate-400 hover:bg-cu-dark-blue-80 hover:text-slate-200"
+                href="#">Manage Users</a></li>
+          </ul>
+        </div>
+        <div>
+          <a class="flex items-center justify-between p-3 rounded-lg text-slate-300 hover:bg-cu-dark-blue-80" href="#">
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined">calendar_month</span>
+              <span class="font-medium text-sm">Working Days</span>
+            </div>
+            <span class="material-symbols-outlined text-lg">expand_more</span>
+          </a>
+          <ul class="pl-6 mt-2 space-y-1 text-sm hidden">
+            <li><a class="block p-2 rounded text-slate-400 hover:bg-cu-dark-blue-80 hover:text-slate-200"
+                href="#">Calendar</a></li>
+            <li><a class="block p-2 rounded text-slate-400 hover:bg-cu-dark-blue-80 hover:text-slate-200"
+                href="#">Holidays</a></li>
+          </ul>
+        </div>
+        <div>
+          <a class="flex items-center justify-between p-3 rounded-lg text-slate-300 hover:bg-cu-dark-blue-80" href="#">
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined">settings</span>
+              <span class="font-medium text-sm">Settings</span>
+            </div>
+            <span class="material-symbols-outlined text-lg">expand_more</span>
+          </a>
+          <ul class="pl-6 mt-2 space-y-1 text-sm hidden">
+            <li><a class="block p-2 rounded text-slate-400 hover:bg-cu-dark-blue-80 hover:text-slate-200" href="#">KPI
+                Manager</a></li>
+            <li><a class="block p-2 rounded text-slate-400 hover:bg-cu-dark-blue-80 hover:text-slate-200"
+                href="configuration.html">Configuration</a></li>
+          </ul>
+        </div>
+      </nav>
+    </aside>
+    <div class="flex-1 flex flex-col bg-bg-main">
+      <header class="flex-shrink-0 bg-[#1b1e42] h-16 flex items-center justify-end px-6 border-b border-slate-200">
+        <div class="flex items-center space-x-4">
+          <button class="p-2 rounded-full text-slate-300 hover:bg-cu-dark-blue-80 relative">
+            <span class="material-symbols-outlined text-yellow-500">notifications</span>
+            <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full"></span>
+          </button>
+          <div class="flex items-center space-x-3">
+            <img alt="User avatar" class="w-10 h-10 rounded-full object-cover"
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuBR8s_sRkD2uqrpzMyUfuQswvEJ6g6HmJbNWRFuxVQrSEUTQBKUCb8FrE4u1rNmdesirGmB0fSnXH0MsEurf7hmlhlkPED1n-AkkdeAQMAWAgU5wxVJTfUU6Pwf-Y8nQ1wskiHsPmWaCNPcrpBsa-iA4HqrI_cLqR3nfa1DafNqND7EBfLy1X75EULCpsRWFVLpztjMjkn6ufe2il3wB9_JOZuva2njUcWM0nJhERkc8yDkGPPP0eoFr5pSCqKx45WY1mn5_zVR" />
+            <div>
+              <div class="font-semibold text-sm text-white">Nisal Amarasekara</div>
+              <div class="text-xs text-slate-400">Sri Lanka</div>
+            </div>
+          </div>
+          <button class="p-2 rounded-full text-slate-300 hover:bg-cu-dark-blue-80">
+            <span class="material-symbols-outlined">lock</span>
+          </button>
+          <button class="p-2 rounded-full text-slate-300 hover:bg-cu-dark-blue-80">
+            <span class="material-symbols-outlined">expand_more</span>
+          </button>
+        </div>
+      </header>
+      <main class="flex-1 p-6 lg:p-8 overflow-y-auto">
+        <div class="flex flex-wrap justify-between items-center gap-4 mb-6">
+          <div class="flex items-center gap-2 bg-white p-1 rounded-xl shadow-sm border border-slate-200">
+            <span class="px-4 py-2 bg-cu-dark-blue text-white rounded-lg text-sm font-semibold flex items-center">
+              <span class="material-symbols-outlined mr-2 text-base">person</span>My Dashboard
+            </span>
+            <a href="myteam.html"
+              class="px-4 py-2 bg-white text-text-primary rounded-lg text-sm font-semibold flex items-center hover:bg-slate-50 transition-colors">
+              <span class="material-symbols-outlined mr-2 text-base">groups</span>My Team Dashboard
+            </a>
+          </div>
+          <a href="addinquiry.html"
+            class="px-4 py-2 bg-cu-light-blue text-white rounded-2xl text-sm font-semibold flex items-center shadow-sm hover:opacity-90 transition-opacity"
+            style="border-radius:24px;">
+            <span class="material-symbols-outlined mr-2 text-base">add</span>Add Inquiry
+          </a>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+          <div
+            class="bg-white border-b-4 border-red-300 p-4 rounded-xl text-cu-dark-grey flex items-center justify-between shadow-lg relative transition-transform hover:-translate-y-1 duration-300">
+            <div class="flex items-center gap-4">
+              <div class="p-3 bg-red-100 rounded-full flex items-center justify-center"><span
+                  class="material-symbols-outlined text-red-500 !text-2xl">error</span></div>
+              <div class="flex items-center gap-2">
+                <div class="text-2xl font-bold text-cu-dark-blue">0</div>
+                <div class="text-sm">Urgent</div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="bg-white border-b-4 border-orange-300 p-4 rounded-xl text-cu-dark-grey flex items-center justify-between shadow-lg relative transition-transform hover:-translate-y-1 duration-300">
+            <div class="flex items-center gap-4">
+              <div class="p-3 bg-orange-100 rounded-full flex items-center justify-center"><span
+                  class="material-symbols-outlined text-orange-500 !text-2xl">hourglass_top</span></div>
+              <div class="flex items-center gap-2">
+                <div class="text-2xl font-bold text-cu-dark-blue">20</div>
+                <div class="text-sm">Overdue</div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="bg-white border-b-4 border-purple-300 p-4 rounded-xl text-cu-dark-grey flex items-center justify-between shadow-lg relative transition-transform hover:-translate-y-1 duration-300">
+            <div class="flex items-center gap-4">
+              <div class="p-3 bg-purple-100 rounded-full flex items-center justify-center"><span
+                  class="material-symbols-outlined text-purple-500 !text-2xl">visibility</span></div>
+              <div class="flex items-center gap-2">
+                <div class="text-2xl font-bold text-cu-dark-blue">1</div>
+                <div class="text-sm">Monitored</div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="bg-white border-b-4 border-green-300 p-4 rounded-xl text-cu-dark-grey flex items-center justify-between shadow-lg relative transition-transform hover:-translate-y-1 duration-300">
+            <div class="flex items-center gap-4">
+              <div class="p-3 bg-green-100 rounded-full flex items-center justify-center"><span
+                  class="material-symbols-outlined text-green-500 !text-2xl">task_alt</span></div>
+              <div class="flex items-center gap-2">
+                <div class="text-2xl font-bold text-cu-dark-blue">934</div>
+                <div class="text-sm">Completed</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="grid grid-cols-12 gap-6">
+          <div class="col-span-12 lg:col-span-3 space-y-4">
+            <div
+              class="bg-card backdrop-blur-sm border border-slate-200 rounded-xl p-4 shadow-sm flex flex-col h-full tasks-overview">
+              <h3 class="text-xs font-semibold text-cu-dark-grey/80 uppercase tracking-wider px-2 pb-2">TASKS OVERVIEW
+              </h3>
+              <div class="flex-1 flex flex-col sm:flex-row lg:flex-col gap-3 task-list">
+                <a class="group task-item primary" href="#">
+                  <div class="task-left">
+                    <span class="task-icon"><span class="material-symbols-outlined">assignment_ind</span></span>
+                    <div>
+                      <div class="task-title">My Tasks</div>
+                    </div>
+                  </div>
+                  <div class="task-right">
+                    <div class="task-number">35</div>
+                    <span class="material-symbols-outlined task-arrow">arrow_forward</span>
+                  </div>
+                </a>
+
+                <a class="group task-item" href="#">
+                  <div class="task-left">
+                    <span class="task-icon" style="background:#f0fbff;color:var(--cu-light-blue)"><span
+                        class="material-symbols-outlined">send</span></span>
+                    <div>
+                      <div class="task-title text-cu-dark-blue">Delegated Tasks</div>
+                    </div>
+                  </div>
+                  <div class="task-right">
+                    <div class="task-number">73 / 100</div>
+                    <span class="material-symbols-outlined task-arrow">arrow_forward</span>
+                  </div>
+                </a>
+
+                <a class="group task-item" href="#">
+                  <div class="task-left">
+                    <span class="task-icon" style="background:#f4fbff;color:var(--cu-light-blue)"><span
+                        class="material-symbols-outlined">calendar_month</span></span>
+                    <div>
+                      <div class="task-title text-cu-dark-blue">Calendar Workload</div>
+                    </div>
+                  </div>
+                  <div class="task-right">
+                    <div class="task-number">0</div>
+                    <span class="material-symbols-outlined task-arrow">arrow_forward</span>
+                  </div>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="col-span-12 lg:col-span-9 grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div
+              class="col-span-1 lg:col-span-1 bg-card backdrop-blur-sm border border-slate-200 rounded-xl p-5 flex flex-col text-cu-dark-grey shadow-sm h-full">
+              <div class="flex justify-between items-start w-full mb-4">
+                <div>
+                  <h3 class="font-semibold text-cu-dark-blue">Performance</h3>
+                  <p class="text-xs text-cu-dark-grey">Last 6 Months</p>
+                </div>
+                <div class="flex items-center text-green-500">
+                  <span class="material-symbols-outlined text-base">arrow_upward</span>
+                  <span class="text-sm font-semibold">12%</span>
+                </div>
+              </div>
+              <div class="flex-grow w-full flex items-end justify-between space-x-2 h-24">
+                <div class="w-1/6 h-[60%] bg-[var(--cu-light-blue-40)] rounded-t-sm"></div>
+                <div class="w-1/6 h-[80%] bg-[var(--cu-light-blue-40)] rounded-t-sm"></div>
+                <div class="w-1/6 h-[50%] bg-[var(--cu-light-blue-40)] rounded-t-sm"></div>
+                <div class="w-1/6 h-[70%] bg-[var(--cu-light-blue-40)] rounded-t-sm"></div>
+                <div class="w-1/6 h-[90%] bg-[var(--cu-light-blue-40)] rounded-t-sm"></div>
+                <div class="w-1/6 h-full bg-[var(--cu-light-blue-80)] rounded-t-sm"></div>
+              </div>
+              <button
+                class="mt-4 w-full py-2 px-4 bg-cu-dark-blue text-white text-sm font-semibold rounded-lg hover:bg-opacity-90 transition-opacity">View
+                Details</button>
+            </div>
+            <div class="col-span-1 lg:col-span-2 grid grid-cols-1 gap-6">
+              <div class="col-span-full grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <a class="tile-card large" href="#">
+                  <span class="tile-icon"><span class="material-symbols-outlined">logout</span></span>
+                  <span class="tile-title">Leave Application</span>
+                </a>
+                <a class="tile-card large" href="#">
+                  <span class="tile-icon"><span class="material-symbols-outlined">calendar_today</span></span>
+                  <span class="tile-title">Calendar</span>
+                </a>
+              </div>
+              <div class="col-span-full grid grid-cols-2 sm:grid-cols-3 gap-6">
+                <a class="tile-card" href="#">
+                  <span class="tile-icon"><span class="material-symbols-outlined">newspaper</span></span>
+                  <span class="tile-title">News</span>
+                </a>
+                <a class="tile-card" href="#">
+                  <span class="tile-icon"><span class="material-symbols-outlined">menu_book</span></span>
+                  <span class="tile-title">Employee Handbook</span>
+                </a>
+                <a class="tile-card" href="#">
+                  <span class="tile-icon"><span class="material-symbols-outlined">payments</span></span>
+                  <span class="tile-title">Payroll</span>
+                </a>
+                <a class="tile-card" href="#">
+                  <span class="tile-icon"><span class="material-symbols-outlined">person</span></span>
+                  <span class="tile-title">My Profile</span>
+                </a>
+                <a class="tile-card" href="#">
+                  <span class="tile-icon"><span class="material-symbols-outlined">home_work</span></span>
+                  <span class="tile-title">My Office</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="mt-6 grid grid-cols-12 gap-6">
+          <div class="col-span-12 lg:col-span-9">
+            <div
+              class="bg-card backdrop-blur-sm border border-slate-200 rounded-xl shadow-sm p-4 relative announcement-card">
+              <div class="overflow-hidden">
+                <div class="flex transition-transform duration-500 ease-in-out">
+                  <div class="w-full flex-shrink-0 grid grid-cols-1 md:grid-cols-6 gap-6 items-center">
+                    <div class="md:col-span-3 relative">
+                      <img alt="Portrait of the new head of department"
+                        class="w-full h-full object-cover rounded-lg aspect-[4/3] md:aspect-auto"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuCtYLrOBz0I_fVvX5exUYY7LHzENlkIkxZLJFhy9ZFc07Y_bwSMRGIOxGjroCGY8yOm7RayqRG_wuf1OIHvvDR13lZ0bT9MuGsj-W0aBDrxMkr3cAE3P9Y_ZcCaBFB69PlZ1SIAKXMm_oOJ_pxtIDWXYS960PnsisAFtiEcMb_riLoGfrsczUDvt-ArAbdYyWahNmCcZEiE5MmAZi4bm03Rh1yAO-nbkTy8YJVz_FsTwmUdpjOEqWBYB07pd3MxGTLHstbvJE6j" />
+                      <div class="absolute inset-0 bg-black/40 rounded-lg flex flex-col justify-end p-6 text-white">
+                        <p class="text-sm opacity-80 mb-1">ANNOUNCEMENT</p>
+                        <h3 class="text-xl font-bold leading-tight">Meet the New Head of the Sustainable Agri &amp;
+                          Forestry Department!</h3>
+                        <a class="mt-4 text-sm font-semibold flex items-center gap-2 hover:underline" href="#">Read more
+                          <span class="material-symbols-outlined text-base">arrow_forward</span></a>
+                      </div>
+                    </div>
+                    <div class="md:col-span-3">
+                      <h3 class="font-bold text-lg text-cu-dark-blue mb-2">Announcement: New Head of Sustainable Agri
+                        &amp; Forestry Department!</h3>
+                      <div class="flex items-center text-sm text-cu-dark-grey space-x-4 mb-4">
+                        <div class="flex items-center">
+                          <span class="material-symbols-outlined text-base mr-1.5">calendar_today</span>
+                          <span>2025-11-26</span>
+                        </div>
+                        <div class="flex items-center">
+                          <span class="material-symbols-outlined text-base mr-1.5">schedule</span>
+                          <span>11:08 a.m</span>
+                        </div>
+                      </div>
+                      <p class="text-sm text-cu-dark-grey leading-relaxed">
+                        We are pleased to announce that Anuranga Herath has been appointed as the Head of Department –
+                        Sustainable Agri &amp; Forestry, effective 01 December 2025. In his new role, Anuranga will lead
+                        our Sustainable Agriculture &amp; Forestry initiatives, driving strategic growth, strengthening
+                        service delivery, and supporting our mission to advance sustainability across the sector. Please
+                        join us in congratulating...
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-span-12 lg:col-span-3 flex items-start">
+            <div class="w-full">
+              <div class="tile-card"
+                style="min-height:670px;max-height:450px;display:flex;flex-direction:column;align-items:center;justify-content:center;">
+                <span class="tile-icon" style="width:72px;height:72px;box-shadow:0 10px 30px rgba(2,6,23,0.06)"><span
+                    class="material-symbols-outlined">calendar_today</span></span>
+                <div class="tile-title" style="margin-top:16px;font-size:18px">No meetings today</div>
+                <div class="tile-sub">Your schedule is clear</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="absolute bottom-4 right-4 flex items-center gap-2 z-10">
+          <button
+            class="w-8 h-8 rounded-full bg-white/80 backdrop-blur-sm shadow flex items-center justify-center text-cu-dark-grey hover:bg-white transition-colors">
+            <span class="material-symbols-outlined text-lg">chevron_left</span>
+          </button>
+          <div class="flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-cu-dark-blue"></span>
+            <span class="w-2 h-2 rounded-full bg-slate-300"></span>
+            <span class="w-2 h-2 rounded-full bg-slate-300"></span>
+          </div>
+          <button
+            class="w-8 h-8 rounded-full bg-white/80 backdrop-blur-sm shadow flex items-center justify-center text-cu-dark-grey hover:bg-white transition-colors">
+            <span class="material-symbols-outlined text-lg">chevron_right</span>
+          </button>
+        </div>
+    </div>
+  </div>
+  </main>
+  </div>
+  </div>
+  <div class="fixed bottom-6 right-6 space-y-3 z-10">
+    <button
+      class="w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center text-text-secondary hover:bg-gray-100 transition-colors border border-slate-200">
+      <span class="material-symbols-outlined">settings</span>
+    </button>
+    <button
+      class="w-14 h-14 bg-slate-500 rounded-full shadow-lg flex items-center justify-center border-2 border-white">
+      <img alt="Waving user avatar" class="w-12 h-12 rounded-full"
+        src="https://lh3.googleusercontent.com/aida-public/AB6AXuCMZECqcRhv9vHyWo7ZMFtwl5eS7WNSUHLINbX5KuNCs6d9XJjYEdKKzqu88qUHF3EoEpNepSMEeoFJ4uWkzvaT5IE6Gonk6uSN1NUTsMzx1gcs9fK8pUXl8c4bg92NLb_XWciWWp2OnNKY3r5o0ypy0R2-m4dV99ysyzp-VOmq9KuszbjrxvWhdu-Tcy3E-wHzksx8NiWluAcXZz8sqnqx21Tvqyol8njieuN1XsWPhHRAmkMhsuSnDiGjpET67z7KG9KPoh_r" />
+    </button>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      // Sidebar menu toggle functionality
+      const sidebarMenus = document.querySelectorAll('aside nav > div > a');
+
+      sidebarMenus.forEach(menu => {
+        const arrow = menu.querySelector('.material-symbols-outlined.text-lg');
+        if (arrow && arrow.textContent.trim() === 'expand_more') {
+          // Set initial arrow rotation for hidden menus
+          const submenu = menu.parentElement.querySelector('ul');
+          if (submenu && submenu.classList.contains('hidden')) {
+            arrow.style.transform = 'rotate(-90deg)';
+          }
+
+          menu.addEventListener('click', function (e) {
+            e.preventDefault();
+
+            if (submenu) {
+              submenu.classList.toggle('hidden');
+
+              // Rotate arrow smoothly
+              if (submenu.classList.contains('hidden')) {
+                arrow.style.transform = 'rotate(-90deg)';
+              } else {
+                arrow.style.transform = 'rotate(0deg)';
+              }
+            }
+          });
+        }
+      });
+
+      // Sidebar collapse/expand button
+      const collapseBtn = document.querySelector('aside .h-16 button');
+      const sidebar = document.querySelector('aside');
+      const mainContent = document.querySelector('.flex-1.flex.flex-col');
+
+      if (collapseBtn) {
+        collapseBtn.addEventListener('click', function () {
+          const isCollapsed = sidebar.classList.contains('w-16');
+
+          if (isCollapsed) {
+            // Expand sidebar
+            sidebar.classList.remove('w-16');
+            sidebar.classList.add('w-64');
+            const hiddenTexts = sidebar.querySelectorAll('.menu-text, .menu-label');
+            hiddenTexts.forEach(el => el.classList.remove('hidden'));
+          } else {
+            // Collapse sidebar
+            sidebar.classList.remove('w-64');
+            sidebar.classList.add('w-16');
+            const textSpans = sidebar.querySelectorAll('nav span:not(.material-symbols-outlined)');
+            textSpans.forEach(span => {
+              span.classList.add('menu-text');
+              span.classList.add('hidden');
+            });
+            // Hide all submenus when collapsed
+            const submenus = sidebar.querySelectorAll('nav ul, nav .submenu');
+            submenus.forEach(el => el.classList.add('hidden'));
+          }
+
+          // Toggle collapse button icon
+          const icon = this.querySelector('.material-symbols-outlined');
+          if (sidebar.classList.contains('w-16')) {
+            icon.textContent = 'keyboard_double_arrow_right';
+          } else {
+            icon.textContent = 'keyboard_double_arrow_left';
+          }
+        });
+      }
+
+      // Menu toggle buttons (for Regional & Global etc.)
+      const menuToggleBtns = document.querySelectorAll('.menu-toggle');
+      menuToggleBtns.forEach(btn => {
+        btn.addEventListener('click', function () {
+          const submenu = this.nextElementSibling;
+          const arrow = this.querySelector('.material-symbols-outlined:last-child');
+
+          if (submenu && submenu.classList.contains('submenu')) {
+            submenu.classList.toggle('hidden');
+            if (arrow) {
+              arrow.style.transform = submenu.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(90deg)';
+            }
+          }
+        });
+      });
+    });
+  </script>
+
+</body>
+
+</html>
