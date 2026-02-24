@@ -1323,8 +1323,7 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
             <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full"></span>
           </button>
           <div class="flex items-center space-x-3">
-            <img alt="User avatar" class="w-10 h-10 rounded-full object-cover"
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuBR8s_sRkD2uqrpzMyUfuQswvEJ6g6HmJbNWRFuxVQrSEUTQBKUCb8FrE4u1rNmdesirGmB0fSnXH0MsEurf7hmlhlkPED1n-AkkdeAQMAWAgU5wxVJTfUU6Pwf-Y8nQ1wskiHsPmWaCNPcrpBsa-iA4HqrI_cLqR3nfa1DafNqND7EBfLy1X75EULCpsRWFVLpztjMjkn6ufe2il3wB9_JOZuva2njUcWM0nJhERkc8yDkGPPP0eoFr5pSCqKx45WY1mn5_zVR" />
+            <img alt="User avatar" class="w-10 h-10 rounded-full object-cover shrink-0" src="https://i.pravatar.cc/200?u=soe-man" />
             <div>
               <div class="font-semibold text-sm text-white">Nisal Amarasekara</div>
               <div class="text-xs text-slate-400">Sri Lanka</div>
@@ -2120,6 +2119,19 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
             #all-accounts .action-btn .material-symbols-outlined {
               font-size: 18px;
             }
+
+            /* Country flags: same size for all */
+            #all-accounts table td:first-child img,
+            #all-accounts table tbody td:first-child img {
+              width: 20px !important;
+              height: 14px !important;
+              min-width: 20px;
+              min-height: 14px;
+              max-width: 20px;
+              max-height: 14px;
+              object-fit: contain;
+              flex-shrink: 0;
+            }
           </style>
 
           <div class="flex items-center justify-between mb-6">
@@ -2428,8 +2440,8 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
 
                 <tr class="hover:bg-slate-50">
                   <td class="px-4 py-3">
-                    <div class="flex items-center"><img src="https://flagcdn.com/w40/kh.png" alt="Cambodia"
-                        class="inline-block w-8 h-5 mr-3 object-contain"> <span>Cambodia</span></div>
+                    <div class="flex items-center"><img src="https://flagcdn.com/w20/kh.png" alt="Cambodia"
+                        class="inline-block w-5 h-3 mr-3 object-contain rounded-sm border border-slate-200 shadow-sm"> <span>Cambodia</span></div>
                   </td>
                   <td class="px-4 py-3">Sammaki Phumtuol Agriculture Cooperative (S.P.A.C)</td>
                   <td class="px-4 py-3">Channary Srun</td>
@@ -2451,7 +2463,7 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
                 <tr class="hover:bg-slate-50">
                   <td class="px-4 py-3">
                     <div class="flex items-center"><img src="https://flagcdn.com/w20/cn.png" alt="China"
-                        class="inline-block w-6 h-4 mr-3 object-contain"> <span>China</span></div>
+                        class="inline-block w-5 h-3 mr-3 object-contain rounded-sm border border-slate-200 shadow-sm"> <span>China</span></div>
                   </td>
                   <td class="px-4 py-3">Hunan Jianduoduo Traditional Chinese Medicine Industry Co., Ltd</td>
                   <td class="px-4 py-3">Li Wei</td>
@@ -2473,7 +2485,7 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
                 <tr class="hover:bg-slate-50">
                   <td class="px-4 py-3">
                     <div class="flex items-center"><img src="https://flagcdn.com/w20/jp.png" alt="Japan"
-                        class="inline-block w-6 h-4 mr-3 object-contain"> <span>Japan</span></div>
+                        class="inline-block w-5 h-3 mr-3 object-contain rounded-sm border border-slate-200 shadow-sm"> <span>Japan</span></div>
                   </td>
                   <td class="px-4 py-3">HAGIHARA INDUSTRIES INC</td>
                   <td class="px-4 py-3">Kenji Tanaka</td>
@@ -3434,6 +3446,19 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
             #contacts .action-btn .material-symbols-outlined {
               font-size: 18px;
             }
+
+            /* Country flags: same size in contacts table */
+            #contacts table td:first-child img,
+            #contacts table tbody td:first-child img {
+              width: 20px !important;
+              height: 14px !important;
+              min-width: 20px;
+              min-height: 14px;
+              max-width: 20px;
+              max-height: 14px;
+              object-fit: contain;
+              flex-shrink: 0;
+            }
           </style>
 
           <div class="flex items-center justify-between mb-6">
@@ -3844,8 +3869,8 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
 
                 <tr class="hover:bg-slate-50">
                   <td class="px-4 py-3">
-                    <div class="flex items-center"><img src="https://flagcdn.com/w40/kh.png" alt="Cambodia"
-                        class="inline-block w-8 h-5 mr-3 object-contain"> <span>Cambodia</span></div>
+                    <div class="flex items-center"><img src="https://flagcdn.com/w20/kh.png" alt="Cambodia"
+                        class="inline-block w-5 h-3 mr-3 object-contain rounded-sm border border-slate-200 shadow-sm"> <span>Cambodia</span></div>
                   </td>
                   <td class="px-4 py-3">Sammaki Phumtuol Agriculture Cooperative (S.P.A.C)</td>
                   <td class="px-4 py-3">Amanda Fernando</td>
@@ -3863,7 +3888,7 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
                 <tr class="hover:bg-slate-50">
                   <td class="px-4 py-3">
                     <div class="flex items-center"><img src="https://flagcdn.com/w20/cn.png" alt="China"
-                        class="inline-block w-6 h-4 mr-3 object-contain"> <span>China</span></div>
+                        class="inline-block w-5 h-3 mr-3 object-contain rounded-sm border border-slate-200 shadow-sm"> <span>China</span></div>
                   </td>
                   <td class="px-4 py-3">Hunan Jianduoduo Traditional Chinese Medicine Industry Co., Ltd</td>
                   <td class="px-4 py-3">Michelle Perera</td>
@@ -3881,7 +3906,7 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
                 <tr class="hover:bg-slate-50">
                   <td class="px-4 py-3">
                     <div class="flex items-center"><img src="https://flagcdn.com/w20/jp.png" alt="Japan"
-                        class="inline-block w-6 h-4 mr-3 object-contain"> <span>Japan</span></div>
+                        class="inline-block w-5 h-3 mr-3 object-contain rounded-sm border border-slate-200 shadow-sm"> <span>Japan</span></div>
                   </td>
                   <td class="px-4 py-3">HAGIHARA INDUSTRIES INC</td>
                   <td class="px-4 py-3">Sachini Jayawardena</td>
