@@ -201,6 +201,27 @@
 .active-link { background-color: rgba(62, 178, 237, 0.1); color: #3eb2ed; font-weight: 500 }
 .active-link .material-symbols-outlined { font-variation-settings: "FILL" 1, "wght" 400 }
 input::placeholder, textarea::placeholder, select { color: #9ca3af }
+/* CRM top nav tabs: attachment style – subtle active (darker/bolder), no heavy background */
+[aria-label="CRM Portal tabs"] ul { border-bottom: 1px solid #e2e8f0; gap: 0; }
+[aria-label="CRM Portal tabs"] [role="tab"] {
+  border-radius: 0;
+  padding: 0.75rem 1rem;
+  margin-bottom: -1px;
+  border-bottom: 2px solid transparent;
+  color: #64748b;
+  font-weight: 500;
+  background: transparent;
+}
+[aria-label="CRM Portal tabs"] [role="tab"]:hover { color: #334155; background: rgba(241,245,249,0.8); }
+[aria-label="CRM Portal tabs"] [role="tab"][aria-selected="true"] {
+  color: #1e293b;
+  font-weight: 600;
+  border-bottom-color: #3eb2ed;
+  background: transparent;
+}
+.crm-tab { border-radius: 0; border-bottom: 2px solid transparent; margin-bottom: -1px; color: #64748b; background: transparent; }
+.crm-tab:hover { color: #334155; background: rgba(241,245,249,0.8); }
+.crm-tab[aria-selected="true"] { color: #1e293b; font-weight: 600; border-bottom-color: #3eb2ed; }
 </style>
   <style>
     .font-semibold {
@@ -1240,7 +1261,7 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
       <span class="material-symbols-outlined text-xl">keyboard_double_arrow_left</span>
     </button>
 
-    <div class="flex-1 flex flex-col bg-bg-main">
+    <div class="flex-1 flex flex-col bg-white">
       <header class="flex-shrink-0 bg-[#1b1e42] h-16 flex items-center justify-end px-6 border-b border-slate-200">
         <div class="flex items-center space-x-4">
           <script>
@@ -1338,7 +1359,7 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
         </div>
       </header>
 
-      <main class="flex-1 p-6 lg:p-8 overflow-y-auto">
+      <main class="flex-1 p-6 lg:p-8 overflow-y-auto bg-white">
         <div class="flex items-center justify-between mb-8">
           <h2 class="text-3xl font-bold text-dark-text flex items-center gap-3">
             <span class="material-symbols-outlined text-2xl text-[#10707f]">dashboard</span>
@@ -1400,36 +1421,36 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
           </div>
         </div>
 
-        <div class="mb-4">
+        <div class="mb-0">
           <nav aria-label="CRM Portal tabs" class="flex items-center overflow-auto">
-            <ul role="tablist" class="flex items-center gap-3">
+            <ul role="tablist" class="flex items-center">
               <li role="presentation">
                 <button data-tab="home" role="tab" aria-selected="true"
-                  class="px-3 py-2 text-sm font-medium rounded-lg bg-cu-light-blue-20 text-cu-dark-blue shadow-soft transition-colors">Home</button>
+                  class="crm-tab px-4 py-3 text-sm font-medium transition-colors">Home</button>
               </li>
               <li role="presentation">
                 <button data-tab="all-accounts" role="tab" aria-selected="false"
-                  class="px-3 py-2 text-sm font-medium rounded-lg text-slate-600 hover:bg-slate-100 transition-colors">Accounts</button>
+                  class="crm-tab px-4 py-3 text-sm font-medium transition-colors">Accounts</button>
               </li>
               <li role="presentation">
                 <button data-tab="leads" role="tab"
-                  class="px-3 py-2 text-sm font-medium rounded-lg text-slate-600 hover:bg-slate-100 transition-colors">Leads</button>
+                  class="crm-tab px-4 py-3 text-sm font-medium transition-colors">Leads</button>
               </li>
               <li role="presentation">
                 <button data-tab="opportunities" role="tab"
-                  class="px-3 py-2 text-sm font-medium rounded-lg text-slate-600 hover:bg-slate-100 transition-colors">Opportunities</button>
+                  class="crm-tab px-4 py-3 text-sm font-medium transition-colors">Opportunities</button>
               </li>
               <li role="presentation">
                 <button data-tab="contacts" role="tab"
-                  class="px-3 py-2 text-sm font-medium rounded-lg text-slate-600 hover:bg-slate-100 transition-colors">Contacts</button>
+                  class="crm-tab px-4 py-3 text-sm font-medium transition-colors">Contacts</button>
               </li>
               <li role="presentation">
                 <button data-tab="forecasts" role="tab"
-                  class="px-3 py-2 text-sm font-medium rounded-lg text-slate-600 hover:bg-slate-100 transition-colors">Forecasts</button>
+                  class="crm-tab px-4 py-3 text-sm font-medium transition-colors">Forecasts</button>
               </li>
               <li role="presentation">
                 <button data-tab="reports" role="tab"
-                  class="px-3 py-2 text-sm font-medium rounded-lg text-slate-600 hover:bg-slate-100 transition-colors">Reports</button>
+                  class="crm-tab px-4 py-3 text-sm font-medium transition-colors">Reports</button>
               </li>
             </ul>
           </nav>
@@ -1437,7 +1458,7 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
 
         <!-- Home Dashboard Panel (Redesigned) -->
         <section id="home"
-          class="bg-gradient-to-br from-slate-50 to-white rounded-3xl p-8 border border-slate-200/60 shadow-xl">
+          class="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm overflow-hidden">
           <!-- Welcome Header -->
           <div class="mb-8 flex flex-col md:flex-row md:items-center gap-4">
             <div>
@@ -1977,7 +1998,7 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
 
         <!-- Tab panels: Home is the default visible panel -->
         <section id="all-accounts"
-          class="bg-gradient-to-br from-slate-50 to-white rounded-3xl p-8 border border-slate-200/60 shadow-xl hidden">
+          class="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm overflow-hidden hidden">
           <script>
             // Tab switching logic for CRM dashboard (always open Home tab by default)
             document.addEventListener('DOMContentLoaded', function () {
@@ -1998,10 +2019,6 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
                 tabButtons.forEach(btn => {
                   const isActive = btn.dataset.tab === tab;
                   btn.setAttribute('aria-selected', isActive ? 'true' : 'false');
-                  btn.classList.toggle('bg-cu-light-blue-20', isActive);
-                  btn.classList.toggle('text-cu-dark-blue', isActive);
-                  btn.classList.toggle('shadow-soft', isActive);
-                  btn.classList.toggle('text-slate-600', !isActive);
                 });
                 // Update page title
                 const pageTitle = document.getElementById('pageTitle');
@@ -2050,25 +2067,33 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
             }
 
             #all-accounts table thead {
-              background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+              background: #1b1e42;
             }
 
             #all-accounts table thead th {
-              padding: 1.1rem 1.25rem;
-              font-size: 0.7rem;
-              font-weight: 600;
+              padding: 1rem 1.25rem;
+              font-size: 0.75rem;
+              font-weight: 700;
               text-transform: uppercase;
-              letter-spacing: 0.08em;
-              color: rgba(255, 255, 255, 0.9);
+              letter-spacing: 0.05em;
+              color: #fff;
               border-bottom: none;
             }
 
             #all-accounts table tbody tr {
-              transition: all 0.15s ease;
+              transition: background 0.15s ease;
+            }
+
+            #all-accounts table tbody tr:nth-child(odd) {
+              background: #fff;
+            }
+
+            #all-accounts table tbody tr:nth-child(even) {
+              background: #f8fafc;
             }
 
             #all-accounts table tbody tr:hover {
-              background: linear-gradient(90deg, rgba(62, 178, 237, 0.04), rgba(16, 185, 129, 0.02));
+              background: #f1f5f9 !important;
             }
 
             #all-accounts table tbody tr:not(:last-child) td {
@@ -2137,22 +2162,22 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
           <div class="flex items-center justify-between mb-6">
             <div class="flex items-center gap-4">
               <div
-                class="w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center shadow-lg">
+                class="w-12 h-12 rounded-full bg-[#3eb2ed] flex items-center justify-center shadow-sm">
                 <span class="material-symbols-outlined text-2xl text-white">account_balance</span>
               </div>
               <div>
-                <div class="text-lg font-bold text-slate-800">All Accounts</div>
-                <div class="text-sm text-slate-400">Manage accounts and clients</div>
+                <div class="text-xl font-bold text-slate-800">All Accounts</div>
+                <div class="text-sm text-slate-500">Manage accounts and clients</div>
               </div>
             </div>
             <div class="flex items-center gap-3">
               <a href="code.html?type=account" title="New Account"
-                class="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-full shadow-lg text-sm font-medium hover:shadow-xl hover:scale-105 transition-all duration-200">
-                <span class="material-symbols-outlined filled text-base">add_circle</span>
+                class="flex items-center gap-2 px-5 py-2.5 bg-[#3eb2ed] text-white rounded-xl text-sm font-medium hover:bg-[#2e9fd9] transition-colors shadow-sm">
+                <span class="material-symbols-outlined filled text-base">add</span>
                 <span>New Account</span>
               </a>
               <button title="Export"
-                class="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-emerald-500 to-teal-600 text-white rounded-full shadow-lg text-sm font-medium hover:shadow-xl hover:scale-105 transition-all duration-200">
+                class="flex items-center gap-2 px-5 py-2.5 bg-emerald-500 text-white rounded-xl text-sm font-medium hover:bg-emerald-600 transition-colors shadow-sm">
                 <span class="material-symbols-outlined filled text-base">download</span>
                 <span>Export</span>
               </button>
@@ -2160,7 +2185,7 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
                 <span
                   class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-lg">search</span>
                 <input type="text" placeholder="Search..."
-                  class="pl-11 pr-4 py-2.5 bg-white border border-slate-200 rounded-full w-64 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500/30 focus:border-cyan-400 shadow-sm transition-all" />
+                  class="pl-11 pr-4 py-2.5 bg-white border border-slate-200 rounded-xl w-64 text-sm focus:outline-none focus:ring-2 focus:ring-[#3eb2ed]/30 focus:border-[#3eb2ed]" />
               </div>
             </div>
           </div>
@@ -2873,7 +2898,7 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
         </script>
 
         <section id="leads"
-          class="bg-gradient-to-br from-slate-50 to-white rounded-3xl p-8 border border-slate-200/60 shadow-xl">
+          class="hidden bg-white rounded-3xl p-8 border border-slate-200 shadow-sm overflow-hidden">
           <style>
             /* Lead Stats Bar - Premium Design */
             .lead-pipeline-bar {
@@ -3290,7 +3315,7 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
         </section>
 
         <section id="contacts"
-          class="hidden bg-gradient-to-br from-slate-50 to-white rounded-3xl p-8 border border-slate-200/60 shadow-xl">
+          class="hidden bg-white rounded-3xl p-8 border border-slate-200 shadow-sm overflow-hidden">
           <style>
             /* Contact Pipeline Stats Bar - Premium Design */
             .contact-pipeline-bar {
@@ -3981,7 +4006,7 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
         </script>
 
         <section id="opportunities"
-          class="hidden bg-gradient-to-br from-slate-50 to-white rounded-3xl p-8 border border-slate-200/60 shadow-xl">
+          class="hidden bg-white rounded-3xl p-8 border border-slate-200 shadow-sm overflow-hidden">
           <style>
             /* Stage chip styling - Professional badges */
             .stage-chip {
@@ -4370,7 +4395,7 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
         </section>
 
         <section id="forecasts"
-          class="hidden bg-gradient-to-br from-slate-50 to-white rounded-3xl p-8 border border-slate-200/60 shadow-xl">
+          class="hidden bg-white rounded-3xl p-8 border border-slate-200 shadow-sm overflow-hidden">
           <style>
             /* Forecasts Table - Premium styling */
             #forecasts .forecasts-table-wrapper {
@@ -4592,9 +4617,6 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
       function activate(tabName, push = true) {
         tabs.forEach(t => {
           const is = t.dataset.tab === tabName;
-          t.classList.toggle('bg-cu-light-blue-20', is);
-          t.classList.toggle('text-cu-dark-blue', is);
-          t.classList.toggle('shadow-soft', is);
           t.setAttribute('aria-selected', is ? 'true' : 'false');
         });
         panels.forEach(p => p.classList.toggle('hidden', p.id !== tabName));

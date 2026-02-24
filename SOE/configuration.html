@@ -47,9 +47,23 @@
     #sidebar.collapsed .menu-toggle .flex.items-center > span:last-child { display: none; }
     #sidebar.collapsed nav a > span:last-child { display: none; }
     #sidebar.collapsed .submenu { display: none !important; }
-    #sidebarToggle { position: absolute; top: 8px; z-index: 60; display: inline-flex; }
-    #sidebar.expanded-temp { width: 16rem !important; }
     #sidebar .menu-toggle { position: relative; }
+    /* Configurations Manager: tabs – exactly matching allclient.html attachment 2 style */
+    .config-tabs-wrap { display: flex; align-items: center; gap: 0; background: #fff; border-bottom: 1px solid #e2e8f0; padding: 0; margin-bottom: 0; }
+    .config-tab { padding: 0.75rem 1.25rem; font-size: 0.875rem; font-weight: 500; color: #64748b; background: transparent; border: none; border-bottom: 2px solid transparent; margin-bottom: -1px; cursor: pointer; transition: color 0.2s, border-color 0.2s; border-radius: 0; white-space: nowrap; }
+    .config-tab:hover { color: #334155; background: rgba(241,245,249,0.6); }
+    .config-tab.active { color: #1e293b; font-weight: 700; border-bottom-color: #3eb2ed; background: transparent; }
+    .config-tabs-extra { margin-left: auto; padding: 0.25rem; }
+    .config-table-panel { display: none; }
+    .config-table-panel.active { display: block; }
+    .config-content-card { background: #fff; border-radius: 16px; border: 1px solid #e2e8f0; box-shadow: 0 4px 20px rgba(15, 23, 42, 0.06); overflow: hidden; margin-top: 1.25rem; }
+    .config-content-card .config-table-panel table { border-collapse: collapse; width: 100%; font-size: 0.875rem; }
+    .config-content-card .config-table-panel thead { background: #1b1e42; }
+    .config-content-card .config-table-panel thead th { color: #fff; font-weight: 700; font-size: 0.78rem; letter-spacing: 0.04em; padding: 1rem 1.1rem; text-align: left; border: none; }
+    .config-content-card .config-table-panel tbody tr { background: #fff; transition: background 0.12s; }
+    .config-content-card .config-table-panel tbody tr:hover { background: #f8fafc; }
+    .config-content-card .config-table-panel tbody td { padding: 0.85rem 1.1rem; color: #334155; vertical-align: middle; }
+    .config-content-card .config-table-panel tbody tr:not(:last-child) td { border-bottom: 1px solid #f1f5f9; }
   </style>
 </head>
 
@@ -208,12 +222,6 @@
       </nav>
     </aside>
 
-    <button id="sidebarToggle" aria-expanded="true"
-      class="p-2 rounded-full text-slate-400 hover:bg-cu-dark-blue-80 transition-colors"
-      style="position:absolute; z-index:60;">
-      <span class="material-symbols-outlined text-xl">keyboard_double_arrow_left</span>
-    </button>
-
     <div class="flex-1 flex flex-col bg-bg-main">
       <header class="flex-shrink-0 bg-[#1b1e42] h-16 flex items-center justify-end px-6 border-b border-slate-200">
         <div class="flex items-center space-x-4">
@@ -237,16 +245,317 @@
         </div>
       </header>
 
-      <main class="flex-1 overflow-y-auto">
+      <main class="flex-1 overflow-y-auto bg-white">
         <div class="main-content-wrap">
-          <div class="flex items-center gap-3">
-            <div class="w-12 h-12 rounded-xl bg-[#3eb2ed] flex items-center justify-center flex-shrink-0">
-              <span class="material-symbols-outlined text-white text-2xl">settings</span>
+          <!-- Header: icon + title (left), action buttons (right), separator – like attachment -->
+          <div class="flex items-center justify-between flex-wrap gap-4 pb-4">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-lg bg-slate-100 flex items-center justify-center">
+                <span class="material-symbols-outlined text-slate-600 text-xl">dashboard</span>
+              </div>
+              <h1 class="text-2xl font-bold text-slate-800 m-0">Configurations Manager</h1>
             </div>
-            <h1 class="text-2xl font-bold text-slate-900 m-0">Configuration</h1>
+            <div class="flex items-center gap-2 flex-wrap">
+              <button type="button" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#3eb2ed] text-white text-sm font-medium hover:bg-[#2e9fd9] transition-colors shadow-sm">
+                <span class="text-lg leading-none">+</span>
+                <span>Certification Cat. Configuration</span>
+              </button>
+              <button type="button" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#3eb2ed] text-white text-sm font-medium hover:bg-[#2e9fd9] transition-colors shadow-sm">
+                <span class="text-lg leading-none">+</span>
+                <span>Program Configuration</span>
+              </button>
+              <button type="button" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#3eb2ed] text-white text-sm font-medium hover:bg-[#2e9fd9] transition-colors shadow-sm">
+                <span class="text-lg leading-none">+</span>
+                <span>Data Type Configuration</span>
+              </button>
+              <button type="button" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#3eb2ed] text-white text-sm font-medium hover:bg-[#2e9fd9] transition-colors shadow-sm">
+                <span class="text-lg leading-none">+</span>
+                <span>Roles Configuration</span>
+              </button>
+            </div>
           </div>
-          <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
-            <p class="text-slate-600">Configuration options and system settings will appear here.</p>
+
+          <!-- Tabs: active = light gray fill + bold (like attachment); ellipsis on right -->
+          <div class="config-tabs-wrap mt-4">
+            <button type="button" class="config-tab active" data-tab="certification">Certification Categories</button>
+            <button type="button" class="config-tab" data-tab="programs">Programs</button>
+            <button type="button" class="config-tab" data-tab="datatypes">Data Types</button>
+            <button type="button" class="config-tab" data-tab="roles">Roles</button>
+            <div class="config-tabs-extra">
+              <button type="button" class="p-2 rounded-lg text-slate-500 hover:bg-slate-100 hover:text-slate-700" title="More options" aria-label="More options">
+                <span class="material-symbols-outlined text-xl">more_vert</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Content card: clean white card below tabs, like attachment 2 -->
+          <div class="config-content-card p-6">
+            <!-- Section header: circular blue icon + title + subtitle -->
+            <div class="flex items-center justify-between flex-wrap gap-4 mb-6">
+              <div class="flex items-center gap-4">
+                <div id="config-panel-icon" class="w-12 h-12 rounded-full bg-[#3eb2ed] flex items-center justify-center shadow-sm">
+                  <span class="material-symbols-outlined text-2xl text-white">category</span>
+                </div>
+                <div>
+                  <div id="config-panel-title" class="text-xl font-bold text-slate-800">Certification Categories</div>
+                  <div id="config-panel-subtitle" class="text-sm text-slate-500">Manage certification categories and status</div>
+                </div>
+              </div>
+              <div class="flex items-center gap-3 flex-wrap">
+                <div id="certification-filters-inline" class="flex items-center gap-3 flex-wrap">
+            <label class="flex items-center gap-2 text-sm text-slate-700">
+              <span>Country:</span>
+              <input type="text" value="Sri Lanka" class="border border-slate-300 rounded-lg px-3 py-2 text-sm w-44 focus:outline-none focus:ring-2 focus:ring-[#3eb2ed]/30 focus:border-[#3eb2ed]" />
+            </label>
+            <div class="relative">
+              <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-lg pointer-events-none">search</span>
+              <input type="text" placeholder="Search..." class="pl-10 pr-4 py-2 border border-slate-300 rounded-xl text-sm w-56 focus:outline-none focus:ring-2 focus:ring-[#3eb2ed]/30 focus:border-[#3eb2ed]" />
+            </div>
+              </div>
+              <div id="programs-filters-inline" class="hidden flex items-center gap-3 flex-wrap">
+            <label class="flex items-center gap-2 text-sm text-slate-700">
+              <span>Country:</span>
+              <input type="text" value="Sri Lanka" class="border border-slate-300 rounded-lg px-3 py-2 text-sm w-44 focus:outline-none focus:ring-2 focus:ring-[#3eb2ed]/30 focus:border-[#3eb2ed]" />
+            </label>
+            <label class="flex items-center gap-2 text-sm text-slate-700">
+              <span>Certification Cat.:</span>
+              <select class="border border-slate-300 rounded-lg px-3 py-2 text-sm min-w-[120px] focus:outline-none focus:ring-2 focus:ring-[#3eb2ed]/30 focus:border-[#3eb2ed] bg-white">
+                <option>All</option>
+                <option>Social</option>
+                <option>Organic</option>
+                <option>Assurance Services</option>
+                <option>Tourism</option>
+              </select>
+            </label>
+            <div class="relative">
+              <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-lg pointer-events-none">search</span>
+              <input type="text" placeholder="Search..." class="pl-10 pr-4 py-2 border border-slate-300 rounded-xl text-sm w-56 focus:outline-none focus:ring-2 focus:ring-[#3eb2ed]/30 focus:border-[#3eb2ed]" />
+            </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Table: Certification Categories (Country, Activity, Category, Status, Action) -->
+          <div id="panel-certification" class="config-table-panel active">
+            <table class="min-w-full text-sm">
+              <thead class="bg-[#1b1e42] text-white">
+                <tr>
+                  <th class="text-left py-3.5 px-4 font-semibold">Country</th>
+                  <th class="text-left py-3.5 px-4 font-semibold">Activity</th>
+                  <th class="text-left py-3.5 px-4 font-semibold">Category</th>
+                  <th class="text-left py-3.5 px-4 font-semibold">Status</th>
+                  <th class="text-left py-3.5 px-4 font-semibold">Action</th>
+                </tr>
+              </thead>
+              <tbody class="text-slate-800">
+                <tr class="border-b border-slate-100 hover:bg-slate-50/80">
+                  <td class="py-3 px-4">Sri Lanka</td>
+                  <td class="py-3 px-4">Certification</td>
+                  <td class="py-3 px-4">Forestry</td>
+                  <td class="py-3 px-4"><span class="inline-flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-emerald-500"></span>Active</span></td>
+                  <td class="py-3 px-4">
+                    <button type="button" class="p-1.5 text-[#3eb2ed] hover:bg-cyan-50 rounded inline-flex align-middle" title="Edit"><span class="material-symbols-outlined text-lg">edit</span></button>
+                    <button type="button" class="p-1.5 text-red-500 hover:bg-red-50 rounded inline-flex align-middle" title="Delete"><span class="material-symbols-outlined text-lg">delete</span></button>
+                  </td>
+                </tr>
+                <tr class="border-b border-slate-100 hover:bg-slate-50/80">
+                  <td class="py-3 px-4">Sri Lanka</td>
+                  <td class="py-3 px-4">Certification</td>
+                  <td class="py-3 px-4">Assurance Services</td>
+                  <td class="py-3 px-4"><span class="inline-flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-emerald-500"></span>Active</span></td>
+                  <td class="py-3 px-4">
+                    <button type="button" class="p-1.5 text-[#3eb2ed] hover:bg-cyan-50 rounded inline-flex align-middle" title="Edit"><span class="material-symbols-outlined text-lg">edit</span></button>
+                    <button type="button" class="p-1.5 text-red-500 hover:bg-red-50 rounded inline-flex align-middle" title="Delete"><span class="material-symbols-outlined text-lg">delete</span></button>
+                  </td>
+                </tr>
+                <tr class="border-b border-slate-100 hover:bg-slate-50/80">
+                  <td class="py-3 px-4">Sri Lanka</td>
+                  <td class="py-3 px-4">Certification</td>
+                  <td class="py-3 px-4">Tourism</td>
+                  <td class="py-3 px-4"><span class="inline-flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-emerald-500"></span>Active</span></td>
+                  <td class="py-3 px-4">
+                    <button type="button" class="p-1.5 text-[#3eb2ed] hover:bg-cyan-50 rounded inline-flex align-middle" title="Edit"><span class="material-symbols-outlined text-lg">edit</span></button>
+                    <button type="button" class="p-1.5 text-red-500 hover:bg-red-50 rounded inline-flex align-middle" title="Delete"><span class="material-symbols-outlined text-lg">delete</span></button>
+                  </td>
+                </tr>
+                <tr class="border-b border-slate-100 hover:bg-slate-50/80">
+                  <td class="py-3 px-4">Sri Lanka</td>
+                  <td class="py-3 px-4">Certification</td>
+                  <td class="py-3 px-4">System</td>
+                  <td class="py-3 px-4"><span class="inline-flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-emerald-500"></span>Active</span></td>
+                  <td class="py-3 px-4">
+                    <button type="button" class="p-1.5 text-[#3eb2ed] hover:bg-cyan-50 rounded inline-flex align-middle" title="Edit"><span class="material-symbols-outlined text-lg">edit</span></button>
+                    <button type="button" class="p-1.5 text-red-500 hover:bg-red-50 rounded inline-flex align-middle" title="Delete"><span class="material-symbols-outlined text-lg">delete</span></button>
+                  </td>
+                </tr>
+                <tr class="border-b border-slate-100 hover:bg-slate-50/80">
+                  <td class="py-3 px-4">Sri Lanka</td>
+                  <td class="py-3 px-4">Certification</td>
+                  <td class="py-3 px-4">Other</td>
+                  <td class="py-3 px-4"><span class="inline-flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-emerald-500"></span>Active</span></td>
+                  <td class="py-3 px-4">
+                    <button type="button" class="p-1.5 text-[#3eb2ed] hover:bg-cyan-50 rounded inline-flex align-middle" title="Edit"><span class="material-symbols-outlined text-lg">edit</span></button>
+                    <button type="button" class="p-1.5 text-red-500 hover:bg-red-50 rounded inline-flex align-middle" title="Delete"><span class="material-symbols-outlined text-lg">delete</span></button>
+                  </td>
+                </tr>
+                <tr class="border-b border-slate-100 hover:bg-slate-50/80">
+                  <td class="py-3 px-4">Sri Lanka</td>
+                  <td class="py-3 px-4">Certification</td>
+                  <td class="py-3 px-4">Food safety</td>
+                  <td class="py-3 px-4"><span class="inline-flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-emerald-500"></span>Active</span></td>
+                  <td class="py-3 px-4">
+                    <button type="button" class="p-1.5 text-[#3eb2ed] hover:bg-cyan-50 rounded inline-flex align-middle" title="Edit"><span class="material-symbols-outlined text-lg">edit</span></button>
+                    <button type="button" class="p-1.5 text-red-500 hover:bg-red-50 rounded inline-flex align-middle" title="Delete"><span class="material-symbols-outlined text-lg">delete</span></button>
+                  </td>
+                </tr>
+                <tr class="border-b border-slate-100 hover:bg-slate-50/80">
+                  <td class="py-3 px-4">Sri Lanka</td>
+                  <td class="py-3 px-4">Certification</td>
+                  <td class="py-3 px-4">Social</td>
+                  <td class="py-3 px-4"><span class="inline-flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-emerald-500"></span>Active</span></td>
+                  <td class="py-3 px-4">
+                    <button type="button" class="p-1.5 text-[#3eb2ed] hover:bg-cyan-50 rounded inline-flex align-middle" title="Edit"><span class="material-symbols-outlined text-lg">edit</span></button>
+                    <button type="button" class="p-1.5 text-red-500 hover:bg-red-50 rounded inline-flex align-middle" title="Delete"><span class="material-symbols-outlined text-lg">delete</span></button>
+                  </td>
+                </tr>
+                <tr class="border-b border-slate-100 hover:bg-slate-50/80">
+                  <td class="py-3 px-4">Sri Lanka</td>
+                  <td class="py-3 px-4">Certification</td>
+                  <td class="py-3 px-4">Stakeholders</td>
+                  <td class="py-3 px-4"><span class="inline-flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-amber-400"></span>Inactive</span></td>
+                  <td class="py-3 px-4">
+                    <button type="button" class="p-1.5 text-[#3eb2ed] hover:bg-cyan-50 rounded inline-flex align-middle" title="Edit"><span class="material-symbols-outlined text-lg">edit</span></button>
+                    <button type="button" class="p-1.5 text-red-500 hover:bg-red-50 rounded inline-flex align-middle" title="Delete"><span class="material-symbols-outlined text-lg">delete</span></button>
+                  </td>
+                </tr>
+                <tr class="border-b border-slate-100 hover:bg-slate-50/80">
+                  <td class="py-3 px-4">Sri Lanka</td>
+                  <td class="py-3 px-4">Certification</td>
+                  <td class="py-3 px-4">Aqua</td>
+                  <td class="py-3 px-4"><span class="inline-flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-emerald-500"></span>Active</span></td>
+                  <td class="py-3 px-4">
+                    <button type="button" class="p-1.5 text-[#3eb2ed] hover:bg-cyan-50 rounded inline-flex align-middle" title="Edit"><span class="material-symbols-outlined text-lg">edit</span></button>
+                    <button type="button" class="p-1.5 text-red-500 hover:bg-red-50 rounded inline-flex align-middle" title="Delete"><span class="material-symbols-outlined text-lg">delete</span></button>
+                  </td>
+                </tr>
+                <tr class="border-b border-slate-100 hover:bg-slate-50/80">
+                  <td class="py-3 px-4">Sri Lanka</td>
+                  <td class="py-3 px-4">Certification</td>
+                  <td class="py-3 px-4">Agriculture</td>
+                  <td class="py-3 px-4"><span class="inline-flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-emerald-500"></span>Active</span></td>
+                  <td class="py-3 px-4">
+                    <button type="button" class="p-1.5 text-[#3eb2ed] hover:bg-cyan-50 rounded inline-flex align-middle" title="Edit"><span class="material-symbols-outlined text-lg">edit</span></button>
+                    <button type="button" class="p-1.5 text-red-500 hover:bg-red-50 rounded inline-flex align-middle" title="Delete"><span class="material-symbols-outlined text-lg">delete</span></button>
+                  </td>
+                </tr>
+                <tr class="border-b border-slate-100 hover:bg-slate-50/80">
+                  <td class="py-3 px-4">Sri Lanka</td>
+                  <td class="py-3 px-4">Certification</td>
+                  <td class="py-3 px-4">Textile</td>
+                  <td class="py-3 px-4"><span class="inline-flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-emerald-500"></span>Active</span></td>
+                  <td class="py-3 px-4">
+                    <button type="button" class="p-1.5 text-[#3eb2ed] hover:bg-cyan-50 rounded inline-flex align-middle" title="Edit"><span class="material-symbols-outlined text-lg">edit</span></button>
+                    <button type="button" class="p-1.5 text-red-500 hover:bg-red-50 rounded inline-flex align-middle" title="Delete"><span class="material-symbols-outlined text-lg">delete</span></button>
+                  </td>
+                </tr>
+                <tr class="hover:bg-slate-50/80">
+                  <td class="py-3 px-4">Sri Lanka</td>
+                  <td class="py-3 px-4">Certification</td>
+                  <td class="py-3 px-4">Organic</td>
+                  <td class="py-3 px-4"><span class="inline-flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-emerald-500"></span>Active</span></td>
+                  <td class="py-3 px-4">
+                    <button type="button" class="p-1.5 text-[#3eb2ed] hover:bg-cyan-50 rounded inline-flex align-middle" title="Edit"><span class="material-symbols-outlined text-lg">edit</span></button>
+                    <button type="button" class="p-1.5 text-red-500 hover:bg-red-50 rounded inline-flex align-middle" title="Delete"><span class="material-symbols-outlined text-lg">delete</span></button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Table: Programs (Country, Activity, Category, Program, Action) -->
+          <div id="panel-programs" class="config-table-panel">
+            <table class="min-w-full text-sm">
+              <thead class="bg-[#1b1e42] text-white">
+                <tr>
+                  <th class="text-left py-3.5 px-4 font-semibold">Country</th>
+                  <th class="text-left py-3.5 px-4 font-semibold">Activity</th>
+                  <th class="text-left py-3.5 px-4 font-semibold">Category</th>
+                  <th class="text-left py-3.5 px-4 font-semibold">Program</th>
+                  <th class="text-left py-3.5 px-4 font-semibold">Action</th>
+                </tr>
+              </thead>
+              <tbody class="text-slate-800">
+                <tr class="border-b border-slate-100 hover:bg-slate-50/80">
+                  <td class="py-3 px-4">Sri Lanka</td>
+                  <td class="py-3 px-4">Certification</td>
+                  <td class="py-3 px-4">Social</td>
+                  <td class="py-3 px-4">FairTSA</td>
+                  <td class="py-3 px-4">
+                    <button type="button" class="p-1.5 text-[#3eb2ed] hover:bg-cyan-50 rounded inline-flex align-middle" title="Edit"><span class="material-symbols-outlined text-lg">edit</span></button>
+                    <button type="button" class="p-1.5 text-red-500 hover:bg-red-50 rounded inline-flex align-middle" title="Delete"><span class="material-symbols-outlined text-lg">delete</span></button>
+                  </td>
+                </tr>
+                <tr class="border-b border-slate-100 hover:bg-slate-50/80">
+                  <td class="py-3 px-4">Sri Lanka</td>
+                  <td class="py-3 px-4">Certification</td>
+                  <td class="py-3 px-4">Organic</td>
+                  <td class="py-3 px-4">COSMOS</td>
+                  <td class="py-3 px-4">
+                    <button type="button" class="p-1.5 text-[#3eb2ed] hover:bg-cyan-50 rounded inline-flex align-middle" title="Edit"><span class="material-symbols-outlined text-lg">edit</span></button>
+                    <button type="button" class="p-1.5 text-red-500 hover:bg-red-50 rounded inline-flex align-middle" title="Delete"><span class="material-symbols-outlined text-lg">delete</span></button>
+                  </td>
+                </tr>
+                <tr class="border-b border-slate-100 hover:bg-slate-50/80">
+                  <td class="py-3 px-4">Sri Lanka</td>
+                  <td class="py-3 px-4">Certification</td>
+                  <td class="py-3 px-4">Organic</td>
+                  <td class="py-3 px-4">ISO 14044</td>
+                  <td class="py-3 px-4">
+                    <button type="button" class="p-1.5 text-[#3eb2ed] hover:bg-cyan-50 rounded inline-flex align-middle" title="Edit"><span class="material-symbols-outlined text-lg">edit</span></button>
+                    <button type="button" class="p-1.5 text-red-500 hover:bg-red-50 rounded inline-flex align-middle" title="Delete"><span class="material-symbols-outlined text-lg">delete</span></button>
+                  </td>
+                </tr>
+                <tr class="border-b border-slate-100 hover:bg-slate-50/80">
+                  <td class="py-3 px-4">Sri Lanka</td>
+                  <td class="py-3 px-4">Certification</td>
+                  <td class="py-3 px-4">Assurance Services</td>
+                  <td class="py-3 px-4">Sustainable 360</td>
+                  <td class="py-3 px-4">
+                    <button type="button" class="p-1.5 text-[#3eb2ed] hover:bg-cyan-50 rounded inline-flex align-middle" title="Edit"><span class="material-symbols-outlined text-lg">edit</span></button>
+                    <button type="button" class="p-1.5 text-red-500 hover:bg-red-50 rounded inline-flex align-middle" title="Delete"><span class="material-symbols-outlined text-lg">delete</span></button>
+                  </td>
+                </tr>
+                <tr class="border-b border-slate-100 hover:bg-slate-50/80">
+                  <td class="py-3 px-4">Sri Lanka</td>
+                  <td class="py-3 px-4">Certification</td>
+                  <td class="py-3 px-4">Tourism</td>
+                  <td class="py-3 px-4">Green Globe</td>
+                  <td class="py-3 px-4">
+                    <button type="button" class="p-1.5 text-[#3eb2ed] hover:bg-cyan-50 rounded inline-flex align-middle" title="Edit"><span class="material-symbols-outlined text-lg">edit</span></button>
+                    <button type="button" class="p-1.5 text-red-500 hover:bg-red-50 rounded inline-flex align-middle" title="Delete"><span class="material-symbols-outlined text-lg">delete</span></button>
+                  </td>
+                </tr>
+                <tr class="hover:bg-slate-50/80">
+                  <td class="py-3 px-4">Sri Lanka</td>
+                  <td class="py-3 px-4">Certification</td>
+                  <td class="py-3 px-4">Tourism</td>
+                  <td class="py-3 px-4">Travelife</td>
+                  <td class="py-3 px-4">
+                    <button type="button" class="p-1.5 text-[#3eb2ed] hover:bg-cyan-50 rounded inline-flex align-middle" title="Edit"><span class="material-symbols-outlined text-lg">edit</span></button>
+                    <button type="button" class="p-1.5 text-red-500 hover:bg-red-50 rounded inline-flex align-middle" title="Delete"><span class="material-symbols-outlined text-lg">delete</span></button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Placeholder panels for Data Types and Roles -->
+          <div id="panel-datatypes" class="config-table-panel p-8 text-center text-slate-500">
+            Data Types configuration table will appear here.
+          </div>
+          <div id="panel-roles" class="config-table-panel p-8 text-center text-slate-500">
+            Roles configuration table will appear here.
+          </div>
           </div>
         </div>
       </main>
@@ -266,54 +575,61 @@
           }
         });
       });
-      const sidebar = document.getElementById('sidebar');
-      const sidebarToggle = document.getElementById('sidebarToggle');
-      if (sidebar && sidebarToggle) {
-        const icon = sidebarToggle.querySelector('.material-symbols-outlined');
-        function positionToggle() {
-          try {
-            const left = (sidebar.offsetLeft || 0) + (sidebar.offsetWidth || 0) - Math.round((sidebarToggle.offsetWidth || 36) / 2) - 14;
-            const top = (sidebar.offsetTop || 0) + 8;
-            sidebarToggle.style.left = left + 'px';
-            sidebarToggle.style.top = top + 'px';
-          } catch (e) { }
-        }
-        const isCollapsed = sidebar.classList.contains('collapsed');
-        if (icon) icon.textContent = isCollapsed ? 'keyboard_double_arrow_right' : 'keyboard_double_arrow_left';
-        sidebarToggle.setAttribute('aria-expanded', String(!isCollapsed));
-        positionToggle();
-        sidebarToggle.addEventListener('click', function () {
-          const collapsed = !sidebar.classList.contains('collapsed');
-          sidebar.classList.toggle('collapsed', collapsed);
-          if (icon) icon.textContent = collapsed ? 'keyboard_double_arrow_right' : 'keyboard_double_arrow_left';
-          sidebarToggle.setAttribute('aria-expanded', String(!collapsed));
-          if (collapsed) document.querySelectorAll('#sidebar .submenu').forEach(function (s) { s.classList.add('hidden'); });
-          positionToggle();
-        });
-        // Expand Settings submenu on Configuration page so current link is visible
-        var configLink = document.querySelector('#sidebar a[href="configuration.html"]');
-        if (configLink) {
-          var sub = configLink.closest('.submenu');
-          if (sub) {
-            var btn = sub.previousElementSibling;
-            if (btn && btn.classList.contains('menu-toggle')) {
-              sub.classList.remove('hidden');
-              var arr = btn.querySelector('.material-symbols-outlined:last-child');
-              if (arr) arr.style.transform = 'rotate(180deg)';
-            }
+      // Expand Settings submenu so Configuration link is visible
+      var configLink = document.querySelector('#sidebar a[href="configuration.html"]');
+      if (configLink) {
+        var sub = configLink.closest('.submenu');
+        if (sub) {
+          var btn = sub.previousElementSibling;
+          if (btn && btn.classList.contains('menu-toggle')) {
+            sub.classList.remove('hidden');
+            var arr = btn.querySelector('.material-symbols-outlined:last-child');
+            if (arr) arr.style.transform = 'rotate(180deg)';
           }
         }
-        sidebar.addEventListener('mouseenter', function () {
-          if (sidebar.classList.contains('collapsed')) sidebar.classList.add('expanded-temp');
-          positionToggle();
-        });
-        sidebar.addEventListener('mouseleave', function () {
-          if (sidebar.classList.contains('collapsed')) sidebar.classList.remove('expanded-temp');
-          positionToggle();
-        });
-        window.addEventListener('resize', positionToggle);
-        window.addEventListener('scroll', positionToggle, true);
       }
+
+      // Configurations Manager tabs: switch active tab, filters, section header, and table panel
+      var panelTitles = {
+        certification: { title: 'Certification Categories', subtitle: 'Manage certification categories and status', icon: 'category' },
+        programs: { title: 'Programs', subtitle: 'Manage programs by country and category', icon: 'library_books' },
+        datatypes: { title: 'Data Types', subtitle: 'Configure data types', icon: 'data_object' },
+        roles: { title: 'Roles', subtitle: 'Manage user roles', icon: 'admin_panel_settings' }
+      };
+      document.querySelectorAll('.config-tab').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var tab = this.getAttribute('data-tab');
+          document.querySelectorAll('.config-tab').forEach(function (b) {
+            b.classList.remove('active');
+          });
+          this.classList.add('active');
+          var certInline = document.getElementById('certification-filters-inline');
+          var progInline = document.getElementById('programs-filters-inline');
+          if (certInline) certInline.style.display = tab === 'certification' ? 'flex' : 'none';
+          if (progInline) progInline.style.display = tab === 'programs' ? 'flex' : 'none';
+          if (tab !== 'certification' && tab !== 'programs') {
+            if (certInline) certInline.style.display = 'none';
+            if (progInline) progInline.style.display = 'none';
+          }
+          var meta = panelTitles[tab];
+          if (meta) {
+            var titleEl = document.getElementById('config-panel-title');
+            var subtitleEl = document.getElementById('config-panel-subtitle');
+            var iconEl = document.getElementById('config-panel-icon');
+            if (titleEl) titleEl.textContent = meta.title;
+            if (subtitleEl) subtitleEl.textContent = meta.subtitle;
+            if (iconEl) {
+              var span = iconEl.querySelector('.material-symbols-outlined');
+              if (span) span.textContent = meta.icon;
+            }
+          }
+          document.querySelectorAll('.config-table-panel').forEach(function (p) {
+            p.classList.remove('active');
+          });
+          var panel = document.getElementById('panel-' + tab);
+          if (panel) panel.classList.add('active');
+        });
+      });
     })();
   </script>
 </body>

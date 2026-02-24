@@ -4081,7 +4081,7 @@
                   </div>
                   <div class="min-w-0">
                     <h3 class="text-slate-900 font-semibold text-base m-0">Client Portfolio Across Programs</h3>
-                    <p class="text-slate-500 text-sm mt-0.5 mb-0">Year-to-date performance and next-year projections.</p>
+                    <p class="text-slate-500 text-sm mt-0.5 mb-0">This year's performance and next year projections.</p>
                   </div>
                 </div>
                 <div class="px-5 pb-5 pt-1">
@@ -4089,15 +4089,15 @@
                   <div class="flex items-center justify-center gap-6 mt-4 pt-4 border-t border-slate-100">
                     <div class="flex items-center gap-2">
                       <span class="w-3.5 h-3 rounded-sm bg-[#3eb2ed]" aria-hidden="true"></span>
-                      <span class="text-slate-600 text-sm">Year-to-date</span>
+                      <span class="text-slate-600 text-sm">This year</span>
                     </div>
                     <div class="flex items-center gap-2">
                       <span class="w-3.5 h-3 rounded-sm bg-[#1b1e42]" aria-hidden="true"></span>
-                      <span class="text-slate-600 text-sm">Next year projection</span>
+                      <span class="text-slate-600 text-sm">Last Year</span>
                     </div>
                     <div class="flex items-center gap-2">
                       <span class="w-4 h-0.5 border-t-2 border-dashed border-[#1b1e42]" aria-hidden="true"></span>
-                      <span class="text-slate-600 text-sm">Trend</span>
+                      <span class="text-slate-600 text-sm">Next Year Projection</span>
                     </div>
                   </div>
                 </div>
@@ -4920,9 +4920,9 @@
           data: {
             labels: programLabels,
             datasets: [
-              { type: 'bar', label: 'Year-to-date', order: 3, data: ytd, backgroundColor: CU_LIGHT_BLUE, borderRadius: 6, barPercentage: 0.5, categoryPercentage: 0.75 },
-              { type: 'bar', label: 'Next year projection', order: 2, data: projection, backgroundColor: CU_DARK_BLUE, borderRadius: 6, barPercentage: 0.5, categoryPercentage: 0.75 },
-              { type: 'line', label: 'Trend', order: 1, data: trend, borderColor: CU_DARK_BLUE, backgroundColor: 'transparent', borderWidth: 2, borderDash: [6, 4], tension: 0.2, fill: false, pointBackgroundColor: CU_DARK_BLUE, pointBorderColor: '#fff', pointBorderWidth: 1.5, pointRadius: 5, pointHoverRadius: 6 }
+              { type: 'bar', label: 'This year', order: 3, data: ytd, backgroundColor: CU_LIGHT_BLUE, borderRadius: 6, barPercentage: 0.5, categoryPercentage: 0.75 },
+              { type: 'bar', label: 'Last Year', order: 2, data: projection, backgroundColor: CU_DARK_BLUE, borderRadius: 6, barPercentage: 0.5, categoryPercentage: 0.75 },
+              { type: 'line', label: 'Next Year Projection', order: 1, data: trend, borderColor: CU_DARK_BLUE, backgroundColor: 'transparent', borderWidth: 2, borderDash: [6, 4], tension: 0.2, fill: false, pointBackgroundColor: CU_DARK_BLUE, pointBorderColor: '#fff', pointBorderWidth: 1.5, pointRadius: 5, pointHoverRadius: 6 }
             ]
           },
           options: {
