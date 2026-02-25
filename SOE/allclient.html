@@ -222,6 +222,13 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
 .crm-tab { border-radius: 0; border-bottom: 2px solid transparent; margin-bottom: -1px; color: #64748b; background: transparent; }
 .crm-tab:hover { color: #334155; background: rgba(241,245,249,0.8); }
 .crm-tab[aria-selected="true"] { color: #1e293b; font-weight: 600; border-bottom-color: #3eb2ed; }
+/* From configuration.html: tabs and content card */
+.config-tabs-wrap { display: flex; align-items: center; gap: 0; background: #fff; border-bottom: 1px solid #e2e8f0; padding: 0; margin-bottom: 0; }
+.config-tab { padding: 0.75rem 1.25rem; font-size: 0.875rem; font-weight: 500; color: #64748b; background: transparent; border: none; border-bottom: 2px solid transparent; margin-bottom: -1px; cursor: pointer; transition: color 0.2s, border-color 0.2s; border-radius: 0; white-space: nowrap; }
+.config-tab:hover { color: #334155; background: rgba(241,245,249,0.6); }
+.config-tab.active { color: #1e293b; font-weight: 700; border-bottom-color: #3eb2ed; background: transparent; }
+.config-tabs-extra { margin-left: auto; padding: 0.25rem; }
+.config-content-card { background: #fff; border-radius: 16px; border: 1px solid #e2e8f0; box-shadow: 0 4px 20px rgba(15, 23, 42, 0.06); overflow: hidden; margin-top: 1.25rem; }
 </style>
   <style>
     .font-semibold {

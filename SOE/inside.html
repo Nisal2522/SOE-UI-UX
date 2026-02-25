@@ -243,29 +243,46 @@
 				<div class="grid grid-cols-3 gap-4 items-center">
 					<label class="text-sm text-slate-600">Contact Person :</label>
 					<div class="col-span-2 flex items-center gap-3">
-						<select id="contactSalutation" class="mt-1 border rounded px-3 py-2 text-sm w-36">
+						<select id="contactSalutation" class="mt-1 border border-slate-300 rounded px-3 py-2 text-sm w-36 bg-white focus:ring-2 focus:ring-[#3eb2ed]/30 focus:border-[#3eb2ed] outline-none">
 							<option>Salutation</option>
 							<option>Mr.</option>
 							<option>Ms.</option>
 							<option>Mrs.</option>
 							<option>Dr.</option>
 						</select>
-						<input id="contactName" class="mt-1 w-full border rounded px-3 py-2 text-sm"
+						<input id="contactName" class="mt-1 w-full border border-slate-300 rounded px-3 py-2 text-sm bg-white focus:ring-2 focus:ring-[#3eb2ed]/30 focus:border-[#3eb2ed] outline-none"
 							placeholder="Enter name" />
 					</div>
 				</div>
 				<div class="grid grid-cols-3 gap-4 items-center">
 					<label class="text-sm text-slate-600">Position :</label>
+					<div class="col-span-2 relative" id="positionComboboxWrap">
+						<input type="text" id="contactPosition" class="mt-1 w-full border border-slate-300 rounded px-3 py-2 text-sm bg-white focus:ring-2 focus:ring-[#3eb2ed]/30 focus:border-[#3eb2ed] outline-none"
+							placeholder="Select or type position" autocomplete="off" />
+						<div id="positionComboboxList" class="hidden absolute left-0 right-0 top-full mt-0.5 bg-white border border-slate-200 rounded-lg shadow-lg z-50 max-h-52 overflow-y-auto py-1"></div>
+					</div>
+				</div>
+
+				<div class="grid grid-cols-3 gap-4 items-center">
+					<label class="text-sm text-slate-600">Position Type :</label>
 					<div class="col-span-2">
-						<input id="contactPosition" class="mt-1 w-full border rounded px-3 py-2 text-sm"
-							placeholder="Enter position" />
+						<div class="relative" id="positionTypeComboboxWrap">
+							<input type="text" id="contactPositionType" class="mt-1 w-full border border-slate-300 rounded px-3 py-2 text-sm bg-white focus:ring-2 focus:ring-[#3eb2ed]/30 focus:border-[#3eb2ed] outline-none" placeholder="Select or type position type" autocomplete="off" />
+							<div id="positionTypeComboboxList" class="hidden absolute left-0 right-0 top-full mt-0.5 bg-white border border-slate-200 rounded-lg shadow-lg z-50 max-h-52 overflow-y-auto py-1"></div>
+						</div>
+						<div id="newPositionTypeWrap" class="hidden mt-3 flex items-center gap-2 flex-wrap">
+							<input type="text" id="newPositionTypeInput" class="flex-1 min-w-[120px] border border-slate-300 rounded px-3 py-2 text-sm"
+								placeholder="Enter new position type" />
+							<button type="button" id="saveNewPositionTypeBtn" class="px-4 py-2 rounded text-sm font-medium bg-[#3eb2ed] text-white hover:bg-[#2e9fd9]">Save</button>
+							<span id="newPositionTypeError" class="text-red-500 text-xs w-full mt-1 hidden"></span>
+						</div>
 					</div>
 				</div>
 
 				<div class="grid grid-cols-3 gap-4 items-center">
 					<label class="text-sm text-slate-600">Contact Number :</label>
 					<div class="col-span-2">
-						<input id="contactNumber" class="mt-1 w-full border rounded px-3 py-2 text-sm"
+						<input id="contactNumber" class="mt-1 w-full border border-slate-300 rounded px-3 py-2 text-sm bg-white focus:ring-2 focus:ring-[#3eb2ed]/30 focus:border-[#3eb2ed] outline-none"
 							placeholder="Enter contact number" />
 					</div>
 				</div>
@@ -273,7 +290,7 @@
 				<div class="grid grid-cols-3 gap-4 items-center">
 					<label class="text-sm text-slate-600">Email :</label>
 					<div class="col-span-2">
-						<input id="contactEmail" class="mt-1 w-full border rounded px-3 py-2 text-sm"
+						<input id="contactEmail" class="mt-1 w-full border border-slate-300 rounded px-3 py-2 text-sm bg-white focus:ring-2 focus:ring-[#3eb2ed]/30 focus:border-[#3eb2ed] outline-none"
 							placeholder="Enter email" />
 					</div>
 				</div>
@@ -2395,9 +2412,9 @@
 										</div>
 										<div class="border-t pt-4"></div>
 
-										<div class="space-y-3">
+										<div id="contactsCardList" class="space-y-3">
 											<!-- Placeholder contact items -->
-											<div class="flex items-center justify-between">
+											<div class="contact-row flex items-center justify-between" data-role="CEO">
 												<div class="flex items-center gap-3">
 													<div
 														class="w-9 h-9 rounded-full bg-slate-100 flex items-center justify-center text-slate-600">
@@ -2405,12 +2422,13 @@
 													<div>
 														<div class="text-sm font-medium">Nisal Amarasekara</div>
 														<div class="text-xs text-slate-400">nisal@example.com</div>
+														<div class="text-xs text-slate-500">077 123 4567</div>
 													</div>
 												</div>
 												<span
 													class="text-xs px-2 py-1 rounded bg-blue-100 text-blue-700 font-semibold">CEO</span>
 											</div>
-											<div class="flex items-center justify-between">
+											<div class="contact-row flex items-center justify-between" data-role="IT">
 												<div class="flex items-center gap-3">
 													<div
 														class="w-9 h-9 rounded-full bg-slate-100 flex items-center justify-center text-slate-600">
@@ -2418,13 +2436,14 @@
 													<div>
 														<div class="text-sm font-medium">Amal Bandara</div>
 														<div class="text-xs text-slate-400">amal@example.com</div>
+														<div class="text-xs text-slate-500">077 234 5678</div>
 													</div>
 												</div>
 												<span
 													class="text-xs px-2 py-1 rounded bg-green-100 text-green-700 font-semibold">IT</span>
 											</div>
 											<!-- Additional sample contacts -->
-											<div class="flex items-center justify-between">
+											<div class="contact-row flex items-center justify-between" data-role="Finance">
 												<div class="flex items-center gap-3">
 													<div
 														class="w-9 h-9 rounded-full bg-slate-100 flex items-center justify-center text-slate-600">
@@ -2432,12 +2451,13 @@
 													<div>
 														<div class="text-sm font-medium">Maya Senanayake</div>
 														<div class="text-xs text-slate-400">maya.s@example.com</div>
+														<div class="text-xs text-slate-500">077 345 6789</div>
 													</div>
 												</div>
 												<span
 													class="text-xs px-2 py-1 rounded bg-yellow-100 text-yellow-700 font-semibold">Finance</span>
 											</div>
-											<div class="flex items-center justify-between">
+											<div class="contact-row flex items-center justify-between" data-role="HR">
 												<div class="flex items-center gap-3">
 													<div
 														class="w-9 h-9 rounded-full bg-slate-100 flex items-center justify-center text-slate-600">
@@ -2445,12 +2465,13 @@
 													<div>
 														<div class="text-sm font-medium">Ruwan Karunaratne</div>
 														<div class="text-xs text-slate-400">ruwan.k@example.com</div>
+														<div class="text-xs text-slate-500">077 456 7890</div>
 													</div>
 												</div>
 												<span
 													class="text-xs px-2 py-1 rounded bg-purple-100 text-purple-700 font-semibold">HR</span>
 											</div>
-											<div class="flex items-center justify-between">
+											<div class="contact-row flex items-center justify-between" data-role="Admin">
 												<div class="flex items-center gap-3">
 													<div
 														class="w-9 h-9 rounded-full bg-slate-100 flex items-center justify-center text-slate-600">
@@ -2458,6 +2479,7 @@
 													<div>
 														<div class="text-sm font-medium">Saroja Perera</div>
 														<div class="text-xs text-slate-400">saroja.p@example.com</div>
+														<div class="text-xs text-slate-500">077 567 8901</div>
 													</div>
 												</div>
 												<span
@@ -3559,7 +3581,8 @@
 			<div class="w-9 h-9 rounded-full bg-slate-100 flex items-center justify-center text-slate-600">${initials}</div>
 			<div>
 				<div class="text-sm font-medium">${escapeHtml(payload.name || '')} ${payload.key ? '<span class="contact-key-badge text-xs ml-2 rounded px-2 bg-[#e6f7ff] text-[#2b9bd7]">Key</span>' : ''}</div>
-				<div class="text-xs text-slate-400">${escapeHtml(payload.position || '')}${payload.position ? ' • ' : ''}${escapeHtml(payload.email || '')}</div>
+				<div class="text-xs text-slate-400">${escapeHtml(payload.position || '')}${payload.positionType ? ' · ' + escapeHtml(payload.positionType) : ''}${(payload.position || payload.positionType) ? ' • ' : ''}${escapeHtml(payload.email || '')}</div>
+				${payload.number ? '<div class="text-xs text-slate-500">' + escapeHtml(payload.number) + '</div>' : ''}
 			</div>
 		</div>
 		<button class="text-sm text-cu-light-blue">Details</button>
@@ -3591,13 +3614,16 @@
 			if (saveBtn) {
 				saveBtn.addEventListener('click', function (e) {
 					e.preventDefault();
+					var ptEl = document.getElementById('contactPositionType');
+					var ptVal = (ptEl && ptEl.value && ptEl.value !== '__new__') ? ptEl.value : '';
 					const payload = {
-						salutation: document.getElementById('contactSalutation')?.value || '',
-						position: document.getElementById('contactPosition')?.value || '',
-						name: document.getElementById('contactName')?.value || '',
-						number: document.getElementById('contactNumber')?.value || '',
-						email: document.getElementById('contactEmail')?.value || '',
-						key: document.getElementById('contactKeyPerson')?.checked || false
+						salutation: document.getElementById('contactSalutation') ? document.getElementById('contactSalutation').value : '',
+						position: document.getElementById('contactPosition') ? document.getElementById('contactPosition').value : '',
+						positionType: ptVal,
+						name: document.getElementById('contactName') ? document.getElementById('contactName').value : '',
+						number: document.getElementById('contactNumber') ? document.getElementById('contactNumber').value : '',
+						email: document.getElementById('contactEmail') ? document.getElementById('contactEmail').value : '',
+						key: document.getElementById('contactKeyPerson') ? document.getElementById('contactKeyPerson').checked : false
 					};
 					// Add to contacts list in DOM
 					try { addContactToList(payload); } catch (err) { console.error(err); }
@@ -3606,6 +3632,248 @@
 			}
 
 			if (modal) { modal.addEventListener('click', function (e) { if (e.target === modal) closeModal(); }); }
+
+			// Position combobox: same style as Position Type — "+ Add new position" click shows inline add inside dropdown
+			(function () {
+				var DEFAULT_POSITIONS = ['CEO', 'MD', 'HOD', 'Manager', 'Director', 'Coordinator', 'Executive', 'Other'];
+				var positions = DEFAULT_POSITIONS.slice();
+				var input = document.getElementById('contactPosition');
+				var listEl = document.getElementById('positionComboboxList');
+				var wrap = document.getElementById('positionComboboxWrap');
+				if (!input || !listEl || !wrap) return;
+
+				function toTitleCase(str) {
+					return (str || '').trim().replace(/\w\S*/g, function (t) { return t.charAt(0).toUpperCase() + t.slice(1).toLowerCase(); });
+				}
+
+				var showInlineAdd = false;
+
+				function doAddFromValue(raw) {
+					var r = (raw || '').trim();
+					if (r.length < 2) return { ok: false, msg: 'Enter at least 2 characters.' };
+					var titleCased = toTitleCase(r);
+					if (positions.some(function (p) { return p.toLowerCase() === titleCased.toLowerCase(); }))
+						return { ok: false, msg: 'This position is already in the list.' };
+					positions.unshift(titleCased);
+					setValue(titleCased);
+					return { ok: true };
+				}
+
+				function renderList(filter) {
+					var q = (filter || '').trim().toLowerCase();
+					listEl.innerHTML = '';
+					var fragment = document.createDocumentFragment();
+					var addNewOpt = document.createElement('div');
+					addNewOpt.className = 'px-3 py-2 text-sm text-[#3eb2ed] hover:bg-cyan-50 cursor-pointer border-b border-slate-100 font-medium';
+					addNewOpt.textContent = '+ Add new position';
+					addNewOpt.setAttribute('data-add-new', '1');
+					fragment.appendChild(addNewOpt);
+					if (showInlineAdd) {
+						var row = document.createElement('div');
+						row.className = 'px-3 py-2 border-b border-slate-100 bg-slate-50';
+						row.setAttribute('data-inline-add', '1');
+						var inp = document.createElement('input');
+						inp.type = 'text';
+						inp.placeholder = 'New role';
+						inp.className = 'w-full border border-slate-300 rounded px-2 py-1.5 text-sm mb-2 focus:ring-2 focus:ring-[#3eb2ed]/30 focus:border-[#3eb2ed] outline-none';
+						var btn = document.createElement('button');
+						btn.type = 'button';
+						btn.className = 'w-full px-2 py-1.5 text-sm font-medium bg-[#3eb2ed] text-white rounded hover:bg-[#2e9fd9]';
+						btn.textContent = 'Add';
+						row.appendChild(inp);
+						row.appendChild(btn);
+						btn.addEventListener('click', function () {
+							var res = doAddFromValue(inp.value);
+							if (res.ok) {
+								showInlineAdd = false;
+								inp.value = '';
+								closeList();
+							}
+						});
+						fragment.appendChild(row);
+					}
+					positions.forEach(function (p) {
+						if (q && p.toLowerCase().indexOf(q) === -1) return;
+						var item = document.createElement('div');
+						item.className = 'px-3 py-2 text-sm text-slate-800 hover:bg-slate-100 cursor-pointer';
+						item.textContent = p;
+						item.setAttribute('data-value', p);
+						fragment.appendChild(item);
+					});
+					listEl.appendChild(fragment);
+					if (showInlineAdd) {
+						var inlineInput = listEl.querySelector('[data-inline-add] input');
+						if (inlineInput) setTimeout(function () { inlineInput.focus(); }, 50);
+					}
+				}
+
+				function openList() { listEl.classList.remove('hidden'); renderList(input.value); }
+				function closeList() { listEl.classList.add('hidden'); showInlineAdd = false; }
+
+				function setValue(val) {
+					input.value = val || '';
+					closeList();
+					input.dispatchEvent(new Event('change', { bubbles: true }));
+				}
+
+				input.addEventListener('focus', openList);
+				input.addEventListener('input', function () { openList(); });
+				input.addEventListener('blur', function () {
+					setTimeout(function () {
+						if (!showInlineAdd) closeList();
+					}, 150);
+				});
+				document.addEventListener('click', function (e) {
+					if (wrap && !wrap.contains(e.target)) closeList();
+				});
+
+				listEl.addEventListener('mousedown', function (e) {
+					e.preventDefault();
+					if (e.target.closest('[data-inline-add]')) return;
+					var item = e.target.closest('[data-value]');
+					if (item && item.getAttribute('data-value')) {
+						setValue(item.getAttribute('data-value'));
+						return;
+					}
+					if (e.target.closest('[data-add-new]')) {
+						showInlineAdd = true;
+						renderList(input.value);
+					}
+				});
+			})();
+
+			// Position Type: combobox — "+ Add new position type" click shows inline add row inside dropdown
+			(function () {
+				var DEFAULT_TYPES = ['Freelance', 'Other'];
+				var positionTypes = DEFAULT_TYPES.slice();
+				var input = document.getElementById('contactPositionType');
+				var listEl = document.getElementById('positionTypeComboboxList');
+				var wrap = document.getElementById('positionTypeComboboxWrap');
+				var panelWrap = document.getElementById('newPositionTypeWrap');
+				var newInput = document.getElementById('newPositionTypeInput');
+				var saveBtn = document.getElementById('saveNewPositionTypeBtn');
+				var errEl = document.getElementById('newPositionTypeError');
+				if (!input || !listEl || !panelWrap || !newInput || !saveBtn || !errEl) return;
+
+				var showInlineAdd = false;
+
+				function doAddFromValue(raw, errTarget) {
+					var r = (raw || '').trim();
+					if (r.length < 2) return { ok: false, msg: 'Enter at least 2 characters.' };
+					var titleCased = r.charAt(0).toUpperCase() + r.slice(1).toLowerCase();
+					if (positionTypes.some(function (p) { return p.toLowerCase() === titleCased.toLowerCase(); }))
+						return { ok: false, msg: 'This position type already exists.' };
+					positionTypes.unshift(titleCased);
+					setValue(titleCased);
+					return { ok: true };
+				}
+
+				function renderList(filter) {
+					var q = (filter || '').trim().toLowerCase();
+					listEl.innerHTML = '';
+					var fragment = document.createDocumentFragment();
+					var addNewOpt = document.createElement('div');
+					addNewOpt.className = 'px-3 py-2 text-sm text-[#3eb2ed] hover:bg-cyan-50 cursor-pointer border-b border-slate-100 font-medium';
+					addNewOpt.textContent = '+ Add new position type';
+					addNewOpt.setAttribute('data-add-new', '1');
+					fragment.appendChild(addNewOpt);
+					if (showInlineAdd) {
+						var row = document.createElement('div');
+						row.className = 'px-3 py-2 border-b border-slate-100 bg-slate-50';
+						row.setAttribute('data-inline-add', '1');
+						var inp = document.createElement('input');
+						inp.type = 'text';
+						inp.placeholder = 'New type name';
+						inp.className = 'w-full border border-slate-300 rounded px-2 py-1.5 text-sm mb-2 focus:ring-2 focus:ring-[#3eb2ed]/30 focus:border-[#3eb2ed] outline-none';
+						var btn = document.createElement('button');
+						btn.type = 'button';
+						btn.className = 'w-full px-2 py-1.5 text-sm font-medium bg-[#3eb2ed] text-white rounded hover:bg-[#2e9fd9]';
+						btn.textContent = 'Add';
+						row.appendChild(inp);
+						row.appendChild(btn);
+						btn.addEventListener('click', function () {
+							var res = doAddFromValue(inp.value, errEl);
+							if (res.ok) {
+								showInlineAdd = false;
+								inp.value = '';
+								closeList();
+							} else {
+								errEl.textContent = res.msg;
+								errEl.classList.remove('hidden');
+							}
+						});
+						fragment.appendChild(row);
+					}
+					positionTypes.forEach(function (p) {
+						if (q && p.toLowerCase().indexOf(q) === -1) return;
+						var item = document.createElement('div');
+						item.className = 'px-3 py-2 text-sm text-slate-800 hover:bg-slate-100 cursor-pointer';
+						item.textContent = p;
+						item.setAttribute('data-value', p);
+						fragment.appendChild(item);
+					});
+					listEl.appendChild(fragment);
+					if (showInlineAdd) {
+						var inlineInput = listEl.querySelector('[data-inline-add] input');
+						if (inlineInput) setTimeout(function () { inlineInput.focus(); }, 50);
+					}
+				}
+
+				function openList() { listEl.classList.remove('hidden'); renderList(input.value); }
+				function closeList() { listEl.classList.add('hidden'); showInlineAdd = false; errEl.classList.add('hidden'); errEl.textContent = ''; }
+
+				function setValue(val) {
+					input.value = val || '';
+					closeList();
+				}
+
+				function showPanel(show) {
+					panelWrap.classList.toggle('hidden', !show);
+					if (!show) { newInput.value = ''; errEl.classList.add('hidden'); errEl.textContent = ''; }
+				}
+
+				input.addEventListener('focus', openList);
+				input.addEventListener('input', function () { openList(); });
+				input.addEventListener('blur', function () {
+					setTimeout(function () {
+						if (!showInlineAdd) closeList();
+					}, 150);
+				});
+				document.addEventListener('click', function (e) {
+					if (wrap && !wrap.contains(e.target)) closeList();
+				});
+
+				listEl.addEventListener('mousedown', function (e) {
+					e.preventDefault();
+					if (e.target.closest('[data-inline-add]')) return;
+					var item = e.target.closest('[data-value]');
+					if (item && item.getAttribute('data-value')) {
+						setValue(item.getAttribute('data-value'));
+						return;
+					}
+					if (e.target.closest('[data-add-new]')) {
+						showInlineAdd = true;
+						renderList(input.value);
+						errEl.classList.add('hidden');
+						errEl.textContent = '';
+					}
+				});
+
+				saveBtn.addEventListener('click', function () {
+					var raw = (newInput.value || '').trim();
+					errEl.classList.add('hidden');
+					errEl.textContent = '';
+					var res = doAddFromValue(raw, errEl);
+					if (!res.ok) {
+						errEl.textContent = res.msg;
+						errEl.classList.remove('hidden');
+						newInput.focus();
+						return;
+					}
+					newInput.value = '';
+					showPanel(false);
+				});
+			})();
 		});
 	</script>
 

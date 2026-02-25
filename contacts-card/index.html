@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contacts Card</title>
+  <style>
+    /* ---- Scoped: Contacts card only ---- */
+    .contacts-card {
+      --card-bg: #ffffff;
+      --card-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+      --card-radius: 12px;
+      --header-bg: #f8fafc;
+      --border: #e2e8f0;
+      --text: #1e293b;
+      --text-muted: #64748b;
+      --focus-ring: 2px solid #3b82f6;
+      --focus-offset: 2px;
+      /* Role pill colors */
+      --role-ceo: #dbeafe;
+      --role-ceo-text: #1d4ed8;
+      --role-it: #dcfce7;
+      --role-it-text: #15803d;
+      --role-finance: #fef9c3;
+      --role-finance-text: #a16207;
+      --role-hr: #f3e8ff;
+      --role-hr-text: #6b21a8;
+      --role-admin: #fce7f3;
+      --role-admin-text: #9d174d;
+      --chip-active-bg: #eff6ff;
+      --chip-active-border: #3b82f6;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      background: var(--card-bg);
+      border-radius: var(--card-radius);
+      box-shadow: var(--card-shadow);
+      max-width: 560px;
+      margin: 0 auto;
+      overflow: hidden;
+    }
+
+    .contacts-card *,
+    .contacts-card *::before,
+    .contacts-card *::after {
+      box-sizing: border-box;
+    }
+
+    /* Header */
+    .contacts-card__header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 16px 20px;
+      background: var(--header-bg);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .contacts-card__title-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .contacts-card__icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #3b82f6, #2563eb);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      line-height: 1;
+    }
+
+    .contacts-card__title {
+      margin: 0;
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .contacts-card__new-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 40px;
+      padding: 0 18px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: #2563eb;
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-radius: 9999px;
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s;
+    }
+
+    .contacts-card__new-btn:hover {
+      background: #dbeafe;
+      border-color: #93c5fd;
+    }
+
+    .contacts-card__new-btn:focus-visible {
+      outline: none;
+      box-shadow: 0 0 0 var(--focus-offset) white, 0 0 0 calc(var(--focus-offset) + 2px) #3b82f6;
+    }
+
+    /* Toolbar */
+    .contacts-card__toolbar {
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .contacts-card__search-wrap {
+      position: relative;
+    }
+
+    .contacts-card__search-wrap::before {
+      content: '';
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 18px;
+      height: 18px;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2364748b' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z'/%3E%3C/svg%3E") no-repeat center;
+      pointer-events: none;
+    }
+
+    .contacts-card__search {
+      width: 100%;
+      min-height: 42px;
+      padding: 10px 14px 10px 44px;
+      font-size: 0.9375rem;
+      color: var(--text);
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+
+    .contacts-card__search::placeholder {
+      color: var(--text-muted);
+    }
+
+    .contacts-card__search:focus {
+      outline: none;
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+    }
+
+    .contacts-card__chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .contacts-card__chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      min-height: 36px;
+      padding: 6px 14px;
+      font-size: 0.8125rem;
+      font-weight: 500;
+      color: var(--text);
+      background: #f1f5f9;
+      border: 1px solid var(--border);
+      border-radius: 9999px;
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s, color 0.15s;
+    }
+
+    .contacts-card__chip:hover {
+      background: #e2e8f0;
+      border-color: #cbd5e1;
+    }
+
+    .contacts-card__chip:focus-visible {
+      outline: none;
+      box-shadow: 0 0 0 2px #3b82f6;
+    }
+
+    .contacts-card__chip[aria-pressed="true"] {
+      background: var(--chip-active-bg);
+      border-color: var(--chip-active-border);
+      color: #1d4ed8;
+    }
+
+    .contacts-card__chip-count {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      background: rgba(0, 0, 0, 0.06);
+      padding: 2px 6px;
+      border-radius: 6px;
+    }
+
+    .contacts-card__chip[aria-pressed="true"] .contacts-card__chip-count {
+      color: #1d4ed8;
+      background: rgba(59, 130, 246, 0.15);
+    }
+
+    .contacts-card__toolbar-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .contacts-card__visible-count {
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+    }
+
+    .contacts-card__visible-count strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    /* List */
+    .contacts-card__list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .contacts-card__row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--border);
+      min-height: 56px;
+    }
+
+    .contacts-card__row:last-child {
+      border-bottom: none;
+    }
+
+    .contacts-card__avatar {
+      flex-shrink: 0;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #64748b, #475569);
+      color: white;
+      font-size: 0.875rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+    }
+
+    .contacts-card__info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .contacts-card__name {
+      font-size: 0.9375rem;
+      font-weight: 500;
+      color: var(--text);
+      margin: 0 0 2px 0;
+    }
+
+    .contacts-card__email {
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+      margin: 0;
+    }
+
+    .contacts-card__role-pill {
+      flex-shrink: 0;
+      padding: 4px 10px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      border-radius: 9999px;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+    }
+
+    .contacts-card__role-pill--ceo {
+      background: var(--role-ceo);
+      color: var(--role-ceo-text);
+    }
+
+    .contacts-card__role-pill--it {
+      background: var(--role-it);
+      color: var(--role-it-text);
+    }
+
+    .contacts-card__role-pill--finance {
+      background: var(--role-finance);
+      color: var(--role-finance-text);
+    }
+
+    .contacts-card__role-pill--hr {
+      background: var(--role-hr);
+      color: var(--role-hr-text);
+    }
+
+    .contacts-card__role-pill--admin {
+      background: var(--role-admin);
+      color: var(--role-admin-text);
+    }
+
+    /* Empty state */
+    .contacts-card__empty {
+      padding: 32px 20px;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.9375rem;
+    }
+
+    .contacts-card__empty p {
+      margin: 0 0 8px 0;
+    }
+
+    .contacts-card__empty-btn {
+      margin-top: 12px;
+      background: none;
+      border: none;
+      color: #3b82f6;
+      font-size: 0.875rem;
+      font-weight: 500;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+
+    .contacts-card__empty-btn:hover {
+      color: #2563eb;
+    }
+
+    .contacts-card__empty-btn:focus-visible {
+      outline: none;
+      border-radius: 4px;
+      box-shadow: 0 0 0 2px #3b82f6;
+    }
+
+    /* Footer */
+    .contacts-card__footer {
+      padding: 12px 20px;
+      background: var(--header-bg);
+      border-top: 1px solid var(--border);
+    }
+
+    .contacts-card__view-all {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: #3b82f6;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .contacts-card__view-all:hover {
+      text-decoration: underline;
+      color: #2563eb;
+    }
+
+    .contacts-card__view-all:focus-visible {
+      outline: none;
+      border-radius: 4px;
+      box-shadow: 0 0 0 2px #3b82f6;
+    }
+
+    /* Responsive */
+    @media (max-width: 480px) {
+      .contacts-card__header {
+        padding: 14px 16px;
+      }
+
+      .contacts-card__title {
+        font-size: 1.125rem;
+      }
+
+      .contacts-card__toolbar {
+        padding: 12px 16px;
+      }
+
+      .contacts-card__row {
+        padding: 12px 16px;
+      }
+
+      .contacts-card__footer {
+        padding: 10px 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="contacts-card" role="region" aria-label="Contacts">
+    <header class="contacts-card__header">
+      <div class="contacts-card__title-wrap">
+        <span class="contacts-card__icon" aria-hidden="true">👤</span>
+        <h2 class="contacts-card__title">Contacts</h2>
+      </div>
+      <button type="button" class="contacts-card__new-btn" aria-label="Add new contact">New Contact</button>
+    </header>
+
+    <div class="contacts-card__toolbar">
+      <div class="contacts-card__search-wrap">
+        <label for="contacts-search" class="sr-only">Search contacts by name or email</label>
+        <input
+          type="search"
+          id="contacts-search"
+          class="contacts-card__search"
+          placeholder="Search name or email…"
+          autocomplete="off"
+          aria-label="Search contacts by name or email"
+        />
+      </div>
+      <div class="contacts-card__chips" role="group" aria-label="Filter by role">
+        <!-- Chips injected by JS -->
+      </div>
+      <div class="contacts-card__toolbar-meta">
+        <span class="contacts-card__visible-count" id="visible-count" aria-live="polite">
+          <strong id="visible-n">0</strong> contacts
+        </span>
+      </div>
+    </div>
+
+    <ul class="contacts-card__list" id="contacts-list" aria-label="Contact list">
+      <!-- Rows injected by JS -->
+    </ul>
+
+    <div class="contacts-card__empty hidden" id="contacts-empty" role="status">
+      <p>No contacts found.</p>
+      <p>Try clearing your search or role filters.</p>
+      <button type="button" class="contacts-card__empty-btn" id="clear-filters-btn">Clear filters</button>
+    </div>
+
+    <footer class="contacts-card__footer">
+      <a href="#" class="contacts-card__view-all" id="view-all-link">View All</a>
+    </footer>
+  </div>
+
+  <style>
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+    .hidden { display: none !important; }
+  </style>
+
+  <script>
+    (function () {
+      'use strict';
+
+      var MULTI_SELECT = false; // true = multiple roles active; false = single role
+
+      var ROLES = ['All', 'CEO', 'IT', 'Finance', 'HR', 'Admin'];
+
+      var CONTACTS = [
+        { name: 'Alex Chen', email: 'alex.chen@company.com', role: 'CEO' },
+        { name: 'Sam Rivera', email: 'sam.rivera@company.com', role: 'IT' },
+        { name: 'Jordan Lee', email: 'jordan.lee@company.com', role: 'Finance' },
+        { name: 'Morgan Taylor', email: 'morgan.taylor@company.com', role: 'HR' },
+        { name: 'Casey Brown', email: 'casey.brown@company.com', role: 'Admin' },
+        { name: 'Riley Davis', email: 'riley.davis@company.com', role: 'IT' },
+        { name: 'Quinn Evans', email: 'quinn.evans@company.com', role: 'Finance' },
+        { name: 'Blake Foster', email: 'blake.foster@company.com', role: 'HR' },
+        { name: 'Drew Kim', email: 'drew.kim@company.com', role: 'Admin' },
+        { name: 'Jamie Wilson', email: 'jamie.wilson@company.com', role: 'CEO' },
+      ];
+
+      var searchEl = document.getElementById('contacts-search');
+      var listEl = document.getElementById('contacts-list');
+      var emptyEl = document.getElementById('contacts-empty');
+      var visibleN = document.getElementById('visible-n');
+      var clearFiltersBtn = document.getElementById('clear-filters-btn');
+      var chipsContainer = document.querySelector('.contacts-card__chips');
+
+      var searchQuery = '';
+      var activeRoles = ['All']; // All = show everything; otherwise list of roles
+
+      function getInitials(name) {
+        return name.split(/\s+/).map(function (s) { return s.charAt(0); }).join('').slice(0, 2).toUpperCase();
+      }
+
+      function roleToClass(role) {
+        var r = (role || '').toLowerCase();
+        if (r === 'ceo') return 'ceo';
+        if (r === 'it') return 'it';
+        if (r === 'finance') return 'finance';
+        if (r === 'hr') return 'hr';
+        if (r === 'admin') return 'admin';
+        return 'admin';
+      }
+
+      function filterBySearch(contacts, q) {
+        if (!q.trim()) return contacts;
+        var lower = q.trim().toLowerCase();
+        return contacts.filter(function (c) {
+          return (c.name && c.name.toLowerCase().indexOf(lower) !== -1) ||
+                 (c.email && c.email.toLowerCase().indexOf(lower) !== -1);
+        });
+      }
+
+      function filterByRoles(contacts, roles) {
+        if (roles.indexOf('All') !== -1 || roles.length === 0) return contacts;
+        return contacts.filter(function (c) { return roles.indexOf(c.role) !== -1; });
+      }
+
+      function getSearchOnlyCount() {
+        return filterBySearch(CONTACTS, searchQuery).length;
+      }
+
+      function getRoleCount(role) {
+        if (role === 'All') return CONTACTS.length;
+        return filterBySearch(CONTACTS, searchQuery).filter(function (c) { return c.role === role; }).length;
+      }
+
+      function getFilteredContacts() {
+        var bySearch = filterBySearch(CONTACTS, searchQuery);
+        return filterByRoles(bySearch, activeRoles);
+      }
+
+      function renderChips() {
+        chipsContainer.innerHTML = '';
+        ROLES.forEach(function (role) {
+          var isAll = role === 'All';
+          var count = getRoleCount(role);
+          var pressed = isAll ? activeRoles.indexOf('All') !== -1 : activeRoles.indexOf(role) !== -1;
+
+          var btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'contacts-card__chip';
+          btn.setAttribute('aria-pressed', pressed ? 'true' : 'false');
+          btn.setAttribute('aria-label', isAll ? 'Show all contacts' : 'Filter by ' + role + ', ' + count + ' match');
+          btn.dataset.role = role;
+
+          var text = document.createTextNode(role);
+          btn.appendChild(text);
+          if (!isAll) {
+            var countSpan = document.createElement('span');
+            countSpan.className = 'contacts-card__chip-count';
+            countSpan.textContent = count;
+            btn.appendChild(countSpan);
+          }
+
+          btn.addEventListener('click', function () {
+            if (role === 'All') {
+              activeRoles = ['All'];
+            } else {
+              if (MULTI_SELECT) {
+                var idx = activeRoles.indexOf('All');
+                if (idx !== -1) activeRoles.splice(idx, 1);
+                var i = activeRoles.indexOf(role);
+                if (i === -1) activeRoles.push(role);
+                else activeRoles.splice(i, 1);
+                if (activeRoles.length === 0) activeRoles = ['All'];
+              } else {
+                activeRoles = [role];
+              }
+            }
+            renderChips();
+            renderList();
+            updateCount();
+          });
+
+          chipsContainer.appendChild(btn);
+        });
+      }
+
+      function renderList() {
+        var list = getFilteredContacts();
+        listEl.innerHTML = '';
+        listEl.classList.remove('hidden');
+        emptyEl.classList.add('hidden');
+
+        if (list.length === 0) {
+          listEl.classList.add('hidden');
+          emptyEl.classList.remove('hidden');
+          return;
+        }
+
+        list.forEach(function (c) {
+          var li = document.createElement('li');
+          li.className = 'contacts-card__row';
+          li.innerHTML =
+            '<span class="contacts-card__avatar" aria-hidden="true">' + getInitials(c.name) + '</span>' +
+            '<div class="contacts-card__info">' +
+              '<p class="contacts-card__name">' + escapeHtml(c.name) + '</p>' +
+              '<p class="contacts-card__email">' + escapeHtml(c.email) + '</p>' +
+            '</div>' +
+            '<span class="contacts-card__role-pill contacts-card__role-pill--' + roleToClass(c.role) + '" aria-label="Role: ' + escapeAttr(c.role) + '">' + escapeHtml(c.role) + '</span>';
+          listEl.appendChild(li);
+        });
+      }
+
+      function escapeHtml(s) {
+        var div = document.createElement('div');
+        div.textContent = s;
+        return div.innerHTML;
+      }
+
+      function escapeAttr(s) {
+        return escapeHtml(s).replace(/"/g, '&quot;');
+      }
+
+      function updateCount() {
+        var n = getFilteredContacts().length;
+        visibleN.textContent = n;
+      }
+
+      searchEl.addEventListener('input', function () {
+        searchQuery = searchEl.value;
+        renderChips();
+        renderList();
+        updateCount();
+      });
+
+      clearFiltersBtn.addEventListener('click', function () {
+        searchQuery = '';
+        searchEl.value = '';
+        activeRoles = ['All'];
+        renderChips();
+        renderList();
+        updateCount();
+        searchEl.focus();
+      });
+
+      clearFiltersBtn.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') e.preventDefault();
+      });
+
+      // Init
+      renderChips();
+      renderList();
+      updateCount();
+    })();
+  </script>
+</body>
+</html>

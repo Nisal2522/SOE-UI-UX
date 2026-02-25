@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Position combobox</title>
+  <style>
+    /* ---------- Base & card ---------- */
+    *, *::before, *::after { box-sizing: border-box; }
+    body { margin: 0; font-family: system-ui, -apple-system, sans-serif; font-size: 16px; line-height: 1.5; color: #1a1a1a; background: #f5f5f5; padding: 24px; min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+    .card { max-width: 720px; width: 100%; background: #fff; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); padding: 24px; }
+
+    /* ---------- Spacing: 12 / 16 / 24 ---------- */
+    .field { margin-bottom: 16px; }
+    .field-label { display: block; margin-bottom: 8px; font-size: 14px; font-weight: 600; color: #333; }
+    .helper-text { margin-top: 8px; font-size: 12px; color: #555; line-height: 1.4; }
+    .error-text { margin-top: 8px; font-size: 12px; color: #b91c1c; display: none; }
+    .error-text.visible { display: block; }
+
+    /* ---------- Input: ≥44px height, focus outline ---------- */
+    #position { width: 100%; min-height: 44px; padding: 12px 16px; font-size: 16px; line-height: 1.4; color: #1a1a1a; background: #fff; border: 1px solid #6b7280; border-radius: 8px; }
+    #position::placeholder { color: #6b7280; }
+    #position:focus { outline: 2px solid #2563eb; outline-offset: 2px; border-color: #2563eb; }
+    #position:hover { border-color: #4b5563; }
+
+    /* ---------- Submit button ---------- */
+    .form-actions { margin-top: 24px; }
+    .submit-btn { min-height: 44px; padding: 12px 24px; font-size: 16px; font-weight: 600; color: #fff; background: #2563eb; border: none; border-radius: 8px; cursor: pointer; }
+    .submit-btn:hover { background: #1d4ed8; }
+    .submit-btn:focus { outline: 2px solid #2563eb; outline-offset: 2px; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <form id="positionForm" novalidate>
+      <div class="field">
+        <label class="field-label" for="position">Position :</label>
+        <input type="text" id="position" list="positionList" placeholder="Select or type position" autocomplete="off" aria-describedby="posHelper posErr" aria-invalid="false" />
+        <datalist id="positionList">
+          <option value="CEO">
+          <option value="MD">
+          <option value="HOD">
+          <option value="Manager">
+          <option value="Director">
+          <option value="Coordinator">
+          <option value="Executive">
+          <option value="Other">
+        </datalist>
+        <p id="posHelper" class="helper-text">Select from list or type a new title and press Enter/Tab.</p>
+        <p id="posErr" class="error-text" role="alert"></p>
+      </div>
+      <div class="form-actions">
+        <button type="submit" class="submit-btn">Submit</button>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    (function () {
+      var input = document.getElementById('position');
+      var datalist = document.getElementById('positionList');
+      var errEl = document.getElementById('posErr');
+      var form = document.getElementById('positionForm');
+
+      var INITIAL_VALUES = ['CEO', 'MD', 'HOD', 'Manager', 'Director', 'Coordinator', 'Executive', 'Other'];
+
+      function toTitleCase(str) {
+        return (str || '').trim().replace(/\w\S*/g, function (t) {
+          return t.charAt(0).toUpperCase() + t.slice(1).toLowerCase();
+        });
+      }
+
+      function getExistingValues() {
+        var opts = datalist.querySelectorAll('option');
+        var out = [];
+        for (var i = 0; i < opts.length; i++) {
+          if (opts[i].value) out.push(opts[i].value);
+        }
+        return out;
+      }
+
+      function existsCaseInsensitive(val) {
+        var lower = (val || '').trim().toLowerCase();
+        var existing = getExistingValues();
+        return existing.some(function (v) { return v.toLowerCase() === lower; });
+      }
+
+      function showError(msg) {
+        errEl.textContent = msg || '';
+        errEl.classList.toggle('visible', !!msg);
+        input.setAttribute('aria-invalid', !!msg ? 'true' : 'false');
+      }
+
+      function normalizeAndMaybeAdd() {
+        var raw = (input.value || '').trim();
+        showError('');
+
+        if (raw.length === 0) return;
+
+        if (raw.length < 2) {
+          showError('Enter at least 2 letters.');
+          return;
+        }
+
+        var normalized = toTitleCase(raw);
+
+        if (existsCaseInsensitive(normalized)) {
+          input.value = normalized;
+          return;
+        }
+
+        var opt = document.createElement('option');
+        opt.value = normalized;
+        datalist.appendChild(opt);
+        input.value = normalized;
+
+        // Optional: persist new position to API
+        // fetch('/api/positions', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ label: normalized }) });
+      }
+
+      input.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          normalizeAndMaybeAdd();
+        }
+      });
+
+      input.addEventListener('blur', function () {
+        normalizeAndMaybeAdd();
+      });
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        normalizeAndMaybeAdd();
+        var positionValue = (input.value || '').trim();
+        console.log('positionValue', positionValue);
+      });
+    })();
+  </script>
+</body>
+</html>
