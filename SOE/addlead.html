@@ -983,426 +983,152 @@ select {
           </div>
           <div class="flex-1 overflow-y-auto p-6 bg-white">
             <div class="space-y-3">
-              <!-- Organic -->
               <div class="w-full">
                 <button onclick="toggleServiceCategory('organic')"
-                  class="w-full flex items-center justify-between px-4 py-3 bg-[#42c5f5] hover:bg-[#38b4e3] text-white rounded-lg transition-all shadow-sm">
+                  class="service-category-btn w-full flex items-center justify-between px-4 py-3 bg-[#42c5f5] hover:bg-[#38b4e3] hover:shadow-lg hover:shadow-cyan-500/30 text-white rounded-lg transition-all duration-300 ease-in-out shadow-sm group">
                   <div class="flex items-center gap-2.5">
-                    <span class="material-symbols-outlined text-lg">eco</span>
+                    <span class="material-symbols-outlined text-lg transition-transform duration-300 group-hover:scale-110">eco</span>
                     <span class="font-medium text-sm">Organic</span>
                   </div>
-                  <span id="organic-chevron"
-                    class="material-symbols-outlined text-lg transition-transform">expand_more</span>
+                  <span id="organic-chevron" class="material-symbols-outlined text-lg transition-all duration-300 ease-in-out">expand_more</span>
                 </button>
-
-                <!-- Organic Expanded Content -->
-                <div id="organic-content"
-                  class="hidden mt-2 bg-white border border-gray-200 rounded-lg overflow-hidden">
-                  <div class="px-6 py-4">
-                    <!-- Standards List -->
-                    <div class="space-y-3">
-                      <!-- NOP -->
-                      <div class="flex items-center justify-between">
-                        <span class="text-sm text-gray-800">NOP</span>
-                        <form>
-                          <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                            <!-- Lead Information Card: spans 2 columns on large screens -->
-                            <div class="lg:col-span-2 space-y-8">
-                              <div class="glassmorphic-card p-6 rounded-2xl shadow-soft transition-shadow duration-300"
-                                style="min-height:260px;">
-                                <h3 class="flex items-center text-lg font-bold text-dark-text mb-6">
-                                  <span class="material-symbols-outlined mr-3 text-primary filled">apartment</span>
-                                  Lead Information
-                                </h3>
-                                <div class="grid grid-cols-2 gap-x-8 gap-y-6">
-                                  <div>
-                                    <label class="block text-sm font-medium text-gray-600 mb-2"
-                                      for="account-name">Account Name <span class="text-red-500">*</span></label>
-                                    <select
-                                      class="w-full bg-light-gray border-none rounded-xl focus:ring-2 focus:ring-primary text-sm"
-                                      id="account-name" required>
-                                      <option value="">Select Account</option>
-                                      <!-- Add account options here -->
-                                    </select>
-                                  </div>
-                                  <div>
-                                    <label class="block text-sm font-medium text-gray-600 mb-2"
-                                      for="salutation">Salutation <span class="text-red-500">*</span></label>
-                                    <select
-                                      class="w-full bg-light-gray border-none rounded-xl focus:ring-2 focus:ring-primary text-sm"
-                                      id="salutation" required>
-                                      <option value="">Select salutation</option>
-                                      <option value="Mr.">Mr.</option>
-                                      <option value="Mrs.">Mrs.</option>
-                                      <option value="Ms.">Ms.</option>
-                                      <option value="Dr.">Dr.</option>
-                                      <option value="Prof.">Prof.</option>
-                                      <option value="Rev.">Rev.</option>
-                                      <option value="Other">Other</option>
-                                    </select>
-                                  </div>
-                                  <div>
-                                    <label class="block text-sm font-medium text-gray-600 mb-2" for="first-name">First
-                                      Name <span class="text-red-500">*</span></label>
-                                    <input
-                                      class="w-full bg-light-gray border-none rounded-xl focus:ring-2 focus:ring-primary text-sm"
-                                      id="first-name" placeholder="Enter your first name" type="text" required />
-                                  </div>
-                                  <div>
-                                    <label class="block text-sm font-medium text-gray-600 mb-2" for="last-name">Last
-                                      Name <span class="text-red-500">*</span></label>
-                                    <input
-                                      class="w-full bg-light-gray border-none rounded-xl focus:ring-2 focus:ring-primary text-sm"
-                                      id="last-name" placeholder="Enter your last name" type="text" required />
-                                  </div>
-                                  <div>
-                                    <label class="block text-sm font-medium text-gray-600 mb-2" for="lead-title">Title
-                                      <span class="text-red-500">*</span></label>
-                                    <input
-                                      class="w-full bg-light-gray border-none rounded-xl focus:ring-2 focus:ring-primary text-sm"
-                                      id="lead-title" placeholder="Enter the title" type="text" required />
-                                  </div>
-                                  <!-- The rest of the fields follow -->
-                                  <div>
-                                    <label class="block text-sm font-medium text-gray-600 mb-2" for="fax">Fax</label>
-                                    <input
-                                      class="w-full bg-light-gray border-none rounded-xl focus:ring-2 focus:ring-primary text-sm"
-                                      id="fax" placeholder="Enter fax number" type="text" />
-                                  </div>
-                                  <div>
-                                    <label class="block text-sm font-medium text-gray-600 mb-2"
-                                      for="email">Email</label>
-                                    <input
-                                      class="w-full bg-light-gray border-none rounded-xl focus:ring-2 focus:ring-primary text-sm"
-                                      id="email" placeholder="Enter email address" type="email" />
-                                  </div>
-                                  <div>
-                                    <label class="block text-sm font-medium text-gray-600 mb-2" for="lead-source">Lead
-                                      Source</label>
-                                    <select
-                                      class="w-full bg-light-gray border-none rounded-xl focus:ring-2 focus:ring-primary text-sm"
-                                      id="lead-source">
-                                      <option>--None--</option>
-                                      <option>Web</option>
-                                      <option>Phone Inquiry</option>
-                                      <option>Email</option>
-                                      <option>Partner</option>
-                                      <option>Other</option>
-                                    </select>
-                                  </div>
-                                  <div>
-                                    <label class="block text-sm font-medium text-gray-600 mb-2"
-                                      for="lead-industry">Industry</label>
-                                    <select
-                                      class="w-full bg-light-gray border-none rounded-xl focus:ring-2 focus:ring-primary text-sm"
-                                      id="lead-industry">
-                                      <option>--None--</option>
-                                      <option>Manufacturing</option>
-                                      <option>Services</option>
-                                      <option>Retail</option>
-                                      <option>Other</option>
-                                    </select>
-                                  </div>
-                                  <div>
-                                    <label class="block text-sm font-medium text-gray-600 mb-2" for="lead-status">Lead
-                                      Status <span class="text-red-500">*</span></label>
-                                    <select
-                                      class="w-full bg-light-gray border-none rounded-xl focus:ring-2 focus:ring-primary text-sm"
-                                      id="lead-status" required>
-                                      <option>Unqualified</option>
-                                      <option>New</option>
-                                      <option>Working</option>
-                                      <option>Nurturing</option>
-                                      <option>Converted</option>
-                                    </select>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            <!-- Address Information Card: sits to the right on large screens -->
-                            <div>
-                              <div class="glassmorphic-card p-6 rounded-2xl shadow-soft transition-shadow duration-300"
-                                style="min-height:260px;">
-                                <h3 class="flex items-center text-lg font-bold text-dark-text mb-6">
-                                  <span class="material-symbols-outlined mr-3 text-primary filled">info</span>
-                                  Address Information
-                                </h3>
-                                <label class="block text-sm font-medium text-gray-600 mb-2"
-                                  for="address-street">Address</label>
-                                <div class="grid grid-cols-4 gap-6 mb-6">
-                                  <input
-                                    class="w-full bg-light-gray border-none rounded-xl focus:ring-2 focus:ring-primary text-sm"
-                                    placeholder="Street" type="text" id="address-street" />
-                                  <input
-                                    class="w-full bg-light-gray border-none rounded-xl focus:ring-2 focus:ring-primary text-sm"
-                                    placeholder="City" type="text" id="address-city" />
-                                  <input
-                                    class="w-full bg-light-gray border-none rounded-xl focus:ring-2 focus:ring-primary text-sm"
-                                    placeholder="Province" type="text" id="address-province" />
-                                  <input
-                                    class="w-full bg-light-gray border-none rounded-xl focus:ring-2 focus:ring-primary text-sm"
-                                    placeholder="Zip Code" type="text" id="address-zip" />
-                                </div>
-                                <div>
-                                  <label class="block text-sm font-medium text-gray-600 mb-2"
-                                    for="description">Description:</label>
-                                  <textarea
-                                    class="w-full bg-light-gray border-none rounded-xl focus:ring-2 focus:ring-primary text-sm"
-                                    id="description" placeholder="Add a short description..." rows="3"></textarea>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <span id="textile-chevron"
-                            class="material-symbols-outlined text-lg transition-transform">expand_more</span>
-                          </button>
-
-                          <!-- Textile Expanded Content -->
-                          <div id="textile-content"
-                            class="hidden mt-2 bg-white border border-gray-200 rounded-lg overflow-hidden">
-                            <div class="px-6 py-4">
-                              <!-- Standards List -->
-                              <div class="space-y-3">
-                                <!-- GOTS -->
-                                <div class="flex items-center justify-between">
-                                  <span class="text-sm text-gray-800">GOTS</span>
-                                  <form>
-                                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                                      <!-- Lead Information Card: spans 2 columns on large screens -->
-                                      <div class="lg:col-span-2 space-y-8 h-full">
-                                        <div
-                                          class="glassmorphic-card p-6 rounded-2xl shadow-soft transition-shadow duration-300 h-full"
-                                          style="min-height:260px;">
-                                          <h3 class="flex items-center text-lg font-bold text-dark-text mb-6">
-                                            <span
-                                              class="material-symbols-outlined mr-3 text-primary filled">apartment</span>
-                                            Lead Information
-                                          </h3>
-                                          <div class="grid grid-cols-2 gap-x-8 gap-y-6">
-                                            <div>
-                                              <label class="block text-sm font-medium text-gray-600 mb-2"
-                                                for="account-name">Account Name <span
-                                                  class="text-red-500">*</span></label>
-                                              <select
-                                                class="w-full bg-light-gray border-none rounded-xl focus:ring-2 focus:ring-primary text-sm"
-                                                id="account-name" required>
-                                                <option value="">Select Account</option>
-                                                <!-- Add account options here -->
-                                              </select>
-                                            </div>
-                                            <div>
-                                              <label class="block text-sm font-medium text-gray-600 mb-2"
-                                                for="salutation">Salutation <span class="text-red-500">*</span></label>
-                                              <select
-                                                class="w-full bg-light-gray border-none rounded-xl focus:ring-2 focus:ring-primary text-sm"
-                                                id="salutation" required>
-                                                <option value="">Select salutation</option>
-                                                <option value="Mr.">Mr.</option>
-                                                <option value="Mrs.">Mrs.</option>
-                                                <option value="Ms.">Ms.</option>
-                                                <option value="Dr.">Dr.</option>
-                                                <option value="Prof.">Prof.</option>
-                                                <option value="Rev.">Rev.</option>
-                                                <option value="Other">Other</option>
-                                              </select>
-                                            </div>
-                                            <div>
-                                              <label class="block text-sm font-medium text-gray-600 mb-2"
-                                                for="first-name">First Name <span class="text-red-500">*</span></label>
-                                              <input
-                                                class="w-full bg-light-gray border-none rounded-xl focus:ring-2 focus:ring-primary text-sm"
-                                                id="first-name" placeholder="Enter your first name" type="text"
-                                                required />
-                                            </div>
-                                            <div>
-                                              <label class="block text-sm font-medium text-gray-600 mb-2"
-                                                for="last-name">Last Name <span class="text-red-500">*</span></label>
-                                              <input
-                                                class="w-full bg-light-gray border-none rounded-xl focus:ring-2 focus:ring-primary text-sm"
-                                                id="last-name" placeholder="Enter your last name" type="text"
-                                                required />
-                                            </div>
-                                            <div>
-                                              <label class="block text-sm font-medium text-gray-600 mb-2"
-                                                for="lead-title">Title <span class="text-red-500">*</span></label>
-                                              <input
-                                                class="w-full bg-light-gray border-none rounded-xl focus:ring-2 focus:ring-primary text-sm"
-                                                id="lead-title" placeholder="Enter the title" type="text" required />
-                                            </div>
-                                            <!-- The rest of the fields follow -->
-                                            <div>
-                                              <label class="block text-sm font-medium text-gray-600 mb-2"
-                                                for="fax">Fax</label>
-                                              <input
-                                                class="w-full bg-light-gray border-none rounded-xl focus:ring-2 focus:ring-primary text-sm"
-                                                id="fax" placeholder="Enter fax number" type="text" />
-                                            </div>
-                                            <div>
-                                              <label class="block text-sm font-medium text-gray-600 mb-2"
-                                                for="email">Email</label>
-                                              <input
-                                                class="w-full bg-light-gray border-none rounded-xl focus:ring-2 focus:ring-primary text-sm"
-                                                id="email" placeholder="Enter email address" type="email" />
-                                            </div>
-                                            <div>
-                                              <label class="block text-sm font-medium text-gray-600 mb-2"
-                                                for="lead-source">Lead Source</label>
-                                              <select
-                                                class="w-full bg-light-gray border-none rounded-xl focus:ring-2 focus:ring-primary text-sm"
-                                                id="lead-source">
-                                                <option>--None--</option>
-                                                <option>Web</option>
-                                                <option>Phone Inquiry</option>
-                                                <option>Email</option>
-                                                <option>Partner</option>
-                                                <option>Other</option>
-                                              </select>
-                                            </div>
-                                            <div>
-                                              <label class="block text-sm font-medium text-gray-600 mb-2"
-                                                for="lead-industry">Industry</label>
-                                              <select
-                                                class="w-full bg-light-gray border-none rounded-xl focus:ring-2 focus:ring-primary text-sm"
-                                                id="lead-industry">
-                                                <option>--None--</option>
-                                                <option>Manufacturing</option>
-                                                <option>Services</option>
-                                                <option>Retail</option>
-                                                <option>Other</option>
-                                              </select>
-                                            </div>
-                                            <div>
-                                              <label class="block text-sm font-medium text-gray-600 mb-2"
-                                                for="lead-status">Lead Status <span
-                                                  class="text-red-500">*</span></label>
-                                              <select
-                                                class="w-full bg-light-gray border-none rounded-xl focus:ring-2 focus:ring-primary text-sm"
-                                                id="lead-status" required>
-                                                <option>Unqualified</option>
-                                                <option>New</option>
-                                                <option>Working</option>
-                                                <option>Nurturing</option>
-                                                <option>Converted</option>
-                                              </select>
-                                            </div>
-                                          </div>
-                                        </div>
-                                      </div>
-                                      <!-- Address Information Card: sits to the right on large screens -->
-                                      <div class="h-full">
-                                        <div
-                                          class="glassmorphic-card p-6 rounded-2xl shadow-soft transition-shadow duration-300 h-full"
-                                          style="min-height:260px;">
-                                          <h3 class="flex items-center text-lg font-bold text-dark-text mb-6">
-                                            <span class="material-symbols-outlined mr-3 text-primary filled">info</span>
-                                            Address Information
-                                          </h3>
-                                          <label class="block text-sm font-medium text-gray-600 mb-2"
-                                            for="address-street">Address</label>
-                                          <div class="grid grid-cols-4 gap-6 mb-6">
-                                            <input
-                                              class="w-full bg-light-gray border-none rounded-xl focus:ring-2 focus:ring-primary text-sm"
-                                              placeholder="Street" type="text" id="address-street" />
-                                            <input
-                                              class="w-full bg-light-gray border-none rounded-xl focus:ring-2 focus:ring-primary text-sm"
-                                              placeholder="City" type="text" id="address-city" />
-                                            <input
-                                              class="w-full bg-light-gray border-none rounded-xl focus:ring-2 focus:ring-primary text-sm"
-                                              placeholder="Province" type="text" id="address-province" />
-                                            <input
-                                              class="w-full bg-light-gray border-none rounded-xl focus:ring-2 focus:ring-primary text-sm"
-                                              placeholder="Zip Code" type="text" id="address-zip" />
-                                          </div>
-                                          <div>
-                                            <label class="block text-sm font-medium text-gray-600 mb-2"
-                                              for="description">Description:</label>
-                                            <textarea
-                                              class="w-full bg-light-gray border-none rounded-xl focus:ring-2 focus:ring-primary text-sm"
-                                              id="description" placeholder="Add a short description..."
-                                              rows="3"></textarea>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>
-                                    <span class="font-medium text-sm">Social</span>
-                                </div>
-                                <span class="material-symbols-outlined text-lg">expand_more</span>
-                                </button>
-
-                                <!-- Food safety -->
-                                <button
-                                  class="w-full flex items-center justify-between px-4 py-3 bg-[#42c5f5] hover:bg-[#38b4e3] text-white rounded-lg transition-all shadow-sm">
-                                  <div class="flex items-center gap-2.5">
-                                    <span class="material-symbols-outlined text-lg">restaurant</span>
-                                    <span class="font-medium text-sm">Food safety</span>
-                                  </div>
-                                  <span class="material-symbols-outlined text-lg">expand_more</span>
-                                </button>
-
-                                <!-- Other -->
-                                <button
-                                  class="w-full flex items-center justify-between px-4 py-3 bg-[#42c5f5] hover:bg-[#38b4e3] text-white rounded-lg transition-all shadow-sm">
-                                  <div class="flex items-center gap-2.5">
-                                    <span class="material-symbols-outlined text-lg">more_horiz</span>
-                                    <span class="font-medium text-sm">Other</span>
-                                  </div>
-                                  <span class="material-symbols-outlined text-lg">expand_more</span>
-                                </button>
-
-                                <!-- System -->
-                                <button
-                                  class="w-full flex items-center justify-between px-4 py-3 bg-[#42c5f5] hover:bg-[#38b4e3] text-white rounded-lg transition-all shadow-sm">
-                                  <div class="flex items-center gap-2.5">
-                                    <span class="material-symbols-outlined text-lg">settings</span>
-                                    <span class="font-medium text-sm">System</span>
-                                  </div>
-                                  <span class="material-symbols-outlined text-lg">expand_more</span>
-                                </button>
-
-                                <!-- Tourism -->
-                                <button
-                                  class="w-full flex items-center justify-between px-4 py-3 bg-[#42c5f5] hover:bg-[#38b4e3] text-white rounded-lg transition-all shadow-sm">
-                                  <div class="flex items-center gap-2.5">
-                                    <span class="material-symbols-outlined text-lg">travel_explore</span>
-                                    <span class="font-medium text-sm">Tourism</span>
-                                  </div>
-                                  <span class="material-symbols-outlined text-lg">expand_more</span>
-                                </button>
-
-                                <!-- Assurance Services -->
-                                <button
-                                  class="w-full flex items-center justify-between px-4 py-3 bg-[#42c5f5] hover:bg-[#38b4e3] text-white rounded-lg transition-all shadow-sm">
-                                  <div class="flex items-center gap-2.5">
-                                    <span class="material-symbols-outlined text-lg">verified_user</span>
-                                    <span class="font-medium text-sm">Assurance Services</span>
-                                  </div>
-                                  <span class="material-symbols-outlined text-lg">expand_more</span>
-                                </button>
-
-                                <!-- Forestry -->
-                                <button
-                                  class="w-full flex items-center justify-between px-4 py-3 bg-[#42c5f5] hover:bg-[#38b4e3] text-white rounded-lg transition-all shadow-sm">
-                                  <div class="flex items-center gap-2.5">
-                                    <span class="material-symbols-outlined text-lg">park</span>
-                                    <span class="font-medium text-sm">Forestry</span>
-                                  </div>
-                                  <span class="material-symbols-outlined text-lg">expand_more</span>
-                                </button>
-                              </div>
-                            </div>
-                          </div>
+                <div id="organic-content" class="service-category-content mt-2 bg-white border border-gray-200 rounded-lg overflow-hidden transition-all duration-300 ease-in-out" style="max-height: 0; opacity: 0; padding: 0; margin-top: 0;">
+                  <div class="px-4 py-3">
+                    <div class="grid grid-cols-12 gap-3 items-center border-b pb-2 mb-3 text-xs text-slate-500"><div class="col-span-12">Standard</div></div>
+                    <div class="space-y-2">
+                      <div class="grid grid-cols-12 gap-3 items-center bg-white rounded p-2">
+                        <div class="col-span-12 flex items-center gap-3">
+                          <input type="checkbox" class="standard-checkbox w-4 h-4 border-2 border-gray-300 rounded cursor-pointer accent-cyan-500" data-standard="NOP" aria-label="Select NOP">
+                          <span class="text-sm text-gray-800">NOP</span>
+                        </div>
                       </div>
-
-                      <!-- Footer -->
-                      <div
-                        class="bg-white border-t border-gray-200 px-6 py-3.5 flex items-center justify-end gap-3 flex-shrink-0">
-                        <button onclick="saveServices()"
-                          class="px-5 py-2.5 bg-[#1b1e42] hover:bg-[#1b1e42] text-white rounded-lg font-medium text-sm transition-all shadow-sm">Save</button>
-
+                      <div class="grid grid-cols-12 gap-3 items-center bg-white rounded p-2">
+                        <div class="col-span-12 flex items-center gap-3">
+                          <input type="checkbox" class="standard-checkbox w-4 h-4 border-2 border-gray-300 rounded cursor-pointer accent-cyan-500" data-standard="SL Organic" aria-label="Select SL Organic">
+                          <span class="text-sm text-gray-800">SL Organic</span>
+                        </div>
+                      </div>
+                      <div class="grid grid-cols-12 gap-3 items-center bg-white rounded p-2">
+                        <div class="col-span-12 flex items-center gap-3">
+                          <input type="checkbox" class="standard-checkbox w-4 h-4 border-2 border-gray-300 rounded cursor-pointer accent-cyan-500" data-standard="ROC" aria-label="Select ROC">
+                          <span class="text-sm text-gray-800">ROC</span>
+                        </div>
+                      </div>
+                      <div class="grid grid-cols-12 gap-3 items-center bg-white rounded p-2">
+                        <div class="col-span-12 flex items-center gap-3">
+                          <input type="checkbox" class="standard-checkbox w-4 h-4 border-2 border-gray-300 rounded cursor-pointer accent-cyan-500" data-standard="GOLS" aria-label="Select GOLS">
+                          <span class="text-sm text-gray-800">GOLS</span>
+                        </div>
+                      </div>
+                      <div class="grid grid-cols-12 gap-3 items-center bg-white rounded p-2">
+                        <div class="col-span-12 flex items-center gap-3">
+                          <input type="checkbox" class="standard-checkbox w-4 h-4 border-2 border-gray-300 rounded cursor-pointer accent-cyan-500" data-standard="BIOSuisse" aria-label="Select BIOSuisse">
+                          <span class="text-sm text-gray-800">BIOSuisse</span>
+                        </div>
+                      </div>
+                      <div class="grid grid-cols-12 gap-3 items-center bg-white rounded p-2">
+                        <div class="col-span-12 flex items-center gap-3">
+                          <input type="checkbox" class="standard-checkbox w-4 h-4 border-2 border-gray-300 rounded cursor-pointer accent-cyan-500" data-standard="Korean Organic" aria-label="Select Korean Organic">
+                          <span class="text-sm text-gray-800">Korean Organic</span>
+                        </div>
                       </div>
                     </div>
+                  </div>
+                </div>
+              </div>
 
-                    <!-- Add Contact Modal -->
+              <div class="w-full">
+                <button onclick="toggleServiceCategory('textile')"
+                  class="service-category-btn w-full flex items-center justify-between px-4 py-3 bg-[#42c5f5] hover:bg-[#38b4e3] hover:shadow-lg hover:shadow-cyan-500/30 text-white rounded-lg transition-all duration-300 ease-in-out shadow-sm group">
+                  <div class="flex items-center gap-2.5">
+                    <span class="material-symbols-outlined text-lg transition-transform duration-300 group-hover:scale-110">checkroom</span>
+                    <span class="font-medium text-sm">Textile</span>
+                  </div>
+                  <span id="textile-chevron" class="material-symbols-outlined text-lg transition-all duration-300 ease-in-out" style="transform: rotate(180deg);">expand_more</span>
+                </button>
+                <div id="textile-content" class="service-category-content mt-2 bg-white border border-gray-200 rounded-lg overflow-hidden transition-all duration-300 ease-in-out" style="max-height: 400px; opacity: 1;">
+                  <div class="px-4 py-3">
+                    <div class="grid grid-cols-12 gap-3 items-center border-b pb-2 mb-3 text-xs text-slate-500"><div class="col-span-12">Program</div></div>
+                    <div class="space-y-2">
+                      <div class="grid grid-cols-12 gap-3 items-center bg-white rounded p-2">
+                        <div class="col-span-12 flex items-center gap-3">
+                          <input type="checkbox" class="standard-checkbox w-4 h-4 border-2 border-gray-300 rounded cursor-pointer accent-cyan-500" data-standard="GOTS" aria-label="Select GOTS">
+                          <span class="text-sm text-gray-800">GOTS</span>
+                        </div>
+                      </div>
+                      <div class="grid grid-cols-12 gap-3 items-center bg-white rounded p-2">
+                        <div class="col-span-12 flex items-center gap-3">
+                          <input type="checkbox" class="standard-checkbox w-4 h-4 border-2 border-gray-300 rounded accent-cyan-500 cursor-not-allowed" data-standard="GRS" aria-label="Select GRS" checked disabled>
+                          <span class="text-sm text-gray-800">GRS</span>
+                        </div>
+                      </div>
+                      <div class="grid grid-cols-12 gap-3 items-center bg-white rounded p-2">
+                        <div class="col-span-12 flex items-center gap-3">
+                          <input type="checkbox" class="standard-checkbox w-4 h-4 border-2 border-gray-300 rounded cursor-pointer accent-cyan-500" data-standard="OCS" aria-label="Select OCS">
+                          <span class="text-sm text-gray-800">OCS</span>
+                        </div>
+                      </div>
+                      <div class="grid grid-cols-12 gap-3 items-center bg-white rounded p-2">
+                        <div class="col-span-12 flex items-center gap-3">
+                          <input type="checkbox" class="standard-checkbox w-4 h-4 border-2 border-gray-300 rounded cursor-pointer accent-cyan-500" data-standard="RCS" aria-label="Select RCS">
+                          <span class="text-sm text-gray-800">RCS</span>
+                        </div>
+                      </div>
+                      <div class="grid grid-cols-12 gap-3 items-center bg-white rounded p-2">
+                        <div class="col-span-12 flex items-center gap-3">
+                          <input type="checkbox" class="standard-checkbox w-4 h-4 border-2 border-gray-300 rounded cursor-pointer accent-cyan-500" data-standard="BCI" aria-label="Select BCI">
+                          <span class="text-sm text-gray-800">BCI</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <button class="w-full flex items-center justify-between px-4 py-3 bg-[#42c5f5] hover:bg-[#38b4e3] text-white rounded-lg transition-all shadow-sm">
+                <div class="flex items-center gap-2.5">
+                  <span class="material-symbols-outlined text-lg">agriculture</span>
+                  <span class="font-medium text-sm">Agriculture</span>
+                </div>
+                <span class="material-symbols-outlined text-lg">expand_more</span>
+              </button>
+              <button class="w-full flex items-center justify-between px-4 py-3 bg-[#42c5f5] hover:bg-[#38b4e3] text-white rounded-lg transition-all shadow-sm">
+                <div class="flex items-center gap-2.5">
+                  <span class="material-symbols-outlined text-lg">water_drop</span>
+                  <span class="font-medium text-sm">Aqua</span>
+                </div>
+                <span class="material-symbols-outlined text-lg">expand_more</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Academy Column -->
+        <div class="flex-1 flex flex-col bg-white rounded-2xl shadow-sm overflow-hidden">
+          <div class="bg-[#1b1e42] px-6 py-3 rounded-t-2xl flex-shrink-0">
+            <h3 class="text-white font-semibold text-sm">Academy</h3>
+          </div>
+          <div class="flex-1 flex items-center justify-center p-6 bg-white">
+            <div class="text-center">
+              <div class="w-16 h-16 mx-auto mb-4 bg-blue-50 rounded-full flex items-center justify-center">
+                <span class="material-symbols-outlined text-3xl text-blue-300">inventory_2</span>
+              </div>
+              <p class="text-gray-800 font-medium text-sm mb-1">No categories available</p>
+              <p class="text-blue-400 text-xs">Check back later for updates</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white border-t border-gray-200 px-6 py-3.5 flex items-center justify-end gap-3 flex-shrink-0">
+        <button onclick="saveServices()" class="px-5 py-2.5 bg-[#1b1e42] hover:bg-[#1b1e42] text-white rounded-lg font-medium text-sm transition-all shadow-sm">Save</button>
+      </div>
+    </div>
+  </div>
+
+
+
+  <!-- Add Contact Modal -->
                     <div id="addContactModal" class="fixed inset-0 z-[10001] hidden" aria-hidden="true">
                       <div class="fixed inset-0 bg-black/50" onclick="closeAddContactModal()"></div>
                       <div
@@ -1565,17 +1291,54 @@ select {
                               function toggleServiceCategory(categoryId) {
                                 const content = document.getElementById(categoryId + '-content');
                                 const chevron = document.getElementById(categoryId + '-chevron');
+                                const button = chevron ? chevron.closest('button') : null;
                                 if (content && chevron) {
-                                  content.classList.toggle('hidden');
-                                  if (content.classList.contains('hidden')) {
+                                  const isExpanded = content.style.maxHeight && content.style.maxHeight !== '0px';
+                                  if (isExpanded) {
+                                    content.style.maxHeight = '0';
+                                    content.style.opacity = '0';
+                                    content.style.padding = '0';
+                                    content.style.marginTop = '0';
                                     chevron.style.transform = 'rotate(0deg)';
+                                    chevron.style.color = '';
+                                    if (button) {
+                                      button.classList.remove('shadow-lg', 'shadow-cyan-500/40');
+                                      button.style.background = '';
+                                    }
                                   } else {
+                                    content.style.maxHeight = content.scrollHeight + 100 + 'px';
+                                    content.style.opacity = '1';
+                                    content.style.padding = '';
+                                    content.style.marginTop = '0.5rem';
                                     chevron.style.transform = 'rotate(180deg)';
+                                    chevron.style.color = '#fbbf24';
+                                    if (button) {
+                                      button.classList.add('shadow-lg', 'shadow-cyan-500/40');
+                                      button.style.background = 'linear-gradient(135deg, #38b4e3, #0ea5e9)';
+                                    }
                                   }
                                 }
                               }
                             </script>
-
+                            <script>
+                            function openServicesModal() {
+                              var modal = document.getElementById('selectServicesModal');
+                              if (modal) {
+                                modal.classList.remove('hidden');
+                                modal.style.display = 'flex';
+                                document.body.style.overflow = 'hidden';
+                              }
+                            }
+                            function closeServicesModal() {
+                              var modal = document.getElementById('selectServicesModal');
+                              if (modal) {
+                                modal.classList.add('hidden');
+                                modal.style.display = 'none';
+                                document.body.style.overflow = '';
+                              }
+                            }
+                            </script>
+                            <script>
                             // Set active section
                             function toggleCategory(category) {
                             const items = document.getElementById(category + '-items');
