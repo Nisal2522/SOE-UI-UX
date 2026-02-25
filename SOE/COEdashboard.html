@@ -781,6 +781,30 @@
       margin-top: 2rem;
       text-align: center;
     }
+    .floating-revenue-chart .revenue-program-hover {
+      cursor: pointer;
+    }
+    .revenue-bar-tooltip {
+      position: fixed;
+      z-index: 100;
+      padding: 0.5rem 0.75rem;
+      background: #1e293b;
+      color: #f8fafc;
+      font-size: 0.8125rem;
+      border-radius: 0.5rem;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      pointer-events: none;
+      white-space: nowrap;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.15s ease, visibility 0.15s ease;
+    }
+    .revenue-bar-tooltip[aria-hidden="false"] {
+      opacity: 1;
+      visibility: visible;
+    }
+    .revenue-bar-tooltip .tooltip-line { display: block; }
+    .revenue-bar-tooltip .tooltip-line + .tooltip-line { margin-top: 0.25rem; }
     @media (max-width: 768px) {
       .floating-revenue-chart .chart-wrap { min-height: 19rem; }
       .floating-revenue-chart .plot-area { height: 18rem; }
@@ -1746,12 +1770,12 @@
       text-transform: uppercase;
     }
     .tatx-country-colhead {
-      background: #3eb2ed !important;
+      background: #1b1e42 !important;
       color: #ffffff !important;
       font-weight: 700;
       font-size: 0.82rem;
       letter-spacing: 0.03em;
-      border: 1px solid #8bd1f4 !important;
+      border: 1px solid #394070 !important;
       height: 38px;
       box-sizing: border-box;
       text-transform: uppercase;
@@ -1804,7 +1828,7 @@
     .tatx-prog-srccs    { background: #8bd1f4 !important; color: #1b1e42 !important; }
     .tatx-prog-bci      { background: #e4eaea !important; color: #1b1e42 !important; }
     .tatx-country-start {
-      border-left: 2px solid #3eb2ed !important;
+      border-left: 4px solid #ffffff !important;
     }
     .tatx-head-spacer {
       background: #1b1e42 !important;
@@ -1849,7 +1873,7 @@
       border-left: none !important;
     }
     #serviceTatCard #tatxProgTable .tatx-country-colhead {
-      background: #59B4E3 !important;
+      background: #1F263E !important;
       color: #ffffff !important;
       border: 1px solid #59B4E3 !important;
     }
@@ -1870,7 +1894,7 @@
       border: 1px solid #59B4E3 !important;
     }
     #serviceTatCard .tatx-country-start {
-      border-left: 2px solid #59B4E3 !important;
+      border-left: 4px solid #ffffff !important;
     }
     /* Service TAT card – professional alignment & clear grid lines */
     #serviceTatCard .tatx-grid-wrap {
@@ -1958,7 +1982,7 @@
     #costOverProgramCard #costxCatTable thead tr:first-child th:first-child { border-top-left-radius: 10px; }
     #costOverProgramCard #costxCritTable thead tr:first-child th { border-left: none !important; }
     #costOverProgramCard #costxProgTable .tatx-country-colhead {
-      background: #59B4E3 !important;
+      background: #1F263E !important;
       color: #ffffff !important;
       border: 1px solid #59B4E3 !important;
     }
@@ -1969,7 +1993,7 @@
       color: #ffffff !important;
       border: 1px solid #59B4E3 !important;
     }
-    #costOverProgramCard .tatx-country-start { border-left: 2px solid #59B4E3 !important; }
+    #costOverProgramCard .tatx-country-start { border-left: 4px solid #ffffff !important; }
     #costOverProgramCard .tatx-grid-wrap {
       border: 1px solid #d0d7e2;
       border-radius: 10px;
@@ -2053,13 +2077,13 @@
     #strategyOverviewCard #strategyxCatTable thead tr:first-child th:first-child { border-top-left-radius: 10px; }
     #strategyOverviewCard #strategyxCritTable thead tr:first-child th { border-left: none !important; }
     #strategyOverviewCard #strategyxProgTable .tatx-country-colhead {
-      background: #59B4E3 !important;
+      background: #1F263E !important;
       color: #ffffff !important;
       border: 1px solid #59B4E3 !important;
     }
     #strategyOverviewCard #strategyxProgTable thead tr:nth-child(2) th:first-child { border-left: 1px solid #59B4E3 !important; }
     #strategyOverviewCard #strategyxProgTable thead tr:nth-child(2) th:last-child { border-top-right-radius: 10px; }
-    #strategyOverviewCard .tatx-country-start { border-left: 2px solid #59B4E3 !important; }
+    #strategyOverviewCard .tatx-country-start { border-left: 4px solid #ffffff !important; }
     #strategyOverviewCard .tatx-grid-wrap {
       border: 1px solid #d0d7e2;
       border-radius: 10px;
@@ -3935,33 +3959,34 @@
                         <span>1000</span>
                         <span>0</span>
                       </div>
-                      <div class="program-grid">
-                        <figure class="program m-0" style="--start: 2500; --delta: 1000;">
+                      <div class="program-grid" id="floatingRevenueProgramGrid">
+                        <figure class="program m-0 revenue-program-hover" style="--start: 2500; --delta: 1000;" data-last-year="2500" data-this-year="3500" title="Last Year Revenue: 2,500&#10;This Year Revenue: 3,500">
                           <span class="change-tag growth">+40%</span>
                           <span class="floating-bar growth" aria-hidden="true"></span>
                           <figcaption class="program-name">GOTS</figcaption>
                         </figure>
-                        <figure class="program m-0" style="--start: 3000; --delta: 1500;">
+                        <figure class="program m-0 revenue-program-hover" style="--start: 3000; --delta: 1500;" data-last-year="3000" data-this-year="4500" title="Last Year Revenue: 3,000&#10;This Year Revenue: 4,500">
                           <span class="change-tag growth">+50%</span>
                           <span class="floating-bar growth" aria-hidden="true"></span>
                           <figcaption class="program-name">GRS</figcaption>
                         </figure>
-                        <figure class="program m-0" style="--start: 3400; --delta: 1200;">
+                        <figure class="program m-0 revenue-program-hover" style="--start: 3400; --delta: 1200;" data-last-year="3400" data-this-year="2200" title="Last Year Revenue: 3,400&#10;This Year Revenue: 2,200">
                           <span class="change-tag loss">-35%</span>
                           <span class="floating-bar loss" aria-hidden="true"></span>
                           <figcaption class="program-name">RCS</figcaption>
                         </figure>
-                        <figure class="program m-0" style="--start: 3000; --delta: 900;">
+                        <figure class="program m-0 revenue-program-hover" style="--start: 3000; --delta: 900;" data-last-year="3000" data-this-year="3900" title="Last Year Revenue: 3,000&#10;This Year Revenue: 3,900">
                           <span class="change-tag growth">+30%</span>
                           <span class="floating-bar growth" aria-hidden="true"></span>
                           <figcaption class="program-name">OCS</figcaption>
                         </figure>
-                        <figure class="program m-0" style="--start: 3400; --delta: 1400;">
+                        <figure class="program m-0 revenue-program-hover" style="--start: 3400; --delta: 1400;" data-last-year="3400" data-this-year="2000" title="Last Year Revenue: 3,400&#10;This Year Revenue: 2,000">
                           <span class="change-tag loss">-41%</span>
                           <span class="floating-bar loss" aria-hidden="true"></span>
                           <figcaption class="program-name">Regen-Agri</figcaption>
                         </figure>
                       </div>
+                      <div id="revenueBarTooltip" class="revenue-bar-tooltip" role="tooltip" aria-hidden="true"></div>
                     </div>
                     <p class="axis-label axis-label-x">Programs</p>
                   </div>
@@ -4317,6 +4342,27 @@
       const clientPortfolioCard = document.getElementById('clientPortfolioCard');
       const marketShareCard = document.getElementById('marketShareCard');
       const revenueCard = document.getElementById('revenueCard');
+      (function () {
+        var grid = document.getElementById('floatingRevenueProgramGrid');
+        var tooltip = document.getElementById('revenueBarTooltip');
+        if (!grid || !tooltip) return;
+        function formatNum(n) { return Number(n).toLocaleString(); }
+        function updatePosition(e) {
+          tooltip.style.left = (e.clientX + 14) + 'px';
+          tooltip.style.top = (e.clientY + 14) + 'px';
+        }
+        grid.querySelectorAll('.revenue-program-hover').forEach(function (fig) {
+          fig.addEventListener('mouseenter', function (e) {
+            var last = fig.getAttribute('data-last-year');
+            var thisY = fig.getAttribute('data-this-year');
+            tooltip.innerHTML = '<span class="tooltip-line">Last Year Revenue: ' + formatNum(last) + '</span><span class="tooltip-line">This Year Revenue: ' + formatNum(thisY) + '</span>';
+            tooltip.setAttribute('aria-hidden', 'false');
+            updatePosition(e);
+          });
+          fig.addEventListener('mouseleave', function () { tooltip.setAttribute('aria-hidden', 'true'); });
+          fig.addEventListener('mousemove', updatePosition);
+        });
+      })();
       const employeeDistCard = document.getElementById('employeeDistCard');
       const bizTabBusiness = document.getElementById('bizTabBusiness');
       const bizTabOperation = document.getElementById('bizTabOperation');
@@ -5237,8 +5283,9 @@
       }
       function renderTatxProgramColumns(selectedCountries) {
         if (!tatxProgTable) return;
-        var headTop = '<tr>' + selectedCountries.map(function (country) {
-          return '<th class="tatx-country-colhead" colspan="' + tatxPrograms.length + '">' + country + '</th>';
+        var headTop = '<tr>' + selectedCountries.map(function (country, countryIndex) {
+          var dividerClass = countryIndex > 0 ? ' tatx-country-start' : '';
+          return '<th class="tatx-country-colhead' + dividerClass + '" colspan="' + tatxPrograms.length + '">' + country + '</th>';
         }).join('') + '</tr>';
         var headBottom = '<tr>' + selectedCountries.map(function (_, countryIndex) {
           return tatxPrograms.map(function (program, programIndex) {
@@ -5375,8 +5422,9 @@
       }
       function renderCostxProgramColumns(selectedCountries) {
         if (!costxProgTable) return;
-        var headTop = '<tr>' + selectedCountries.map(function (country) {
-          return '<th class="tatx-country-colhead" colspan="' + tatxPrograms.length + '">' + country + '</th>';
+        var headTop = '<tr>' + selectedCountries.map(function (country, countryIndex) {
+          var dividerClass = countryIndex > 0 ? ' tatx-country-start' : '';
+          return '<th class="tatx-country-colhead' + dividerClass + '" colspan="' + tatxPrograms.length + '">' + country + '</th>';
         }).join('') + '</tr>';
         var headBottom = '<tr>' + selectedCountries.map(function (_, countryIndex) {
           return tatxPrograms.map(function (program, programIndex) {
