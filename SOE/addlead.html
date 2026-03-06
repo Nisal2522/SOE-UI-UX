@@ -606,11 +606,29 @@ select {
                   <div>
                     <label class="block text-sm font-medium text-gray-600 mb-2" for="account-name">Account Name <span
                         class="text-red-500">*</span></label>
-                    <select class="w-full bg-light-gray border-none rounded-xl focus:ring-2 focus:ring-primary text-sm"
-                      id="account-name" required>
-                      <option value="">Select Account</option>
-                      <!-- Add account options here -->
-                    </select>
+                    <div id="account-name-wrap" class="flex items-center gap-2">
+                      <div class="flex-1 flex items-center gap-2 min-w-0">
+                        <select class="flex-1 min-w-0 bg-light-gray border-none rounded-xl focus:ring-2 focus:ring-primary text-sm"
+                          id="account-name" required>
+                          <option value="">Select Account</option>
+                          <option value="ABC Holdings Ltd">ABC Holdings Ltd</option>
+                          <option value="Green Valley Exports">Green Valley Exports</option>
+                          <option value="Ceylon Tea Partners">Ceylon Tea Partners</option>
+                          <option value="Island Spices Co">Island Spices Co</option>
+                          <option value="Ocean Fresh Pvt Ltd">Ocean Fresh Pvt Ltd</option>
+                        </select>
+                        <button type="button" id="account-name-edit-btn" class="flex-shrink-0 p-1.5 rounded-lg text-gray-500 hover:bg-cu-light-blue-20 hover:text-primary transition-colors" title="Add or edit account name" aria-label="Edit account name">
+                          <span class="material-symbols-outlined text-lg">edit</span>
+                        </button>
+                      </div>
+                      <div id="account-name-inline-wrap" class="flex-1 hidden flex items-center gap-2 min-w-0">
+                        <input type="text" id="account-name-inline" class="flex-1 min-w-0 bg-light-gray border-none rounded-xl focus:ring-2 focus:ring-primary text-sm py-2 px-3"
+                          placeholder="Enter account name and press Enter to save" />
+                        <button type="button" id="account-name-inline-cancel" class="flex-shrink-0 p-1.5 rounded-lg text-gray-500 hover:bg-gray-200 transition-colors" title="Cancel" aria-label="Cancel">
+                          <span class="material-symbols-outlined text-lg">close</span>
+                        </button>
+                      </div>
+                    </div>
                   </div>
                   <div>
                     <label class="block text-sm font-medium text-gray-600 mb-2" for="salutation">Salutation <span
@@ -1513,6 +1531,75 @@ select {
                                   function(){ var openBtn=document.getElementById('openAddContactBtn'); if (openBtn)
                                   openBtn.addEventListener('click', function(e){ e.preventDefault();
                                   openAddContactModal(); }); }); </script>
+                                  <script>
+                                    // Account Name: pencil icon → show input; Enter or auto-save (debounce) → save and add to dropdown
+                                    (function () {
+                                      var autoSaveTimer = null;
+                                      var AUTO_SAVE_DELAY_MS = 1800;
+
+                                      function initAccountNameEdit() {
+                                        var selectEl = document.getElementById('account-name');
+                                        var wrap = document.getElementById('account-name-wrap');
+                                        var inlineWrap = document.getElementById('account-name-inline-wrap');
+                                        var inlineInput = document.getElementById('account-name-inline');
+                                        var editBtn = document.getElementById('account-name-edit-btn');
+                                        var cancelBtn = document.getElementById('account-name-inline-cancel');
+                                        if (!selectEl || !inlineWrap || !inlineInput || !editBtn) return;
+
+                                        function showDropdown() {
+                                          if (autoSaveTimer) { clearTimeout(autoSaveTimer); autoSaveTimer = null; }
+                                          selectEl.closest('.flex').classList.remove('hidden');
+                                          inlineWrap.classList.add('hidden');
+                                          inlineInput.value = '';
+                                        }
+                                        function showInline() {
+                                          selectEl.closest('.flex').classList.add('hidden');
+                                          inlineWrap.classList.remove('hidden');
+                                          inlineInput.value = selectEl.value ? (selectEl.options[selectEl.selectedIndex].text || '') : '';
+                                          inlineInput.focus();
+                                        }
+                                        function saveInline() {
+                                          if (autoSaveTimer) { clearTimeout(autoSaveTimer); autoSaveTimer = null; }
+                                          var val = (inlineInput.value || '').trim();
+                                          if (val) {
+                                            var opt = document.createElement('option');
+                                            opt.value = val;
+                                            opt.textContent = val;
+                                            var exists = Array.from(selectEl.options).some(function (o) { return (o.value || '').toLowerCase() === val.toLowerCase(); });
+                                            if (!exists) selectEl.appendChild(opt);
+                                            selectEl.value = val;
+                                          }
+                                          showDropdown();
+                                        }
+                                        function scheduleAutoSave() {
+                                          if (autoSaveTimer) clearTimeout(autoSaveTimer);
+                                          autoSaveTimer = setTimeout(function () {
+                                            autoSaveTimer = null;
+                                            saveInline();
+                                          }, AUTO_SAVE_DELAY_MS);
+                                        }
+
+                                        editBtn.addEventListener('click', function () { showInline(); });
+                                        cancelBtn.addEventListener('click', function () { showDropdown(); });
+                                        inlineInput.addEventListener('input', function () {
+                                          var val = (inlineInput.value || '').trim();
+                                          if (val) scheduleAutoSave(); else if (autoSaveTimer) { clearTimeout(autoSaveTimer); autoSaveTimer = null; }
+                                        });
+                                        inlineInput.addEventListener('keydown', function (e) {
+                                          if (e.key === 'Enter') { e.preventDefault(); saveInline(); }
+                                          if (e.key === 'Escape') { e.preventDefault(); showDropdown(); }
+                                        });
+                                        inlineInput.addEventListener('blur', function () {
+                                          if (document.activeElement !== cancelBtn) showDropdown();
+                                        });
+                                      }
+                                      if (document.readyState === 'loading') {
+                                        document.addEventListener('DOMContentLoaded', initAccountNameEdit);
+                                      } else {
+                                        initAccountNameEdit();
+                                      }
+                                    })();
+                                  </script>
                                   <script>
                                     document.addEventListener('DOMContentLoaded', function () {
                                       var hdr = document.getElementById('addHeader');
