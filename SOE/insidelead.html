@@ -76,12 +76,12 @@
 					</div>
 				</div>
 				<div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
-					<label class="text-sm text-slate-600">Status <span class="text-red-500">*</span></label>
+					<label class="text-sm text-slate-600">Priority</label>
 					<div class="md:col-span-2">
-						<select id="caseStatus" class="mt-1 w-full border rounded px-3 py-2 text-sm">
-							<option>New</option>
-							<option>Open</option>
-							<option>Closed</option>
+						<select id="casePriority" class="mt-1 w-full border rounded px-3 py-2 text-sm">
+							<option>High</option>
+							<option>Medium</option>
+							<option>Low</option>
 						</select>
 					</div>
 				</div>
@@ -91,9 +91,12 @@
 						<input id="caseSubject" class="mt-1 w-full border rounded px-3 py-2 text-sm" />
 					</div>
 				</div>
-				<div>
-					<label class="text-sm text-slate-600">Description</label>
-					<textarea id="caseDescription" class="mt-1 w-full border rounded px-3 py-2 text-sm h-36"></textarea>
+				<div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-start">
+					<label class="text-sm text-slate-600">Body</label>
+					<div class="md:col-span-2">
+						<textarea id="caseDescription"
+							class="mt-1 w-full border rounded px-3 py-2 text-sm h-36"></textarea>
+					</div>
 				</div>
 			</div>
 			<div class="flex items-center justify-end gap-3 px-6 py-4 border-t">
@@ -166,6 +169,15 @@
 						</select>
 						<input id="contactName" class="mt-1 w-full border border-slate-300 rounded px-3 py-2 text-sm bg-white focus:ring-2 focus:ring-[#3eb2ed]/30 focus:border-[#3eb2ed] outline-none"
 							placeholder="Enter name" />
+					</div>
+				</div>
+				<div class="grid grid-cols-3 gap-4 items-center">
+					<label class="text-sm text-slate-600">Contact Type :</label>
+					<div class="col-span-2">
+						<select id="contactType" class="mt-1 w-full border border-slate-300 rounded px-3 py-2 text-sm bg-white focus:ring-2 focus:ring-[#3eb2ed]/30 focus:border-[#3eb2ed] outline-none">
+							<option value="Normal user">Normal user</option>
+							<option value="Merchant">Merchant</option>
+						</select>
 					</div>
 				</div>
 				<div class="grid grid-cols-3 gap-4 items-center">
@@ -3197,7 +3209,7 @@
 					e.preventDefault();
 					const payload = {
 						contact: document.getElementById('caseContact')?.value || '',
-						status: document.getElementById('caseStatus')?.value || '',
+						priority: document.getElementById('casePriority')?.value || '',
 						subject: document.getElementById('caseSubject')?.value || '',
 						description: document.getElementById('caseDescription')?.value || ''
 					};
@@ -3290,7 +3302,7 @@
 					e.preventDefault();
 					var ptEl = document.getElementById('contactPositionType');
 					var ptVal = (ptEl && ptEl.value && ptEl.value !== '__new__') ? ptEl.value : '';
-					var payload = { salutation: document.getElementById('contactSalutation') ? document.getElementById('contactSalutation').value : '', position: document.getElementById('contactPosition') ? document.getElementById('contactPosition').value : '', positionType: ptVal, name: document.getElementById('contactName') ? document.getElementById('contactName').value : '', number: document.getElementById('contactNumber') ? document.getElementById('contactNumber').value : '', email: document.getElementById('contactEmail') ? document.getElementById('contactEmail').value : '', key: document.getElementById('contactKeyPerson') ? document.getElementById('contactKeyPerson').checked : false };
+					var payload = { salutation: document.getElementById('contactSalutation') ? document.getElementById('contactSalutation').value : '', contactType: document.getElementById('contactType') ? document.getElementById('contactType').value : '', position: document.getElementById('contactPosition') ? document.getElementById('contactPosition').value : '', positionType: ptVal, name: document.getElementById('contactName') ? document.getElementById('contactName').value : '', number: document.getElementById('contactNumber') ? document.getElementById('contactNumber').value : '', email: document.getElementById('contactEmail') ? document.getElementById('contactEmail').value : '', key: document.getElementById('contactKeyPerson') ? document.getElementById('contactKeyPerson').checked : false };
 					try { addContactToList(payload); } catch (err) { console.error(err); }
 					closeModal();
 				});

@@ -252,6 +252,15 @@
 					</div>
 				</div>
 				<div class="grid grid-cols-3 gap-4 items-center">
+					<label class="text-sm text-slate-600">Contact Type :</label>
+					<div class="col-span-2">
+						<select id="contactType" class="mt-1 w-full border border-slate-300 rounded px-3 py-2 text-sm bg-white focus:ring-2 focus:ring-[#3eb2ed]/30 focus:border-[#3eb2ed] outline-none">
+							<option value="Normal user">Normal user</option>
+							<option value="Merchant">Merchant</option>
+						</select>
+					</div>
+				</div>
+				<div class="grid grid-cols-3 gap-4 items-center">
 					<label class="text-sm text-slate-600">Position :</label>
 					<div class="col-span-2 relative" id="positionComboboxWrap">
 						<input type="text" id="contactPosition" class="mt-1 w-full border border-slate-300 rounded px-3 py-2 text-sm bg-white focus:ring-2 focus:ring-[#3eb2ed]/30 focus:border-[#3eb2ed] outline-none"
@@ -3615,6 +3624,7 @@
 					var ptVal = (ptEl && ptEl.value && ptEl.value !== '__new__') ? ptEl.value : '';
 					const payload = {
 						salutation: document.getElementById('contactSalutation') ? document.getElementById('contactSalutation').value : '',
+						contactType: document.getElementById('contactType') ? document.getElementById('contactType').value : '',
 						position: document.getElementById('contactPosition') ? document.getElementById('contactPosition').value : '',
 						positionType: ptVal,
 						name: document.getElementById('contactName') ? document.getElementById('contactName').value : '',
