@@ -2869,8 +2869,8 @@
                   <option value="Australia">Australia</option>
                   <option value="India">India</option>
                   <option value="Indonesia">Indonesia</option>
-                  <option value="UK">UK</option>
-                  <option value="Hungary">Hungary</option>
+                  <option value="Myanmar">Myanmar</option>
+                  <option value="Australia">Australia</option>
                   <option value="Sri Lanka">Sri Lanka</option>
                 </select>
                 <span class="coe-category-title" id="periodLabel">Period</span>
@@ -4022,7 +4022,7 @@
                     <span class="material-symbols-outlined">monitoring</span>
                   </div>
                   <div class="min-w-0">
-                    <h3 id="marketProgramTitle" class="market-program-title">Market Share Comparison Across Programs</h3>
+                    <h3 id="marketProgramTitle" class="market-program-title">Market Share Comparison Across Programs Compared to Last Year</h3>
                     <p class="market-program-subtitle">Program-wise market share with growth and loss status.</p>
                   </div>
                 </div>
@@ -5215,11 +5215,13 @@
       }
       function renderTatxCountryMenu() {
         if (!tatxCountryMenu) return;
-        tatxCountryMenu.innerHTML = tatxCountries.map(function (country) {
+        var allSelected = tatxSelectedCountries.size === tatxCountries.length;
+        var selectAllHtml = '<label class="tatx-multi-option tatx-select-all-option border-b border-slate-200 pb-2 mb-2"><input type="checkbox" data-select-all="tatx"' + (allSelected ? ' checked' : '') + '><span class="font-semibold">Select All</span></label>';
+        tatxCountryMenu.innerHTML = selectAllHtml + tatxCountries.map(function (country) {
           var checked = tatxSelectedCountries.has(country) ? ' checked' : '';
           return '<label class="tatx-multi-option"><input type="checkbox" data-country="' + country + '"' + checked + '><span>' + country + '</span></label>';
         }).join('');
-        tatxCountryMenu.querySelectorAll('input[type="checkbox"]').forEach(function (checkbox) {
+        tatxCountryMenu.querySelectorAll('input[data-country]').forEach(function (checkbox) {
           checkbox.addEventListener('change', function () {
             var country = checkbox.getAttribute('data-country');
             if (!country) return;
@@ -5230,10 +5232,29 @@
             } else {
               checkbox.checked = true;
             }
+            var selectAllCb = tatxCountryMenu.querySelector('input[data-select-all="tatx"]');
+            if (selectAllCb) selectAllCb.checked = tatxSelectedCountries.size === tatxCountries.length;
             updateTatxCountryTrigger();
             renderTatx();
           });
         });
+        var selectAllCb = tatxCountryMenu.querySelector('input[data-select-all="tatx"]');
+        if (selectAllCb) {
+          selectAllCb.addEventListener('change', function () {
+            if (selectAllCb.checked) {
+              tatxCountries.forEach(function (c) { tatxSelectedCountries.add(c); });
+            } else {
+              tatxSelectedCountries.clear();
+              tatxSelectedCountries.add('Sri Lanka');
+            }
+            tatxCountryMenu.querySelectorAll('input[data-country]').forEach(function (cb) {
+              cb.checked = tatxSelectedCountries.has(cb.getAttribute('data-country'));
+            });
+            selectAllCb.checked = tatxSelectedCountries.size === tatxCountries.length;
+            updateTatxCountryTrigger();
+            renderTatx();
+          });
+        }
       }
       function renderTatxFixedColumns(groups) {
         if (!tatxCatTable || !tatxCritTable) return;
@@ -5371,11 +5392,13 @@
       }
       function renderCostxCountryMenu() {
         if (!costxCountryMenu) return;
-        costxCountryMenu.innerHTML = tatxCountries.map(function (country) {
+        var allSelected = costxSelectedCountries.size === tatxCountries.length;
+        var selectAllHtml = '<label class="tatx-multi-option tatx-select-all-option border-b border-slate-200 pb-2 mb-2"><input type="checkbox" data-select-all="costx"' + (allSelected ? ' checked' : '') + '><span class="font-semibold">Select All</span></label>';
+        costxCountryMenu.innerHTML = selectAllHtml + tatxCountries.map(function (country) {
           var checked = costxSelectedCountries.has(country) ? ' checked' : '';
           return '<label class="tatx-multi-option"><input type="checkbox" data-country="' + country + '"' + checked + '><span>' + country + '</span></label>';
         }).join('');
-        costxCountryMenu.querySelectorAll('input[type="checkbox"]').forEach(function (checkbox) {
+        costxCountryMenu.querySelectorAll('input[data-country]').forEach(function (checkbox) {
           checkbox.addEventListener('change', function () {
             var country = checkbox.getAttribute('data-country');
             if (!country) return;
@@ -5386,10 +5409,29 @@
             } else {
               checkbox.checked = true;
             }
+            var selectAllCb = costxCountryMenu.querySelector('input[data-select-all="costx"]');
+            if (selectAllCb) selectAllCb.checked = costxSelectedCountries.size === tatxCountries.length;
             updateCostxCountryTrigger();
             renderCostx();
           });
         });
+        var selectAllCb = costxCountryMenu.querySelector('input[data-select-all="costx"]');
+        if (selectAllCb) {
+          selectAllCb.addEventListener('change', function () {
+            if (selectAllCb.checked) {
+              tatxCountries.forEach(function (c) { costxSelectedCountries.add(c); });
+            } else {
+              costxSelectedCountries.clear();
+              costxSelectedCountries.add('Sri Lanka');
+            }
+            costxCountryMenu.querySelectorAll('input[data-country]').forEach(function (cb) {
+              cb.checked = costxSelectedCountries.has(cb.getAttribute('data-country'));
+            });
+            selectAllCb.checked = costxSelectedCountries.size === tatxCountries.length;
+            updateCostxCountryTrigger();
+            renderCostx();
+          });
+        }
       }
       function renderCostxFixedColumns(groups) {
         if (!costxCatTable || !costxCritTable) return;
@@ -5525,11 +5567,13 @@
       }
       function renderStrategyxCountryMenu() {
         if (!strategyxCountryMenu) return;
-        strategyxCountryMenu.innerHTML = tatxCountries.map(function (country) {
+        var allSelected = strategyxSelectedCountries.size === tatxCountries.length;
+        var selectAllHtml = '<label class="tatx-multi-option tatx-select-all-option border-b border-slate-200 pb-2 mb-2"><input type="checkbox" data-select-all="strategyx"' + (allSelected ? ' checked' : '') + '><span class="font-semibold">Select All</span></label>';
+        strategyxCountryMenu.innerHTML = selectAllHtml + tatxCountries.map(function (country) {
           var checked = strategyxSelectedCountries.has(country) ? ' checked' : '';
           return '<label class="tatx-multi-option"><input type="checkbox" data-country="' + country + '"' + checked + '><span>' + country + '</span></label>';
         }).join('');
-        strategyxCountryMenu.querySelectorAll('input[type="checkbox"]').forEach(function (checkbox) {
+        strategyxCountryMenu.querySelectorAll('input[data-country]').forEach(function (checkbox) {
           checkbox.addEventListener('change', function () {
             var country = checkbox.getAttribute('data-country');
             if (!country) return;
@@ -5540,10 +5584,29 @@
             } else {
               checkbox.checked = true;
             }
+            var selectAllCb = strategyxCountryMenu.querySelector('input[data-select-all="strategyx"]');
+            if (selectAllCb) selectAllCb.checked = strategyxSelectedCountries.size === tatxCountries.length;
             updateStrategyxCountryTrigger();
             renderStrategyx();
           });
         });
+        var selectAllCb = strategyxCountryMenu.querySelector('input[data-select-all="strategyx"]');
+        if (selectAllCb) {
+          selectAllCb.addEventListener('change', function () {
+            if (selectAllCb.checked) {
+              tatxCountries.forEach(function (c) { strategyxSelectedCountries.add(c); });
+            } else {
+              strategyxSelectedCountries.clear();
+              strategyxSelectedCountries.add('Sri Lanka');
+            }
+            strategyxCountryMenu.querySelectorAll('input[data-country]').forEach(function (cb) {
+              cb.checked = strategyxSelectedCountries.has(cb.getAttribute('data-country'));
+            });
+            selectAllCb.checked = strategyxSelectedCountries.size === tatxCountries.length;
+            updateStrategyxCountryTrigger();
+            renderStrategyx();
+          });
+        }
       }
       function renderStrategyxFixedColumns(groups) {
         if (!strategyxCatTable || !strategyxCritTable) return;
