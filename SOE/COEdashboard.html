@@ -7,6 +7,8 @@
   <!-- Internal links and assets use relative paths (e.g. href="page2.html", src="images/profile.png", src="https://flagcdn.com/w40/au.png"). -->
   <title>My Dashboard</title>
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet" />
   <link
     href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
@@ -2965,12 +2967,19 @@
           </div>
 
           <section class="bizop-shell" aria-label="Business and Operation content">
-            <div class="kpi-tabbar" aria-label="Business and Operation tabs">
+            <div class="kpi-tabbar flex items-center justify-between gap-4" aria-label="Business and Operation tabs">
               <nav class="kpi-tabs" aria-label="Business and Operation tabs">
                 <button type="button" class="kpi-tab active" id="bizTabBusiness" aria-current="page">Business Overview</button>
                 <button type="button" class="kpi-tab" id="bizTabOperation">Operation & Quality</button>
                 <button type="button" class="kpi-tab" id="bizTabOverview">Country Information</button>
               </nav>
+              <div id="bizopExportControls" class="hidden sm:flex items-center gap-3 text-xs text-slate-600">
+                <button id="bizExportPdfBtn" type="button"
+                  class="inline-flex items-center gap-1 rounded-full bg-[#3eb2ed] px-3 py-1.5 text-[11px] font-semibold text-white shadow-sm hover:bg-[#2ea2d6] transition-colors">
+                  <span class="material-symbols-outlined text-[14px]">picture_as_pdf</span>
+                  <span>Download PDF</span>
+                </button>
+              </div>
             </div>
 
           <!-- Summary cards (Total Resources, Active Clients, Revenue, Market Share) -->
@@ -3293,7 +3302,7 @@
           </div>
 
           <div id="overviewContentWrap" class="hidden">
-            <section class="card-3d bg-white rounded-2xl p-6 border border-slate-200/80">
+            <section id="countryInfoCard" class="card-3d bg-white rounded-2xl p-6 border border-slate-200/80">
               <div class="flex items-start gap-4 mb-4">
                 <div class="coe-category-icon flex-shrink-0" aria-hidden="true">
                   <span class="material-symbols-outlined">public</span>
@@ -4418,6 +4427,120 @@
           businessContentWrap.classList.toggle('hidden', !isBusiness);
           operationContentWrap.classList.toggle('hidden', !isOperation);
           overviewContentWrap.classList.toggle('hidden', !isOverview);
+        }
+      }
+
+      // Export Business / Operation & Quality / Country Information as a single PDF
+      async function exportBizopPdf() {
+        try {
+          if (!window.html2canvas && typeof html2canvas === 'undefined') {
+            alert('PDF export library (html2canvas) not loaded. Please check your connection and try again.');
+            return;
+          }
+          var jsPDFCtor = (window.jspdf && window.jspdf.jsPDF) ? window.jspdf.jsPDF : (window.jsPDF || null);
+          if (!jsPDFCtor) {
+            alert('PDF export library (jsPDF) not loaded. Please check your connection and try again.');
+            return;
+          }
+
+          // Build target list from modal selections (card names)
+          var modal = document.getElementById('bizExportModal');
+          var targets = [];
+          if (modal) {
+            var checkboxes = modal.querySelectorAll('input[type=\"checkbox\"][data-target]');
+            checkboxes.forEach(function (cb) {
+              if (!cb.checked) return;
+              targets.push({
+                id: cb.getAttribute('data-target'),
+                label: cb.getAttribute('data-label'),
+                tab: cb.getAttribute('data-tab')
+              });
+            });
+          }
+          // Fallback default if modal is missing or nothing selected
+          if (!targets.length) {
+            targets = [
+              { id: 'summaryBusiness', label: 'Business KPIs', tab: 'business' },
+              { id: 'businessContentWrap', label: 'Business Overview charts', tab: 'business' },
+              { id: 'summaryOperation', label: 'Operation & Quality KPIs', tab: 'operation' },
+              { id: 'operationContentWrap', label: 'Operation & Quality charts', tab: 'operation' },
+              { id: 'countryInfoCard', label: 'Country Information', tab: 'overview' }
+            ];
+          }
+
+          var pdf = new jsPDFCtor('p', 'pt', 'a4');
+          var firstPage = true;
+
+          var originalTab = 'business';
+          if (bizTabOperation && bizTabOperation.classList.contains('active')) originalTab = 'operation';
+          if (bizTabOverview && bizTabOverview.classList.contains('active')) originalTab = 'overview';
+
+          async function captureElement(target) {
+            var el = document.getElementById(target.id);
+            if (!el) return;
+            if (target.tab) setBizTabActive(target.tab);
+            await new Promise(function (resolve) { setTimeout(resolve, 500); });
+            el.scrollIntoView({ behavior: 'instant', block: 'start' });
+            await new Promise(function (resolve) { setTimeout(resolve, 200); });
+
+            var canvas = await window.html2canvas(el, {
+              scale: 2,
+              useCORS: true,
+              allowTaint: true,
+              logging: false
+            });
+
+            if (!canvas || !canvas.width || !canvas.height) {
+              console.warn('Skipping PDF page for', target.id, '- empty canvas');
+              return;
+            }
+
+            var pageWidth = pdf.internal.pageSize.getWidth();
+            var pageHeight = pdf.internal.pageSize.getHeight();
+            var ratio = Math.min(
+              pageWidth / canvas.width,
+              (pageHeight - 40) / canvas.height
+            );
+
+            if (!isFinite(ratio) || ratio <= 0) {
+              console.warn('Invalid ratio for', target.id, '→ skipping page');
+              return;
+            }
+
+            var imgWidth = canvas.width * ratio;
+            var imgHeight = canvas.height * ratio;
+            if (!isFinite(imgWidth) || !isFinite(imgHeight) || imgWidth <= 0 || imgHeight <= 0) {
+              console.warn('Invalid image size for', target.id, '→ skipping page');
+              return;
+            }
+
+            var imgData = canvas.toDataURL('image/png');
+            var x = (pageWidth - imgWidth) / 2;
+            var y = 30;
+
+            if (!firstPage) {
+              pdf.addPage();
+            }
+            firstPage = false;
+            pdf.setFontSize(12);
+            pdf.text(target.label, 32, 18);
+            try {
+              pdf.addImage(imgData, 'PNG', x, y, imgWidth, imgHeight);
+            } catch (err) {
+              console.error('addImage failed for', target.id, err);
+            }
+          }
+
+          for (var i = 0; i < targets.length; i++) {
+            // eslint-disable-next-line no-await-in-loop
+            await captureElement(targets[i]);
+          }
+
+          setBizTabActive(originalTab);
+          pdf.save('COE-business-overview.pdf');
+        } catch (e) {
+          console.error('Error exporting PDF', e);
+          try { alert('Unable to generate PDF. Please try again.'); } catch (_) {}
         }
       }
 
@@ -5724,6 +5847,42 @@
           tatxCountryTrigger.setAttribute('aria-expanded', String(willOpen));
         });
       }
+
+      // Show export controls only when JS is active + wire modal buttons
+      (function () {
+        var controls = document.getElementById('bizopExportControls');
+        var openBtn = document.getElementById('bizExportPdfBtn');
+        var modal = document.getElementById('bizExportModal');
+        var backdrop = document.getElementById('bizExportModalBackdrop');
+        var closeBtn = document.getElementById('bizExportModalClose');
+        var cancelBtn = document.getElementById('bizExportModalCancel');
+        var confirmBtn = document.getElementById('bizExportPdfConfirmBtn');
+
+        function openModal() {
+          if (modal) modal.classList.remove('hidden');
+        }
+        function closeModal() {
+          if (modal) modal.classList.add('hidden');
+        }
+
+        if (controls) controls.classList.remove('hidden');
+        if (openBtn && modal) {
+          openBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+            openModal();
+          });
+        }
+        if (backdrop) backdrop.addEventListener('click', closeModal);
+        if (closeBtn) closeBtn.addEventListener('click', closeModal);
+        if (cancelBtn) cancelBtn.addEventListener('click', closeModal);
+        if (confirmBtn && typeof exportBizopPdf === 'function') {
+          confirmBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+            exportBizopPdf();
+            closeModal();
+          });
+        }
+      })();
       if (costxCountryTrigger && costxCountryMenu) {
         costxCountryTrigger.addEventListener('click', function () {
           var willOpen = costxCountryMenu.classList.contains('hidden');
@@ -8465,6 +8624,77 @@
     }
 
   </script>
+
+  <!-- PDF Export: select cards then export (tabs not included in PDF) -->
+  <div id="bizExportModal" class="fixed inset-0 z-[9998] hidden" aria-hidden="true">
+    <div class="absolute inset-0 bg-black/40" id="bizExportModalBackdrop"></div>
+    <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[92%] max-w-xl bg-white rounded-2xl shadow-2xl border border-slate-200 z-10">
+      <div class="px-5 py-3 border-b border-slate-200 flex items-center justify-between">
+        <h3 class="text-sm font-semibold text-slate-900">Select cards to include in PDF</h3>
+        <button type="button" id="bizExportModalClose" class="p-1 rounded-full hover:bg-slate-100" aria-label="Close">
+          <span class="material-symbols-outlined text-slate-500 text-lg">close</span>
+        </button>
+      </div>
+      <div class="px-5 py-4 max-h-[60vh] overflow-y-auto text-xs text-slate-700 space-y-4">
+        <div>
+          <p class="font-semibold mb-2">Business Overview</p>
+          <label class="flex items-center gap-2 mb-1 cursor-pointer">
+            <input type="checkbox" data-target="summaryBusiness" data-label="Business KPIs" data-tab="business" class="h-3.5 w-3.5 rounded border-slate-300 text-[#3eb2ed]" checked>
+            <span>Top KPI cards</span>
+          </label>
+          <label class="flex items-center gap-2 mb-1 cursor-pointer">
+            <input type="checkbox" data-target="businessContentWrap" data-label="Business Overview charts" data-tab="business" class="h-3.5 w-3.5 rounded border-slate-300 text-[#3eb2ed]" checked>
+            <span>Business Overview charts</span>
+          </label>
+        </div>
+        <div>
+          <p class="font-semibold mb-2">Operation &amp; Quality</p>
+          <label class="flex items-center gap-2 mb-1 cursor-pointer">
+            <input type="checkbox" data-target="summaryOperation" data-label="Operation &amp; Quality KPIs" data-tab="operation" class="h-3.5 w-3.5 rounded border-slate-300 text-[#3eb2ed]" checked>
+            <span>Operation &amp; Quality KPI cards</span>
+          </label>
+          <label class="flex items-center gap-2 mb-1 cursor-pointer">
+            <input type="checkbox" data-target="operationContentWrap" data-label="Operation &amp; Quality charts" data-tab="operation" class="h-3.5 w-3.5 rounded border-slate-300 text-[#3eb2ed]" checked>
+            <span>Operation &amp; Quality charts</span>
+          </label>
+        </div>
+        <div>
+          <p class="font-semibold mb-2">Country Information</p>
+          <label class="flex items-center gap-2 mb-1 cursor-pointer">
+            <input type="checkbox" data-target="countryInfoCard" data-label="Country Information" data-tab="overview" class="h-3.5 w-3.5 rounded border-slate-300 text-[#3eb2ed]" checked>
+            <span>Country Information table</span>
+          </label>
+        </div>
+      </div>
+      <div class="px-5 py-3 border-t border-slate-200 flex items-center justify-end gap-2">
+        <button type="button" id="bizExportModalCancel" class="px-3 py-1.5 rounded-full text-[11px] font-medium text-slate-600 hover:bg-slate-100">Cancel</button>
+        <button type="button" id="bizExportPdfConfirmBtn" class="px-3 py-1.5 rounded-full bg-[#3eb2ed] text-[11px] font-semibold text-white hover:bg-[#2ea2d6]">Export PDF</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Modal helpers: open/close + confirm → export
+    (function () {
+      var modal = document.getElementById('bizExportModal');
+      if (!modal) return;
+      function hideExportModal() { modal.classList.add('hidden'); }
+      var backdrop = document.getElementById('bizExportModalBackdrop');
+      var closeBtn = document.getElementById('bizExportModalClose');
+      var cancelBtn = document.getElementById('bizExportModalCancel');
+      var confirmBtn = document.getElementById('bizExportPdfConfirmBtn');
+      if (backdrop) backdrop.addEventListener('click', hideExportModal);
+      if (closeBtn) closeBtn.addEventListener('click', hideExportModal);
+      if (cancelBtn) cancelBtn.addEventListener('click', hideExportModal);
+      if (confirmBtn && typeof exportBizopPdf === 'function') {
+        confirmBtn.addEventListener('click', function () {
+          exportBizopPdf();
+          hideExportModal();
+        });
+      }
+    })();
+  </script>
+
 </body>
 
 </html>
