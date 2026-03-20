@@ -1254,10 +1254,6 @@
 												class="tab-btn px-4 py-2 text-sm font-medium text-slate-500 border-b-2 border-transparent bg-transparent hover:text-[#1b1e42] transition-all">
 												Project Score
 											</button>
-											<button id="tabMerchandisers" onclick="switchTab('merchandisers')"
-												class="tab-btn px-4 py-2 text-sm font-medium text-slate-500 border-b-2 border-transparent bg-transparent hover:text-[#1b1e42] transition-all">
-												Merchandisers
-											</button>
 										</div>
 
 										<!-- Services Tab Content -->
@@ -2198,44 +2194,7 @@
 											</div>
 										</div><!-- End Project Score Tab Content -->
 
-										<!-- Merchandisers Tab Content (hidden by default) -->
-										<div id="merchandisersContent" class="tab-content hidden">
-											<div class="bg-white rounded-2xl p-6 border">
-												<div class="flex items-center justify-between mb-4">
-													<div class="text-lg font-semibold text-[#1b1e42]">Merchandisers</div>
-													<button type="button" onclick="openAddMerchandiserModal()" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[#1b1e42] text-white text-sm font-medium hover:bg-[#252a52] transition">
-														<span class="material-symbols-outlined text-lg">add</span>
-														<span>Add Merchandiser</span>
-													</button>
-												</div>
-												<div class="border-t border-slate-100 pt-4 overflow-x-auto">
-													<table class="w-full min-w-[700px] border-collapse">
-														<thead>
-															<tr class="bg-[#1b1e42] text-white">
-																<th class="text-left text-xs font-semibold uppercase tracking-wider py-3 px-4">Name</th>
-																<th class="text-left text-xs font-semibold uppercase tracking-wider py-3 px-4">Contact</th>
-																<th class="text-left text-xs font-semibold uppercase tracking-wider py-3 px-4">Email</th>
-																<th class="text-left text-xs font-semibold uppercase tracking-wider py-3 px-4">Status</th>
-																<th class="text-left text-xs font-semibold uppercase tracking-wider py-3 px-4 w-24">Action</th>
-															</tr>
-														</thead>
-														<tbody id="merchandisersTableBody">
-															<tr class="border-b border-slate-100 hover:bg-slate-50/50"><td class="py-3 px-4 text-sm text-slate-800">Chathurika</td><td class="py-3 px-4 text-sm text-slate-600">94771234567</td><td class="py-3 px-4 text-sm text-slate-600">Chathurika.Kumari@hirdaramani.com</td><td class="py-3 px-4"><span class="inline-flex items-center gap-1.5 text-sm text-green-600"><span class="w-2 h-2 rounded-full bg-green-500"></span>Active</span></td><td class="py-3 px-4"><span class="inline-flex items-center gap-0 flex-nowrap"><button type="button" onclick="editMerchandiser(this)" class="p-2 text-slate-500 hover:text-[#3eb2ed] transition rounded-lg hover:bg-slate-100" aria-label="Edit"><span class="material-symbols-outlined text-lg">edit</span></button><button type="button" onclick="removeMerchandiserRow(this)" class="p-2 text-red-500 hover:text-red-600 transition rounded-lg hover:bg-red-50" aria-label="Delete"><span class="material-symbols-outlined text-lg">delete</span></button></span></td></tr>
-															<tr class="border-b border-slate-100 hover:bg-slate-50/50"><td class="py-3 px-4 text-sm text-slate-800">Hiruni</td><td class="py-3 px-4 text-sm text-slate-600">94772345678</td><td class="py-3 px-4 text-sm text-slate-600">Hiruni.Nivunhella@hirdaramani.com</td><td class="py-3 px-4"><span class="inline-flex items-center gap-1.5 text-sm text-green-600"><span class="w-2 h-2 rounded-full bg-green-500"></span>Active</span></td><td class="py-3 px-4"><span class="inline-flex items-center gap-0 flex-nowrap"><button type="button" onclick="editMerchandiser(this)" class="p-2 text-slate-500 hover:text-[#3eb2ed] transition rounded-lg hover:bg-slate-100" aria-label="Edit"><span class="material-symbols-outlined text-lg">edit</span></button><button type="button" onclick="removeMerchandiserRow(this)" class="p-2 text-red-500 hover:text-red-600 transition rounded-lg hover:bg-red-50" aria-label="Delete"><span class="material-symbols-outlined text-lg">delete</span></button></span></td></tr>
-															<tr class="border-b border-slate-100 hover:bg-slate-50/50"><td class="py-3 px-4 text-sm text-slate-800">Haritha</td><td class="py-3 px-4 text-sm text-slate-600">94773456789</td><td class="py-3 px-4 text-sm text-slate-600">Haritha.Hewabatage@hirdaramani.com</td><td class="py-3 px-4"><span class="inline-flex items-center gap-1.5 text-sm text-green-600"><span class="w-2 h-2 rounded-full bg-green-500"></span>Active</span></td><td class="py-3 px-4"><span class="inline-flex items-center gap-0 flex-nowrap"><button type="button" onclick="editMerchandiser(this)" class="p-2 text-slate-500 hover:text-[#3eb2ed] transition rounded-lg hover:bg-slate-100" aria-label="Edit"><span class="material-symbols-outlined text-lg">edit</span></button><button type="button" onclick="removeMerchandiserRow(this)" class="p-2 text-red-500 hover:text-red-600 transition rounded-lg hover:bg-red-50" aria-label="Delete"><span class="material-symbols-outlined text-lg">delete</span></button></span></td></tr>
-															<tr class="border-b border-slate-100 hover:bg-slate-50/50"><td class="py-3 px-4 text-sm text-slate-800">Nadeesha Hemamali</td><td class="py-3 px-4 text-sm text-slate-600">94774567890</td><td class="py-3 px-4 text-sm text-slate-600">Nadeesha.Hemamali@hirdaramani.com</td><td class="py-3 px-4"><span class="inline-flex items-center gap-1.5 text-sm text-green-600"><span class="w-2 h-2 rounded-full bg-green-500"></span>Active</span></td><td class="py-3 px-4"><span class="inline-flex items-center gap-0 flex-nowrap"><button type="button" onclick="editMerchandiser(this)" class="p-2 text-slate-500 hover:text-[#3eb2ed] transition rounded-lg hover:bg-slate-100" aria-label="Edit"><span class="material-symbols-outlined text-lg">edit</span></button><button type="button" onclick="removeMerchandiserRow(this)" class="p-2 text-red-500 hover:text-red-600 transition rounded-lg hover:bg-red-50" aria-label="Delete"><span class="material-symbols-outlined text-lg">delete</span></button></span></td></tr>
-															<tr class="border-b border-slate-100 hover:bg-slate-50/50"><td class="py-3 px-4 text-sm text-slate-800">Haritha Hewabatage</td><td class="py-3 px-4 text-sm text-slate-600">94740635739</td><td class="py-3 px-4 text-sm text-slate-600">Haritha.Hewabatage@hirdaramani.com</td><td class="py-3 px-4"><span class="inline-flex items-center gap-1.5 text-sm text-green-600"><span class="w-2 h-2 rounded-full bg-green-500"></span>Active</span></td><td class="py-3 px-4"><span class="inline-flex items-center gap-0 flex-nowrap"><button type="button" onclick="editMerchandiser(this)" class="p-2 text-slate-500 hover:text-[#3eb2ed] transition rounded-lg hover:bg-slate-100" aria-label="Edit"><span class="material-symbols-outlined text-lg">edit</span></button><button type="button" onclick="removeMerchandiserRow(this)" class="p-2 text-red-500 hover:text-red-600 transition rounded-lg hover:bg-red-50" aria-label="Delete"><span class="material-symbols-outlined text-lg">delete</span></button></span></td></tr>
-															<tr class="border-b border-slate-100 hover:bg-slate-50/50"><td class="py-3 px-4 text-sm text-slate-800">Damith</td><td class="py-3 px-4 text-sm text-slate-600">94775678901</td><td class="py-3 px-4 text-sm text-slate-600">Damith.Nishantha@hirdaramani.com</td><td class="py-3 px-4"><span class="inline-flex items-center gap-1.5 text-sm text-green-600"><span class="w-2 h-2 rounded-full bg-green-500"></span>Active</span></td><td class="py-3 px-4"><span class="inline-flex items-center gap-0 flex-nowrap"><button type="button" onclick="editMerchandiser(this)" class="p-2 text-slate-500 hover:text-[#3eb2ed] transition rounded-lg hover:bg-slate-100" aria-label="Edit"><span class="material-symbols-outlined text-lg">edit</span></button><button type="button" onclick="removeMerchandiserRow(this)" class="p-2 text-red-500 hover:text-red-600 transition rounded-lg hover:bg-red-50" aria-label="Delete"><span class="material-symbols-outlined text-lg">delete</span></button></span></td></tr>
-															<tr class="border-b border-slate-100 hover:bg-slate-50/50"><td class="py-3 px-4 text-sm text-slate-800">Thushani</td><td class="py-3 px-4 text-sm text-slate-600">94776789012</td><td class="py-3 px-4 text-sm text-slate-600">Thushani.Maheshika@hirdaramani.com</td><td class="py-3 px-4"><span class="inline-flex items-center gap-1.5 text-sm text-green-600"><span class="w-2 h-2 rounded-full bg-green-500"></span>Active</span></td><td class="py-3 px-4"><span class="inline-flex items-center gap-0 flex-nowrap"><button type="button" onclick="editMerchandiser(this)" class="p-2 text-slate-500 hover:text-[#3eb2ed] transition rounded-lg hover:bg-slate-100" aria-label="Edit"><span class="material-symbols-outlined text-lg">edit</span></button><button type="button" onclick="removeMerchandiserRow(this)" class="p-2 text-red-500 hover:text-red-600 transition rounded-lg hover:bg-red-50" aria-label="Delete"><span class="material-symbols-outlined text-lg">delete</span></button></span></td></tr>
-															<tr class="border-b border-slate-100 hover:bg-slate-50/50"><td class="py-3 px-4 text-sm text-slate-800">Hashen</td><td class="py-3 px-4 text-sm text-slate-600">94777890123</td><td class="py-3 px-4 text-sm text-slate-600">Hashen.Dulanjana@hirdaramani.com</td><td class="py-3 px-4"><span class="inline-flex items-center gap-1.5 text-sm text-green-600"><span class="w-2 h-2 rounded-full bg-green-500"></span>Active</span></td><td class="py-3 px-4"><span class="inline-flex items-center gap-0 flex-nowrap"><button type="button" onclick="editMerchandiser(this)" class="p-2 text-slate-500 hover:text-[#3eb2ed] transition rounded-lg hover:bg-slate-100" aria-label="Edit"><span class="material-symbols-outlined text-lg">edit</span></button><button type="button" onclick="removeMerchandiserRow(this)" class="p-2 text-red-500 hover:text-red-600 transition rounded-lg hover:bg-red-50" aria-label="Delete"><span class="material-symbols-outlined text-lg">delete</span></button></span></td></tr>
-															<tr class="border-b border-slate-100 hover:bg-slate-50/50"><td class="py-3 px-4 text-sm text-slate-800">Malindi</td><td class="py-3 px-4 text-sm text-slate-600">94778901234</td><td class="py-3 px-4 text-sm text-slate-600">Malindi.Jayakodi@hirdaramani.com</td><td class="py-3 px-4"><span class="inline-flex items-center gap-1.5 text-sm text-green-600"><span class="w-2 h-2 rounded-full bg-green-500"></span>Active</span></td><td class="py-3 px-4"><span class="inline-flex items-center gap-0 flex-nowrap"><button type="button" onclick="editMerchandiser(this)" class="p-2 text-slate-500 hover:text-[#3eb2ed] transition rounded-lg hover:bg-slate-100" aria-label="Edit"><span class="material-symbols-outlined text-lg">edit</span></button><button type="button" onclick="removeMerchandiserRow(this)" class="p-2 text-red-500 hover:text-red-600 transition rounded-lg hover:bg-red-50" aria-label="Delete"><span class="material-symbols-outlined text-lg">delete</span></button></span></td></tr>
-															<tr class="border-b border-slate-100 hover:bg-slate-50/50"><td class="py-3 px-4 text-sm text-slate-800">Thilan</td><td class="py-3 px-4 text-sm text-slate-600">94779012345</td><td class="py-3 px-4 text-sm text-slate-600">Tilan.Madhumal@hirdaramani.com</td><td class="py-3 px-4"><span class="inline-flex items-center gap-1.5 text-sm text-green-600"><span class="w-2 h-2 rounded-full bg-green-500"></span>Active</span></td><td class="py-3 px-4"><span class="inline-flex items-center gap-0 flex-nowrap"><button type="button" onclick="editMerchandiser(this)" class="p-2 text-slate-500 hover:text-[#3eb2ed] transition rounded-lg hover:bg-slate-100" aria-label="Edit"><span class="material-symbols-outlined text-lg">edit</span></button><button type="button" onclick="removeMerchandiserRow(this)" class="p-2 text-red-500 hover:text-red-600 transition rounded-lg hover:bg-red-50" aria-label="Delete"><span class="material-symbols-outlined text-lg">delete</span></button></span></td></tr>
-															<tr class="border-b border-slate-100 hover:bg-slate-50/50"><td class="py-3 px-4 text-sm text-slate-800">Noor Sheriff</td><td class="py-3 px-4 text-sm text-slate-600">94780123456</td><td class="py-3 px-4 text-sm text-slate-600">Noor.Sheriff@hirdaramani.com</td><td class="py-3 px-4"><span class="inline-flex items-center gap-1.5 text-sm text-green-600"><span class="w-2 h-2 rounded-full bg-green-500"></span>Active</span></td><td class="py-3 px-4"><span class="inline-flex items-center gap-0 flex-nowrap"><button type="button" onclick="editMerchandiser(this)" class="p-2 text-slate-500 hover:text-[#3eb2ed] transition rounded-lg hover:bg-slate-100" aria-label="Edit"><span class="material-symbols-outlined text-lg">edit</span></button><button type="button" onclick="removeMerchandiserRow(this)" class="p-2 text-red-500 hover:text-red-600 transition rounded-lg hover:bg-red-50" aria-label="Delete"><span class="material-symbols-outlined text-lg">delete</span></button></span></td></tr>
-														</tbody>
-													</table>
-												</div>
-											</div>
-										</div><!-- End Merchandisers Tab Content -->
+
 
 									</div><!-- End Tabbed Section -->
 
@@ -5121,10 +5080,16 @@
 							Forecast Amount
 						</span>
 					</label>
-					<div class="relative">
-						<span class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 font-medium">$</span>
+					<div class="grid grid-cols-[120px_1fr] gap-2">
+						<select id="standardForecastCurrency"
+							class="w-full px-3 py-3 border-2 border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition bg-slate-50 hover:bg-white">
+							<option value="$" selected>USD ($)</option>
+							<option value="EUR">EUR</option>
+							<option value="GBP">GBP</option>
+							<option value="LKR">LKR</option>
+						</select>
 						<input type="number" id="standardForecastAmount"
-							class="w-full pl-9 pr-4 py-3 border-2 border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition bg-slate-50 hover:bg-white"
+							class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition bg-slate-50 hover:bg-white"
 							min="0" step="0.01" placeholder="0.00">
 					</div>
 				</div>
@@ -5144,6 +5109,7 @@
 			const standardModalTitle = document.getElementById('standardModalTitle');
 			const standardExpectedDate = document.getElementById('standardExpectedDate');
 			const standardForecastAmount = document.getElementById('standardForecastAmount');
+			const standardForecastCurrency = document.getElementById('standardForecastCurrency');
 			const closeStandardModalBtn = document.getElementById('closeStandardModal');
 			const cancelStandardModalBtn = document.getElementById('cancelStandardModal');
 			const saveStandardModalBtn = document.getElementById('saveStandardModal');
@@ -5160,9 +5126,11 @@
 				if (standardData[standardName]) {
 					standardExpectedDate.value = standardData[standardName].date || '';
 					standardForecastAmount.value = standardData[standardName].amount || '';
+					standardForecastCurrency.value = standardData[standardName].currency || '$';
 				} else {
 					standardExpectedDate.value = '';
 					standardForecastAmount.value = '';
+					standardForecastCurrency.value = '$';
 				}
 
 				standardModal.classList.remove('hidden');
@@ -5181,7 +5149,8 @@
 					const standardName = currentCheckbox.dataset.standard;
 					standardData[standardName] = {
 						date: standardExpectedDate.value,
-						amount: standardForecastAmount.value
+						amount: standardForecastAmount.value,
+						currency: standardForecastCurrency.value
 					};
 
 					// Display the data below the checkbox, aligned with checkbox
@@ -5194,7 +5163,8 @@
 					}
 
 					const dateFormatted = standardExpectedDate.value ? new Date(standardExpectedDate.value).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) : 'Not set';
-					const amountFormatted = standardForecastAmount.value ? '$' + parseFloat(standardForecastAmount.value).toFixed(2) : '$0.00';
+					const currency = standardForecastCurrency.value || '$';
+					const amountFormatted = standardForecastAmount.value ? currency + ' ' + parseFloat(standardForecastAmount.value).toFixed(2) : currency + ' 0.00';
 
 					dataDisplay.innerHTML = `
 					<span class="flex items-center gap-1 bg-slate-100 px-2 py-1 rounded">
@@ -5240,26 +5210,24 @@
 		})();
 	</script>
 
-	<!-- Tab Switching Script for Services/Unit Information/Project Score/Merchandisers -->
+	<!-- Tab Switching Script for Services/Unit Information/Project Score -->
 	<script>
 		function switchTab(tab) {
 			const tabServices = document.getElementById('tabServices');
 			const tabUnits = document.getElementById('tabUnits');
 			const tabProjectScore = document.getElementById('tabProjectScore');
-			const tabMerchandisers = document.getElementById('tabMerchandisers');
 			const servicesContent = document.getElementById('servicesContent');
 			const unitsContent = document.getElementById('unitsContent');
 			const projectScoreContent = document.getElementById('projectScoreContent');
-			const merchandisersContent = document.getElementById('merchandisersContent');
 
-			if (!tabServices || !tabUnits || !tabProjectScore || !tabMerchandisers || !servicesContent || !unitsContent || !projectScoreContent || !merchandisersContent) return;
+			if (!tabServices || !tabUnits || !tabProjectScore || !servicesContent || !unitsContent || !projectScoreContent) return;
 
 			// Deactivate all tabs
-			[tabServices, tabUnits, tabProjectScore, tabMerchandisers].forEach(t => {
+			[tabServices, tabUnits, tabProjectScore].forEach(t => {
 				t.classList.remove('text-[#1b1e42]', 'font-semibold', 'border-[#3eb2ed]');
 				t.classList.add('text-slate-500', 'font-medium', 'border-transparent');
 			});
-			[servicesContent, unitsContent, projectScoreContent, merchandisersContent].forEach(c => c.classList.add('hidden'));
+			[servicesContent, unitsContent, projectScoreContent].forEach(c => c.classList.add('hidden'));
 
 			if (tab === 'services') {
 				tabServices.classList.add('text-[#1b1e42]', 'font-semibold', 'border-[#3eb2ed]');
@@ -5269,15 +5237,10 @@
 				tabUnits.classList.add('text-[#1b1e42]', 'font-semibold', 'border-[#3eb2ed]');
 				tabUnits.classList.remove('text-slate-500', 'font-medium', 'border-transparent');
 				unitsContent.classList.remove('hidden');
-			} else if (tab === 'projectscore') {
+			} else {
 				tabProjectScore.classList.add('text-[#1b1e42]', 'font-semibold', 'border-[#3eb2ed]');
 				tabProjectScore.classList.remove('text-slate-500', 'font-medium', 'border-transparent');
 				projectScoreContent.classList.remove('hidden');
-			} else {
-				// Merchandisers tab
-				tabMerchandisers.classList.add('text-[#1b1e42]', 'font-semibold', 'border-[#3eb2ed]');
-				tabMerchandisers.classList.remove('text-slate-500', 'font-medium', 'border-transparent');
-				merchandisersContent.classList.remove('hidden');
 			}
 		}
 
