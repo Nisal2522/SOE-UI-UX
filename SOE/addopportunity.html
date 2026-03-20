@@ -606,8 +606,8 @@ select {
                   <div>
                     <label class="block text-sm font-medium text-gray-600 mb-2" for="company-group">Account Name</label>
                     <div id="company-group-wrap" class="flex items-center gap-2">
-                      <div class="flex-1 flex items-center gap-2 min-w-0">
-                        <select class="flex-1 min-w-0 bg-light-gray border-none rounded-xl focus:ring-2 focus:ring-primary text-sm"
+                      <div class="flex-1 min-w-0">
+                        <select class="w-full min-w-0 bg-light-gray border-none rounded-xl focus:ring-2 focus:ring-primary text-sm"
                           id="company-group">
                           <option value="">Search Accounts...</option>
                           <option value="__new_account__">+ New Account.</option>
@@ -617,16 +617,6 @@ select {
                           <option value="Island Spices Co">Island Spices Co</option>
                           <option value="Ocean Fresh Pvt Ltd">Ocean Fresh Pvt Ltd</option>
                         </select>
-                        <button type="button" id="company-group-edit-btn" class="flex-shrink-0 p-1.5 rounded-lg text-gray-500 hover:bg-cu-light-blue-20 hover:text-primary transition-colors" title="Add or edit account name" aria-label="Edit account name">
-                          <span class="material-symbols-outlined text-lg">edit</span>
-                        </button>
-                      </div>
-                      <div id="company-group-inline-wrap" class="flex-1 hidden flex items-center gap-2 min-w-0">
-                        <input type="text" id="company-group-inline" class="flex-1 min-w-0 bg-light-gray border-none rounded-xl focus:ring-2 focus:ring-primary text-sm py-2 px-3"
-                          placeholder="Enter account name and press Enter to save" />
-                        <button type="button" id="company-group-inline-cancel" class="flex-shrink-0 p-1.5 rounded-lg text-gray-500 hover:bg-gray-200 transition-colors" title="Cancel" aria-label="Cancel">
-                          <span class="material-symbols-outlined text-lg">close</span>
-                        </button>
                       </div>
                     </div>
                     <script>
@@ -642,64 +632,7 @@ select {
                         });
                       });
                     </script>
-                    <script>
-                      (function () {
-                        var autoSaveTimer = null;
-                        var AUTO_SAVE_DELAY_MS = 1800;
-                        function initCompanyGroupEdit() {
-                          var selectEl = document.getElementById('company-group');
-                          var inlineWrap = document.getElementById('company-group-inline-wrap');
-                          var inlineInput = document.getElementById('company-group-inline');
-                          var editBtn = document.getElementById('company-group-edit-btn');
-                          var cancelBtn = document.getElementById('company-group-inline-cancel');
-                          if (!selectEl || !inlineWrap || !inlineInput || !editBtn) return;
-                          function showDropdown() {
-                            if (autoSaveTimer) { clearTimeout(autoSaveTimer); autoSaveTimer = null; }
-                            selectEl.closest('.flex').classList.remove('hidden');
-                            inlineWrap.classList.add('hidden');
-                            inlineInput.value = '';
-                          }
-                          function showInline() {
-                            selectEl.closest('.flex').classList.add('hidden');
-                            inlineWrap.classList.remove('hidden');
-                            inlineInput.value = selectEl.value && selectEl.value !== '__new_account__' ? (selectEl.options[selectEl.selectedIndex].text || '') : '';
-                            inlineInput.focus();
-                          }
-                          function saveInline() {
-                            if (autoSaveTimer) { clearTimeout(autoSaveTimer); autoSaveTimer = null; }
-                            var val = (inlineInput.value || '').trim();
-                            if (val) {
-                              var opt = document.createElement('option');
-                              opt.value = val;
-                              opt.textContent = val;
-                              var exists = Array.from(selectEl.options).some(function (o) { return (o.value || '').toLowerCase() === val.toLowerCase(); });
-                              if (!exists) selectEl.appendChild(opt);
-                              selectEl.value = val;
-                            }
-                            showDropdown();
-                          }
-                          function scheduleAutoSave() {
-                            if (autoSaveTimer) clearTimeout(autoSaveTimer);
-                            autoSaveTimer = setTimeout(function () { autoSaveTimer = null; saveInline(); }, AUTO_SAVE_DELAY_MS);
-                          }
-                          editBtn.addEventListener('click', function () { showInline(); });
-                          cancelBtn.addEventListener('click', function () { showDropdown(); });
-                          inlineInput.addEventListener('input', function () {
-                            var val = (inlineInput.value || '').trim();
-                            if (val) scheduleAutoSave(); else if (autoSaveTimer) { clearTimeout(autoSaveTimer); autoSaveTimer = null; }
-                          });
-                          inlineInput.addEventListener('keydown', function (e) {
-                            if (e.key === 'Enter') { e.preventDefault(); saveInline(); }
-                            if (e.key === 'Escape') { e.preventDefault(); showDropdown(); }
-                          });
-                          inlineInput.addEventListener('blur', function () {
-                            if (document.activeElement !== cancelBtn) showDropdown();
-                          });
-                        }
-                        if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initCompanyGroupEdit);
-                        else initCompanyGroupEdit();
-                      })();
-                    </script>
+
                   </div>
                   <div>
                     <label class="block text-sm font-medium text-gray-600 mb-2" for="located-country">Lead
