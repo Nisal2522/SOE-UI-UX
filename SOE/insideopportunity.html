@@ -1079,21 +1079,11 @@
 														<option value="lost">Closed - Lost</option>
 													</select>
 												</div>
-												<div id="actualAmountWrap" class="hidden">
-													<label class="block text-sm text-slate-700 mb-1"><span
-															class="text-rose-500">*</span> Actual Amount</label>
-													<div class="grid grid-cols-[120px_1fr] gap-2">
-														<select id="actualAmountCurrency"
-															class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white">
-															<option value="USD ($)" selected>USD ($)</option>
-															<option value="EUR">EUR</option>
-															<option value="GBP">GBP</option>
-															<option value="LKR">LKR</option>
-														</select>
-														<input id="actualAmountInput" type="number" min="0" step="0.01"
-															placeholder="0.00"
-															class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-													</div>
+												<div id="closeActualAmountRow" class="hidden">
+													<label class="block text-sm text-slate-700 mb-1">Actual Amount</label>
+													<input type="number" id="closeActualAmount"
+														class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+														min="0" step="0.01" placeholder="Enter actual amount">
 												</div>
 												<div class="flex gap-3 justify-end">
 													<button id="closeOppCancel"
@@ -1275,9 +1265,8 @@
 												// Close Opportunity modal elements
 												const closeOpportunityModal = document.getElementById('closeOpportunityModal');
 												const closeStageSelect = document.getElementById('closeStageSelect');
-												const actualAmountWrap = document.getElementById('actualAmountWrap');
-												const actualAmountCurrency = document.getElementById('actualAmountCurrency');
-												const actualAmountInput = document.getElementById('actualAmountInput');
+												const closeActualAmountRow = document.getElementById('closeActualAmountRow');
+												const closeActualAmount = document.getElementById('closeActualAmount');
 												const closeOppCancel = document.getElementById('closeOppCancel');
 												const closeOppSave = document.getElementById('closeOppSave');
 
@@ -1493,9 +1482,6 @@
 												// Show Close Opportunity modal
 												function showCloseOpportunityModal() {
 													closeStageSelect.value = '';
-													if (actualAmountWrap) actualAmountWrap.classList.add('hidden');
-													if (actualAmountCurrency) actualAmountCurrency.value = 'USD ($)';
-													if (actualAmountInput) actualAmountInput.value = '';
 													// Reset Closed step color when opening modal
 													const closedEl = arrowSteps[5];
 													if (closedEl && current === 5) {
@@ -1515,10 +1501,15 @@
 													if (!closedEl) return;
 
 													const selectedStage = closeStageSelect.value;
-													if (actualAmountWrap) {
-														if (selectedStage === 'won') actualAmountWrap.classList.remove('hidden');
-														else actualAmountWrap.classList.add('hidden');
+													if (closeActualAmountRow && closeActualAmount) {
+														if (selectedStage === 'won') {
+															closeActualAmountRow.classList.remove('hidden');
+														} else {
+															closeActualAmountRow.classList.add('hidden');
+															closeActualAmount.value = '';
+														}
 													}
+
 													if (selectedStage === 'won') {
 														closedEl.classList.remove('active');
 														closedEl.style.setProperty('background', '#22c55e', 'important');
@@ -1543,6 +1534,8 @@
 													closeOpportunityModal.classList.remove('flex');
 													document.body.style.overflow = '';
 													pendingStepIndex = null;
+													if (closeActualAmountRow) closeActualAmountRow.classList.add('hidden');
+													if (closeActualAmount) closeActualAmount.value = '';
 													// Reset Closed step color if no outcome saved yet
 													if (current === 5 && !closedOutcome) {
 														const closedEl = arrowSteps[5];
@@ -1561,12 +1554,9 @@
 														alert('Please select a closed stage.');
 														return;
 													}
-													if (selectedStage === 'won') {
-														const actualAmount = (actualAmountInput && actualAmountInput.value || '').trim();
-														if (!actualAmount) {
-															alert('Please enter Actual Amount for Closed - Won.');
-															return;
-														}
+													if (selectedStage === 'won' && closeActualAmount && !closeActualAmount.value) {
+														alert('Please enter Actual Amount.');
+														return;
 													}
 													// Save outcome and re-render stepper with the unified color rules:
 													// Won  => all stages green
