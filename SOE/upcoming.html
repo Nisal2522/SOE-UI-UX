@@ -16,6 +16,8 @@
             'light-gray': '#F5F7FA',
             'dark-text': '#1A1A1A',
             'sidebar-dark': '#1b1e42',
+            'cu-light-blue': '#3eb2ed',
+            'cu-light-blue-60': '#8bd1f4',
             background: 'var(--color-background)',
             sidebar: 'var(--color-sidebar)',
             accent: '#1b1e42',
@@ -43,7 +45,6 @@
     #sidebar.collapsed { width: 72px !important; }
     #sidebar.collapsed nav a>span:last-child { display: none; }
     #sidebar.collapsed .submenu { display: none !important; }
-    #sidebarToggle { position: absolute; z-index: 60; }
     #sidebar.collapsed a[title] { position: relative; }
     #sidebar.collapsed a[title]:hover::after {
       content: attr(title);
@@ -67,8 +68,11 @@
       <div class="h-16 flex items-center justify-between px-6 border-b border-white/10 flex-shrink-0">
         <div class="flex items-center gap-2">
           <span class="text-2xl font-bold tracking-wider">SOE</span>
-          <div class="w-8 h-1 bg-gradient-to-r from-cu-light-blue to-[#8bd1f4] rounded"></div>
+          <div class="w-8 h-1 bg-gradient-to-r from-cu-light-blue to-cu-light-blue-60 rounded"></div>
         </div>
+        <button id="sidebarCollapseBtn" class="p-1 rounded-full text-slate-400 hover:bg-white/10 transition-colors">
+          <span class="material-symbols-outlined text-xl">keyboard_double_arrow_left</span>
+        </button>
       </div>
 
       <nav class="flex-1 overflow-y-auto p-4 space-y-1">
@@ -217,10 +221,6 @@
         </div>
       </nav>
     </aside>
-
-    <button id="sidebarToggle" aria-expanded="true" class="p-2 rounded-full text-slate-300 hover:bg-cu-dark-blue transition-colors" style="left: 0; top: 0;">
-      <span class="material-symbols-outlined text-xl">keyboard_double_arrow_left</span>
-    </button>
 
     <div class="flex-1 flex flex-col bg-white">
       <header class="flex-shrink-0 bg-[#1b1e42] h-16 flex items-center justify-end px-6 border-b border-slate-200">
@@ -570,35 +570,16 @@
       });
 
       var sidebar = document.getElementById('sidebar');
-      var sidebarToggle = document.getElementById('sidebarToggle');
-      var icon = sidebarToggle ? sidebarToggle.querySelector('.material-symbols-outlined') : null;
+      var collapseBtn = document.getElementById('sidebarCollapseBtn');
+      var collapseIcon = collapseBtn ? collapseBtn.querySelector('.material-symbols-outlined') : null;
 
-      function positionToggle() {
-        try {
-          var left = (sidebar.offsetLeft || 0) + (sidebar.offsetWidth || 0) - Math.round((sidebarToggle.offsetWidth || 36) / 2) - 14;
-          var top = (sidebar.offsetTop || 0) + 8;
-          sidebarToggle.style.left = left + 'px';
-          sidebarToggle.style.top = top + 'px';
-        } catch (e) { }
-      }
-
-      if (sidebarToggle && sidebar) {
-        sidebarToggle.setAttribute('aria-expanded', String(!sidebar.classList.contains('collapsed')));
-        positionToggle();
-        sidebarToggle.addEventListener('click', function () {
+      if (collapseBtn && sidebar) {
+        collapseBtn.addEventListener('click', function () {
           var collapsed = !sidebar.classList.contains('collapsed');
           sidebar.classList.toggle('collapsed', collapsed);
-          if (icon) icon.textContent = collapsed ? 'keyboard_double_arrow_right' : 'keyboard_double_arrow_left';
-          positionToggle();
+          if (collapseIcon) collapseIcon.textContent = collapsed ? 'keyboard_double_arrow_right' : 'keyboard_double_arrow_left';
           if (collapsed) document.querySelectorAll('#sidebar .submenu').forEach(function (s) { s.classList.add('hidden'); });
         });
-        sidebar.addEventListener('mouseenter', function () {
-          if (sidebar.classList.contains('collapsed')) { sidebar.classList.add('expanded-temp'); positionToggle(); }
-        });
-        sidebar.addEventListener('mouseleave', function () {
-          if (sidebar.classList.contains('collapsed')) { sidebar.classList.remove('expanded-temp'); positionToggle(); }
-        });
-        window.addEventListener('resize', positionToggle);
       }
 
       // Audit selection
