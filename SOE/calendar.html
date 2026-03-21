@@ -61,8 +61,25 @@
     .event-soe-workload  { --ev: #1b1e42; }
 
     .ev-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--ev); flex-shrink: 0; }
-    .ev-bar { background: var(--ev); border-radius: 4px; padding: 2px 6px; color: #fff; font-size: 10px; font-weight: 600; line-height: 1.4; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer; transition: opacity .2s; }
-    .ev-bar:hover { opacity: .85; }
+    .ev-bar { background: var(--ev); border-radius: 4px; padding: 2px 6px; color: #fff; font-size: 10px; font-weight: 600; line-height: 1.4; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer; transition: all .2s; position: relative; }
+    .ev-bar:hover { opacity: .85; filter: brightness(1.1); }
+
+    /* Event detail popup */
+    .ev-popup { display: none; position: fixed; z-index: 200; width: 320px; background: #fff; border-radius: 14px; box-shadow: 0 20px 50px rgba(0,0,0,.15), 0 4px 12px rgba(0,0,0,.08); border: 1px solid #e5e7eb; overflow: hidden; }
+    .ev-popup.show { display: block; animation: popIn .2s ease; }
+    @keyframes popIn { from { opacity: 0; transform: scale(.95) translateY(4px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+    .ev-popup-header { padding: 14px 16px; color: #fff; }
+    .ev-popup-body { padding: 14px 16px; }
+    .ev-popup-row { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 8px; }
+    .ev-popup-row:last-child { margin-bottom: 0; }
+    .ev-popup-icon { color: #94a3b8; font-size: 16px; margin-top: 1px; flex-shrink: 0; }
+    .ev-popup-label { font-size: 10px; color: #94a3b8; text-transform: uppercase; letter-spacing: .04em; font-weight: 600; }
+    .ev-popup-value { font-size: 12px; color: #1e293b; font-weight: 500; }
+    .ev-popup-conflict { background: #fef2f2; border: 1px solid #fecaca; border-radius: 8px; padding: 8px 10px; margin-top: 8px; }
+    .ev-popup-close { position: absolute; top: 10px; right: 10px; background: rgba(255,255,255,.2); border: none; border-radius: 6px; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #fff; transition: background .15s; }
+    .ev-popup-close:hover { background: rgba(255,255,255,.35); }
+    .ev-overlay { display: none; position: fixed; inset: 0; z-index: 199; }
+    .ev-overlay.show { display: block; }
 
     .cal-cell { min-height: 100px; border: 1px solid #e5e7eb; position: relative; transition: background .15s; }
     .cal-cell:hover { background: #f8fafc; }
@@ -76,8 +93,17 @@
     .view-tab.active { color: #1e293b; font-weight: 600; }
     .view-tab.active::after { content:''; position:absolute; bottom:0; left:8px; right:8px; height:2.5px; border-radius:2px; background:linear-gradient(90deg,#3eb2ed,#38bdf8); }
 
+    .cal-scope-btn { color: #64748b; background: transparent; cursor: pointer; border: none; }
+    .cal-scope-btn.active { color: #fff; background: #1b1e42; box-shadow: 0 1px 4px rgba(27,30,66,.2); }
+
     .slot-free { background: repeating-linear-gradient(45deg, #f0fdf4, #f0fdf4 4px, #dcfce7 4px, #dcfce7 8px); }
     .slot-busy { background: repeating-linear-gradient(45deg, #fef2f2, #fef2f2 4px, #fee2e2 4px, #fee2e2 8px); }
+
+    .planner-cell { min-width: 64px; min-height: 48px; border-left: 1px solid #f1f5f9; padding: 3px; position: relative; }
+    .planner-cell.weekend { background: #fafbfc; }
+    .planner-cell.today-col { background: #eff6ff; }
+    .planner-emp { position: sticky; left: 0; z-index: 5; background: #fff; min-width: 140px; width: 140px; border-right: 2px solid #e2e8f0; }
+    .planner-head-emp { position: sticky; left: 0; z-index: 6; background: #f8fafc; min-width: 140px; width: 140px; border-right: 2px solid #e2e8f0; }
   </style>
 </head>
 
@@ -383,16 +409,28 @@
           <div class="bg-white rounded-2xl border border-gray-200 mb-5 overflow-hidden" style="box-shadow:0 2px 12px rgba(0,0,0,.04);">
 
             <!-- Controls Bar -->
-            <div class="flex items-center justify-between px-5 py-3 border-b border-gray-100">
+            <div class="flex items-center justify-between px-5 py-3 border-b border-gray-100 flex-wrap gap-3">
               <div class="flex items-center gap-2">
                 <button id="prevMonth" class="p-1.5 rounded-lg hover:bg-slate-100 transition"><span class="material-symbols-outlined text-lg text-slate-600">chevron_left</span></button>
                 <h3 id="calMonthLabel" class="text-base font-bold text-slate-900 min-w-[160px] text-center">June 2024</h3>
                 <button id="nextMonth" class="p-1.5 rounded-lg hover:bg-slate-100 transition"><span class="material-symbols-outlined text-lg text-slate-600">chevron_right</span></button>
                 <button id="todayBtn" class="ml-2 px-3 py-1 text-xs font-medium text-slate-600 border border-gray-200 rounded-lg hover:bg-slate-50 transition">Today</button>
               </div>
-              <div class="flex items-center border-b border-gray-200">
-                <button class="view-tab active" data-view="monthly">Monthly</button>
-                <button class="view-tab" data-view="weekly">Weekly</button>
+              <div class="flex items-center gap-3">
+                <!-- My Calendar / All toggle -->
+                <div class="flex items-center bg-slate-100 rounded-lg p-0.5" id="calScopeToggle">
+                  <button data-scope="my" class="cal-scope-btn active flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold transition">
+                    <span class="material-symbols-outlined text-sm">person</span>My Calendar
+                  </button>
+                  <button data-scope="all" class="cal-scope-btn flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold transition">
+                    <span class="material-symbols-outlined text-sm">groups</span>All Calendars
+                  </button>
+                </div>
+                <div class="w-px h-6 bg-gray-200"></div>
+                <div class="flex items-center border-b border-gray-200">
+                  <button class="view-tab active" data-view="monthly">Monthly</button>
+                  <button class="view-tab" data-view="weekly">Weekly</button>
+                </div>
               </div>
             </div>
 
@@ -410,6 +448,13 @@
               <div id="calGrid" class="grid grid-cols-7"></div>
             </div>
 
+            <!-- Monthly Planner View (All Calendars - employee rows) -->
+            <div id="monthlyPlannerView" class="hidden">
+              <div class="overflow-x-auto">
+                <div id="monthlyPlannerContent"></div>
+              </div>
+            </div>
+
             <!-- Weekly View -->
             <div id="weeklyView" class="hidden">
               <div class="overflow-x-auto">
@@ -425,7 +470,7 @@
                     <div class="px-3 py-2 text-[11px] font-semibold text-slate-500 uppercase text-center">Sun 16</div>
                   </div>
                   <!-- Sarah Johnson row -->
-                  <div class="grid grid-cols-8 border-b border-gray-100">
+                  <div class="grid grid-cols-8 border-b border-gray-100" data-employee="Sarah Johnson">
                     <div class="p-3 flex items-center gap-2">
                       <div class="w-7 h-7 rounded-full bg-blue-600 flex items-center justify-center"><span class="text-white text-[10px] font-bold">SJ</span></div>
                       <div><p class="text-xs font-semibold text-slate-900">Sarah J.</p><p class="text-[10px] text-slate-400">Sr. Auditor</p></div>
@@ -439,7 +484,7 @@
                     <div class="p-1.5 border-l border-gray-100 slot-free"></div>
                   </div>
                   <!-- David Kim row -->
-                  <div class="grid grid-cols-8 border-b border-gray-100">
+                  <div class="grid grid-cols-8 border-b border-gray-100" data-employee="David Kim">
                     <div class="p-3 flex items-center gap-2">
                       <div class="w-7 h-7 rounded-full bg-violet-600 flex items-center justify-center"><span class="text-white text-[10px] font-bold">DK</span></div>
                       <div><p class="text-xs font-semibold text-slate-900">David K.</p><p class="text-[10px] text-slate-400">Lead Auditor</p></div>
@@ -453,7 +498,7 @@
                     <div class="p-1.5 border-l border-gray-100 slot-free"></div>
                   </div>
                   <!-- Lisa Anderson row -->
-                  <div class="grid grid-cols-8 border-b border-gray-100">
+                  <div class="grid grid-cols-8 border-b border-gray-100" data-employee="Lisa Anderson">
                     <div class="p-3 flex items-center gap-2">
                       <div class="w-7 h-7 rounded-full bg-rose-500 flex items-center justify-center"><span class="text-white text-[10px] font-bold">LA</span></div>
                       <div><p class="text-xs font-semibold text-slate-900">Lisa A.</p><p class="text-[10px] text-slate-400">Auditor</p></div>
@@ -467,7 +512,7 @@
                     <div class="p-1.5 border-l border-gray-100 slot-free"></div>
                   </div>
                   <!-- Mike Chen row -->
-                  <div class="grid grid-cols-8 border-b border-gray-100">
+                  <div class="grid grid-cols-8 border-b border-gray-100" data-employee="Mike Chen">
                     <div class="p-3 flex items-center gap-2">
                       <div class="w-7 h-7 rounded-full bg-emerald-600 flex items-center justify-center"><span class="text-white text-[10px] font-bold">MC</span></div>
                       <div><p class="text-xs font-semibold text-slate-900">Mike C.</p><p class="text-[10px] text-slate-400">Auditor</p></div>
@@ -481,7 +526,7 @@
                     <div class="p-1.5 border-l border-gray-100 slot-free"></div>
                   </div>
                   <!-- Emma Davis row -->
-                  <div class="grid grid-cols-8">
+                  <div class="grid grid-cols-8" data-employee="Emma Davis">
                     <div class="p-3 flex items-center gap-2">
                       <div class="w-7 h-7 rounded-full bg-amber-500 flex items-center justify-center"><span class="text-white text-[10px] font-bold">ED</span></div>
                       <div><p class="text-xs font-semibold text-slate-900">Emma D.</p><p class="text-[10px] text-slate-400">Jr. Auditor</p></div>
@@ -511,6 +556,17 @@
     </div>
   </div>
 
+  <!-- Event Detail Popup -->
+  <div class="ev-overlay" id="evOverlay"></div>
+  <div class="ev-popup" id="evPopup">
+    <div class="ev-popup-header" id="evPopupHeader">
+      <button class="ev-popup-close" id="evPopupClose"><span class="material-symbols-outlined text-sm">close</span></button>
+      <div class="text-xs font-semibold opacity-80 mb-0.5" id="evPopupType"></div>
+      <div class="text-base font-bold" id="evPopupTitle"></div>
+    </div>
+    <div class="ev-popup-body" id="evPopupBody"></div>
+  </div>
+
   <script>
     document.addEventListener('DOMContentLoaded', function () {
       // Sidebar submenu toggle
@@ -538,48 +594,300 @@
       }
 
       // View Tabs (Monthly / Weekly)
+      var currentView = 'monthly';
       var viewTabs = document.querySelectorAll('.view-tab');
       var monthlyView = document.getElementById('monthlyView');
+      var monthlyPlannerView = document.getElementById('monthlyPlannerView');
       var weeklyView = document.getElementById('weeklyView');
+
+      function updateViews() {
+        monthlyView.classList.add('hidden');
+        monthlyPlannerView.classList.add('hidden');
+        weeklyView.classList.add('hidden');
+        if (currentView === 'monthly') {
+          if (currentScope === 'all') {
+            monthlyPlannerView.classList.remove('hidden');
+            renderMonthlyPlanner();
+          } else {
+            monthlyView.classList.remove('hidden');
+          }
+        } else {
+          weeklyView.classList.remove('hidden');
+        }
+      }
+
       viewTabs.forEach(function (tab) {
         tab.addEventListener('click', function () {
           viewTabs.forEach(function (t) { t.classList.remove('active'); });
           tab.classList.add('active');
-          var v = tab.getAttribute('data-view');
-          if (v === 'monthly') { monthlyView.classList.remove('hidden'); weeklyView.classList.add('hidden'); }
-          else { monthlyView.classList.add('hidden'); weeklyView.classList.remove('hidden'); }
+          currentView = tab.getAttribute('data-view');
+          updateViews();
+          applyWeeklyFilter();
         });
       });
 
-      // Calendar Data
+      // Event type display names
+      var typeLabels = {
+        'contracting': 'Contracting', 'planning': 'Planning', 'auditing': 'Auditing',
+        'certification': 'Certification', 'cert-other': 'Certification Other',
+        'supportive': 'Supportive', 'work-location': 'Work Location', 'leaves': 'Leaves',
+        'client-visits': 'Client Visits', 'meetings': 'Meetings', 'trainings': 'Trainings',
+        'events': 'Events', 'soe-workload': 'SOE Workload'
+      };
+
+      // Calendar Data with times, assignees, locations, descriptions
       var calEvents = [
-        { day: 3, label: 'ISO 9001 Audit', type: 'auditing' },
-        { day: 3, label: 'Team Meeting', type: 'meetings' },
-        { day: 5, label: 'Contract Review', type: 'contracting' },
-        { day: 7, label: 'GOTS Planning', type: 'planning' },
-        { day: 10, label: 'ISO 9001 - TechCorp', type: 'auditing' },
-        { day: 11, label: 'ISO 9001 - TechCorp', type: 'auditing' },
-        { day: 11, label: 'GOTS Review', type: 'planning' },
-        { day: 12, label: 'ISO 14001 - TechCorp', type: 'certification' },
-        { day: 13, label: 'Team Planning', type: 'meetings' },
-        { day: 14, label: 'Client Visit', type: 'client-visits' },
-        { day: 15, label: 'GOTS Audit', type: 'auditing' },
-        { day: 16, label: 'GOTS Audit', type: 'auditing' },
-        { day: 17, label: 'Report Writing', type: 'supportive' },
-        { day: 18, label: 'Remote Work', type: 'work-location' },
-        { day: 19, label: 'Training Day', type: 'trainings' },
-        { day: 20, label: 'Organic Audit', type: 'auditing' },
-        { day: 20, label: 'Cert Renewal', type: 'cert-other' },
-        { day: 21, label: 'Industry Event', type: 'events' },
-        { day: 24, label: 'Annual Leave', type: 'leaves' },
-        { day: 25, label: 'Annual Leave', type: 'leaves' },
-        { day: 26, label: 'Annual Leave', type: 'leaves' },
-        { day: 27, label: 'SOE Admin', type: 'soe-workload' },
-        { day: 28, label: 'Certification Review', type: 'certification' },
+        { id: 1, day: 3, label: 'ISO 9001 Audit', type: 'auditing', time: '08:30 - 16:00', assignee: 'Sarah Johnson', location: 'Calgary, Canada', client: 'ABC Inc.', desc: 'Annual surveillance audit for ISO 9001 Quality Management Systems.' },
+        { id: 2, day: 3, label: 'Team Meeting', type: 'meetings', time: '16:30 - 17:30', assignee: 'All Team', location: 'Office - Room 3B', client: '', desc: 'Weekly team sync on ongoing audits and pipeline updates.' },
+        { id: 3, day: 5, label: 'Contract Review', type: 'contracting', time: '09:00 - 12:00', assignee: 'Lisa Anderson', location: 'Office', client: 'EcoTextiles Ltd.', desc: 'Review and finalize the GOTS certification contract terms.' },
+        { id: 4, day: 7, label: 'GOTS Planning', type: 'planning', time: '10:00 - 14:00', assignee: 'Sarah Johnson', location: 'Office', client: 'EcoTextiles Ltd.', desc: 'Pre-audit planning session for upcoming GOTS textile audit.' },
+        { id: 5, day: 10, label: 'ISO 9001 - TechCorp', type: 'auditing', time: '08:00 - 17:00', assignee: 'Sarah Johnson', location: 'Toronto, Canada', client: 'TechCorp Industries', desc: 'Day 1 of ISO 9001 recertification audit. On-site documentation review.' },
+        { id: 6, day: 11, label: 'ISO 9001 - TechCorp', type: 'auditing', time: '08:00 - 14:00', assignee: 'Sarah Johnson', location: 'Toronto, Canada', client: 'TechCorp Industries', desc: 'Day 2 of ISO 9001 recertification audit. Process evaluation & closing.' },
+        { id: 7, day: 11, label: 'GOTS Review', type: 'planning', time: '09:00 - 15:00', assignee: 'Sarah Johnson', location: 'Vancouver, Canada', client: 'EcoTextiles Ltd.', desc: 'Pre-audit document review for GOTS certification.' },
+        { id: 8, day: 12, label: 'ISO 14001 - TechCorp', type: 'certification', time: '09:00 - 17:00', assignee: 'David Kim', location: 'Toronto, Canada', client: 'TechCorp Industries', desc: 'Environmental management system certification audit.' },
+        { id: 9, day: 13, label: 'Team Planning', type: 'meetings', time: '14:00 - 15:30', assignee: 'All Team', location: 'Office - Main Hall', client: '', desc: 'Monthly planning meeting - review Q3 audit schedule & resource allocation.' },
+        { id: 10, day: 14, label: 'Client Visit', type: 'client-visits', time: '10:00 - 16:00', assignee: 'David Kim', location: 'Vancouver, Canada', client: 'Pacific Fabrics', desc: 'Pre-assessment site visit to evaluate readiness for GOTS certification.' },
+        { id: 11, day: 15, label: 'GOTS Audit', type: 'auditing', time: '08:30 - 17:00', assignee: 'Lisa Anderson', location: 'Vancouver, Canada', client: 'EcoTextiles Ltd.', desc: 'Day 1 - GOTS textile certification on-site audit.' },
+        { id: 12, day: 16, label: 'GOTS Audit', type: 'auditing', time: '08:30 - 13:00', assignee: 'Lisa Anderson', location: 'Vancouver, Canada', client: 'EcoTextiles Ltd.', desc: 'Day 2 - GOTS closing meeting & preliminary findings.' },
+        { id: 13, day: 17, label: 'Report Writing', type: 'supportive', time: '09:00 - 17:00', assignee: 'Lisa Anderson', location: 'Office (Remote)', client: '', desc: 'Compile audit findings and draft GOTS certification report for EcoTextiles.' },
+        { id: 14, day: 18, label: 'Remote Work', type: 'work-location', time: '08:00 - 17:00', assignee: 'Mike Chen', location: 'Home Office', client: '', desc: 'Scheduled remote working day - documentation tasks.' },
+        { id: 15, day: 19, label: 'Training Day', type: 'trainings', time: '09:00 - 16:30', assignee: 'Emma Davis', location: 'Office - Training Room', client: '', desc: 'ISO 14001 Lead Auditor training - Module 3: Environmental aspects.' },
+        { id: 16, day: 20, label: 'Organic Audit', type: 'auditing', time: '07:30 - 15:00', assignee: 'Sarah Johnson', location: 'Calgary, Canada', client: 'Green Valley Farms', desc: 'Annual organic certification field & processing audit.' },
+        { id: 17, day: 20, label: 'Cert Renewal', type: 'cert-other', time: '15:30 - 17:00', assignee: 'Emma Davis', location: 'Office', client: '', desc: 'Prepare documentation for GOTS auditor certification renewal before Jun 20 deadline.' },
+        { id: 18, day: 21, label: 'Industry Event', type: 'events', time: '09:00 - 18:00', assignee: 'David Kim', location: 'Convention Center, Toronto', client: '', desc: 'Annual Sustainability & Certification Industry Conference. Networking & panel sessions.' },
+        { id: 19, day: 24, label: 'Annual Leave', type: 'leaves', time: 'Full Day', assignee: 'Mike Chen', location: '-', client: '', desc: 'Approved annual leave (3 days).' },
+        { id: 20, day: 25, label: 'Annual Leave', type: 'leaves', time: 'Full Day', assignee: 'Mike Chen', location: '-', client: '', desc: 'Approved annual leave (continued).' },
+        { id: 21, day: 26, label: 'Annual Leave', type: 'leaves', time: 'Full Day', assignee: 'Mike Chen', location: '-', client: '', desc: 'Approved annual leave (last day).' },
+        { id: 22, day: 27, label: 'SOE Admin', type: 'soe-workload', time: '09:00 - 12:00', assignee: 'Emma Davis', location: 'Office', client: '', desc: 'SOE system administration tasks - data entry, calendar updates.' },
+        { id: 23, day: 28, label: 'Certification Review', type: 'certification', time: '10:00 - 16:00', assignee: 'David Kim', location: 'Office', client: 'Global Foods', desc: 'Review certification documentation and prepare decision report for Global Foods organic cert.' },
       ];
 
-      var currentMonth = 5; // June (0-indexed)
+      // Scope toggle: My Calendar / All Calendars / Employee
+      var currentUser = 'Sarah Johnson';
+      var currentScope = 'my';
+      var scopeBtns = document.querySelectorAll('.cal-scope-btn');
+
+      function getFilteredEvents() {
+        if (currentScope === 'my') return calEvents.filter(function (e) { return e.assignee === currentUser || e.assignee === 'All Team'; });
+        return calEvents;
+      }
+
+      function applyWeeklyFilter() {
+        var rows = document.querySelectorAll('#weeklyView [data-employee]');
+        rows.forEach(function (row) {
+          var emp = row.getAttribute('data-employee');
+          if (currentScope === 'my') {
+            row.style.display = emp === currentUser ? '' : 'none';
+          } else {
+            row.style.display = '';
+          }
+        });
+      }
+
+      scopeBtns.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          scopeBtns.forEach(function (b) { b.classList.remove('active'); });
+          btn.classList.add('active');
+          currentScope = btn.getAttribute('data-scope');
+          renderCalendar();
+          updateViews();
+          applyWeeklyFilter();
+        });
+      });
+
+      // Time overlap detection
+      function parseTime(t) {
+        if (!t || t === 'Full Day') return null;
+        var parts = t.split(' - ');
+        if (parts.length !== 2) return null;
+        function toMin(s) { var p = s.trim().split(':'); return parseInt(p[0]) * 60 + parseInt(p[1]); }
+        return { start: toMin(parts[0]), end: toMin(parts[1]) };
+      }
+      function timesOverlap(a, b) {
+        var ta = parseTime(a); var tb = parseTime(b);
+        if (!ta || !tb) return false;
+        return ta.start < tb.end && tb.start < ta.end;
+      }
+      function getConflicts(ev, allEvents) {
+        return allEvents.filter(function (other) {
+          return other.id !== ev.id && other.day === ev.day && other.assignee === ev.assignee && timesOverlap(ev.time, other.time);
+        });
+      }
+
+      // Popup logic
+      var popup = document.getElementById('evPopup');
+      var overlay = document.getElementById('evOverlay');
+      var popupHeader = document.getElementById('evPopupHeader');
+      var popupBody = document.getElementById('evPopupBody');
+
+      function getEvColor(type) {
+        var map = { 'contracting':'#3b82f6','planning':'#8b5cf6','auditing':'#ef4444','certification':'#f59e0b','cert-other':'#d97706','supportive':'#6366f1','work-location':'#0ea5e9','leaves':'#10b981','client-visits':'#ec4899','meetings':'#14b8a6','trainings':'#a855f7','events':'#f97316','soe-workload':'#1b1e42' };
+        return map[type] || '#64748b';
+      }
+
+      function showEventPopup(ev, rect) {
+        var conflicts = getConflicts(ev, calEvents);
+        popupHeader.style.background = getEvColor(ev.type);
+        document.getElementById('evPopupType').textContent = typeLabels[ev.type] || ev.type;
+        document.getElementById('evPopupTitle').textContent = ev.label;
+
+        var html = '';
+        html += '<div class="ev-popup-row"><span class="material-symbols-outlined ev-popup-icon">schedule</span><div><div class="ev-popup-label">Time</div><div class="ev-popup-value">' + ev.time + '</div></div></div>';
+        html += '<div class="ev-popup-row"><span class="material-symbols-outlined ev-popup-icon">person</span><div><div class="ev-popup-label">Assigned To</div><div class="ev-popup-value">' + ev.assignee + '</div></div></div>';
+        if (ev.location && ev.location !== '-') {
+          html += '<div class="ev-popup-row"><span class="material-symbols-outlined ev-popup-icon">location_on</span><div><div class="ev-popup-label">Location</div><div class="ev-popup-value">' + ev.location + '</div></div></div>';
+        }
+        if (ev.client) {
+          html += '<div class="ev-popup-row"><span class="material-symbols-outlined ev-popup-icon">business</span><div><div class="ev-popup-label">Client</div><div class="ev-popup-value">' + ev.client + '</div></div></div>';
+        }
+        html += '<div class="ev-popup-row"><span class="material-symbols-outlined ev-popup-icon">description</span><div><div class="ev-popup-label">Details</div><div class="ev-popup-value">' + ev.desc + '</div></div></div>';
+
+        if (conflicts.length > 0) {
+          html += '<div class="ev-popup-conflict">';
+          html += '<div class="flex items-center gap-1.5 mb-1"><span class="material-symbols-outlined text-red-500 text-sm">warning</span><span class="text-[11px] font-bold text-red-700">Time Conflict Detected</span></div>';
+          conflicts.forEach(function (c) {
+            html += '<div class="text-[11px] text-red-600 mt-1">Overlaps with <strong>' + c.label + '</strong> (' + c.time + ') &mdash; ' + c.assignee + '</div>';
+          });
+          html += '</div>';
+        }
+
+        popupBody.innerHTML = html;
+
+        // Position popup near the clicked bar
+        var popW = 320; var popH = popup.offsetHeight || 300;
+        var x = rect.right + 8; var y = rect.top;
+        if (x + popW > window.innerWidth - 16) x = rect.left - popW - 8;
+        if (x < 8) x = 8;
+        if (y + popH > window.innerHeight - 16) y = window.innerHeight - popH - 16;
+        if (y < 8) y = 8;
+        popup.style.left = x + 'px';
+        popup.style.top = y + 'px';
+        popup.classList.add('show');
+        overlay.classList.add('show');
+      }
+
+      function closePopup() { popup.classList.remove('show'); overlay.classList.remove('show'); }
+      document.getElementById('evPopupClose').addEventListener('click', closePopup);
+      overlay.addEventListener('click', closePopup);
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closePopup(); });
+
+      var currentMonth = 5;
       var currentYear = 2024;
+
+      // Employee info for planner rows
+      var employees = [
+        { name: 'Sarah Johnson', short: 'Sarah J.', role: 'Sr. Auditor', initials: 'SJ', color: 'bg-blue-600' },
+        { name: 'David Kim', short: 'David K.', role: 'Lead Auditor', initials: 'DK', color: 'bg-violet-600' },
+        { name: 'Lisa Anderson', short: 'Lisa A.', role: 'Auditor', initials: 'LA', color: 'bg-rose-500' },
+        { name: 'Mike Chen', short: 'Mike C.', role: 'Auditor', initials: 'MC', color: 'bg-emerald-600' },
+        { name: 'Emma Davis', short: 'Emma D.', role: 'Jr. Auditor', initials: 'ED', color: 'bg-amber-500' },
+      ];
+
+      var dayNames = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+
+      var plannerPage = 0;
+      var PAGE_SIZE = 10;
+
+      function renderMonthlyPlanner() {
+        var container = document.getElementById('monthlyPlannerContent');
+        var daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+        var months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+        document.getElementById('calMonthLabel').textContent = months[currentMonth] + ' ' + currentYear;
+
+        var totalPages = Math.ceil(daysInMonth / PAGE_SIZE);
+        if (plannerPage >= totalPages) plannerPage = totalPages - 1;
+        if (plannerPage < 0) plannerPage = 0;
+
+        var startDay = plannerPage * PAGE_SIZE + 1;
+        var endDay = Math.min(startDay + PAGE_SIZE - 1, daysInMonth);
+        var visibleDays = endDay - startDay + 1;
+
+        var today = new Date();
+        var todayDay = (today.getMonth() === currentMonth && today.getFullYear() === currentYear) ? today.getDate() : -1;
+
+        var colW = '1fr';
+        var gridCols = '150px repeat(' + visibleDays + ', ' + colW + ')';
+
+        var html = '';
+
+        // Pagination controls
+        html += '<div class="flex items-center justify-between px-4 py-2.5 bg-slate-50/80 border-b border-gray-200">';
+        html += '<button id="plannerPrev" class="flex items-center gap-1 px-2.5 py-1 text-xs font-medium text-slate-600 border border-gray-200 rounded-lg hover:bg-white transition ' + (plannerPage === 0 ? 'opacity-40 pointer-events-none' : '') + '"><span class="material-symbols-outlined text-sm">chevron_left</span>Previous</button>';
+        html += '<span class="text-xs font-semibold text-slate-700">Days ' + startDay + ' - ' + endDay + ' of ' + daysInMonth + '</span>';
+        html += '<button id="plannerNext" class="flex items-center gap-1 px-2.5 py-1 text-xs font-medium text-slate-600 border border-gray-200 rounded-lg hover:bg-white transition ' + (plannerPage >= totalPages - 1 ? 'opacity-40 pointer-events-none' : '') + '">Next<span class="material-symbols-outlined text-sm">chevron_right</span></button>';
+        html += '</div>';
+
+        // Grid
+        html += '<div>';
+
+        // Header row
+        html += '<div style="display:grid; grid-template-columns:' + gridCols + ';" class="bg-slate-50 border-b border-gray-200 sticky top-0 z-10">';
+        html += '<div class="planner-head-emp px-3 py-2.5 text-[11px] font-semibold text-slate-500 uppercase">Employee</div>';
+        for (var d = startDay; d <= endDay; d++) {
+          var dow = new Date(currentYear, currentMonth, d).getDay();
+          var isWe = (dow === 0 || dow === 6);
+          var isToday = (d === todayDay);
+          var cls = 'px-1 py-2.5 text-center border-l border-gray-100';
+          if (isToday) cls += ' today-col';
+          else if (isWe) cls += ' weekend';
+          html += '<div class="' + cls + '">';
+          html += '<div class="text-[9px] font-semibold text-slate-400 uppercase">' + dayNames[dow] + '</div>';
+          html += '<div class="text-xs font-bold ' + (isToday ? 'text-blue-600' : 'text-slate-700') + '">' + d + '</div>';
+          html += '</div>';
+        }
+        html += '</div>';
+
+        // Employee rows
+        employees.forEach(function (emp) {
+          var empEvents = calEvents.filter(function (e) { return e.assignee === emp.name || e.assignee === 'All Team'; });
+
+          html += '<div style="display:grid; grid-template-columns:' + gridCols + ';" class="border-b border-gray-100">';
+          html += '<div class="planner-emp p-3 flex items-center gap-2">';
+          html += '<div class="w-7 h-7 rounded-full ' + emp.color + ' flex items-center justify-center flex-shrink-0"><span class="text-white text-[10px] font-bold">' + emp.initials + '</span></div>';
+          html += '<div><p class="text-xs font-semibold text-slate-900 leading-tight">' + emp.short + '</p><p class="text-[10px] text-slate-400 leading-tight">' + emp.role + '</p></div>';
+          html += '</div>';
+
+          for (var d = startDay; d <= endDay; d++) {
+            var dow = new Date(currentYear, currentMonth, d).getDay();
+            var isWe = (dow === 0 || dow === 6);
+            var isToday = (d === todayDay);
+            var cls = 'planner-cell';
+            if (isToday) cls += ' today-col';
+            else if (isWe) cls += ' weekend';
+
+            var dayEvs = empEvents.filter(function (e) { return e.day === d; });
+            html += '<div class="' + cls + '">';
+            if (dayEvs.length > 0) {
+              dayEvs.forEach(function (ev) {
+                var hasConflict = getConflicts(ev, empEvents).length > 0;
+                var cIcon = hasConflict ? '<span class="material-symbols-outlined text-white text-[8px]" style="vertical-align:middle">warning</span> ' : '';
+                html += '<div class="ev-bar event-' + ev.type + ' mb-0.5" data-evid="' + ev.id + '" title="' + ev.label + ' (' + ev.time + ')" style="font-size:9px;padding:2px 5px;">' + cIcon + ev.label + '</div>';
+              });
+            }
+            html += '</div>';
+          }
+          html += '</div>';
+        });
+
+        html += '</div>';
+        container.innerHTML = html;
+
+        // Pagination click handlers
+        var prevBtn = document.getElementById('plannerPrev');
+        var nextBtn = document.getElementById('plannerNext');
+        if (prevBtn) prevBtn.addEventListener('click', function () { if (plannerPage > 0) { plannerPage--; renderMonthlyPlanner(); } });
+        if (nextBtn) nextBtn.addEventListener('click', function () { if (plannerPage < totalPages - 1) { plannerPage++; renderMonthlyPlanner(); } });
+
+        // Attach click handlers to ev-bars
+        container.querySelectorAll('.ev-bar[data-evid]').forEach(function (bar) {
+          bar.addEventListener('click', function (e) {
+            e.stopPropagation();
+            var evId = parseInt(bar.getAttribute('data-evid'));
+            var ev = calEvents.find(function (x) { return x.id === evId; });
+            if (ev) showEventPopup(ev, bar.getBoundingClientRect());
+          });
+        });
+      }
 
       function renderCalendar() {
         var grid = document.getElementById('calGrid');
@@ -595,7 +903,6 @@
         var today = new Date();
         var isCurrentMonth = (today.getMonth() === currentMonth && today.getFullYear() === currentYear);
 
-        // Previous month padding
         for (var i = firstDay - 1; i >= 0; i--) {
           var cell = document.createElement('div');
           cell.className = 'cal-cell other-month p-2';
@@ -603,7 +910,6 @@
           grid.appendChild(cell);
         }
 
-        // Current month days
         for (var d = 1; d <= daysInMonth; d++) {
           var cell = document.createElement('div');
           var cls = 'cal-cell p-2';
@@ -612,19 +918,33 @@
 
           var html = '<span class="text-[11px] font-semibold text-slate-700">' + d + '</span>';
           html += '<div class="mt-1 space-y-0.5">';
-          var dayEvents = calEvents.filter(function (e) { return e.day === d; });
-          dayEvents.forEach(function (ev) {
-            html += '<div class="ev-bar event-' + ev.type + '" title="' + ev.label + '">' + ev.label + '</div>';
-          });
-          if (d === 11) {
-            html += '<div class="flex items-center gap-1 mt-0.5"><span class="material-symbols-outlined text-red-500 text-[11px]">warning</span><span class="text-[9px] text-red-600 font-semibold">Overlap</span></div>';
+          var filtered = getFilteredEvents();
+          var dayEvents = filtered.filter(function (e) { return e.day === d; });
+
+          // Check for any time conflicts this day
+          var dayHasConflict = false;
+          for (var ci = 0; ci < dayEvents.length; ci++) {
+            if (getConflicts(dayEvents[ci], filtered).length > 0) { dayHasConflict = true; break; }
           }
+
+          dayEvents.forEach(function (ev) {
+            var hasConflict = getConflicts(ev, filtered).length > 0;
+            var timeShort = ev.time === 'Full Day' ? 'All day' : ev.time.split(' - ')[0];
+            var conflictIcon = hasConflict ? '<span class="material-symbols-outlined text-white text-[9px] mr-0.5" style="vertical-align:middle">warning</span>' : '';
+            html += '<div class="ev-bar event-' + ev.type + '" data-evid="' + ev.id + '" title="' + ev.label + ' (' + ev.time + ')">';
+            html += conflictIcon + '<span class="opacity-70 mr-0.5">' + timeShort + '</span> ' + ev.label;
+            html += '</div>';
+          });
+
+          if (dayHasConflict) {
+            html += '<div class="flex items-center gap-1 mt-0.5"><span class="material-symbols-outlined text-red-500 text-[11px]">warning</span><span class="text-[9px] text-red-600 font-semibold">Time Conflict</span></div>';
+          }
+
           html += '</div>';
           cell.innerHTML = html;
           grid.appendChild(cell);
         }
 
-        // Next month padding
         var totalCells = firstDay + daysInMonth;
         var remaining = (7 - (totalCells % 7)) % 7;
         for (var n = 1; n <= remaining; n++) {
@@ -633,26 +953,48 @@
           cell.innerHTML = '<span class="text-[11px] font-medium">' + n + '</span>';
           grid.appendChild(cell);
         }
+
+        // Attach click handlers to ev-bars
+        grid.querySelectorAll('.ev-bar[data-evid]').forEach(function (bar) {
+          bar.addEventListener('click', function (e) {
+            e.stopPropagation();
+            var evId = parseInt(bar.getAttribute('data-evid'));
+            var ev = calEvents.find(function (x) { return x.id === evId; });
+            if (ev) showEventPopup(ev, bar.getBoundingClientRect());
+          });
+        });
       }
 
       document.getElementById('prevMonth').addEventListener('click', function () {
         currentMonth--;
         if (currentMonth < 0) { currentMonth = 11; currentYear--; }
-        renderCalendar();
+        plannerPage = 0; renderCalendar(); updateViews();
       });
       document.getElementById('nextMonth').addEventListener('click', function () {
         currentMonth++;
         if (currentMonth > 11) { currentMonth = 0; currentYear++; }
-        renderCalendar();
+        plannerPage = 0; renderCalendar(); updateViews();
       });
       document.getElementById('todayBtn').addEventListener('click', function () {
         var now = new Date();
         currentMonth = now.getMonth();
         currentYear = now.getFullYear();
-        renderCalendar();
+        plannerPage = 0; renderCalendar(); updateViews();
       });
 
       renderCalendar();
+      updateViews();
+      applyWeeklyFilter();
+
+      // Also make weekly view ev-bars clickable
+      document.querySelectorAll('#weeklyView .ev-bar').forEach(function (bar) {
+        bar.addEventListener('click', function (e) {
+          e.stopPropagation();
+          var title = bar.getAttribute('title') || bar.textContent.trim();
+          var matched = calEvents.find(function (ev) { return title.indexOf(ev.label) !== -1 || ev.label.indexOf(bar.textContent.replace(/[^\w\s]/g,'').trim()) !== -1; });
+          if (matched) showEventPopup(matched, bar.getBoundingClientRect());
+        });
+      });
     });
   </script>
 </body>
