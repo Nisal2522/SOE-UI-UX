@@ -4532,16 +4532,16 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
                 <span class="text-xl font-bold" style="color: #3eb2ed; text-shadow: 0 0 20px rgba(62,178,237,0.4);">
                   217</span>
               </div>
-              <!-- Spacer to push Won and Lost to align with Probability column -->
-              <div class="flex-1"></div>
+              <!-- Small spacer so Won/Lost sit a little to the right -->
+              <div class="w-16"></div>
               <!-- Won - Aligned with Probability column -->
-              <div class="flex flex-col items-center py-3" style="width: 140px;">
+              <div class="flex flex-col items-center text-center py-3" style="width: 140px;">
                 <span class="text-xs uppercase tracking-wider mb-1" style="color: rgba(255,255,255,0.6);">Won <span
                     style="color: rgba(255,255,255,0.4);">ⓘ</span></span>
                 <span class="text-xl font-bold text-white">0</span>
               </div>
               <!-- Lost - Next to Won -->
-              <div class="flex flex-col items-center py-3 mr-4" style="width: 140px;">
+              <div class="flex flex-col items-center text-center py-3" style="width: 140px;">
                 <span class="text-xs uppercase tracking-wider mb-1" style="color: rgba(255,255,255,0.6);">Lost <span
                     style="color: rgba(255,255,255,0.4);">ⓘ</span></span>
                 <span class="text-xl font-bold text-white">0</span>
@@ -4555,7 +4555,8 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
                 <tr>
                   <th class="text-left">Opportunity</th>
                   <th class="text-left">Account Name</th>
-                  <th class="text-left">Amount</th>
+                  <th class="text-left">Forecasts Amount</th>
+                  <th class="text-left">Actual Amount</th>
                   <th class="text-left">Close Date</th>
                   <th class="text-left">Stage</th>
                   <th class="text-left" style="width: 140px;">Probability (%)</th>
@@ -4567,6 +4568,7 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
                   <td style="color:#334155;">RCS</td>
                   <td style="color:#334155;">Acme (Sample)</td>
                   <td>Rs. 10,000.00</td>
+                  <td>Rs. 9,850.00</td>
                   <td>16/1/2026</td>
                   <td>Closed Won</td>
                   <td>100%</td>
@@ -4576,6 +4578,7 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
                   <td style="color:#334155;">NOP</td>
                   <td style="color:#334155;">Global Media (Sample)</td>
                   <td>Rs. 19,500.00</td>
+                  <td>Rs. 0.00</td>
                   <td>26/1/2026</td>
                   <td>Negotiation</td>
                   <td>90%</td>
@@ -4585,6 +4588,7 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
                   <td style="color:#334155;">REGENAGRI</td>
                   <td style="color:#334155;">Acme (Sample)</td>
                   <td>Rs. 45,000.00</td>
+                  <td>Rs. 0.00</td>
                   <td>25/1/2026</td>
                   <td>Qualification</td>
                   <td>10%</td>
@@ -4594,6 +4598,7 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
                   <td style="color:#334155;">ISO</td>
                   <td style="color:#334155;">Global Media (Sample)</td>
                   <td>Rs. 52,500.00</td>
+                  <td>Rs. 0.00</td>
                   <td>29/1/2026</td>
                   <td>Qualification</td>
                   <td>10%</td>
@@ -4603,6 +4608,7 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
                   <td style="color:#334155;">SLCP</td>
                   <td style="color:#334155;">salesforce.com (Sample)</td>
                   <td>Rs. 1,00,000.00</td>
+                  <td>Rs. 0.00</td>
                   <td>13/1/2026</td>
                   <td>Negotiation</td>
                   <td>90%</td>
