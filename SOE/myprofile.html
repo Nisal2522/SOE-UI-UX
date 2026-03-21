@@ -1,0 +1,1145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>My Profile</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+    rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#3eb2ed',
+            'light-gray': '#F5F7FA',
+            'dark-text': '#1A1A1A',
+            'sidebar-dark': '#1b1e42',
+            background: 'var(--color-background)',
+            sidebar: 'var(--color-sidebar)',
+            accent: '#1b1e42',
+          },
+          boxShadow: {
+            soft: '0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05)',
+            glass: '0 8px 32px rgba(0,0,0,.08)',
+            card: '0 1px 3px rgba(0,0,0,.06), 0 6px 16px rgba(0,0,0,.04)',
+            glow: '0 0 20px rgba(27,30,66,.15)',
+          },
+          borderRadius: {
+            xl: '18px',
+            '2xl': '24px'
+          },
+          fontFamily: {
+            display: ['Inter', 'sans-serif'],
+            sans: ['Inter', 'sans-serif'],
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    :root {
+      --cu-light-blue: #3eb2ed;
+      --cu-dark-blue: #1b1e42;
+      --color-background: #ffffff;
+      --color-sidebar: var(--cu-dark-blue);
+    }
+    #sidebar.collapsed { width: 72px !important; }
+    #sidebar.collapsed nav a>span:last-child { display: none; }
+    #sidebar.collapsed .submenu { display: none !important; }
+    #sidebarToggle { position: absolute; z-index: 60; }
+    #sidebar.collapsed a[title] { position: relative; }
+    #sidebar.collapsed a[title]:hover::after {
+      content: attr(title);
+      position: absolute; left: 72px; top: 50%; transform: translateY(-50%);
+      background: #111827; color: #fff; padding: 6px 10px; border-radius: 6px;
+      white-space: nowrap; font-size: 12px; box-shadow: 0 6px 18px rgba(2,6,23,.12);
+    }
+
+    .hero-gradient {
+      background: #fff;
+      border-bottom: 1px solid #e8ecf1;
+    }
+    .hero-gradient::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 80% 0%, rgba(27,30,66,.06) 0%, transparent 50%),
+                  radial-gradient(ellipse at 10% 100%, rgba(59,130,246,.04) 0%, transparent 40%);
+      pointer-events: none;
+    }
+    .glass-card {
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 4px 16px rgba(0,0,0,.06), 0 1px 3px rgba(0,0,0,.04);
+    }
+    .stat-pill {
+      background: #fff;
+      border: 1px solid #e8ecf1;
+      box-shadow: 0 6px 20px rgba(0,0,0,.05), 0 2px 6px rgba(0,0,0,.03), 0 0 0 1px rgba(255,255,255,.8) inset;
+      transition: all .25s cubic-bezier(.4,0,.2,1);
+    }
+    .stat-pill:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 28px rgba(0,0,0,.08), 0 4px 10px rgba(0,0,0,.04), 0 0 0 1px rgba(255,255,255,.9) inset;
+    }
+    .profile-tab-btn { position: relative; transition: all .25s ease; }
+    .profile-tab-btn.active { color: #1b1e42; }
+    .profile-tab-btn.active::after {
+      content: ''; position: absolute; bottom: -1px; left: 16px; right: 16px;
+      height: 2.5px; background: linear-gradient(90deg, #1b1e42, #2d3266); border-radius: 2px;
+    }
+    .info-card {
+      background: #fff;
+      border: 1px solid #e8ecf1;
+      border-radius: 16px;
+      padding: 20px;
+      transition: all .3s cubic-bezier(.4,0,.2,1);
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,.04), 0 0 0 1px rgba(255,255,255,.7) inset;
+    }
+    .info-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, #1b1e42, #2d3266, #3eb2ed); opacity: 0;
+      transition: opacity .25s;
+    }
+    .info-card:hover {
+      border-color: #c8cad8;
+      transform: translateY(-3px);
+      box-shadow: 0 14px 32px rgba(27,30,66,.10), 0 4px 12px rgba(0,0,0,.04);
+    }
+    .info-card:hover::before { opacity: 1; }
+    .cert-card {
+      border-radius: 16px; padding: 20px;
+      transition: all .3s cubic-bezier(.4,0,.2,1);
+      border: 1px solid #e8ecf1; background: #fff;
+      box-shadow: 0 2px 8px rgba(0,0,0,.04), 0 0 0 1px rgba(255,255,255,.7) inset;
+    }
+    .cert-card:hover {
+      box-shadow: 0 14px 32px rgba(0,0,0,.07), 0 4px 12px rgba(0,0,0,.03);
+      transform: translateY(-3px);
+    }
+    .badge-existing { background: linear-gradient(135deg, #dcfce7, #bbf7d0); color: #166534; }
+    .badge-potential { background: linear-gradient(135deg, #dbeafe, #bfdbfe); color: #1e40af; }
+    .badge-active { background: linear-gradient(135deg, #d1fae5, #a7f3d0); color: #065f46; }
+    .badge-in-progress { background: linear-gradient(135deg, #e0e7ff, #c7d2fe); color: #3730a3; }
+    .badge-required { background: linear-gradient(135deg, #fef3c7, #fde68a); color: #92400e; }
+    .rating-ring {
+      width: 80px; height: 80px; border-radius: 50%;
+      background: conic-gradient(#1b1e42 calc(var(--pct) * 1%), #e2e8f0 0);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .rating-ring-inner { width: 62px; height: 62px; border-radius: 50%; background: #fff; display: flex; align-items: center; justify-content: center; }
+    .schedule-item {
+      border-left: 3px solid transparent;
+      transition: all .3s cubic-bezier(.4,0,.2,1);
+      box-shadow: 0 2px 6px rgba(0,0,0,.03);
+    }
+    .schedule-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0,0,0,.06);
+    }
+    .progress-bar-animated {
+      position: relative; overflow: hidden;
+    }
+    .progress-bar-animated::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.3), transparent);
+      animation: shimmer 2s infinite;
+    }
+    @keyframes shimmer { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+    .fade-up { animation: fadeUp .4s ease forwards; }
+    .profile-panel { opacity: 0; animation: fadeUp .35s ease forwards; }
+    .profile-panel.hidden { display: none; }
+  </style>
+</head>
+
+<body class="font-display bg-white text-dark-text">
+  <div class="flex h-screen overflow-hidden relative">
+    <aside id="sidebar" class="w-64 flex-shrink-0 bg-sidebar text-white flex flex-col transition-all duration-300">
+      <div class="h-16 flex items-center justify-between px-6 border-b border-white/10 flex-shrink-0">
+        <div class="flex items-center gap-2">
+          <span class="text-2xl font-bold tracking-wider">SOE</span>
+          <div class="w-8 h-1 bg-gradient-to-r from-cu-light-blue to-[#8bd1f4] rounded"></div>
+        </div>
+      </div>
+
+      <nav class="flex-1 overflow-y-auto p-4 space-y-1">
+        <div>
+          <button
+            class="menu-toggle flex items-center justify-between p-3 rounded-lg text-slate-200 hover:bg-white/10 w-full text-left">
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined">dashboard</span>
+              <span class="font-medium text-sm">Dashboard</span>
+            </div>
+            <span class="material-symbols-outlined text-lg transform transition-transform">expand_more</span>
+          </button>
+          <div class="submenu hidden ml-6 mt-1 space-y-1">
+            <a href="index.html"
+              class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-200/70 hover:bg-white/10 hover:text-white"
+              title="My Dashboard">
+              <span class="material-symbols-outlined text-base">arrow_right</span>
+              <span>My Dashboard</span>
+            </a>
+          </div>
+        </div>
+
+        <div>
+          <a href="#"
+            class="menu-toggle flex items-center justify-between p-3 rounded-lg text-slate-200 hover:bg-white/10 w-full text-left"
+            title="Task">
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined">task_alt</span>
+              <span class="font-medium text-sm">Task</span>
+            </div>
+            <span class="material-symbols-outlined text-lg opacity-60">chevron_right</span>
+          </a>
+        </div>
+
+        <div>
+          <button
+            class="menu-toggle flex items-center justify-between p-3 rounded-lg text-slate-200 hover:bg-white/10 w-full text-left">
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined">trending_up</span>
+              <span class="font-medium text-sm">CRM</span>
+            </div>
+            <span class="material-symbols-outlined text-lg transform transition-transform">expand_more</span>
+          </button>
+          <div class="submenu hidden ml-6 mt-1 space-y-1">
+            <a href="allclient.html#leads"
+              class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-200/70 hover:bg-white/10 hover:text-white"
+              title="Accounts">
+              <span class="material-symbols-outlined text-base">arrow_right</span>
+              <span>Accounts</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Regional & Global -->
+        <div>
+          <button
+            class="menu-toggle flex items-center justify-between p-3 rounded-lg text-slate-200 hover:bg-cu-dark-blue-80 w-full text-left">
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined">public</span>
+              <span class="font-medium text-sm">Regional & Global</span>
+            </div>
+            <span class="material-symbols-outlined text-lg transform transition-transform">chevron_right</span>
+          </button>
+          <div class="submenu hidden ml-6 mt-1 space-y-1">
+            <a href="COEdashboard.html"
+              class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-400 hover:bg-cu-dark-blue-80 hover:text-white">
+              <span class="material-symbols-outlined text-base">arrow_right</span>
+              <span>COEs</span>
+            </a>
+            <a href="#"
+              class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-400 hover:bg-cu-dark-blue-80 hover:text-white">
+              <span class="material-symbols-outlined text-base">arrow_right</span>
+              <span>Regional Team</span>
+            </a>
+            <a href="#"
+              class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-400 hover:bg-cu-dark-blue-80 hover:text-white">
+              <span class="material-symbols-outlined text-base">arrow_right</span>
+              <span>MarComs</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- HR Manager -->
+        <div>
+          <button
+            class="menu-toggle flex items-center justify-between p-3 rounded-lg text-slate-200 hover:bg-cu-dark-blue-80 w-full text-left">
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined">groups</span>
+              <span class="font-medium text-sm">HR Manager</span>
+            </div>
+            <span class="material-symbols-outlined text-lg">expand_more</span>
+          </button>
+          <ul class="submenu hidden pl-6 mt-2 space-y-1 text-sm">
+            <li><a class="block p-2 rounded text-slate-400 hover:bg-cu-dark-blue-80 hover:text-slate-200" href="#">Employee Management</a></li>
+            <li><a class="block p-2 rounded text-slate-400 hover:bg-cu-dark-blue-80 hover:text-slate-200" href="#">Leave Management</a></li>
+          </ul>
+        </div>
+
+        <!-- Department Manager -->
+        <a class="flex items-center gap-3 p-3 rounded-lg text-sm font-medium text-slate-200 hover:bg-white/10"
+          href="#">
+          <span class="material-symbols-outlined">corporate_fare</span>Department Manager
+        </a>
+
+        <!-- User Manager -->
+        <div>
+          <button
+            class="menu-toggle flex items-center justify-between p-3 rounded-lg text-slate-200 hover:bg-cu-dark-blue-80 w-full text-left">
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined">manage_accounts</span>
+              <span class="font-medium text-sm">User Manager</span>
+            </div>
+            <span class="material-symbols-outlined text-lg">expand_more</span>
+          </button>
+          <ul class="submenu hidden pl-6 mt-2 space-y-1 text-sm">
+            <li><a class="block p-2 rounded text-slate-400 hover:bg-cu-dark-blue-80 hover:text-slate-200" href="#">Add User</a></li>
+            <li><a class="block p-2 rounded text-slate-400 hover:bg-cu-dark-blue-80 hover:text-slate-200" href="#">Manage Users</a></li>
+          </ul>
+        </div>
+
+        <!-- Working Days -->
+        <div>
+          <button
+            class="menu-toggle flex items-center justify-between p-3 rounded-lg text-slate-200 hover:bg-cu-dark-blue-80 w-full text-left">
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined">calendar_month</span>
+              <span class="font-medium text-sm">Working Days</span>
+            </div>
+            <span class="material-symbols-outlined text-lg">expand_more</span>
+          </button>
+          <ul class="submenu hidden pl-6 mt-2 space-y-1 text-sm">
+            <li><a class="block p-2 rounded text-slate-400 hover:bg-cu-dark-blue-80 hover:text-slate-200" href="#">Calendar</a></li>
+            <li><a class="block p-2 rounded text-slate-400 hover:bg-cu-dark-blue-80 hover:text-slate-200" href="#">Holidays</a></li>
+          </ul>
+        </div>
+
+        <!-- Settings (with submenu) -->
+        <div>
+          <button
+            class="menu-toggle flex items-center justify-between p-3 rounded-lg text-slate-200 hover:bg-cu-dark-blue-80 w-full text-left">
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined">settings</span>
+              <span class="font-medium text-sm">Settings</span>
+            </div>
+            <span class="material-symbols-outlined text-lg">expand_more</span>
+          </button>
+          <ul class="submenu hidden pl-6 mt-2 space-y-1 text-sm">
+            <li><a class="block p-2 rounded text-slate-400 hover:bg-cu-dark-blue-80 hover:text-slate-200" href="#">KPI Manager</a></li>
+            <li><a class="block p-2 rounded text-slate-400 hover:bg-cu-dark-blue-80 hover:text-slate-200" href="configuration.html">Configuration</a></li>
+          </ul>
+        </div>
+      </nav>
+    </aside>
+
+    <button id="sidebarToggle" aria-expanded="true"
+      class="p-2 rounded-full text-slate-300 hover:bg-cu-dark-blue transition-colors"
+      style="left: 0; top: 0;">
+      <span class="material-symbols-outlined text-xl">keyboard_double_arrow_left</span>
+    </button>
+
+    <div class="flex-1 flex flex-col bg-white">
+      <header class="flex-shrink-0 bg-[#1b1e42] h-16 flex items-center justify-end px-6 border-b border-slate-200">
+        <div class="flex items-center space-x-4">
+          <button class="p-2 rounded-full text-slate-300 hover:bg-cu-dark-blue-80 relative" type="button" aria-label="Notifications">
+            <span class="material-symbols-outlined text-yellow-500">notifications</span>
+            <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full"></span>
+          </button>
+          <div class="flex items-center space-x-3">
+            <img alt="User avatar" class="w-10 h-10 rounded-full object-cover"
+              src="https://i.pravatar.cc/200?u=soe-man" />
+            <div>
+              <div class="font-semibold text-sm text-white">Nisal Amarasekara</div>
+              <div class="text-xs text-slate-400">Sri Lanka</div>
+            </div>
+          </div>
+          <button class="p-2 rounded-full text-slate-300 hover:bg-cu-dark-blue-80" type="button" aria-label="Lock">
+            <span class="material-symbols-outlined">lock</span>
+          </button>
+          <button class="p-2 rounded-full text-slate-300 hover:bg-cu-dark-blue-80" type="button" aria-label="Expand">
+            <span class="material-symbols-outlined">expand_more</span>
+          </button>
+        </div>
+      </header>
+
+      <main class="flex-1 overflow-y-auto bg-[#f4f6fa]">
+
+        <!-- ==================== HERO PROFILE HEADER ==================== -->
+        <div class="hero-gradient relative px-6 pt-5 pb-8">
+          <div class="max-w-[1320px] mx-auto relative z-10">
+            <div class="flex flex-col xl:flex-row xl:items-end gap-6">
+              <!-- Avatar + Identity -->
+              <div class="flex items-center gap-5 flex-1 min-w-0">
+                <div class="relative flex-shrink-0">
+                  <img alt="Sarah Johnson" class="w-[88px] h-[88px] rounded-2xl object-cover"
+                       src="https://i.pravatar.cc/200?u=soe-man"
+                       style="box-shadow: 0 8px 24px rgba(27,30,66,.25), 0 2px 8px rgba(27,30,66,.15);" />
+                  <span class="absolute -bottom-1 -right-1 w-5 h-5 bg-emerald-400 border-[3px] border-white rounded-full" style="box-shadow: 0 2px 6px rgba(16,185,129,.4);"></span>
+                </div>
+                <div class="min-w-0">
+                  <h1 class="text-[26px] font-extrabold text-slate-900 tracking-tight truncate">Nisal Amarasekara</h1>
+                  <p class="text-slate-500 text-sm mt-0.5">Senior Auditor &middot; Certification Department</p>
+                  <div class="flex flex-wrap gap-x-5 gap-y-1 mt-2.5 text-[13px] text-slate-500">
+                    <span class="inline-flex items-center gap-1.5"><span class="material-symbols-outlined text-[15px] text-indigo-500">mail</span>nisal.amarasekara@controlunion.com</span>
+                    <span class="inline-flex items-center gap-1.5"><span class="material-symbols-outlined text-[15px] text-emerald-500">call</span>+94 (11) 555-0123</span>
+                    <span class="inline-flex items-center gap-1.5"><span class="material-symbols-outlined text-[15px] text-rose-500">location_on</span>Sri Lanka &middot; Asia</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Rating + Status -->
+              <div class="flex items-center gap-4 flex-shrink-0">
+                <div class="glass-card rounded-2xl px-5 py-3.5 text-center">
+                  <div class="flex items-center justify-center gap-1">
+                    <span class="material-symbols-outlined text-amber-500 text-xl" style="font-variation-settings:'FILL' 1">star</span>
+                    <span class="text-[26px] font-extrabold text-slate-900 leading-none">4.8</span>
+                    <span class="text-xs text-slate-400 self-end mb-0.5">/ 5</span>
+                  </div>
+                  <p class="text-[10px] text-slate-400 mt-1 uppercase tracking-widest">Overall Rating</p>
+                </div>
+                <div class="glass-card rounded-2xl px-5 py-3.5 text-center">
+                  <span class="inline-block px-3 py-1 rounded-full bg-emerald-100 text-emerald-700 text-xs font-semibold border border-emerald-200">Permanent</span>
+                  <p class="text-[10px] text-slate-400 mt-1.5 uppercase tracking-widest">Job Status</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Quick Stats Row -->
+            <div class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-3 mt-6">
+              <div class="stat-pill rounded-2xl px-4 py-3.5 text-center">
+                <span class="material-symbols-outlined text-indigo-500 text-xl">calendar_today</span>
+                <p class="text-slate-900 font-bold text-sm mt-1.5">Jan 15, 2016</p>
+                <p class="text-[10px] text-slate-400 uppercase tracking-wider mt-0.5">Join Date</p>
+              </div>
+              <div class="stat-pill rounded-2xl px-4 py-3.5 text-center">
+                <span class="material-symbols-outlined text-violet-500 text-xl">work_history</span>
+                <p class="text-slate-900 font-bold text-sm mt-1.5">8y 3m</p>
+                <p class="text-[10px] text-slate-400 uppercase tracking-wider mt-0.5">Service</p>
+              </div>
+              <div class="stat-pill rounded-2xl px-4 py-3.5 text-center">
+                <span class="material-symbols-outlined text-emerald-500 text-xl">verified</span>
+                <p class="text-slate-900 font-bold text-sm mt-1.5">3 Active</p>
+                <p class="text-[10px] text-slate-400 uppercase tracking-wider mt-0.5">Certifications</p>
+              </div>
+              <div class="stat-pill rounded-2xl px-4 py-3.5 text-center">
+                <span class="material-symbols-outlined text-blue-500 text-xl">fact_check</span>
+                <p class="text-slate-900 font-bold text-sm mt-1.5">105</p>
+                <p class="text-[10px] text-slate-400 uppercase tracking-wider mt-0.5">Total Audits</p>
+              </div>
+              <div class="stat-pill rounded-2xl px-4 py-3.5 text-center">
+                <span class="material-symbols-outlined text-amber-500 text-xl">speed</span>
+                <p class="text-slate-900 font-bold text-sm mt-1.5">75%</p>
+                <p class="text-[10px] text-slate-400 uppercase tracking-wider mt-0.5">Task Load</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ==================== TAB SECTION ==================== -->
+        <div class="max-w-[1320px] mx-auto px-6 mt-5 relative z-20 pb-8">
+          <div class="bg-white rounded-2xl border border-gray-200/70 overflow-hidden" style="box-shadow: 0 4px 20px rgba(0,0,0,.05), 0 1px 4px rgba(0,0,0,.03);">
+
+            <!-- Tab Navigation -->
+            <div class="border-b border-gray-100 overflow-x-auto bg-white/80 backdrop-blur">
+              <div class="flex min-w-max px-2">
+                <button type="button" data-profile-tab="basic" class="profile-tab-btn active flex items-center gap-2 px-5 py-3.5 text-[13px] font-medium text-slate-500 hover:text-indigo-600 transition">
+                  <span class="material-symbols-outlined text-[18px]">person</span>Basic Info
+                </button>
+                <button type="button" data-profile-tab="qualifications" class="profile-tab-btn flex items-center gap-2 px-5 py-3.5 text-[13px] font-medium text-slate-500 hover:text-indigo-600 transition">
+                  <span class="material-symbols-outlined text-[18px]">workspace_premium</span>Qualifications
+                </button>
+                <button type="button" data-profile-tab="ratings" class="profile-tab-btn flex items-center gap-2 px-5 py-3.5 text-[13px] font-medium text-slate-500 hover:text-indigo-600 transition">
+                  <span class="material-symbols-outlined text-[18px]">stars</span>Ratings & Feedback
+                </button>
+                <button type="button" data-profile-tab="experience" class="profile-tab-btn flex items-center gap-2 px-5 py-3.5 text-[13px] font-medium text-slate-500 hover:text-indigo-600 transition">
+                  <span class="material-symbols-outlined text-[18px]">cases</span>Experience
+                </button>
+                <button type="button" data-profile-tab="availability" class="profile-tab-btn flex items-center gap-2 px-5 py-3.5 text-[13px] font-medium text-slate-500 hover:text-indigo-600 transition">
+                  <span class="material-symbols-outlined text-[18px]">event_available</span>Availability
+                </button>
+              </div>
+            </div>
+
+            <!-- ============ TAB PANELS ============ -->
+            <div class="p-6 lg:p-8">
+
+              <!-- ───── BASIC INFORMATION ───── -->
+              <section data-profile-panel="basic" class="profile-panel space-y-6">
+                <div class="flex flex-wrap items-center justify-between gap-3">
+                  <h2 class="text-lg font-bold text-slate-900">Basic Information</h2>
+                  <div class="flex gap-2">
+                    <button class="inline-flex items-center gap-1.5 px-3.5 py-2 border border-slate-200 rounded-lg text-xs font-medium text-slate-600 bg-white hover:bg-slate-50 transition">
+                      <span class="material-symbols-outlined text-sm">upload_file</span>Upload CV
+                    </button>
+                    <button class="inline-flex items-center gap-1.5 px-3.5 py-2 border border-slate-200 rounded-lg text-xs font-medium text-slate-600 bg-white hover:bg-slate-50 transition">
+                      <span class="material-symbols-outlined text-sm">emoji_events</span>Achievements
+                    </button>
+                    <button class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-xs font-medium text-white bg-[#3eb2ed] hover:bg-[#2ea2d6] shadow-sm transition">
+                      <span class="material-symbols-outlined text-sm">edit</span>Edit Info
+                    </button>
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+                  <div class="info-card">
+                    <div class="flex items-center gap-2 mb-3">
+                      <span class="w-8 h-8 rounded-lg bg-indigo-50 flex items-center justify-center"><span class="material-symbols-outlined text-indigo-600 text-lg">apartment</span></span>
+                      <h3 class="font-semibold text-slate-900 text-sm">Department</h3>
+                    </div>
+                    <p class="text-sm text-slate-700">Certification</p>
+                  </div>
+                  <div class="info-card">
+                    <div class="flex items-center gap-2 mb-3">
+                      <span class="w-8 h-8 rounded-lg bg-violet-50 flex items-center justify-center"><span class="material-symbols-outlined text-violet-600 text-lg">badge</span></span>
+                      <h3 class="font-semibold text-slate-900 text-sm">Role</h3>
+                    </div>
+                    <p class="text-sm text-slate-700">Senior Auditor</p>
+                  </div>
+                  <div class="info-card">
+                    <div class="flex items-center gap-2 mb-3">
+                      <span class="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center"><span class="material-symbols-outlined text-blue-600 text-lg">pie_chart</span></span>
+                      <h3 class="font-semibold text-slate-900 text-sm">Allocation</h3>
+                    </div>
+                    <p class="text-sm text-slate-700">70% Organic, 30% GOTS</p>
+                  </div>
+                  <div class="info-card">
+                    <div class="flex items-center gap-2 mb-3">
+                      <span class="w-8 h-8 rounded-lg bg-cyan-50 flex items-center justify-center"><span class="material-symbols-outlined text-cyan-600 text-lg">public</span></span>
+                      <h3 class="font-semibold text-slate-900 text-sm">Country</h3>
+                    </div>
+                    <p class="text-sm text-slate-700">Sri Lanka</p>
+                  </div>
+                  <div class="info-card">
+                    <div class="flex items-center gap-2 mb-3">
+                      <span class="w-8 h-8 rounded-lg bg-sky-50 flex items-center justify-center"><span class="material-symbols-outlined text-sky-600 text-lg">map</span></span>
+                      <h3 class="font-semibold text-slate-900 text-sm">Region</h3>
+                    </div>
+                    <p class="text-sm text-slate-700">Asia</p>
+                  </div>
+                  <div class="info-card">
+                    <div class="flex items-center gap-2 mb-3">
+                      <span class="w-8 h-8 rounded-lg bg-emerald-50 flex items-center justify-center"><span class="material-symbols-outlined text-emerald-600 text-lg">verified_user</span></span>
+                      <h3 class="font-semibold text-slate-900 text-sm">Job Status</h3>
+                    </div>
+                    <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-700">
+                      <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>Permanent
+                    </span>
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                  <div class="info-card">
+                    <div class="flex items-center gap-2 mb-3">
+                      <span class="w-8 h-8 rounded-lg bg-rose-50 flex items-center justify-center"><span class="material-symbols-outlined text-rose-600 text-lg">home</span></span>
+                      <h3 class="font-semibold text-slate-900 text-sm">Personal Details</h3>
+                    </div>
+                    <div class="space-y-2 text-sm text-slate-600">
+                      <div class="flex items-start gap-2">
+                        <span class="material-symbols-outlined text-slate-400 text-sm mt-0.5">location_on</span>
+                        <span>123 Main St, Colombo, Sri Lanka</span>
+                      </div>
+                      <div class="flex items-start gap-2">
+                        <span class="material-symbols-outlined text-slate-400 text-sm mt-0.5">emergency</span>
+                        <span>Emergency: Nisal Amarasekara &ndash; +94 (11) 555-0123</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="info-card">
+                    <div class="flex items-center gap-2 mb-3">
+                      <span class="w-8 h-8 rounded-lg bg-amber-50 flex items-center justify-center"><span class="material-symbols-outlined text-amber-600 text-lg">school</span></span>
+                      <h3 class="font-semibold text-slate-900 text-sm">Education & Career</h3>
+                    </div>
+                    <div class="space-y-2 text-sm text-slate-600">
+                      <div class="flex items-start gap-2">
+                        <span class="material-symbols-outlined text-slate-400 text-sm mt-0.5">menu_book</span>
+                        <span>Master's in Environmental Science</span>
+                      </div>
+                      <div class="flex items-start gap-2">
+                        <span class="material-symbols-outlined text-slate-400 text-sm mt-0.5">work</span>
+                        <span>Prev: Environmental Consultant at EcoTech Solutions (5 years)</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Documents -->
+                <div>
+                  <h3 class="text-sm font-semibold text-slate-900 mb-3">Documents</h3>
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div class="flex items-center justify-between p-4 bg-emerald-50/60 border border-emerald-200/60 rounded-xl">
+                      <div class="flex items-center gap-3">
+                        <span class="w-9 h-9 rounded-lg bg-emerald-100 flex items-center justify-center"><span class="material-symbols-outlined text-emerald-700 text-lg">description</span></span>
+                        <div>
+                          <p class="text-sm font-medium text-slate-900">Curriculum Vitae</p>
+                          <p class="text-[11px] text-slate-500">Updated Mar 2024</p>
+                        </div>
+                      </div>
+                      <button class="p-2 rounded-lg hover:bg-emerald-100 transition"><span class="material-symbols-outlined text-emerald-700 text-lg">download</span></button>
+                    </div>
+                    <div class="flex items-center justify-between p-4 bg-emerald-50/60 border border-emerald-200/60 rounded-xl">
+                      <div class="flex items-center gap-3">
+                        <span class="w-9 h-9 rounded-lg bg-emerald-100 flex items-center justify-center"><span class="material-symbols-outlined text-emerald-700 text-lg">emoji_events</span></span>
+                        <div>
+                          <p class="text-sm font-medium text-slate-900">Achievements</p>
+                          <p class="text-[11px] text-slate-500">Updated Feb 2024</p>
+                        </div>
+                      </div>
+                      <button class="p-2 rounded-lg hover:bg-emerald-100 transition"><span class="material-symbols-outlined text-emerald-700 text-lg">download</span></button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Devices -->
+                <div>
+                  <h3 class="text-sm font-semibold text-slate-900 mb-3">Assigned Devices</h3>
+                  <div class="flex flex-wrap gap-2">
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-indigo-50 text-indigo-700 rounded-lg text-xs font-medium border border-indigo-100"><span class="material-symbols-outlined text-sm">laptop</span>Dell XPS 15</span>
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-indigo-50 text-indigo-700 rounded-lg text-xs font-medium border border-indigo-100"><span class="material-symbols-outlined text-sm">smartphone</span>iPhone 13</span>
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-indigo-50 text-indigo-700 rounded-lg text-xs font-medium border border-indigo-100"><span class="material-symbols-outlined text-sm">tablet</span>iPad Pro</span>
+                  </div>
+                </div>
+              </section>
+
+              <!-- ───── QUALIFICATIONS ───── -->
+              <section data-profile-panel="qualifications" class="profile-panel hidden space-y-6">
+                <div class="flex items-center justify-between">
+                  <h2 class="text-lg font-bold text-slate-900">Certifications & Competencies</h2>
+                  <div class="flex gap-2">
+                    <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-semibold badge-existing">3 Existing</span>
+                    <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-semibold badge-potential">1 Potential</span>
+                  </div>
+                </div>
+
+                <!-- Certification Cards -->
+                <div class="space-y-3">
+                  <!-- GOTS -->
+                  <div class="cert-card">
+                    <div class="flex items-start justify-between gap-3 mb-3">
+                      <div class="flex items-start gap-3">
+                        <span class="w-9 h-9 rounded-lg bg-emerald-100 flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined text-emerald-600">check_circle</span></span>
+                        <div>
+                          <div class="flex items-center gap-2 flex-wrap">
+                            <h3 class="font-semibold text-slate-900">GOTS Auditor</h3>
+                            <span class="px-2 py-0.5 rounded-full text-[10px] font-semibold badge-existing">Existing</span>
+                            <span class="px-2 py-0.5 rounded-full text-[10px] font-semibold badge-active">Active</span>
+                          </div>
+                          <p class="text-xs text-slate-500 mt-0.5">Advanced &middot; Expires Jun 2024</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="flex flex-wrap gap-1.5 mb-3">
+                      <span class="px-2 py-1 bg-slate-100 text-slate-700 text-[11px] rounded-md font-medium">Processing</span>
+                      <span class="px-2 py-1 bg-slate-100 text-slate-700 text-[11px] rounded-md font-medium">Trading</span>
+                      <span class="px-2 py-1 bg-slate-100 text-slate-700 text-[11px] rounded-md font-medium">Manufacturing</span>
+                    </div>
+                    <div class="flex items-start gap-2 p-3 bg-amber-50 border border-amber-200/60 rounded-lg">
+                      <span class="material-symbols-outlined text-amber-600 text-base mt-0.5">shield</span>
+                      <p class="text-xs text-amber-800"><strong>House Rule:</strong> Max 3 consecutive audits per client</p>
+                    </div>
+                  </div>
+
+                  <!-- ISO 9001 -->
+                  <div class="cert-card">
+                    <div class="flex items-start gap-3 mb-3">
+                      <span class="w-9 h-9 rounded-lg bg-emerald-100 flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined text-emerald-600">check_circle</span></span>
+                      <div>
+                        <div class="flex items-center gap-2 flex-wrap">
+                          <h3 class="font-semibold text-slate-900">ISO 9001 Lead Auditor</h3>
+                          <span class="px-2 py-0.5 rounded-full text-[10px] font-semibold badge-existing">Existing</span>
+                          <span class="px-2 py-0.5 rounded-full text-[10px] font-semibold badge-active">Active</span>
+                        </div>
+                        <p class="text-xs text-slate-500 mt-0.5">Expert &middot; Expires Dec 2025</p>
+                      </div>
+                    </div>
+                    <div class="flex flex-wrap gap-1.5">
+                      <span class="px-2 py-1 bg-slate-100 text-slate-700 text-[11px] rounded-md font-medium">Quality Management Systems</span>
+                    </div>
+                  </div>
+
+                  <!-- Organic -->
+                  <div class="cert-card">
+                    <div class="flex items-start gap-3 mb-3">
+                      <span class="w-9 h-9 rounded-lg bg-emerald-100 flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined text-emerald-600">check_circle</span></span>
+                      <div>
+                        <div class="flex items-center gap-2 flex-wrap">
+                          <h3 class="font-semibold text-slate-900">Organic Certification</h3>
+                          <span class="px-2 py-0.5 rounded-full text-[10px] font-semibold badge-existing">Existing</span>
+                          <span class="px-2 py-0.5 rounded-full text-[10px] font-semibold badge-active">Active</span>
+                        </div>
+                        <p class="text-xs text-slate-500 mt-0.5">Expert &middot; Expires Sep 2025</p>
+                      </div>
+                    </div>
+                    <div class="flex flex-wrap gap-1.5 mb-3">
+                      <span class="px-2 py-1 bg-slate-100 text-slate-700 text-[11px] rounded-md font-medium">Crop Production</span>
+                      <span class="px-2 py-1 bg-slate-100 text-slate-700 text-[11px] rounded-md font-medium">Processing</span>
+                      <span class="px-2 py-1 bg-slate-100 text-slate-700 text-[11px] rounded-md font-medium">Handling</span>
+                    </div>
+                    <div class="flex items-start gap-2 p-3 bg-amber-50 border border-amber-200/60 rounded-lg">
+                      <span class="material-symbols-outlined text-amber-600 text-base mt-0.5">shield</span>
+                      <p class="text-xs text-amber-800"><strong>House Rule:</strong> Max 3 consecutive audits per client</p>
+                    </div>
+                  </div>
+
+                  <!-- ISO 14001 - Potential -->
+                  <div class="cert-card border-indigo-200 bg-indigo-50/30">
+                    <div class="flex items-start gap-3">
+                      <span class="w-9 h-9 rounded-lg bg-indigo-100 flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined text-indigo-500">schedule</span></span>
+                      <div>
+                        <div class="flex items-center gap-2 flex-wrap">
+                          <h3 class="font-semibold text-slate-900">ISO 14001</h3>
+                          <span class="px-2 py-0.5 rounded-full text-[10px] font-semibold badge-potential">Potential</span>
+                          <span class="px-2 py-0.5 rounded-full text-[10px] font-semibold badge-in-progress">In Progress</span>
+                        </div>
+                        <p class="text-xs text-slate-500 mt-0.5">Learning &middot; Environmental Management</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Non-technical / Soft Skills -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                  <div class="info-card">
+                    <h3 class="text-sm font-semibold text-slate-900 mb-3">Non-Technical Qualifications</h3>
+                    <div class="space-y-2">
+                      <div class="flex items-center gap-2"><span class="material-symbols-outlined text-emerald-500 text-base">check_circle</span><span class="text-sm text-slate-700">Food Safety Awareness</span></div>
+                      <div class="flex items-center gap-2"><span class="material-symbols-outlined text-emerald-500 text-base">check_circle</span><span class="text-sm text-slate-700">Risk Assessment</span></div>
+                      <div class="flex items-center gap-2"><span class="material-symbols-outlined text-emerald-500 text-base">check_circle</span><span class="text-sm text-slate-700">Report Writing Excellence</span></div>
+                    </div>
+                  </div>
+                  <div class="info-card">
+                    <h3 class="text-sm font-semibold text-slate-900 mb-3">Soft Skills Training</h3>
+                    <div class="space-y-2">
+                      <div class="flex items-center justify-between"><div class="flex items-center gap-2"><span class="material-symbols-outlined text-emerald-500 text-base">check_circle</span><span class="text-sm text-slate-700">Leadership Training</span></div><span class="text-[11px] text-slate-500">Dec 2023</span></div>
+                      <div class="flex items-center justify-between"><div class="flex items-center gap-2"><span class="material-symbols-outlined text-emerald-500 text-base">check_circle</span><span class="text-sm text-slate-700">Conflict Resolution</span></div><span class="text-[11px] text-slate-500">Nov 2023</span></div>
+                      <div class="flex items-center justify-between"><div class="flex items-center gap-2"><span class="material-symbols-outlined text-amber-500 text-base">pending</span><span class="text-sm text-slate-700">Advanced Communication</span></div><span class="px-2 py-0.5 rounded-full text-[10px] font-semibold badge-required">Required</span></div>
+                      <div class="flex items-center justify-between"><div class="flex items-center gap-2"><span class="material-symbols-outlined text-emerald-500 text-base">check_circle</span><span class="text-sm text-slate-700">Time Management</span></div><span class="text-[11px] text-slate-500">Oct 2023</span></div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Upcoming Requirements -->
+                <div>
+                  <h3 class="text-sm font-semibold text-slate-900 mb-3">Upcoming Requirements</h3>
+                  <div class="space-y-2">
+                    <div class="flex items-center justify-between p-3.5 bg-amber-50/70 border border-amber-200/50 rounded-xl">
+                      <div class="flex items-center gap-3">
+                        <span class="w-8 h-8 rounded-lg bg-amber-100 flex items-center justify-center"><span class="material-symbols-outlined text-amber-600 text-base">school</span></span>
+                        <div><p class="text-sm font-medium text-slate-900">Advanced Communication Workshop</p><p class="text-[11px] text-slate-500">Deadline: Jul 15, 2024</p></div>
+                      </div>
+                      <span class="px-2.5 py-1 rounded-full bg-amber-200/60 text-amber-800 text-[10px] font-semibold">Training</span>
+                    </div>
+                    <div class="flex items-center justify-between p-3.5 bg-amber-50/70 border border-amber-200/50 rounded-xl">
+                      <div class="flex items-center gap-3">
+                        <span class="w-8 h-8 rounded-lg bg-amber-100 flex items-center justify-center"><span class="material-symbols-outlined text-amber-600 text-base">autorenew</span></span>
+                        <div><p class="text-sm font-medium text-slate-900">GOTS Auditor Recertification</p><p class="text-[11px] text-slate-500">Deadline: Jun 20, 2024</p></div>
+                      </div>
+                      <span class="px-2.5 py-1 rounded-full bg-amber-200/60 text-amber-800 text-[10px] font-semibold">Renewal</span>
+                    </div>
+                    <div class="flex items-center justify-between p-3.5 bg-amber-50/70 border border-amber-200/50 rounded-xl">
+                      <div class="flex items-center gap-3">
+                        <span class="w-8 h-8 rounded-lg bg-amber-100 flex items-center justify-center"><span class="material-symbols-outlined text-amber-600 text-base">quiz</span></span>
+                        <div><p class="text-sm font-medium text-slate-900">ISO 14001 Lead Auditor Exam</p><p class="text-[11px] text-slate-500">Deadline: Aug 10, 2024</p></div>
+                      </div>
+                      <span class="px-2.5 py-1 rounded-full bg-violet-200/60 text-violet-800 text-[10px] font-semibold">Exam</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Activity History Table -->
+                <div>
+                  <h3 class="text-sm font-semibold text-slate-900 mb-3">Activity History</h3>
+                  <div class="overflow-x-auto border border-slate-200/80 rounded-xl">
+                    <table class="w-full text-sm">
+                      <thead>
+                        <tr class="bg-slate-50/80">
+                          <th class="px-4 py-3 text-left text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Type</th>
+                          <th class="px-4 py-3 text-left text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Activity</th>
+                          <th class="px-4 py-3 text-left text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Date</th>
+                          <th class="px-4 py-3 text-left text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Result</th>
+                        </tr>
+                      </thead>
+                      <tbody class="divide-y divide-slate-100">
+                        <tr class="hover:bg-slate-50/50 transition">
+                          <td class="px-4 py-3"><span class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-violet-100 text-violet-800">Exam</span></td>
+                          <td class="px-4 py-3 text-slate-700">Organic Certification Renewal</td>
+                          <td class="px-4 py-3 text-slate-500">Sep 15, 2023</td>
+                          <td class="px-4 py-3 font-medium text-emerald-700">Passed (95%)</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/50 transition">
+                          <td class="px-4 py-3"><span class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-blue-100 text-blue-800">Training</span></td>
+                          <td class="px-4 py-3 text-slate-700">GOTS Advanced Module</td>
+                          <td class="px-4 py-3 text-slate-500">Aug 20, 2023</td>
+                          <td class="px-4 py-3 font-medium text-emerald-700">Completed</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/50 transition">
+                          <td class="px-4 py-3"><span class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-100 text-emerald-800">Audit</span></td>
+                          <td class="px-4 py-3 text-slate-700">Witness Audit - ISO 9001</td>
+                          <td class="px-4 py-3 text-slate-500">Jul 10, 2023</td>
+                          <td class="px-4 py-3 font-medium text-emerald-700">Approved</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/50 transition">
+                          <td class="px-4 py-3"><span class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-blue-100 text-blue-800">Training</span></td>
+                          <td class="px-4 py-3 text-slate-700">Leadership Development</td>
+                          <td class="px-4 py-3 text-slate-500">Dec 5, 2023</td>
+                          <td class="px-4 py-3 font-medium text-emerald-700">Completed</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </section>
+
+              <!-- ───── RATINGS & FEEDBACK ───── -->
+              <section data-profile-panel="ratings" class="profile-panel hidden space-y-6">
+                <h2 class="text-lg font-bold text-slate-900">Ratings & Feedback</h2>
+
+                <!-- Overall Rating Rings -->
+                <div class="bg-gradient-to-br from-indigo-50/80 via-violet-50/50 to-blue-50/60 border border-indigo-100 rounded-2xl p-6">
+                  <h3 class="text-sm font-semibold text-slate-900 mb-5">Overall Performance Breakdown</h3>
+                  <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                    <div class="flex flex-col items-center">
+                      <div class="rating-ring" style="--pct:98"><div class="rating-ring-inner"><span class="text-lg font-extrabold text-slate-900">4.9</span></div></div>
+                      <p class="text-xs text-slate-600 mt-2 font-medium">Technical</p>
+                    </div>
+                    <div class="flex flex-col items-center">
+                      <div class="rating-ring" style="--pct:96"><div class="rating-ring-inner"><span class="text-lg font-extrabold text-slate-900">4.8</span></div></div>
+                      <p class="text-xs text-slate-600 mt-2 font-medium">Communication</p>
+                    </div>
+                    <div class="flex flex-col items-center">
+                      <div class="rating-ring" style="--pct:94"><div class="rating-ring-inner"><span class="text-lg font-extrabold text-slate-900">4.7</span></div></div>
+                      <p class="text-xs text-slate-600 mt-2 font-medium">Professionalism</p>
+                    </div>
+                    <div class="flex flex-col items-center">
+                      <div class="rating-ring" style="--pct:98"><div class="rating-ring-inner"><span class="text-lg font-extrabold text-slate-900">4.9</span></div></div>
+                      <p class="text-xs text-slate-600 mt-2 font-medium">Reliability</p>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Internal Performance -->
+                <div>
+                  <h3 class="text-sm font-semibold text-slate-900 mb-3">Internal Performance Evaluation</h3>
+                  <div class="space-y-3">
+                    <div class="info-card">
+                      <div class="flex items-start justify-between mb-2">
+                        <div><p class="font-semibold text-slate-900 text-sm">Q1 2024</p><p class="text-xs text-slate-500">Evaluated by: Department Head</p></div>
+                        <div class="flex items-center gap-1"><span class="material-symbols-outlined text-amber-400 text-lg" style="font-variation-settings:'FILL' 1">star</span><span class="text-lg font-extrabold text-slate-900">4.8</span></div>
+                      </div>
+                      <div class="flex items-start gap-2 p-3 bg-indigo-50/50 rounded-lg mt-2">
+                        <span class="material-symbols-outlined text-indigo-500 text-base mt-0.5">chat_bubble</span>
+                        <p class="text-xs text-slate-600">Excellent performance, strong leadership</p>
+                      </div>
+                    </div>
+                    <div class="info-card">
+                      <div class="flex items-start justify-between mb-2">
+                        <div><p class="font-semibold text-slate-900 text-sm">Q4 2023</p><p class="text-xs text-slate-500">Evaluated by: Regional Manager</p></div>
+                        <div class="flex items-center gap-1"><span class="material-symbols-outlined text-amber-400 text-lg" style="font-variation-settings:'FILL' 1">star</span><span class="text-lg font-extrabold text-slate-900">4.7</span></div>
+                      </div>
+                      <div class="flex items-start gap-2 p-3 bg-indigo-50/50 rounded-lg mt-2">
+                        <span class="material-symbols-outlined text-indigo-500 text-base mt-0.5">chat_bubble</span>
+                        <p class="text-xs text-slate-600">Consistent quality, good client relationships</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Audit Performance Table -->
+                <div>
+                  <h3 class="text-sm font-semibold text-slate-900 mb-3">Audit Performance Ratings</h3>
+                  <div class="overflow-x-auto border border-slate-200/80 rounded-xl">
+                    <table class="w-full text-sm">
+                      <thead>
+                        <tr class="bg-slate-50/80">
+                          <th class="px-4 py-3 text-left text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Client</th>
+                          <th class="px-4 py-3 text-left text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Certifier</th>
+                          <th class="px-4 py-3 text-left text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Date</th>
+                          <th class="px-4 py-3 text-left text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Rating</th>
+                          <th class="px-4 py-3 text-left text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Feedback</th>
+                        </tr>
+                      </thead>
+                      <tbody class="divide-y divide-slate-100">
+                        <tr class="hover:bg-slate-50/50 transition"><td class="px-4 py-3 font-medium text-slate-900">ABC Inc.</td><td class="px-4 py-3 text-slate-600">Control Union</td><td class="px-4 py-3 text-slate-500">Feb 2024</td><td class="px-4 py-3"><span class="inline-flex items-center gap-1"><span class="material-symbols-outlined text-amber-400 text-sm" style="font-variation-settings:'FILL' 1">star</span><span class="font-semibold">5.0</span></span></td><td class="px-4 py-3 text-slate-600">Thorough and professional</td></tr>
+                        <tr class="hover:bg-slate-50/50 transition"><td class="px-4 py-3 font-medium text-slate-900">XYZ Ltd.</td><td class="px-4 py-3 text-slate-600">Control Union</td><td class="px-4 py-3 text-slate-500">Jan 2024</td><td class="px-4 py-3"><span class="inline-flex items-center gap-1"><span class="material-symbols-outlined text-amber-400 text-sm" style="font-variation-settings:'FILL' 1">star</span><span class="font-semibold">4.6</span></span></td><td class="px-4 py-3 text-slate-600">Good attention to detail</td></tr>
+                        <tr class="hover:bg-slate-50/50 transition"><td class="px-4 py-3 font-medium text-slate-900">Global Foods</td><td class="px-4 py-3 text-slate-600">Control Union</td><td class="px-4 py-3 text-slate-500">Dec 2023</td><td class="px-4 py-3"><span class="inline-flex items-center gap-1"><span class="material-symbols-outlined text-amber-400 text-sm" style="font-variation-settings:'FILL' 1">star</span><span class="font-semibold">4.9</span></span></td><td class="px-4 py-3 text-slate-600">Excellent communicator</td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                <!-- Training Feedback -->
+                <div>
+                  <h3 class="text-sm font-semibold text-slate-900 mb-3">Training Feedback</h3>
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div class="info-card">
+                      <div class="flex items-start justify-between">
+                        <div><p class="font-semibold text-slate-900 text-sm">Leadership Training</p><p class="text-xs text-slate-500">Dec 2023</p></div>
+                        <div class="flex items-center gap-1"><span class="material-symbols-outlined text-amber-400 text-sm" style="font-variation-settings:'FILL' 1">star</span><span class="font-bold text-slate-900">4.9</span></div>
+                      </div>
+                      <p class="text-xs text-slate-600 mt-2">Active participation, applied concepts well</p>
+                    </div>
+                    <div class="info-card">
+                      <div class="flex items-start justify-between">
+                        <div><p class="font-semibold text-slate-900 text-sm">GOTS Advanced</p><p class="text-xs text-slate-500">Aug 2023</p></div>
+                        <div class="flex items-center gap-1"><span class="material-symbols-outlined text-amber-400 text-sm" style="font-variation-settings:'FILL' 1">star</span><span class="font-bold text-slate-900">4.8</span></div>
+                      </div>
+                      <p class="text-xs text-slate-600 mt-2">Strong grasp of technical content</p>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <!-- ───── EXPERIENCE ───── -->
+              <section data-profile-panel="experience" class="profile-panel hidden space-y-6">
+                <h2 class="text-lg font-bold text-slate-900">Experience</h2>
+
+                <!-- Seniority Overview -->
+                <div class="bg-gradient-to-br from-violet-50/80 via-indigo-50/50 to-blue-50/60 border border-violet-100 rounded-2xl p-6">
+                  <h3 class="text-sm font-semibold text-slate-900 mb-4">Seniority Level</h3>
+                  <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+                    <div><p class="text-[11px] text-slate-500 uppercase tracking-wider">Level</p><p class="text-base font-bold text-slate-900 mt-1">Senior Auditor</p></div>
+                    <div><p class="text-[11px] text-slate-500 uppercase tracking-wider">Years in Role</p><p class="text-base font-bold text-slate-900 mt-1">3 years</p></div>
+                    <div><p class="text-[11px] text-slate-500 uppercase tracking-wider">Total Audits</p><p class="text-base font-bold text-slate-900 mt-1">105</p></div>
+                    <div><p class="text-[11px] text-slate-500 uppercase tracking-wider">Complex Audits</p><p class="text-base font-bold text-slate-900 mt-1">42</p></div>
+                    <div><p class="text-[11px] text-slate-500 uppercase tracking-wider">Mentored</p><p class="text-base font-bold text-slate-900 mt-1">8 people</p></div>
+                  </div>
+                </div>
+
+                <!-- Sector Expertise -->
+                <div>
+                  <h3 class="text-sm font-semibold text-slate-900 mb-3">Sector Expertise</h3>
+                  <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                    <div class="info-card">
+                      <div class="flex items-center justify-between mb-3">
+                        <h4 class="font-semibold text-slate-900 text-sm">Organic</h4>
+                        <span class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-violet-100 text-violet-800">Expert</span>
+                      </div>
+                      <div class="space-y-1.5 text-xs">
+                        <div class="flex justify-between text-slate-600"><span>Total Audits</span><span class="font-semibold text-slate-900">45</span></div>
+                        <div class="flex justify-between text-slate-600"><span>Experience</span><span class="font-semibold text-slate-900">8 years</span></div>
+                      </div>
+                    </div>
+                    <div class="info-card">
+                      <div class="flex items-center justify-between mb-3">
+                        <h4 class="font-semibold text-slate-900 text-sm">GOTS</h4>
+                        <span class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-blue-100 text-blue-800">Advanced</span>
+                      </div>
+                      <div class="space-y-1.5 text-xs">
+                        <div class="flex justify-between text-slate-600"><span>Total Audits</span><span class="font-semibold text-slate-900">32</span></div>
+                        <div class="flex justify-between text-slate-600"><span>Experience</span><span class="font-semibold text-slate-900">6 years</span></div>
+                      </div>
+                    </div>
+                    <div class="info-card">
+                      <div class="flex items-center justify-between mb-3">
+                        <h4 class="font-semibold text-slate-900 text-sm">ISO 9001</h4>
+                        <span class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-blue-100 text-blue-800">Advanced</span>
+                      </div>
+                      <div class="space-y-1.5 text-xs">
+                        <div class="flex justify-between text-slate-600"><span>Total Audits</span><span class="font-semibold text-slate-900">28</span></div>
+                        <div class="flex justify-between text-slate-600"><span>Experience</span><span class="font-semibold text-slate-900">5 years</span></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Client Experience Table -->
+                <div>
+                  <h3 class="text-sm font-semibold text-slate-900 mb-3">Client-Specific Experience</h3>
+                  <div class="overflow-x-auto border border-slate-200/80 rounded-xl">
+                    <table class="w-full text-sm">
+                      <thead>
+                        <tr class="bg-slate-50/80">
+                          <th class="px-4 py-3 text-left text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Client</th>
+                          <th class="px-4 py-3 text-left text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Sector</th>
+                          <th class="px-4 py-3 text-left text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Audits</th>
+                          <th class="px-4 py-3 text-left text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Last Audit</th>
+                          <th class="px-4 py-3 text-left text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Complexity</th>
+                        </tr>
+                      </thead>
+                      <tbody class="divide-y divide-slate-100">
+                        <tr class="hover:bg-slate-50/50 transition"><td class="px-4 py-3 font-medium text-slate-900">ABC Inc.</td><td class="px-4 py-3"><span class="px-2 py-0.5 rounded-full text-[10px] bg-blue-100 text-blue-800 font-medium">Organic</span></td><td class="px-4 py-3 text-slate-700">12</td><td class="px-4 py-3 text-slate-500">Jan 2024</td><td class="px-4 py-3"><span class="px-2 py-0.5 rounded-full text-[10px] bg-red-100 text-red-800 font-medium">High</span></td></tr>
+                        <tr class="hover:bg-slate-50/50 transition"><td class="px-4 py-3 font-medium text-slate-900">Global Foods</td><td class="px-4 py-3"><span class="px-2 py-0.5 rounded-full text-[10px] bg-blue-100 text-blue-800 font-medium">GOTS</span></td><td class="px-4 py-3 text-slate-700">8</td><td class="px-4 py-3 text-slate-500">Feb 2024</td><td class="px-4 py-3"><span class="px-2 py-0.5 rounded-full text-[10px] bg-amber-100 text-amber-800 font-medium">Medium</span></td></tr>
+                        <tr class="hover:bg-slate-50/50 transition"><td class="px-4 py-3 font-medium text-slate-900">EcoTex Manufacturing</td><td class="px-4 py-3"><span class="px-2 py-0.5 rounded-full text-[10px] bg-blue-100 text-blue-800 font-medium">ISO 9001</span></td><td class="px-4 py-3 text-slate-700">15</td><td class="px-4 py-3 text-slate-500">Dec 2023</td><td class="px-4 py-3"><span class="px-2 py-0.5 rounded-full text-[10px] bg-red-100 text-red-800 font-medium">High</span></td></tr>
+                        <tr class="hover:bg-slate-50/50 transition"><td class="px-4 py-3 font-medium text-slate-900">Green Harvest Co.</td><td class="px-4 py-3"><span class="px-2 py-0.5 rounded-full text-[10px] bg-blue-100 text-blue-800 font-medium">Organic</span></td><td class="px-4 py-3 text-slate-700">10</td><td class="px-4 py-3 text-slate-500">Mar 2024</td><td class="px-4 py-3"><span class="px-2 py-0.5 rounded-full text-[10px] bg-amber-100 text-amber-800 font-medium">Medium</span></td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </section>
+
+              <!-- ───── AVAILABILITY ───── -->
+              <section data-profile-panel="availability" class="profile-panel hidden space-y-6">
+                <h2 class="text-lg font-bold text-slate-900">Availability & Schedule</h2>
+
+                <!-- Task Load -->
+                <div class="info-card">
+                  <div class="flex items-center justify-between mb-3">
+                    <h3 class="text-sm font-semibold text-slate-900">Capacity Utilization</h3>
+                    <div class="flex items-center gap-2">
+                      <span class="text-xl font-extrabold text-slate-900">75%</span>
+                      <span class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-blue-100 text-blue-800">Moderate</span>
+                    </div>
+                  </div>
+                  <div class="w-full h-3 rounded-full bg-slate-100 overflow-hidden">
+                    <div class="h-full rounded-full bg-gradient-to-r from-emerald-500 to-green-400 progress-bar-animated" style="width:75%"></div>
+                  </div>
+                  <div class="grid grid-cols-2 gap-4 mt-4">
+                    <div class="flex items-center gap-2 text-sm text-slate-600"><span class="material-symbols-outlined text-slate-400 text-base">event_note</span>Assigned Audits: <strong class="text-slate-900">3</strong></div>
+                    <div class="flex items-center gap-2 text-sm text-slate-600"><span class="material-symbols-outlined text-slate-400 text-base">groups</span>Upcoming Meetings: <strong class="text-slate-900">2</strong></div>
+                  </div>
+                </div>
+
+                <!-- Work Location -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                  <div class="info-card text-center">
+                    <span class="material-symbols-outlined text-indigo-500 text-2xl">apartment</span>
+                    <p class="font-semibold text-slate-900 text-sm mt-2">Control Union,Colombo</p>
+                    <p class="text-[11px] text-slate-500">Primary Location</p>
+                  </div>
+                  <div class="info-card text-center">
+                    <span class="material-symbols-outlined text-violet-500 text-2xl">home_work</span>
+                    <p class="font-semibold text-slate-900 text-sm mt-2">2 days/week</p>
+                    <p class="text-[11px] text-slate-500">Remote Work</p>
+                  </div>
+                  <div class="info-card text-center">
+                    <span class="material-symbols-outlined text-blue-500 text-2xl">flight</span>
+                    <p class="font-semibold text-slate-900 text-sm mt-2">40%</p>
+                    <p class="text-[11px] text-slate-500">Travel Percentage</p>
+                  </div>
+                </div>
+
+                <!-- Schedule -->
+                <div>
+                  <h3 class="text-sm font-semibold text-slate-900 mb-3">Upcoming Schedule</h3>
+                  <div class="space-y-2">
+                    <div class="schedule-item flex items-start gap-3 p-4 bg-emerald-50/50 border border-emerald-200/50 rounded-xl" style="border-left-color:#10b981">
+                      <span class="w-9 h-9 rounded-lg bg-emerald-100 flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined text-emerald-700 text-lg">cases</span></span>
+                      <div class="flex-1 min-w-0">
+                        <div class="flex items-center justify-between gap-2">
+                          <h4 class="font-semibold text-slate-900 text-sm truncate">ABC Inc. Audit</h4>
+                          <span class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-100 text-emerald-700 flex-shrink-0">Confirmed</span>
+                        </div>
+                        <div class="flex flex-wrap gap-3 mt-1 text-xs text-slate-500">
+                          <span class="inline-flex items-center gap-1"><span class="material-symbols-outlined text-[13px]">calendar_today</span>May 20-21, 2024</span>
+                          <span class="inline-flex items-center gap-1"><span class="material-symbols-outlined text-[13px]">location_on</span>Calgary, Canada</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="schedule-item flex items-start gap-3 p-4 bg-blue-50/50 border border-blue-200/50 rounded-xl" style="border-left-color:#3b82f6">
+                      <span class="w-9 h-9 rounded-lg bg-blue-100 flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined text-blue-700 text-lg">groups</span></span>
+                      <div class="flex-1 min-w-0">
+                        <div class="flex items-center justify-between gap-2">
+                          <h4 class="font-semibold text-slate-900 text-sm truncate">Team Planning Meeting</h4>
+                          <span class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-blue-100 text-blue-700 flex-shrink-0">Scheduled</span>
+                        </div>
+                        <div class="flex flex-wrap gap-3 mt-1 text-xs text-slate-500">
+                          <span class="inline-flex items-center gap-1"><span class="material-symbols-outlined text-[13px]">calendar_today</span>May 23, 2024</span>
+                          <span class="inline-flex items-center gap-1"><span class="material-symbols-outlined text-[13px]">location_on</span>Office</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="schedule-item flex items-start gap-3 p-4 bg-violet-50/50 border border-violet-200/50 rounded-xl" style="border-left-color:#8b5cf6">
+                      <span class="w-9 h-9 rounded-lg bg-violet-100 flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined text-violet-700 text-lg">domain</span></span>
+                      <div class="flex-1 min-w-0">
+                        <div class="flex items-center justify-between gap-2">
+                          <h4 class="font-semibold text-slate-900 text-sm truncate">Global Foods Site Visit</h4>
+                          <span class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-violet-100 text-violet-700 flex-shrink-0">Tentative</span>
+                        </div>
+                        <div class="flex flex-wrap gap-3 mt-1 text-xs text-slate-500">
+                          <span class="inline-flex items-center gap-1"><span class="material-symbols-outlined text-[13px]">calendar_today</span>May 27, 2024</span>
+                          <span class="inline-flex items-center gap-1"><span class="material-symbols-outlined text-[13px]">location_on</span>Vancouver, Canada</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="schedule-item flex items-start gap-3 p-4 bg-amber-50/50 border border-amber-200/50 rounded-xl" style="border-left-color:#f59e0b">
+                      <span class="w-9 h-9 rounded-lg bg-amber-100 flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined text-amber-700 text-lg">beach_access</span></span>
+                      <div class="flex-1 min-w-0">
+                        <div class="flex items-center justify-between gap-2">
+                          <h4 class="font-semibold text-slate-900 text-sm truncate">Annual Leave</h4>
+                          <span class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-100 text-emerald-700 flex-shrink-0">Approved</span>
+                        </div>
+                        <div class="flex flex-wrap gap-3 mt-1 text-xs text-slate-500">
+                          <span class="inline-flex items-center gap-1"><span class="material-symbols-outlined text-[13px]">calendar_today</span>Jun 1-7, 2024</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      // Sidebar submenu toggle
+      document.querySelectorAll('#sidebar .menu-toggle').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var submenu = this.nextElementSibling;
+          var arrow = this.querySelector('.material-symbols-outlined:last-child');
+          if (submenu && submenu.classList.contains('submenu')) {
+            submenu.classList.toggle('hidden');
+            if (arrow) arrow.style.transform = submenu.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)';
+          }
+        });
+      });
+
+      var sidebar = document.getElementById('sidebar');
+      var sidebarToggle = document.getElementById('sidebarToggle');
+      var icon = sidebarToggle ? sidebarToggle.querySelector('.material-symbols-outlined') : null;
+
+      function positionToggle() {
+        try {
+          var left = (sidebar.offsetLeft || 0) + (sidebar.offsetWidth || 0) - Math.round((sidebarToggle.offsetWidth || 36) / 2) - 14;
+          var top = (sidebar.offsetTop || 0) + 8;
+          sidebarToggle.style.left = left + 'px';
+          sidebarToggle.style.top = top + 'px';
+        } catch (e) { }
+      }
+
+      if (sidebarToggle && sidebar) {
+        sidebarToggle.setAttribute('aria-expanded', String(!sidebar.classList.contains('collapsed')));
+        positionToggle();
+
+        sidebarToggle.addEventListener('click', function () {
+          var collapsed = !sidebar.classList.contains('collapsed');
+          sidebar.classList.toggle('collapsed', collapsed);
+          if (icon) icon.textContent = collapsed ? 'keyboard_double_arrow_right' : 'keyboard_double_arrow_left';
+          positionToggle();
+          // collapse all submenus when collapsed
+          if (collapsed) document.querySelectorAll('#sidebar .submenu').forEach(function (s) { s.classList.add('hidden'); });
+        });
+
+        sidebar.addEventListener('mouseenter', function () {
+          if (sidebar.classList.contains('collapsed')) {
+            sidebar.classList.add('expanded-temp');
+            positionToggle();
+          }
+        });
+        sidebar.addEventListener('mouseleave', function () {
+          if (sidebar.classList.contains('collapsed')) {
+            sidebar.classList.remove('expanded-temp');
+            positionToggle();
+          }
+        });
+
+        window.addEventListener('resize', positionToggle);
+      }
+
+      var tabButtons = document.querySelectorAll('.profile-tab-btn');
+      var tabPanels = document.querySelectorAll('.profile-panel');
+      if (tabButtons.length && tabPanels.length) {
+        tabButtons.forEach(function (btn) {
+          btn.addEventListener('click', function () {
+            var target = btn.getAttribute('data-profile-tab');
+            tabButtons.forEach(function (b) { b.classList.remove('active'); });
+            btn.classList.add('active');
+            tabPanels.forEach(function (panel) {
+              if (panel.getAttribute('data-profile-panel') === target) {
+                panel.classList.remove('hidden');
+                panel.style.animation = 'none';
+                panel.offsetHeight;
+                panel.style.animation = '';
+              } else {
+                panel.classList.add('hidden');
+              }
+            });
+          });
+        });
+      }
+    });
+  </script>
+</body>
+</html>
+
