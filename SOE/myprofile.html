@@ -75,15 +75,27 @@
       border: 1px solid #e2e8f0;
       box-shadow: 0 4px 16px rgba(0,0,0,.06), 0 1px 3px rgba(0,0,0,.04);
     }
-    .stat-pill {
+    /* Dashboard stat cards — horizontal layout + bottom accent (dashboard style) */
+    .stat-dash-card {
       background: #fff;
-      border: 1px solid #e8ecf1;
-      box-shadow: 0 6px 20px rgba(0,0,0,.05), 0 2px 6px rgba(0,0,0,.03), 0 0 0 1px rgba(255,255,255,.8) inset;
-      transition: all .25s cubic-bezier(.4,0,.2,1);
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,.06), 0 1px 3px rgba(0,0,0,.04);
+      border: 1px solid #f1f5f9;
+      border-bottom: 3px solid var(--stat-accent, #cbd5e1);
+      transition: all .22s cubic-bezier(.4,0,.2,1);
     }
-    .stat-pill:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 12px 28px rgba(0,0,0,.08), 0 4px 10px rgba(0,0,0,.04), 0 0 0 1px rgba(255,255,255,.9) inset;
+    .stat-dash-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 22px rgba(0,0,0,.08), 0 2px 8px rgba(0,0,0,.04);
+    }
+    .stat-dash-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
     }
     .profile-tab-btn { position: relative; transition: all .25s ease; }
     .profile-tab-btn.active { color: #1b1e42; }
@@ -417,32 +429,52 @@
               </div>
             </div>
 
-            <!-- Quick Stats Row -->
-            <div class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-3 mt-6">
-              <div class="stat-pill rounded-2xl px-4 py-3.5 text-center">
-                <span class="material-symbols-outlined text-indigo-500 text-xl">calendar_today</span>
-                <p class="text-slate-900 font-bold text-sm mt-1.5">Jan 15, 2016</p>
-                <p class="text-[10px] text-slate-400 uppercase tracking-wider mt-0.5">Join Date</p>
+            <!-- Quick Stats Row (dashboard style: icon left, value + label, bottom accent) -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 mt-6">
+              <div class="stat-dash-card flex items-center gap-3 px-4 py-3.5" style="--stat-accent:#6366f1;">
+                <div class="stat-dash-icon bg-indigo-50">
+                  <span class="material-symbols-outlined text-indigo-600 text-[22px]">calendar_today</span>
+                </div>
+                <div class="min-w-0 flex-1 text-left">
+                  <p class="text-slate-900 font-bold text-base leading-tight">Jan 15, 2016</p>
+                  <p class="text-[11px] text-slate-500 font-medium mt-0.5">Join Date</p>
+                </div>
               </div>
-              <div class="stat-pill rounded-2xl px-4 py-3.5 text-center">
-                <span class="material-symbols-outlined text-violet-500 text-xl">work_history</span>
-                <p class="text-slate-900 font-bold text-sm mt-1.5">8y 3m</p>
-                <p class="text-[10px] text-slate-400 uppercase tracking-wider mt-0.5">Service</p>
+              <div class="stat-dash-card flex items-center gap-3 px-4 py-3.5" style="--stat-accent:#f97316;">
+                <div class="stat-dash-icon bg-orange-50">
+                  <span class="material-symbols-outlined text-orange-600 text-[22px]">work_history</span>
+                </div>
+                <div class="min-w-0 flex-1 text-left">
+                  <p class="text-slate-900 font-bold text-base leading-tight">8y 3m</p>
+                  <p class="text-[11px] text-slate-500 font-medium mt-0.5">Service</p>
+                </div>
               </div>
-              <div class="stat-pill rounded-2xl px-4 py-3.5 text-center">
-                <span class="material-symbols-outlined text-emerald-500 text-xl">verified</span>
-                <p class="text-slate-900 font-bold text-sm mt-1.5">3 Active</p>
-                <p class="text-[10px] text-slate-400 uppercase tracking-wider mt-0.5">Certifications</p>
+              <div class="stat-dash-card flex items-center gap-3 px-4 py-3.5" style="--stat-accent:#22c55e;">
+                <div class="stat-dash-icon bg-emerald-50">
+                  <span class="material-symbols-outlined text-emerald-600 text-[22px]">verified</span>
+                </div>
+                <div class="min-w-0 flex-1 text-left">
+                  <p class="text-slate-900 font-bold text-base leading-tight">3 Active</p>
+                  <p class="text-[11px] text-slate-500 font-medium mt-0.5">Certifications</p>
+                </div>
               </div>
-              <div class="stat-pill rounded-2xl px-4 py-3.5 text-center">
-                <span class="material-symbols-outlined text-blue-500 text-xl">fact_check</span>
-                <p class="text-slate-900 font-bold text-sm mt-1.5">105</p>
-                <p class="text-[10px] text-slate-400 uppercase tracking-wider mt-0.5">Total Audits</p>
+              <div class="stat-dash-card flex items-center gap-3 px-4 py-3.5" style="--stat-accent:#3b82f6;">
+                <div class="stat-dash-icon bg-blue-50">
+                  <span class="material-symbols-outlined text-blue-600 text-[22px]">fact_check</span>
+                </div>
+                <div class="min-w-0 flex-1 text-left">
+                  <p class="text-slate-900 font-bold text-base leading-tight">105</p>
+                  <p class="text-[11px] text-slate-500 font-medium mt-0.5">Total Audits</p>
+                </div>
               </div>
-              <div class="stat-pill rounded-2xl px-4 py-3.5 text-center">
-                <span class="material-symbols-outlined text-amber-500 text-xl">speed</span>
-                <p class="text-slate-900 font-bold text-sm mt-1.5">75%</p>
-                <p class="text-[10px] text-slate-400 uppercase tracking-wider mt-0.5">Task Load</p>
+              <div class="stat-dash-card flex items-center gap-3 px-4 py-3.5" style="--stat-accent:#eab308;">
+                <div class="stat-dash-icon bg-amber-50">
+                  <span class="material-symbols-outlined text-amber-600 text-[22px]">speed</span>
+                </div>
+                <div class="min-w-0 flex-1 text-left">
+                  <p class="text-slate-900 font-bold text-base leading-tight">75%</p>
+                  <p class="text-[11px] text-slate-500 font-medium mt-0.5">Task Load</p>
+                </div>
               </div>
             </div>
           </div>
