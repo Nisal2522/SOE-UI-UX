@@ -344,208 +344,44 @@
             </div>
           </div>
 
-          <!-- Main Grid: Pending Audits + Recommendations -->
-          <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+          <!-- Main Grid: Clients + Unit Planning + Recommendations -->
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
 
-            <!-- Pending Audits (Left) -->
-            <div class="bg-white rounded-2xl border border-gray-200 overflow-hidden" style="box-shadow:0 2px 12px rgba(0,0,0,.04);">
+            <!-- Clients with Units (Left) -->
+            <div class="lg:col-span-3 bg-white rounded-2xl border border-gray-200 overflow-hidden" style="box-shadow:0 2px 12px rgba(0,0,0,.04);">
               <div class="p-5 border-b border-gray-100">
-                <h2 class="text-base font-bold text-slate-900">Pending Audits</h2>
-                <p class="text-xs text-slate-500 mt-0.5">Select an audit to view recommendations</p>
+                <h2 class="text-base font-bold text-slate-900">Clients & Units</h2>
+                <p class="text-xs text-slate-500 mt-0.5">Select a client to plan units</p>
               </div>
-              <div class="divide-y divide-gray-100" id="pendingAuditsList">
-                <!-- TechCorp -->
-                <button type="button" data-audit="TechCorp Industries" class="audit-card w-full text-left p-4 hover:bg-slate-50">
-                  <h3 class="font-semibold text-slate-900 text-sm mb-1">TechCorp Industries</h3>
-                  <div class="space-y-1 text-xs text-slate-500">
-                    <div class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[14px]">location_on</span>Toronto, Canada</div>
-                    <div class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[14px]">calendar_today</span>Jun 10-12, 2024</div>
+              <div class="divide-y divide-gray-100" id="clientList"></div>
+            </div>
+
+            <!-- Unit Planning (Center) -->
+            <div class="lg:col-span-4">
+              <div class="bg-white rounded-2xl border border-gray-200 overflow-hidden" style="box-shadow:0 2px 12px rgba(0,0,0,.04);" id="unitPanel">
+                <div class="p-5 border-b border-gray-100">
+                  <h2 class="text-base font-bold text-slate-900" id="unitPanelTitle">Unit Planning Overview</h2>
+                </div>
+                <div id="unitPanelBody">
+                  <div class="text-center py-14 text-slate-400 px-6">
+                    <span class="material-symbols-outlined text-4xl opacity-40">account_tree</span>
+                    <p class="mt-2 text-sm">Select a client to see their units and plan audits</p>
                   </div>
-                  <div class="flex gap-1.5 mt-2">
-                    <span class="px-2 py-0.5 bg-blue-100 text-blue-800 text-[10px] font-medium rounded-full">ISO 9001</span>
-                    <span class="px-2 py-0.5 bg-red-100 text-red-800 text-[10px] font-medium rounded-full">High</span>
-                  </div>
-                </button>
-                <!-- EcoTextiles -->
-                <button type="button" data-audit="EcoTextiles Ltd." class="audit-card w-full text-left p-4 hover:bg-slate-50">
-                  <h3 class="font-semibold text-slate-900 text-sm mb-1">EcoTextiles Ltd.</h3>
-                  <div class="space-y-1 text-xs text-slate-500">
-                    <div class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[14px]">location_on</span>Vancouver, Canada</div>
-                    <div class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[14px]">calendar_today</span>Jun 15-16, 2024</div>
-                  </div>
-                  <div class="flex gap-1.5 mt-2">
-                    <span class="px-2 py-0.5 bg-blue-100 text-blue-800 text-[10px] font-medium rounded-full">GOTS</span>
-                    <span class="px-2 py-0.5 bg-amber-100 text-amber-800 text-[10px] font-medium rounded-full">Medium</span>
-                  </div>
-                </button>
-                <!-- Green Valley -->
-                <button type="button" data-audit="Green Valley Farms" class="audit-card w-full text-left p-4 hover:bg-slate-50">
-                  <h3 class="font-semibold text-slate-900 text-sm mb-1">Green Valley Farms</h3>
-                  <div class="space-y-1 text-xs text-slate-500">
-                    <div class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[14px]">location_on</span>Calgary, Canada</div>
-                    <div class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[14px]">calendar_today</span>Jun 20, 2024</div>
-                  </div>
-                  <div class="flex gap-1.5 mt-2">
-                    <span class="px-2 py-0.5 bg-blue-100 text-blue-800 text-[10px] font-medium rounded-full">Organic</span>
-                    <span class="px-2 py-0.5 bg-emerald-100 text-emerald-800 text-[10px] font-medium rounded-full">Low</span>
-                  </div>
-                </button>
+                </div>
               </div>
             </div>
 
             <!-- Recommendations (Right) -->
-            <div class="lg:col-span-2">
+            <div class="lg:col-span-5">
               <div class="bg-white rounded-2xl border border-gray-200 p-6" style="box-shadow:0 2px 12px rgba(0,0,0,.04);" id="recommendationsPanel">
-                <h2 class="text-base font-bold text-slate-900 mb-4" id="recTitle">Select an audit to view recommendations</h2>
+                <h2 class="text-base font-bold text-slate-900 mb-4" id="recTitle">Select a unit to view recommendations</h2>
 
-                <!-- Empty State -->
-                <div id="recEmpty" class="text-center py-16 text-slate-400">
-                  <span class="material-symbols-outlined text-5xl opacity-40">search</span>
-                  <p class="mt-3 text-sm">Select a pending audit from the left to view auditor recommendations</p>
+                <div id="recEmpty" class="text-center py-14 text-slate-400">
+                  <span class="material-symbols-outlined text-4xl opacity-40">search</span>
+                  <p class="mt-2 text-sm">Select a unit from the planning panel to view auditor recommendations</p>
                 </div>
 
-                <!-- Recommendation Cards -->
-                <div id="recCards" class="hidden space-y-4">
-
-                  <!-- Sarah Johnson -->
-                  <div class="rec-card border border-gray-200 rounded-xl p-5">
-                    <div class="flex items-start justify-between mb-3">
-                      <div class="flex items-start gap-3 flex-1">
-                        <div class="w-11 h-11 bg-gradient-to-br from-blue-600 to-blue-800 rounded-full flex items-center justify-center flex-shrink-0">
-                          <span class="text-white font-semibold text-sm">SJ</span>
-                        </div>
-                        <div class="flex-1 min-w-0">
-                          <div class="flex items-center gap-2 mb-0.5">
-                            <h3 class="font-bold text-slate-900 text-sm">Sarah Johnson</h3>
-                            <span class="text-xs text-slate-500">&bull; Senior Auditor</span>
-                          </div>
-                          <div class="flex flex-wrap items-center gap-3 text-xs text-slate-500 mb-2">
-                            <span class="inline-flex items-center gap-1"><span class="material-symbols-outlined text-amber-400 text-sm" style="font-variation-settings:'FILL' 1">star</span>4.8</span>
-                            <span class="inline-flex items-center gap-1"><span class="material-symbols-outlined text-[13px]">location_on</span>Calgary, Canada</span>
-                            <span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-semibold">Available</span>
-                          </div>
-                          <div class="flex flex-wrap gap-1">
-                            <span class="px-2 py-0.5 bg-slate-100 text-slate-700 text-[10px] rounded font-medium">ISO 9001</span>
-                            <span class="px-2 py-0.5 bg-slate-100 text-slate-700 text-[10px] rounded font-medium">GOTS</span>
-                            <span class="px-2 py-0.5 bg-slate-100 text-slate-700 text-[10px] rounded font-medium">Organic</span>
-                          </div>
-                        </div>
-                      </div>
-                      <span class="px-3 py-1.5 rounded-lg font-bold text-sm text-emerald-700 bg-emerald-50">95% Match</span>
-                    </div>
-                    <div class="grid grid-cols-3 gap-3 mb-3 text-xs">
-                      <div><span class="text-slate-400">Distance:</span><span class="ml-1 text-slate-800 font-medium">0 km</span></div>
-                      <div><span class="text-slate-400">Experience:</span><span class="ml-1 text-slate-800 font-medium">12 similar audits</span></div>
-                      <div><span class="text-slate-400">Cost:</span><span class="ml-1 text-slate-800 font-medium">Level 2 - $$$</span></div>
-                    </div>
-                    <div class="bg-slate-50 rounded-lg p-3 mb-3">
-                      <p class="text-[11px] font-semibold text-slate-600 mb-1.5">Why this recommendation:</p>
-                      <ul class="space-y-1">
-                        <li class="flex items-start gap-1.5 text-[11px] text-slate-600"><span class="material-symbols-outlined text-emerald-500 text-[13px] mt-0.5">check_circle</span>Expert qualification match</li>
-                        <li class="flex items-start gap-1.5 text-[11px] text-slate-600"><span class="material-symbols-outlined text-emerald-500 text-[13px] mt-0.5">check_circle</span>Same city - no travel costs</li>
-                        <li class="flex items-start gap-1.5 text-[11px] text-slate-600"><span class="material-symbols-outlined text-emerald-500 text-[13px] mt-0.5">check_circle</span>High client satisfaction (4.9/5)</li>
-                        <li class="flex items-start gap-1.5 text-[11px] text-slate-600"><span class="material-symbols-outlined text-emerald-500 text-[13px] mt-0.5">check_circle</span>Available during requested dates</li>
-                      </ul>
-                    </div>
-                    <div class="flex gap-2">
-                      <button class="flex-1 px-4 py-2 bg-[#3eb2ed] hover:bg-[#2ea2d6] text-white text-xs font-semibold rounded-lg transition">Assign Auditor</button>
-                      <button class="px-4 py-2 border border-gray-200 text-slate-700 text-xs font-medium rounded-lg hover:bg-slate-50 transition">View Profile</button>
-                    </div>
-                  </div>
-
-                  <!-- David Kim -->
-                  <div class="rec-card border border-gray-200 rounded-xl p-5">
-                    <div class="flex items-start justify-between mb-3">
-                      <div class="flex items-start gap-3 flex-1">
-                        <div class="w-11 h-11 bg-gradient-to-br from-violet-600 to-violet-800 rounded-full flex items-center justify-center flex-shrink-0">
-                          <span class="text-white font-semibold text-sm">DK</span>
-                        </div>
-                        <div class="flex-1 min-w-0">
-                          <div class="flex items-center gap-2 mb-0.5">
-                            <h3 class="font-bold text-slate-900 text-sm">David Kim</h3>
-                            <span class="text-xs text-slate-500">&bull; Lead Auditor</span>
-                          </div>
-                          <div class="flex flex-wrap items-center gap-3 text-xs text-slate-500 mb-2">
-                            <span class="inline-flex items-center gap-1"><span class="material-symbols-outlined text-amber-400 text-sm" style="font-variation-settings:'FILL' 1">star</span>4.9</span>
-                            <span class="inline-flex items-center gap-1"><span class="material-symbols-outlined text-[13px]">location_on</span>Vancouver, Canada</span>
-                            <span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-semibold">Available</span>
-                          </div>
-                          <div class="flex flex-wrap gap-1">
-                            <span class="px-2 py-0.5 bg-slate-100 text-slate-700 text-[10px] rounded font-medium">ISO 9001</span>
-                            <span class="px-2 py-0.5 bg-slate-100 text-slate-700 text-[10px] rounded font-medium">ISO 14001</span>
-                            <span class="px-2 py-0.5 bg-slate-100 text-slate-700 text-[10px] rounded font-medium">ISO 45001</span>
-                          </div>
-                        </div>
-                      </div>
-                      <span class="px-3 py-1.5 rounded-lg font-bold text-sm text-blue-700 bg-blue-50">88% Match</span>
-                    </div>
-                    <div class="grid grid-cols-3 gap-3 mb-3 text-xs">
-                      <div><span class="text-slate-400">Distance:</span><span class="ml-1 text-slate-800 font-medium">280 km</span></div>
-                      <div><span class="text-slate-400">Experience:</span><span class="ml-1 text-slate-800 font-medium">25 similar audits</span></div>
-                      <div><span class="text-slate-400">Cost:</span><span class="ml-1 text-slate-800 font-medium">Level 3 - $$$$</span></div>
-                    </div>
-                    <div class="bg-slate-50 rounded-lg p-3 mb-3">
-                      <p class="text-[11px] font-semibold text-slate-600 mb-1.5">Why this recommendation:</p>
-                      <ul class="space-y-1">
-                        <li class="flex items-start gap-1.5 text-[11px] text-slate-600"><span class="material-symbols-outlined text-emerald-500 text-[13px] mt-0.5">check_circle</span>Highest experience level</li>
-                        <li class="flex items-start gap-1.5 text-[11px] text-slate-600"><span class="material-symbols-outlined text-emerald-500 text-[13px] mt-0.5">check_circle</span>Top performer (4.9 rating)</li>
-                        <li class="flex items-start gap-1.5 text-[11px] text-slate-600"><span class="material-symbols-outlined text-amber-500 text-[13px] mt-0.5">info</span>Requires travel coordination</li>
-                        <li class="flex items-start gap-1.5 text-[11px] text-slate-600"><span class="material-symbols-outlined text-amber-500 text-[13px] mt-0.5">info</span>Premium auditor rate</li>
-                      </ul>
-                    </div>
-                    <div class="flex gap-2">
-                      <button class="flex-1 px-4 py-2 bg-[#3eb2ed] hover:bg-[#2ea2d6] text-white text-xs font-semibold rounded-lg transition">Assign Auditor</button>
-                      <button class="px-4 py-2 border border-gray-200 text-slate-700 text-xs font-medium rounded-lg hover:bg-slate-50 transition">View Profile</button>
-                    </div>
-                  </div>
-
-                  <!-- Lisa Anderson -->
-                  <div class="rec-card border border-gray-200 rounded-xl p-5">
-                    <div class="flex items-start justify-between mb-3">
-                      <div class="flex items-start gap-3 flex-1">
-                        <div class="w-11 h-11 bg-gradient-to-br from-rose-500 to-rose-700 rounded-full flex items-center justify-center flex-shrink-0">
-                          <span class="text-white font-semibold text-sm">LA</span>
-                        </div>
-                        <div class="flex-1 min-w-0">
-                          <div class="flex items-center gap-2 mb-0.5">
-                            <h3 class="font-bold text-slate-900 text-sm">Lisa Anderson</h3>
-                            <span class="text-xs text-slate-500">&bull; Auditor</span>
-                          </div>
-                          <div class="flex flex-wrap items-center gap-3 text-xs text-slate-500 mb-2">
-                            <span class="inline-flex items-center gap-1"><span class="material-symbols-outlined text-amber-400 text-sm" style="font-variation-settings:'FILL' 1">star</span>4.7</span>
-                            <span class="inline-flex items-center gap-1"><span class="material-symbols-outlined text-[13px]">location_on</span>Calgary, Canada</span>
-                            <span class="px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 text-[10px] font-semibold">Available (after Jun 8)</span>
-                          </div>
-                          <div class="flex flex-wrap gap-1">
-                            <span class="px-2 py-0.5 bg-slate-100 text-slate-700 text-[10px] rounded font-medium">GOTS</span>
-                            <span class="px-2 py-0.5 bg-slate-100 text-slate-700 text-[10px] rounded font-medium">ISO 9001</span>
-                            <span class="px-2 py-0.5 bg-slate-100 text-slate-700 text-[10px] rounded font-medium">ISO 14001</span>
-                          </div>
-                        </div>
-                      </div>
-                      <span class="px-3 py-1.5 rounded-lg font-bold text-sm text-blue-700 bg-blue-50">82% Match</span>
-                    </div>
-                    <div class="grid grid-cols-3 gap-3 mb-3 text-xs">
-                      <div><span class="text-slate-400">Distance:</span><span class="ml-1 text-slate-800 font-medium">0 km</span></div>
-                      <div><span class="text-slate-400">Experience:</span><span class="ml-1 text-slate-800 font-medium">8 similar audits</span></div>
-                      <div><span class="text-slate-400">Cost:</span><span class="ml-1 text-slate-800 font-medium">Level 1 - $$</span></div>
-                    </div>
-                    <div class="bg-slate-50 rounded-lg p-3 mb-3">
-                      <p class="text-[11px] font-semibold text-slate-600 mb-1.5">Why this recommendation:</p>
-                      <ul class="space-y-1">
-                        <li class="flex items-start gap-1.5 text-[11px] text-slate-600"><span class="material-symbols-outlined text-emerald-500 text-[13px] mt-0.5">check_circle</span>Good qualification match</li>
-                        <li class="flex items-start gap-1.5 text-[11px] text-slate-600"><span class="material-symbols-outlined text-emerald-500 text-[13px] mt-0.5">check_circle</span>Cost-effective option</li>
-                        <li class="flex items-start gap-1.5 text-[11px] text-slate-600"><span class="material-symbols-outlined text-emerald-500 text-[13px] mt-0.5">check_circle</span>Local - no travel required</li>
-                        <li class="flex items-start gap-1.5 text-[11px] text-slate-600"><span class="material-symbols-outlined text-amber-500 text-[13px] mt-0.5">info</span>Limited availability window</li>
-                      </ul>
-                    </div>
-                    <div class="flex gap-2">
-                      <button class="flex-1 px-4 py-2 bg-[#3eb2ed] hover:bg-[#2ea2d6] text-white text-xs font-semibold rounded-lg transition">Assign Auditor</button>
-                      <button class="px-4 py-2 border border-gray-200 text-slate-700 text-xs font-medium rounded-lg hover:bg-slate-50 transition">View Profile</button>
-                    </div>
-                  </div>
-
-                </div>
+                <div id="recCards" class="hidden space-y-4"></div>
               </div>
             </div>
 
@@ -582,25 +418,260 @@
         });
       }
 
-      // Audit selection
-      var auditBtns = document.querySelectorAll('[data-audit]');
-      var recTitle = document.getElementById('recTitle');
-      var recEmpty = document.getElementById('recEmpty');
-      var recCards = document.getElementById('recCards');
+      // ==================== DATA ====================
+      var clients = [
+        {
+          id: 'techcorp', name: 'TechCorp Industries', location: 'Toronto, Canada', sector: 'ISO 9001', complexity: 'High',
+          units: [
+            { id: 'tc-hq', name: 'HQ Office', location: 'Toronto, Canada', auditType: 'ISO 9001', status: 'pending', assignee: null, date: 'Jun 10, 2024' },
+            { id: 'tc-mfg', name: 'Manufacturing Plant A', location: 'Toronto, Canada', auditType: 'ISO 9001', status: 'assigned', assignee: 'Sarah Johnson', date: 'Jun 11, 2024' },
+            { id: 'tc-wh', name: 'Warehouse & Logistics', location: 'Mississauga, Canada', auditType: 'ISO 14001', status: 'pending', assignee: null, date: 'Jun 12, 2024' },
+            { id: 'tc-lab', name: 'R&D Laboratory', location: 'Toronto, Canada', auditType: 'ISO 9001', status: 'pending', assignee: null, date: 'Jun 12, 2024' },
+          ]
+        },
+        {
+          id: 'ecotex', name: 'EcoTextiles Ltd.', location: 'Vancouver, Canada', sector: 'GOTS', complexity: 'Medium',
+          units: [
+            { id: 'et-spin', name: 'Spinning Mill', location: 'Vancouver, Canada', auditType: 'GOTS', status: 'pending', assignee: null, date: 'Jun 15, 2024' },
+            { id: 'et-dye', name: 'Dyeing & Finishing', location: 'Vancouver, Canada', auditType: 'GOTS', status: 'assigned', assignee: 'Lisa Anderson', date: 'Jun 15, 2024' },
+            { id: 'et-pkg', name: 'Packaging Unit', location: 'Vancouver, Canada', auditType: 'GOTS', status: 'pending', assignee: null, date: 'Jun 16, 2024' },
+          ]
+        },
+        {
+          id: 'greenval', name: 'Green Valley Farms', location: 'Calgary, Canada', sector: 'Organic', complexity: 'Low',
+          units: [
+            { id: 'gv-farm', name: 'Farm Operations', location: 'Calgary, Canada', auditType: 'Organic', status: 'pending', assignee: null, date: 'Jun 20, 2024' },
+            { id: 'gv-proc', name: 'Processing Facility', location: 'Calgary, Canada', auditType: 'Organic', status: 'pending', assignee: null, date: 'Jun 20, 2024' },
+          ]
+        }
+      ];
 
-      auditBtns.forEach(function (btn) {
-        btn.addEventListener('click', function () {
-          var name = btn.getAttribute('data-audit');
-          auditBtns.forEach(function (b) { b.classList.remove('selected'); });
-          btn.classList.add('selected');
-          recTitle.textContent = 'Recommendations for ' + name;
-          recEmpty.classList.add('hidden');
-          recCards.classList.remove('hidden');
-          recCards.style.animation = 'none';
-          recCards.offsetHeight;
-          recCards.style.animation = 'fadeUp .35s ease forwards';
+      var auditors = [
+        { name: 'Sarah Johnson', role: 'Senior Auditor', initials: 'SJ', color: 'from-blue-600 to-blue-800', rating: 4.8, location: 'Calgary, Canada', availability: 'Available', quals: ['ISO 9001','GOTS','Organic'], experience: '12 similar audits', distance: '0 km', cost: 'Level 2 - $$$', matchScore: 95, reasons: ['Expert qualification match','Same city - no travel costs','High client satisfaction (4.9/5)','Available during requested dates'] },
+        { name: 'David Kim', role: 'Lead Auditor', initials: 'DK', color: 'from-violet-600 to-violet-800', rating: 4.9, location: 'Vancouver, Canada', availability: 'Available', quals: ['ISO 9001','ISO 14001','ISO 45001'], experience: '25 similar audits', distance: '280 km', cost: 'Level 3 - $$$$', matchScore: 88, reasons: ['Highest experience level','Top performer (4.9 rating)','Requires travel coordination','Premium auditor rate'] },
+        { name: 'Lisa Anderson', role: 'Auditor', initials: 'LA', color: 'from-rose-500 to-rose-700', rating: 4.7, location: 'Calgary, Canada', availability: 'Available (after Jun 8)', quals: ['GOTS','ISO 9001','ISO 14001'], experience: '8 similar audits', distance: '0 km', cost: 'Level 1 - $$', matchScore: 82, reasons: ['Good qualification match','Cost-effective option','Local - no travel required','Limited availability window'] },
+      ];
+
+      var selectedClient = null;
+      var selectedUnit = null;
+
+      // ==================== RENDER CLIENTS ====================
+      function renderClients() {
+        var list = document.getElementById('clientList');
+        var html = '';
+        clients.forEach(function (c) {
+          var planned = c.units.filter(function (u) { return u.status === 'assigned'; }).length;
+          var total = c.units.length;
+          var pct = Math.round((planned / total) * 100);
+          var isSelected = selectedClient && selectedClient.id === c.id;
+          var complexCls = c.complexity === 'High' ? 'bg-red-100 text-red-800' : c.complexity === 'Medium' ? 'bg-amber-100 text-amber-800' : 'bg-emerald-100 text-emerald-800';
+
+          html += '<button type="button" data-client="' + c.id + '" class="audit-card w-full text-left p-4 hover:bg-slate-50 ' + (isSelected ? 'selected' : '') + '">';
+          html += '<div class="flex items-start justify-between mb-1.5">';
+          html += '<h3 class="font-semibold text-slate-900 text-sm">' + c.name + '</h3>';
+          html += '<span class="px-1.5 py-0.5 text-[9px] font-bold rounded-full ' + (planned === total ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700') + '">' + planned + '/' + total + '</span>';
+          html += '</div>';
+          html += '<div class="space-y-1 text-xs text-slate-500">';
+          html += '<div class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[14px]">location_on</span>' + c.location + '</div>';
+          html += '<div class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[14px]">apartment</span>' + total + ' unit' + (total > 1 ? 's' : '') + '</div>';
+          html += '</div>';
+          html += '<div class="flex gap-1.5 mt-2">';
+          html += '<span class="px-2 py-0.5 bg-blue-100 text-blue-800 text-[10px] font-medium rounded-full">' + c.sector + '</span>';
+          html += '<span class="px-2 py-0.5 ' + complexCls + ' text-[10px] font-medium rounded-full">' + c.complexity + '</span>';
+          html += '</div>';
+          html += '<div class="mt-2.5"><div class="w-full h-1.5 bg-gray-100 rounded-full overflow-hidden"><div class="h-full rounded-full transition-all ' + (planned === total ? 'bg-emerald-500' : 'bg-amber-400') + '" style="width:' + pct + '%"></div></div></div>';
+          html += '</button>';
         });
-      });
+        list.innerHTML = html;
+
+        list.querySelectorAll('[data-client]').forEach(function (btn) {
+          btn.addEventListener('click', function () {
+            var cid = btn.getAttribute('data-client');
+            selectedClient = clients.find(function (c) { return c.id === cid; });
+            selectedUnit = null;
+            renderClients();
+            renderUnitPanel();
+            renderRecommendations();
+          });
+        });
+      }
+
+      // ==================== RENDER UNIT PANEL ====================
+      function renderUnitPanel() {
+        var title = document.getElementById('unitPanelTitle');
+        var body = document.getElementById('unitPanelBody');
+        if (!selectedClient) {
+          title.textContent = 'Unit Planning Overview';
+          body.innerHTML = '<div class="text-center py-14 text-slate-400 px-6"><span class="material-symbols-outlined text-4xl opacity-40">account_tree</span><p class="mt-2 text-sm">Select a client to see their units and plan audits</p></div>';
+          return;
+        }
+        var c = selectedClient;
+        var planned = c.units.filter(function (u) { return u.status === 'assigned'; }).length;
+        title.textContent = c.name + ' — Units';
+
+        var html = '';
+        // Progress header
+        html += '<div class="px-5 py-3 bg-slate-50/80 border-b border-gray-100">';
+        html += '<div class="flex items-center justify-between mb-1.5"><span class="text-[11px] font-semibold text-slate-600">Planning Progress</span><span class="text-[11px] font-bold ' + (planned === c.units.length ? 'text-emerald-600' : 'text-amber-600') + '">' + planned + ' of ' + c.units.length + ' units planned</span></div>';
+        var pct = Math.round((planned / c.units.length) * 100);
+        html += '<div class="w-full h-2 bg-gray-200 rounded-full overflow-hidden"><div class="h-full rounded-full transition-all ' + (planned === c.units.length ? 'bg-emerald-500' : 'bg-gradient-to-r from-amber-400 to-amber-500') + '" style="width:' + pct + '%"></div></div>';
+        html += '</div>';
+
+        // Assign all button
+        if (planned < c.units.length) {
+          html += '<div class="px-5 py-2.5 border-b border-gray-100">';
+          html += '<button id="assignAllBtn" class="w-full px-3 py-2 bg-[#1b1e42] hover:bg-[#2a2e55] text-white text-xs font-semibold rounded-lg flex items-center justify-center gap-1.5 transition"><span class="material-symbols-outlined text-sm">group_add</span>Assign Same Auditor to All Pending Units</button>';
+          html += '</div>';
+        }
+
+        // Unit list
+        html += '<div class="divide-y divide-gray-100">';
+        c.units.forEach(function (u) {
+          var isSelected = selectedUnit && selectedUnit.id === u.id;
+          var statusCls = u.status === 'assigned' ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700';
+          var statusIcon = u.status === 'assigned' ? 'check_circle' : 'pending';
+          var statusLabel = u.status === 'assigned' ? 'Planned' : 'Pending';
+
+          html += '<button type="button" data-unit="' + u.id + '" class="w-full text-left p-4 hover:bg-slate-50 transition ' + (isSelected ? 'bg-blue-50 border-l-[3px] border-l-blue-500' : '') + '">';
+          html += '<div class="flex items-start justify-between mb-1">';
+          html += '<div class="flex items-center gap-2"><span class="material-symbols-outlined text-[16px] ' + (u.status === 'assigned' ? 'text-emerald-500' : 'text-amber-500') + '">' + statusIcon + '</span>';
+          html += '<h4 class="text-xs font-bold text-slate-900">' + u.name + '</h4></div>';
+          html += '<span class="px-1.5 py-0.5 text-[9px] font-bold rounded-full ' + statusCls + '">' + statusLabel + '</span>';
+          html += '</div>';
+          html += '<div class="ml-6 space-y-0.5 text-[11px] text-slate-500">';
+          html += '<div class="flex items-center gap-1"><span class="material-symbols-outlined text-[12px]">location_on</span>' + u.location + '</div>';
+          html += '<div class="flex items-center gap-1"><span class="material-symbols-outlined text-[12px]">verified</span>' + u.auditType + '</div>';
+          html += '<div class="flex items-center gap-1"><span class="material-symbols-outlined text-[12px]">calendar_today</span>' + u.date + '</div>';
+          if (u.assignee) {
+            html += '<div class="flex items-center gap-1 mt-1"><span class="material-symbols-outlined text-[12px] text-emerald-500">person</span><span class="font-semibold text-emerald-700">' + u.assignee + '</span></div>';
+          }
+          html += '</div>';
+          html += '</button>';
+        });
+        html += '</div>';
+
+        body.innerHTML = html;
+
+        // Unit click handlers
+        body.querySelectorAll('[data-unit]').forEach(function (btn) {
+          btn.addEventListener('click', function () {
+            var uid = btn.getAttribute('data-unit');
+            selectedUnit = selectedClient.units.find(function (u) { return u.id === uid; });
+            renderUnitPanel();
+            renderRecommendations();
+          });
+        });
+
+        // Assign all button
+        var assignAllBtn = document.getElementById('assignAllBtn');
+        if (assignAllBtn) {
+          assignAllBtn.addEventListener('click', function () {
+            selectedUnit = null;
+            renderRecommendations(true);
+          });
+        }
+      }
+
+      // ==================== RENDER RECOMMENDATIONS ====================
+      function renderRecommendations(isAssignAll) {
+        var recTitle = document.getElementById('recTitle');
+        var recEmpty = document.getElementById('recEmpty');
+        var recCards = document.getElementById('recCards');
+
+        if (!isAssignAll && !selectedUnit) {
+          recTitle.textContent = 'Select a unit to view recommendations';
+          recEmpty.classList.remove('hidden');
+          recCards.classList.add('hidden');
+          if (selectedClient) {
+            recEmpty.innerHTML = '<span class="material-symbols-outlined text-4xl opacity-40">search</span><p class="mt-2 text-sm">Select a unit from ' + selectedClient.name + ' to view auditor recommendations</p>';
+          }
+          return;
+        }
+
+        if (isAssignAll) {
+          recTitle.textContent = 'Assign auditor to all pending units of ' + selectedClient.name;
+        } else {
+          recTitle.textContent = 'Recommendations for ' + selectedUnit.name + ' (' + selectedUnit.auditType + ')';
+        }
+
+        var html = '';
+        auditors.forEach(function (a, idx) {
+          var scoreColor = a.matchScore >= 90 ? 'text-emerald-700 bg-emerald-50' : a.matchScore >= 80 ? 'text-blue-700 bg-blue-50' : 'text-amber-700 bg-amber-50';
+          html += '<div class="rec-card border border-gray-200 rounded-xl p-5">';
+          html += '<div class="flex items-start justify-between mb-3">';
+          html += '<div class="flex items-start gap-3 flex-1">';
+          html += '<div class="w-11 h-11 bg-gradient-to-br ' + a.color + ' rounded-full flex items-center justify-center flex-shrink-0"><span class="text-white font-semibold text-sm">' + a.initials + '</span></div>';
+          html += '<div class="flex-1 min-w-0">';
+          html += '<div class="flex items-center gap-2 mb-0.5"><h3 class="font-bold text-slate-900 text-sm">' + a.name + '</h3><span class="text-xs text-slate-500">&bull; ' + a.role + '</span></div>';
+          html += '<div class="flex flex-wrap items-center gap-3 text-xs text-slate-500 mb-2">';
+          html += '<span class="inline-flex items-center gap-1"><span class="material-symbols-outlined text-amber-400 text-sm" style="font-variation-settings:\'FILL\' 1">star</span>' + a.rating + '</span>';
+          html += '<span class="inline-flex items-center gap-1"><span class="material-symbols-outlined text-[13px]">location_on</span>' + a.location + '</span>';
+          var avCls = a.availability === 'Available' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800';
+          html += '<span class="px-2 py-0.5 rounded-full ' + avCls + ' text-[10px] font-semibold">' + a.availability + '</span>';
+          html += '</div>';
+          html += '<div class="flex flex-wrap gap-1">';
+          a.quals.forEach(function (q) { html += '<span class="px-2 py-0.5 bg-slate-100 text-slate-700 text-[10px] rounded font-medium">' + q + '</span>'; });
+          html += '</div></div></div>';
+          html += '<span class="px-3 py-1.5 rounded-lg font-bold text-sm ' + scoreColor + '">' + a.matchScore + '% Match</span>';
+          html += '</div>';
+          html += '<div class="grid grid-cols-3 gap-3 mb-3 text-xs">';
+          html += '<div><span class="text-slate-400">Distance:</span><span class="ml-1 text-slate-800 font-medium">' + a.distance + '</span></div>';
+          html += '<div><span class="text-slate-400">Experience:</span><span class="ml-1 text-slate-800 font-medium">' + a.experience + '</span></div>';
+          html += '<div><span class="text-slate-400">Cost:</span><span class="ml-1 text-slate-800 font-medium">' + a.cost + '</span></div>';
+          html += '</div>';
+          html += '<div class="bg-slate-50 rounded-lg p-3 mb-3"><p class="text-[11px] font-semibold text-slate-600 mb-1.5">Why this recommendation:</p><ul class="space-y-1">';
+          a.reasons.forEach(function (r, ri) {
+            var icon = ri < 2 ? 'check_circle' : 'info';
+            var iconCls = ri < 2 ? 'text-emerald-500' : 'text-amber-500';
+            html += '<li class="flex items-start gap-1.5 text-[11px] text-slate-600"><span class="material-symbols-outlined ' + iconCls + ' text-[13px] mt-0.5">' + icon + '</span>' + r + '</li>';
+          });
+          html += '</ul></div>';
+          html += '<div class="flex gap-2">';
+          if (isAssignAll) {
+            html += '<button class="assign-all-auditor flex-1 px-4 py-2 bg-[#1b1e42] hover:bg-[#2a2e55] text-white text-xs font-semibold rounded-lg transition flex items-center justify-center gap-1.5" data-auditor="' + a.name + '"><span class="material-symbols-outlined text-sm">group_add</span>Assign to All Pending Units</button>';
+          } else {
+            html += '<button class="assign-unit-auditor flex-1 px-4 py-2 bg-[#3eb2ed] hover:bg-[#2ea2d6] text-white text-xs font-semibold rounded-lg transition" data-auditor="' + a.name + '">Assign Auditor</button>';
+          }
+          html += '<button class="px-4 py-2 border border-gray-200 text-slate-700 text-xs font-medium rounded-lg hover:bg-slate-50 transition">View Profile</button>';
+          html += '</div></div>';
+        });
+
+        recCards.innerHTML = html;
+        recEmpty.classList.add('hidden');
+        recCards.classList.remove('hidden');
+        recCards.style.animation = 'none';
+        recCards.offsetHeight;
+        recCards.style.animation = 'fadeUp .35s ease forwards';
+
+        // Assign to single unit
+        recCards.querySelectorAll('.assign-unit-auditor').forEach(function (btn) {
+          btn.addEventListener('click', function () {
+            if (!selectedUnit) return;
+            selectedUnit.status = 'assigned';
+            selectedUnit.assignee = btn.getAttribute('data-auditor');
+            renderClients();
+            renderUnitPanel();
+            renderRecommendations();
+          });
+        });
+
+        // Assign to all pending units
+        recCards.querySelectorAll('.assign-all-auditor').forEach(function (btn) {
+          btn.addEventListener('click', function () {
+            var name = btn.getAttribute('data-auditor');
+            selectedClient.units.forEach(function (u) {
+              if (u.status === 'pending') { u.status = 'assigned'; u.assignee = name; }
+            });
+            selectedUnit = null;
+            renderClients();
+            renderUnitPanel();
+            renderRecommendations();
+          });
+        });
+      }
+
+      // Init
+      renderClients();
     });
   </script>
 </body>
