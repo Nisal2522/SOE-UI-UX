@@ -955,6 +955,13 @@
               <!-- Availability -->
               <div id="panel-availability" class="profile-tab-panel hidden space-y-8">
                 <div class="fut-section-glow p-6 pt-8">
+                  <div class="mb-4 flex items-start gap-3 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-red-700 shadow-sm">
+                    <span class="material-symbols-outlined text-red-600">warning</span>
+                    <div>
+                      <p class="text-sm font-semibold">Overloaded Capacity Alert</p>
+                      <p class="text-xs text-red-600/90">Current utilization is 125%. Please re-prioritize tasks or reassign workload.</p>
+                    </div>
+                  </div>
                   <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3 mb-4">
                     <h2 class="text-xl font-bold text-[#1b1e42] flex items-center gap-2"><span class="material-symbols-outlined text-[#3eb2ed]">speed</span> Current Task Load</h2>
                     <button id="currentTaskDateBtn" type="button" class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border border-[#1b1e42]/10 bg-white text-sm hover:border-sky-300 hover:bg-sky-50/50 transition-colors">
@@ -968,13 +975,13 @@
                     <div class="flex-1 min-w-0">
                       <div class="flex items-center justify-between mb-2">
                         <span class="text-sm font-medium text-slate-700">Capacity Utilization</span>
-                        <span class="text-lg font-bold bg-gradient-to-r from-[#1b1e42] to-[#3eb2ed] bg-clip-text text-transparent">75%</span>
+                        <span class="text-lg font-bold bg-gradient-to-r from-red-700 to-rose-500 bg-clip-text text-transparent">125%</span>
                       </div>
                       <div class="w-full h-5 bg-slate-100 rounded-full overflow-hidden ring-1 ring-[#1b1e42]/10">
-                        <div class="h-full rounded-full bg-gradient-to-r from-[#1b1e42] via-[#3eb2ed] to-[#8bd1f4] transition-all shadow-[0_0_20px_rgba(62,178,237,0.45)]" style="width:75%"></div>
+                        <div class="h-full rounded-full bg-gradient-to-r from-red-700 via-red-500 to-rose-400 transition-all shadow-[0_0_20px_rgba(239,68,68,0.45)]" style="width:125%"></div>
                       </div>
                     </div>
-                    <span class="px-4 py-1.5 rounded-full text-sm font-semibold bg-gradient-to-r from-sky-500 to-cyan-400 text-white shadow-lg shadow-sky-500/30 shrink-0 self-start sm:self-center">Moderate</span>
+                    <span class="px-4 py-1.5 rounded-full text-sm font-semibold bg-gradient-to-r from-red-600 to-rose-500 text-white shadow-lg shadow-red-500/30 shrink-0 self-start sm:self-center">Overloaded</span>
                   </div>
                   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 text-sm">
                     <div class="flex items-center gap-3 p-3 rounded-xl bg-white/80 border border-[#1b1e42]/8">
