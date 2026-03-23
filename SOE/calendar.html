@@ -60,28 +60,28 @@
     .event-events        { --ev: #f97316; }
     .event-soe-workload  { --ev: #1b1e42; }
 
-    .ev-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--ev); flex-shrink: 0; }
-    .ev-bar { background: var(--ev); border-radius: 4px; padding: 2px 6px; color: #fff; font-size: 10px; font-weight: 600; line-height: 1.4; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer; transition: all .2s; position: relative; }
+    .ev-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--ev); flex-shrink: 0; }
+    .ev-bar { background: var(--ev); border-radius: 5px; padding: 4px 8px; color: #fff; font-size: 0.75rem; font-weight: 600; line-height: 1.45; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer; transition: all .2s; position: relative; }
     .ev-bar:hover { opacity: .85; filter: brightness(1.1); }
 
     /* Event detail popup */
-    .ev-popup { display: none; position: fixed; z-index: 200; width: 320px; background: #fff; border-radius: 14px; box-shadow: 0 20px 50px rgba(0,0,0,.15), 0 4px 12px rgba(0,0,0,.08); border: 1px solid #e5e7eb; overflow: hidden; }
+    .ev-popup { display: none; position: fixed; z-index: 200; width: 360px; background: #fff; border-radius: 14px; box-shadow: 0 20px 50px rgba(0,0,0,.15), 0 4px 12px rgba(0,0,0,.08); border: 1px solid #e5e7eb; overflow: hidden; }
     .ev-popup.show { display: block; animation: popIn .2s ease; }
     @keyframes popIn { from { opacity: 0; transform: scale(.95) translateY(4px); } to { opacity: 1; transform: scale(1) translateY(0); } }
-    .ev-popup-header { padding: 14px 16px; color: #fff; }
-    .ev-popup-body { padding: 14px 16px; }
+    .ev-popup-header { padding: 16px 18px; color: #fff; }
+    .ev-popup-body { padding: 16px 18px; }
     .ev-popup-row { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 8px; }
     .ev-popup-row:last-child { margin-bottom: 0; }
-    .ev-popup-icon { color: #94a3b8; font-size: 16px; margin-top: 1px; flex-shrink: 0; }
-    .ev-popup-label { font-size: 10px; color: #94a3b8; text-transform: uppercase; letter-spacing: .04em; font-weight: 600; }
-    .ev-popup-value { font-size: 12px; color: #1e293b; font-weight: 500; }
+    .ev-popup-icon { color: #94a3b8; font-size: 1.125rem; margin-top: 1px; flex-shrink: 0; }
+    .ev-popup-label { font-size: 0.75rem; color: #94a3b8; text-transform: uppercase; letter-spacing: .04em; font-weight: 600; }
+    .ev-popup-value { font-size: 0.875rem; color: #1e293b; font-weight: 500; }
     .ev-popup-conflict { background: #fef2f2; border: 1px solid #fecaca; border-radius: 8px; padding: 8px 10px; margin-top: 8px; }
     .ev-popup-close { position: absolute; top: 10px; right: 10px; background: rgba(255,255,255,.2); border: none; border-radius: 6px; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #fff; transition: background .15s; }
     .ev-popup-close:hover { background: rgba(255,255,255,.35); }
     .ev-overlay { display: none; position: fixed; inset: 0; z-index: 199; }
     .ev-overlay.show { display: block; }
 
-    .cal-cell { min-height: 100px; border: 1px solid #e5e7eb; position: relative; transition: background .15s; }
+    .cal-cell { min-height: 118px; border: 1px solid #e5e7eb; position: relative; transition: background .15s; }
     .cal-cell:hover { background: #f8fafc; }
     .cal-cell.today { background: #eff6ff; border-color: #93c5fd; }
     .cal-cell.other-month { background: #fafafa; color: #94a3b8; }
@@ -89,7 +89,7 @@
     .conflict-badge { animation: pulse-badge 2s infinite; }
     @keyframes pulse-badge { 0%,100% { box-shadow: 0 0 0 0 rgba(239,68,68,.4); } 50% { box-shadow: 0 0 0 6px rgba(239,68,68,0); } }
 
-    .view-tab { position: relative; padding: 8px 16px; font-size: 13px; font-weight: 500; color: #64748b; cursor: pointer; transition: color .2s; border: none; background: none; }
+    .view-tab { position: relative; padding: 10px 18px; font-size: 0.9375rem; font-weight: 500; color: #64748b; cursor: pointer; transition: color .2s; border: none; background: none; }
     .view-tab.active { color: #1e293b; font-weight: 600; }
     .view-tab.active::after { content:''; position:absolute; bottom:0; left:8px; right:8px; height:2.5px; border-radius:2px; background:linear-gradient(90deg,#3eb2ed,#38bdf8); }
 
@@ -99,11 +99,11 @@
     .slot-free { background: repeating-linear-gradient(45deg, #f0fdf4, #f0fdf4 4px, #dcfce7 4px, #dcfce7 8px); }
     .slot-busy { background: repeating-linear-gradient(45deg, #fef2f2, #fef2f2 4px, #fee2e2 4px, #fee2e2 8px); }
 
-    .planner-cell { min-width: 64px; min-height: 48px; border-left: 1px solid #f1f5f9; padding: 3px; position: relative; }
+    .planner-cell { min-width: 72px; min-height: 54px; border-left: 1px solid #f1f5f9; padding: 4px; position: relative; }
     .planner-cell.weekend { background: #fafbfc; }
     .planner-cell.today-col { background: #eff6ff; }
-    .planner-emp { position: sticky; left: 0; z-index: 5; background: #fff; min-width: 140px; width: 140px; border-right: 2px solid #e2e8f0; }
-    .planner-head-emp { position: sticky; left: 0; z-index: 6; background: #f8fafc; min-width: 140px; width: 140px; border-right: 2px solid #e2e8f0; }
+    .planner-emp { position: sticky; left: 0; z-index: 5; background: #fff; min-width: 158px; width: 158px; border-right: 2px solid #e2e8f0; }
+    .planner-head-emp { position: sticky; left: 0; z-index: 6; background: #f8fafc; min-width: 158px; width: 158px; border-right: 2px solid #e2e8f0; }
   </style>
 </head>
 
@@ -296,18 +296,18 @@
           <!-- Page Header -->
           <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-5">
             <div>
-              <h1 class="text-2xl font-extrabold text-slate-900 flex items-center gap-2">
-                <span class="material-symbols-outlined text-[#3eb2ed]">calendar_month</span>
+              <h1 class="text-3xl font-extrabold text-slate-900 flex items-center gap-2">
+                <span class="material-symbols-outlined text-[#3eb2ed] text-4xl">calendar_month</span>
                 Schedule Calendar
               </h1>
-              <p class="text-sm text-slate-500 mt-0.5">SOE calendar sync &middot; Plan, visualize &amp; detect conflicts</p>
+              <p class="text-base text-slate-500 mt-0.5">SOE calendar sync &middot; Plan, visualize &amp; detect conflicts</p>
             </div>
             <div class="flex items-center gap-2">
-              <button class="px-3 py-2 border border-gray-200 rounded-lg text-xs font-medium text-slate-700 hover:bg-slate-50 flex items-center gap-1.5">
-                <span class="material-symbols-outlined text-sm">sync</span>Sync Calendar
+              <button class="px-4 py-2.5 border border-gray-200 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50 flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-base">sync</span>Sync Calendar
               </button>
-              <button class="px-3 py-2 bg-[#3eb2ed] hover:bg-[#2ea2d6] text-white rounded-lg text-xs font-semibold flex items-center gap-1.5 transition">
-                <span class="material-symbols-outlined text-sm">add</span>New Event
+              <button class="px-4 py-2.5 bg-[#3eb2ed] hover:bg-[#2ea2d6] text-white rounded-lg text-sm font-semibold flex items-center gap-1.5 transition">
+                <span class="material-symbols-outlined text-base">add</span>New Event
               </button>
             </div>
           </div>
@@ -319,21 +319,21 @@
             <div class="lg:col-span-2 bg-white rounded-2xl border border-gray-200 p-5" style="box-shadow:0 2px 12px rgba(0,0,0,.04);">
               <div class="flex items-center gap-2 mb-3">
                 <span class="material-symbols-outlined text-red-500">warning</span>
-                <h2 class="text-sm font-bold text-slate-900">Conflict Detection</h2>
-                <span class="conflict-badge ml-auto px-2 py-0.5 bg-red-100 text-red-700 text-[10px] font-bold rounded-full">2 Active</span>
+                <h2 class="text-base font-bold text-slate-900">Conflict Detection</h2>
+                <span class="conflict-badge ml-auto px-2.5 py-1 bg-red-100 text-red-700 text-xs font-bold rounded-full">2 Active</span>
               </div>
               <div class="space-y-2.5">
                 <div class="flex items-start gap-3 p-3 bg-red-50/70 border border-red-200 rounded-xl">
                   <span class="material-symbols-outlined text-red-500 text-lg mt-0.5">schedule</span>
                   <div class="flex-1 min-w-0">
                     <div class="flex items-center gap-2 mb-0.5">
-                      <span class="font-semibold text-xs text-slate-900">Overlapping Schedule</span>
-                      <span class="px-1.5 py-0.5 bg-red-200 text-red-800 text-[9px] font-bold rounded-full uppercase">Conflict</span>
+                      <span class="font-semibold text-sm text-slate-900">Overlapping Schedule</span>
+                      <span class="px-2 py-0.5 bg-red-200 text-red-800 text-xs font-bold rounded-full uppercase">Conflict</span>
                     </div>
-                    <p class="text-xs text-slate-600">Sarah Johnson has ISO 9001 audit (Jun 10-12) overlapping with GOTS review (Jun 11-13)</p>
+                    <p class="text-sm text-slate-600">Sarah Johnson has ISO 9001 audit (Jun 10-12) overlapping with GOTS review (Jun 11-13)</p>
                     <div class="flex items-center gap-3 mt-1.5">
-                      <button class="text-[11px] text-blue-600 font-medium hover:underline">Reschedule</button>
-                      <button class="text-[11px] text-slate-500 font-medium hover:underline">View Details</button>
+                      <button class="text-sm text-blue-600 font-medium hover:underline">Reschedule</button>
+                      <button class="text-sm text-slate-500 font-medium hover:underline">View Details</button>
                     </div>
                   </div>
                 </div>
@@ -341,13 +341,13 @@
                   <span class="material-symbols-outlined text-amber-500 text-lg mt-0.5">speed</span>
                   <div class="flex-1 min-w-0">
                     <div class="flex items-center gap-2 mb-0.5">
-                      <span class="font-semibold text-xs text-slate-900">Work Overloading</span>
-                      <span class="px-1.5 py-0.5 bg-amber-200 text-amber-800 text-[9px] font-bold rounded-full uppercase">Warning</span>
+                      <span class="font-semibold text-sm text-slate-900">Work Overloading</span>
+                      <span class="px-2 py-0.5 bg-amber-200 text-amber-800 text-xs font-bold rounded-full uppercase">Warning</span>
                     </div>
-                    <p class="text-xs text-slate-600">David Kim is at 95% capacity this week with 4 audits + 2 trainings scheduled</p>
+                    <p class="text-sm text-slate-600">David Kim is at 95% capacity this week with 4 audits + 2 trainings scheduled</p>
                     <div class="flex items-center gap-3 mt-1.5">
-                      <button class="text-[11px] text-blue-600 font-medium hover:underline">Redistribute</button>
-                      <button class="text-[11px] text-slate-500 font-medium hover:underline">View Workload</button>
+                      <button class="text-sm text-blue-600 font-medium hover:underline">Redistribute</button>
+                      <button class="text-sm text-slate-500 font-medium hover:underline">View Workload</button>
                     </div>
                   </div>
                 </div>
@@ -356,28 +356,28 @@
 
             <!-- SOE Workload Summary -->
             <div class="bg-white rounded-2xl border border-gray-200 p-5" style="box-shadow:0 2px 12px rgba(0,0,0,.04);">
-              <h2 class="text-sm font-bold text-slate-900 mb-3 flex items-center gap-2">
-                <span class="material-symbols-outlined text-[#1b1e42] text-lg">bar_chart</span>
+              <h2 class="text-base font-bold text-slate-900 mb-3 flex items-center gap-2">
+                <span class="material-symbols-outlined text-[#1b1e42] text-xl">bar_chart</span>
                 SOE Workload
               </h2>
               <div class="space-y-2.5">
                 <div>
-                  <div class="flex justify-between text-xs mb-1"><span class="text-slate-600">This Week</span><span class="font-bold text-slate-900">78%</span></div>
-                  <div class="w-full h-2 bg-gray-100 rounded-full overflow-hidden"><div class="h-full bg-gradient-to-r from-amber-400 to-amber-500 rounded-full" style="width:78%"></div></div>
+                  <div class="flex justify-between text-sm mb-1"><span class="text-slate-600">This Week</span><span class="font-bold text-slate-900">78%</span></div>
+                  <div class="w-full h-2.5 bg-gray-100 rounded-full overflow-hidden"><div class="h-full bg-gradient-to-r from-amber-400 to-amber-500 rounded-full" style="width:78%"></div></div>
                 </div>
                 <div>
-                  <div class="flex justify-between text-xs mb-1"><span class="text-slate-600">Next Week</span><span class="font-bold text-slate-900">62%</span></div>
-                  <div class="w-full h-2 bg-gray-100 rounded-full overflow-hidden"><div class="h-full bg-gradient-to-r from-emerald-400 to-emerald-500 rounded-full" style="width:62%"></div></div>
+                  <div class="flex justify-between text-sm mb-1"><span class="text-slate-600">Next Week</span><span class="font-bold text-slate-900">62%</span></div>
+                  <div class="w-full h-2.5 bg-gray-100 rounded-full overflow-hidden"><div class="h-full bg-gradient-to-r from-emerald-400 to-emerald-500 rounded-full" style="width:62%"></div></div>
                 </div>
                 <div>
-                  <div class="flex justify-between text-xs mb-1"><span class="text-slate-600">This Month</span><span class="font-bold text-slate-900">71%</span></div>
-                  <div class="w-full h-2 bg-gray-100 rounded-full overflow-hidden"><div class="h-full bg-gradient-to-r from-blue-400 to-blue-500 rounded-full" style="width:71%"></div></div>
+                  <div class="flex justify-between text-sm mb-1"><span class="text-slate-600">This Month</span><span class="font-bold text-slate-900">71%</span></div>
+                  <div class="w-full h-2.5 bg-gray-100 rounded-full overflow-hidden"><div class="h-full bg-gradient-to-r from-blue-400 to-blue-500 rounded-full" style="width:71%"></div></div>
                 </div>
               </div>
               <div class="mt-4 pt-3 border-t border-gray-100 grid grid-cols-3 gap-2 text-center">
-                <div><p class="text-lg font-extrabold text-slate-900">14</p><p class="text-[10px] text-slate-500">Audits</p></div>
-                <div><p class="text-lg font-extrabold text-slate-900">6</p><p class="text-[10px] text-slate-500">Trainings</p></div>
-                <div><p class="text-lg font-extrabold text-slate-900">8</p><p class="text-[10px] text-slate-500">Meetings</p></div>
+                <div><p class="text-xl font-extrabold text-slate-900">14</p><p class="text-sm text-slate-500">Audits</p></div>
+                <div><p class="text-xl font-extrabold text-slate-900">6</p><p class="text-sm text-slate-500">Trainings</p></div>
+                <div><p class="text-xl font-extrabold text-slate-900">8</p><p class="text-sm text-slate-500">Meetings</p></div>
               </div>
             </div>
           </div>
@@ -386,22 +386,22 @@
           <div class="bg-white rounded-2xl border border-gray-200 p-4 mb-5" style="box-shadow:0 2px 12px rgba(0,0,0,.04);">
             <div class="flex items-center gap-2 mb-2.5">
               <span class="material-symbols-outlined text-slate-500 text-lg">palette</span>
-              <h2 class="text-xs font-bold text-slate-700 uppercase tracking-wider">Event Types</h2>
+              <h2 class="text-sm font-bold text-slate-700 uppercase tracking-wider">Event Types</h2>
             </div>
             <div class="flex flex-wrap gap-x-4 gap-y-2">
-              <span class="inline-flex items-center gap-1.5 text-[11px] text-slate-700 event-contracting"><span class="ev-dot"></span>Contracting</span>
-              <span class="inline-flex items-center gap-1.5 text-[11px] text-slate-700 event-planning"><span class="ev-dot"></span>Planning</span>
-              <span class="inline-flex items-center gap-1.5 text-[11px] text-slate-700 event-auditing"><span class="ev-dot"></span>Auditing</span>
-              <span class="inline-flex items-center gap-1.5 text-[11px] text-slate-700 event-certification"><span class="ev-dot"></span>Certification</span>
-              <span class="inline-flex items-center gap-1.5 text-[11px] text-slate-700 event-cert-other"><span class="ev-dot"></span>Cert. Other</span>
-              <span class="inline-flex items-center gap-1.5 text-[11px] text-slate-700 event-supportive"><span class="ev-dot"></span>Supportive</span>
-              <span class="inline-flex items-center gap-1.5 text-[11px] text-slate-700 event-work-location"><span class="ev-dot"></span>Work Location</span>
-              <span class="inline-flex items-center gap-1.5 text-[11px] text-slate-700 event-leaves"><span class="ev-dot"></span>Leaves</span>
-              <span class="inline-flex items-center gap-1.5 text-[11px] text-slate-700 event-client-visits"><span class="ev-dot"></span>Client Visits</span>
-              <span class="inline-flex items-center gap-1.5 text-[11px] text-slate-700 event-meetings"><span class="ev-dot"></span>Meetings</span>
-              <span class="inline-flex items-center gap-1.5 text-[11px] text-slate-700 event-trainings"><span class="ev-dot"></span>Trainings</span>
-              <span class="inline-flex items-center gap-1.5 text-[11px] text-slate-700 event-events"><span class="ev-dot"></span>Events</span>
-              <span class="inline-flex items-center gap-1.5 text-[11px] text-slate-700 event-soe-workload"><span class="ev-dot"></span>SOE Workload</span>
+              <span class="inline-flex items-center gap-1.5 text-sm text-slate-700 event-contracting"><span class="ev-dot"></span>Contracting</span>
+              <span class="inline-flex items-center gap-1.5 text-sm text-slate-700 event-planning"><span class="ev-dot"></span>Planning</span>
+              <span class="inline-flex items-center gap-1.5 text-sm text-slate-700 event-auditing"><span class="ev-dot"></span>Auditing</span>
+              <span class="inline-flex items-center gap-1.5 text-sm text-slate-700 event-certification"><span class="ev-dot"></span>Certification</span>
+              <span class="inline-flex items-center gap-1.5 text-sm text-slate-700 event-cert-other"><span class="ev-dot"></span>Cert. Other</span>
+              <span class="inline-flex items-center gap-1.5 text-sm text-slate-700 event-supportive"><span class="ev-dot"></span>Supportive</span>
+              <span class="inline-flex items-center gap-1.5 text-sm text-slate-700 event-work-location"><span class="ev-dot"></span>Work Location</span>
+              <span class="inline-flex items-center gap-1.5 text-sm text-slate-700 event-leaves"><span class="ev-dot"></span>Leaves</span>
+              <span class="inline-flex items-center gap-1.5 text-sm text-slate-700 event-client-visits"><span class="ev-dot"></span>Client Visits</span>
+              <span class="inline-flex items-center gap-1.5 text-sm text-slate-700 event-meetings"><span class="ev-dot"></span>Meetings</span>
+              <span class="inline-flex items-center gap-1.5 text-sm text-slate-700 event-trainings"><span class="ev-dot"></span>Trainings</span>
+              <span class="inline-flex items-center gap-1.5 text-sm text-slate-700 event-events"><span class="ev-dot"></span>Events</span>
+              <span class="inline-flex items-center gap-1.5 text-sm text-slate-700 event-soe-workload"><span class="ev-dot"></span>SOE Workload</span>
             </div>
           </div>
 
@@ -411,19 +411,19 @@
             <!-- Controls Bar -->
             <div class="flex items-center justify-between px-5 py-3 border-b border-gray-100 flex-wrap gap-3">
               <div class="flex items-center gap-2">
-                <button id="prevMonth" class="p-1.5 rounded-lg hover:bg-slate-100 transition"><span class="material-symbols-outlined text-lg text-slate-600">chevron_left</span></button>
-                <h3 id="calMonthLabel" class="text-base font-bold text-slate-900 min-w-[160px] text-center">June 2024</h3>
-                <button id="nextMonth" class="p-1.5 rounded-lg hover:bg-slate-100 transition"><span class="material-symbols-outlined text-lg text-slate-600">chevron_right</span></button>
-                <button id="todayBtn" class="ml-2 px-3 py-1 text-xs font-medium text-slate-600 border border-gray-200 rounded-lg hover:bg-slate-50 transition">Today</button>
+                <button id="prevMonth" class="p-1.5 rounded-lg hover:bg-slate-100 transition"><span class="material-symbols-outlined text-xl text-slate-600">chevron_left</span></button>
+                <h3 id="calMonthLabel" class="text-lg font-bold text-slate-900 min-w-[180px] text-center">June 2024</h3>
+                <button id="nextMonth" class="p-1.5 rounded-lg hover:bg-slate-100 transition"><span class="material-symbols-outlined text-xl text-slate-600">chevron_right</span></button>
+                <button id="todayBtn" class="ml-2 px-3 py-1.5 text-sm font-medium text-slate-600 border border-gray-200 rounded-lg hover:bg-slate-50 transition">Today</button>
               </div>
               <div class="flex items-center gap-3">
                 <!-- My Calendar / All toggle -->
                 <div class="flex items-center bg-slate-100 rounded-lg p-0.5" id="calScopeToggle">
-                  <button data-scope="my" class="cal-scope-btn active flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold transition">
-                    <span class="material-symbols-outlined text-sm">person</span>My Calendar
+                  <button data-scope="my" class="cal-scope-btn active flex items-center gap-1.5 px-3 py-2 rounded-md text-sm font-semibold transition">
+                    <span class="material-symbols-outlined text-base">person</span>My Calendar
                   </button>
-                  <button data-scope="all" class="cal-scope-btn flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold transition">
-                    <span class="material-symbols-outlined text-sm">groups</span>Office Calendars
+                  <button data-scope="all" class="cal-scope-btn flex items-center gap-1.5 px-3 py-2 rounded-md text-sm font-semibold transition">
+                    <span class="material-symbols-outlined text-base">groups</span>Office Calendars
                   </button>
                 </div>
                 <div class="w-px h-6 bg-gray-200"></div>
@@ -437,13 +437,13 @@
             <!-- Monthly Calendar Grid -->
             <div id="monthlyView">
               <div class="grid grid-cols-7 bg-slate-50 border-b border-gray-200">
-                <div class="px-3 py-2 text-[11px] font-semibold text-slate-500 uppercase text-center">Sun</div>
-                <div class="px-3 py-2 text-[11px] font-semibold text-slate-500 uppercase text-center">Mon</div>
-                <div class="px-3 py-2 text-[11px] font-semibold text-slate-500 uppercase text-center">Tue</div>
-                <div class="px-3 py-2 text-[11px] font-semibold text-slate-500 uppercase text-center">Wed</div>
-                <div class="px-3 py-2 text-[11px] font-semibold text-slate-500 uppercase text-center">Thu</div>
-                <div class="px-3 py-2 text-[11px] font-semibold text-slate-500 uppercase text-center">Fri</div>
-                <div class="px-3 py-2 text-[11px] font-semibold text-slate-500 uppercase text-center">Sat</div>
+                <div class="px-3 py-2.5 text-sm font-semibold text-slate-500 uppercase text-center">Sun</div>
+                <div class="px-3 py-2.5 text-sm font-semibold text-slate-500 uppercase text-center">Mon</div>
+                <div class="px-3 py-2.5 text-sm font-semibold text-slate-500 uppercase text-center">Tue</div>
+                <div class="px-3 py-2.5 text-sm font-semibold text-slate-500 uppercase text-center">Wed</div>
+                <div class="px-3 py-2.5 text-sm font-semibold text-slate-500 uppercase text-center">Thu</div>
+                <div class="px-3 py-2.5 text-sm font-semibold text-slate-500 uppercase text-center">Fri</div>
+                <div class="px-3 py-2.5 text-sm font-semibold text-slate-500 uppercase text-center">Sat</div>
               </div>
               <div id="calGrid" class="grid grid-cols-7"></div>
             </div>
@@ -458,25 +458,25 @@
             <!-- Weekly View -->
             <div id="weeklyView" class="hidden">
               <div class="overflow-x-auto">
-                <div class="min-w-[900px]">
+                <div class="min-w-[1000px]">
                   <div class="grid grid-cols-8 bg-slate-50 border-b border-gray-200">
-                    <div class="px-3 py-2 text-[11px] font-semibold text-slate-500 uppercase">Employee</div>
-                    <div class="px-3 py-2 text-[11px] font-semibold text-slate-500 uppercase text-center">Mon 10</div>
-                    <div class="px-3 py-2 text-[11px] font-semibold text-slate-500 uppercase text-center">Tue 11</div>
-                    <div class="px-3 py-2 text-[11px] font-semibold text-slate-500 uppercase text-center">Wed 12</div>
-                    <div class="px-3 py-2 text-[11px] font-semibold text-slate-500 uppercase text-center">Thu 13</div>
-                    <div class="px-3 py-2 text-[11px] font-semibold text-slate-500 uppercase text-center">Fri 14</div>
-                    <div class="px-3 py-2 text-[11px] font-semibold text-slate-500 uppercase text-center">Sat 15</div>
-                    <div class="px-3 py-2 text-[11px] font-semibold text-slate-500 uppercase text-center">Sun 16</div>
+                    <div class="px-3 py-2.5 text-sm font-semibold text-slate-500 uppercase">Employee</div>
+                    <div class="px-3 py-2.5 text-sm font-semibold text-slate-500 uppercase text-center">Mon 10</div>
+                    <div class="px-3 py-2.5 text-sm font-semibold text-slate-500 uppercase text-center">Tue 11</div>
+                    <div class="px-3 py-2.5 text-sm font-semibold text-slate-500 uppercase text-center">Wed 12</div>
+                    <div class="px-3 py-2.5 text-sm font-semibold text-slate-500 uppercase text-center">Thu 13</div>
+                    <div class="px-3 py-2.5 text-sm font-semibold text-slate-500 uppercase text-center">Fri 14</div>
+                    <div class="px-3 py-2.5 text-sm font-semibold text-slate-500 uppercase text-center">Sat 15</div>
+                    <div class="px-3 py-2.5 text-sm font-semibold text-slate-500 uppercase text-center">Sun 16</div>
                   </div>
                   <!-- Sarah Johnson row -->
                   <div class="grid grid-cols-8 border-b border-gray-100" data-employee="Sarah Johnson">
                     <div class="p-3 flex items-center gap-2">
-                      <div class="w-7 h-7 rounded-full bg-blue-600 flex items-center justify-center"><span class="text-white text-[10px] font-bold">SJ</span></div>
-                      <div><p class="text-xs font-semibold text-slate-900">Sarah J.</p><p class="text-[10px] text-slate-400">Sr. Auditor</p></div>
+                      <div class="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center"><span class="text-white text-xs font-bold">SJ</span></div>
+                      <div><p class="text-sm font-semibold text-slate-900">Sarah J.</p><p class="text-sm text-slate-400">Sr. Auditor</p></div>
                     </div>
                     <div class="p-1.5 border-l border-gray-100"><div class="ev-bar event-auditing" title="ISO 9001 Audit - TechCorp">ISO 9001</div></div>
-                    <div class="p-1.5 border-l border-gray-100"><div class="ev-bar event-auditing" title="ISO 9001 Audit - TechCorp">ISO 9001</div><div class="ev-bar event-planning mt-0.5" title="GOTS Review prep"><span class="material-symbols-outlined text-white text-[10px] mr-0.5">warning</span>GOTS</div></div>
+                    <div class="p-1.5 border-l border-gray-100"><div class="ev-bar event-auditing" title="ISO 9001 Audit - TechCorp">ISO 9001</div><div class="ev-bar event-planning mt-0.5" title="GOTS Review prep"><span class="material-symbols-outlined text-white text-xs mr-0.5">warning</span>GOTS</div></div>
                     <div class="p-1.5 border-l border-gray-100"><div class="ev-bar event-planning" title="GOTS Review">GOTS Review</div></div>
                     <div class="p-1.5 border-l border-gray-100"><div class="ev-bar event-meetings" title="Team Planning">Team Mtg</div></div>
                     <div class="p-1.5 border-l border-gray-100 slot-free"></div>
@@ -486,8 +486,8 @@
                   <!-- David Kim row -->
                   <div class="grid grid-cols-8 border-b border-gray-100" data-employee="David Kim">
                     <div class="p-3 flex items-center gap-2">
-                      <div class="w-7 h-7 rounded-full bg-violet-600 flex items-center justify-center"><span class="text-white text-[10px] font-bold">DK</span></div>
-                      <div><p class="text-xs font-semibold text-slate-900">David K.</p><p class="text-[10px] text-slate-400">Lead Auditor</p></div>
+                      <div class="w-8 h-8 rounded-full bg-violet-600 flex items-center justify-center"><span class="text-white text-xs font-bold">DK</span></div>
+                      <div><p class="text-sm font-semibold text-slate-900">David K.</p><p class="text-sm text-slate-400">Lead Auditor</p></div>
                     </div>
                     <div class="p-1.5 border-l border-gray-100"><div class="ev-bar event-trainings" title="ISO 45001 Training">ISO 45001</div></div>
                     <div class="p-1.5 border-l border-gray-100"><div class="ev-bar event-trainings" title="ISO 45001 Training">ISO 45001</div></div>
@@ -500,8 +500,8 @@
                   <!-- Lisa Anderson row -->
                   <div class="grid grid-cols-8 border-b border-gray-100" data-employee="Lisa Anderson">
                     <div class="p-3 flex items-center gap-2">
-                      <div class="w-7 h-7 rounded-full bg-rose-500 flex items-center justify-center"><span class="text-white text-[10px] font-bold">LA</span></div>
-                      <div><p class="text-xs font-semibold text-slate-900">Lisa A.</p><p class="text-[10px] text-slate-400">Auditor</p></div>
+                      <div class="w-8 h-8 rounded-full bg-rose-500 flex items-center justify-center"><span class="text-white text-xs font-bold">LA</span></div>
+                      <div><p class="text-sm font-semibold text-slate-900">Lisa A.</p><p class="text-sm text-slate-400">Auditor</p></div>
                     </div>
                     <div class="p-1.5 border-l border-gray-100"><div class="ev-bar event-contracting" title="Contract Review">Contract</div></div>
                     <div class="p-1.5 border-l border-gray-100 slot-free"></div>
@@ -514,8 +514,8 @@
                   <!-- Mike Chen row -->
                   <div class="grid grid-cols-8 border-b border-gray-100" data-employee="Mike Chen">
                     <div class="p-3 flex items-center gap-2">
-                      <div class="w-7 h-7 rounded-full bg-emerald-600 flex items-center justify-center"><span class="text-white text-[10px] font-bold">MC</span></div>
-                      <div><p class="text-xs font-semibold text-slate-900">Mike C.</p><p class="text-[10px] text-slate-400">Auditor</p></div>
+                      <div class="w-8 h-8 rounded-full bg-emerald-600 flex items-center justify-center"><span class="text-white text-xs font-bold">MC</span></div>
+                      <div><p class="text-sm font-semibold text-slate-900">Mike C.</p><p class="text-sm text-slate-400">Auditor</p></div>
                     </div>
                     <div class="p-1.5 border-l border-gray-100"><div class="ev-bar event-leaves" title="Annual Leave">Leave</div></div>
                     <div class="p-1.5 border-l border-gray-100"><div class="ev-bar event-leaves" title="Annual Leave">Leave</div></div>
@@ -528,8 +528,8 @@
                   <!-- Emma Davis row -->
                   <div class="grid grid-cols-8" data-employee="Emma Davis">
                     <div class="p-3 flex items-center gap-2">
-                      <div class="w-7 h-7 rounded-full bg-amber-500 flex items-center justify-center"><span class="text-white text-[10px] font-bold">ED</span></div>
-                      <div><p class="text-xs font-semibold text-slate-900">Emma D.</p><p class="text-[10px] text-slate-400">Jr. Auditor</p></div>
+                      <div class="w-8 h-8 rounded-full bg-amber-500 flex items-center justify-center"><span class="text-white text-xs font-bold">ED</span></div>
+                      <div><p class="text-sm font-semibold text-slate-900">Emma D.</p><p class="text-sm text-slate-400">Jr. Auditor</p></div>
                     </div>
                     <div class="p-1.5 border-l border-gray-100"><div class="ev-bar event-events" title="Industry Conference">Conference</div></div>
                     <div class="p-1.5 border-l border-gray-100"><div class="ev-bar event-events" title="Industry Conference">Conference</div></div>
@@ -543,10 +543,10 @@
               </div>
 
               <!-- Availability Legend -->
-              <div class="px-5 py-3 border-t border-gray-100 flex items-center gap-5 text-[11px] text-slate-500">
+              <div class="px-5 py-3 border-t border-gray-100 flex items-center gap-5 text-sm text-slate-500">
                 <span class="inline-flex items-center gap-1.5"><span class="w-4 h-3 rounded slot-free inline-block border border-green-200"></span>Free</span>
                 <span class="inline-flex items-center gap-1.5"><span class="w-4 h-3 rounded slot-busy inline-block border border-red-200"></span>Overloaded</span>
-                <span class="inline-flex items-center gap-1.5"><span class="material-symbols-outlined text-amber-500 text-xs">warning</span>Conflict</span>
+                <span class="inline-flex items-center gap-1.5"><span class="material-symbols-outlined text-amber-500 text-base">warning</span>Conflict</span>
               </div>
             </div>
           </div>
@@ -561,8 +561,8 @@
   <div class="ev-popup" id="evPopup">
     <div class="ev-popup-header" id="evPopupHeader">
       <button class="ev-popup-close" id="evPopupClose"><span class="material-symbols-outlined text-sm">close</span></button>
-      <div class="text-xs font-semibold opacity-80 mb-0.5" id="evPopupType"></div>
-      <div class="text-base font-bold" id="evPopupTitle"></div>
+      <div class="text-sm font-semibold opacity-80 mb-0.5" id="evPopupType"></div>
+      <div class="text-lg font-bold" id="evPopupTitle"></div>
     </div>
     <div class="ev-popup-body" id="evPopupBody"></div>
   </div>
@@ -744,9 +744,9 @@
 
         if (conflicts.length > 0) {
           html += '<div class="ev-popup-conflict">';
-          html += '<div class="flex items-center gap-1.5 mb-1"><span class="material-symbols-outlined text-red-500 text-sm">warning</span><span class="text-[11px] font-bold text-red-700">Time Conflict Detected</span></div>';
+          html += '<div class="flex items-center gap-1.5 mb-1"><span class="material-symbols-outlined text-red-500 text-base">warning</span><span class="text-sm font-bold text-red-700">Time Conflict Detected</span></div>';
           conflicts.forEach(function (c) {
-            html += '<div class="text-[11px] text-red-600 mt-1">Overlaps with <strong>' + c.label + '</strong> (' + c.time + ') &mdash; ' + c.assignee + '</div>';
+            html += '<div class="text-sm text-red-600 mt-1">Overlaps with <strong>' + c.label + '</strong> (' + c.time + ') &mdash; ' + c.assignee + '</div>';
           });
           html += '</div>';
         }
@@ -754,7 +754,7 @@
         popupBody.innerHTML = html;
 
         // Position popup near the clicked bar
-        var popW = 320; var popH = popup.offsetHeight || 300;
+        var popW = 360; var popH = popup.offsetHeight || 300;
         var x = rect.right + 8; var y = rect.top;
         if (x + popW > window.innerWidth - 16) x = rect.left - popW - 8;
         if (x < 8) x = 8;
@@ -812,9 +812,9 @@
 
         // Pagination controls
         html += '<div class="flex items-center justify-between px-4 py-2.5 bg-slate-50/80 border-b border-gray-200">';
-        html += '<button id="plannerPrev" class="flex items-center gap-1 px-2.5 py-1 text-xs font-medium text-slate-600 border border-gray-200 rounded-lg hover:bg-white transition ' + (plannerPage === 0 ? 'opacity-40 pointer-events-none' : '') + '"><span class="material-symbols-outlined text-sm">chevron_left</span>Previous</button>';
-        html += '<span class="text-xs font-semibold text-slate-700">Days ' + startDay + ' - ' + endDay + ' of ' + daysInMonth + '</span>';
-        html += '<button id="plannerNext" class="flex items-center gap-1 px-2.5 py-1 text-xs font-medium text-slate-600 border border-gray-200 rounded-lg hover:bg-white transition ' + (plannerPage >= totalPages - 1 ? 'opacity-40 pointer-events-none' : '') + '">Next<span class="material-symbols-outlined text-sm">chevron_right</span></button>';
+        html += '<button id="plannerPrev" class="flex items-center gap-1 px-3 py-1.5 text-sm font-medium text-slate-600 border border-gray-200 rounded-lg hover:bg-white transition ' + (plannerPage === 0 ? 'opacity-40 pointer-events-none' : '') + '"><span class="material-symbols-outlined text-base">chevron_left</span>Previous</button>';
+        html += '<span class="text-sm font-semibold text-slate-700">Days ' + startDay + ' - ' + endDay + ' of ' + daysInMonth + '</span>';
+        html += '<button id="plannerNext" class="flex items-center gap-1 px-3 py-1.5 text-sm font-medium text-slate-600 border border-gray-200 rounded-lg hover:bg-white transition ' + (plannerPage >= totalPages - 1 ? 'opacity-40 pointer-events-none' : '') + '">Next<span class="material-symbols-outlined text-base">chevron_right</span></button>';
         html += '</div>';
 
         // Grid
@@ -822,7 +822,7 @@
 
         // Header row
         html += '<div style="display:grid; grid-template-columns:' + gridCols + ';" class="bg-slate-50 border-b border-gray-200 sticky top-0 z-10">';
-        html += '<div class="planner-head-emp px-3 py-2.5 text-[11px] font-semibold text-slate-500 uppercase">Employee</div>';
+        html += '<div class="planner-head-emp px-3 py-2.5 text-sm font-semibold text-slate-500 uppercase">Employee</div>';
         for (var d = startDay; d <= endDay; d++) {
           var dow = new Date(currentYear, currentMonth, d).getDay();
           var isWe = (dow === 0 || dow === 6);
@@ -831,8 +831,8 @@
           if (isToday) cls += ' today-col';
           else if (isWe) cls += ' weekend';
           html += '<div class="' + cls + '">';
-          html += '<div class="text-[9px] font-semibold text-slate-400 uppercase">' + dayNames[dow] + '</div>';
-          html += '<div class="text-xs font-bold ' + (isToday ? 'text-blue-600' : 'text-slate-700') + '">' + d + '</div>';
+          html += '<div class="text-xs font-semibold text-slate-400 uppercase">' + dayNames[dow] + '</div>';
+          html += '<div class="text-sm font-bold ' + (isToday ? 'text-blue-600' : 'text-slate-700') + '">' + d + '</div>';
           html += '</div>';
         }
         html += '</div>';
@@ -843,8 +843,8 @@
 
           html += '<div style="display:grid; grid-template-columns:' + gridCols + ';" class="border-b border-gray-100">';
           html += '<div class="planner-emp p-3 flex items-center gap-2">';
-          html += '<div class="w-7 h-7 rounded-full ' + emp.color + ' flex items-center justify-center flex-shrink-0"><span class="text-white text-[10px] font-bold">' + emp.initials + '</span></div>';
-          html += '<div><p class="text-xs font-semibold text-slate-900 leading-tight">' + emp.short + '</p><p class="text-[10px] text-slate-400 leading-tight">' + emp.role + '</p></div>';
+          html += '<div class="w-8 h-8 rounded-full ' + emp.color + ' flex items-center justify-center flex-shrink-0"><span class="text-white text-xs font-bold">' + emp.initials + '</span></div>';
+          html += '<div><p class="text-sm font-semibold text-slate-900 leading-tight">' + emp.short + '</p><p class="text-sm text-slate-400 leading-tight">' + emp.role + '</p></div>';
           html += '</div>';
 
           for (var d = startDay; d <= endDay; d++) {
@@ -860,8 +860,8 @@
             if (dayEvs.length > 0) {
               dayEvs.forEach(function (ev) {
                 var hasConflict = getConflicts(ev, empEvents).length > 0;
-                var cIcon = hasConflict ? '<span class="material-symbols-outlined text-white text-[8px]" style="vertical-align:middle">warning</span> ' : '';
-                html += '<div class="ev-bar event-' + ev.type + ' mb-0.5" data-evid="' + ev.id + '" title="' + ev.label + ' (' + ev.time + ')" style="font-size:9px;padding:2px 5px;">' + cIcon + ev.label + '</div>';
+                var cIcon = hasConflict ? '<span class="material-symbols-outlined text-white text-xs" style="vertical-align:middle">warning</span> ' : '';
+                html += '<div class="ev-bar event-' + ev.type + ' mb-0.5" data-evid="' + ev.id + '" title="' + ev.label + ' (' + ev.time + ')">' + cIcon + ev.label + '</div>';
               });
             }
             html += '</div>';
@@ -906,7 +906,7 @@
         for (var i = firstDay - 1; i >= 0; i--) {
           var cell = document.createElement('div');
           cell.className = 'cal-cell other-month p-2';
-          cell.innerHTML = '<span class="text-[11px] font-medium">' + (prevDays - i) + '</span>';
+          cell.innerHTML = '<span class="text-sm font-medium">' + (prevDays - i) + '</span>';
           grid.appendChild(cell);
         }
 
@@ -916,7 +916,7 @@
           if (isCurrentMonth && d === today.getDate()) cls += ' today';
           cell.className = cls;
 
-          var html = '<span class="text-[11px] font-semibold text-slate-700">' + d + '</span>';
+          var html = '<span class="text-sm font-semibold text-slate-700">' + d + '</span>';
           html += '<div class="mt-1 space-y-0.5">';
           var filtered = getFilteredEvents();
           var dayEvents = filtered.filter(function (e) { return e.day === d; });
@@ -930,14 +930,14 @@
           dayEvents.forEach(function (ev) {
             var hasConflict = getConflicts(ev, filtered).length > 0;
             var timeShort = ev.time === 'Full Day' ? 'All day' : ev.time.split(' - ')[0];
-            var conflictIcon = hasConflict ? '<span class="material-symbols-outlined text-white text-[9px] mr-0.5" style="vertical-align:middle">warning</span>' : '';
+            var conflictIcon = hasConflict ? '<span class="material-symbols-outlined text-white text-xs mr-0.5" style="vertical-align:middle">warning</span>' : '';
             html += '<div class="ev-bar event-' + ev.type + '" data-evid="' + ev.id + '" title="' + ev.label + ' (' + ev.time + ')">';
             html += conflictIcon + '<span class="opacity-70 mr-0.5">' + timeShort + '</span> ' + ev.label;
             html += '</div>';
           });
 
           if (dayHasConflict) {
-            html += '<div class="flex items-center gap-1 mt-0.5"><span class="material-symbols-outlined text-red-500 text-[11px]">warning</span><span class="text-[9px] text-red-600 font-semibold">Time Conflict</span></div>';
+            html += '<div class="flex items-center gap-1 mt-0.5"><span class="material-symbols-outlined text-red-500 text-base">warning</span><span class="text-sm text-red-600 font-semibold">Time Conflict</span></div>';
           }
 
           html += '</div>';
@@ -950,7 +950,7 @@
         for (var n = 1; n <= remaining; n++) {
           var cell = document.createElement('div');
           cell.className = 'cal-cell other-month p-2';
-          cell.innerHTML = '<span class="text-[11px] font-medium">' + n + '</span>';
+          cell.innerHTML = '<span class="text-sm font-medium">' + n + '</span>';
           grid.appendChild(cell);
         }
 
