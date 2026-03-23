@@ -246,19 +246,22 @@
       </header>
 
       <!-- ==================== MAIN CONTENT ==================== -->
-      <main class="flex-1 overflow-y-auto bg-white p-6 lg:p-8">
-        <div class="max-w-[1400px] mx-auto">
+      <main class="flex-1 overflow-y-auto bg-white p-5 lg:p-7">
+        <div class="max-w-[1500px] w-full ml-0 mr-auto">
 
-          <!-- Header -->
-          <div class="mb-6">
-            <h1 class="text-2xl font-extrabold text-slate-900">Audit Planning & Assignment</h1>
-            <p class="text-sm text-slate-500 mt-1">Smart auditor recommendations based on multiple factors</p>
+          <!-- Page Header (aligned with Schedule Calendar) -->
+          <div class="mb-5">
+            <h1 class="text-3xl font-extrabold text-slate-900 flex items-center gap-2">
+              <span class="material-symbols-outlined text-[#3eb2ed] text-4xl">event_upcoming</span>
+              Audit Planning & Assignment
+            </h1>
+            <p class="text-base text-slate-500 mt-0.5">Smart auditor recommendations based on multiple factors</p>
           </div>
 
           <!-- Conflicts & Alerts -->
-          <div class="bg-white rounded-2xl border border-gray-200 p-6 mb-5" style="box-shadow:0 2px 12px rgba(0,0,0,.04);">
-            <div class="flex items-center gap-2 mb-4">
-              <span class="material-symbols-outlined text-amber-600">warning</span>
+          <div class="bg-white rounded-2xl border border-gray-200 p-5 mb-5" style="box-shadow:0 2px 12px rgba(0,0,0,.04);">
+            <div class="flex items-center gap-2 mb-3">
+              <span class="material-symbols-outlined text-amber-600 text-2xl">warning</span>
               <h2 class="text-base font-bold text-slate-900">Conflicts & Alerts</h2>
             </div>
             <div class="space-y-3" id="conflictsList">
@@ -267,13 +270,13 @@
                 <div class="flex items-start justify-between mb-1.5">
                   <div>
                     <div class="flex items-center gap-2">
-                      <span class="font-semibold text-slate-900 text-sm">Schedule Conflict</span>
-                      <span class="px-2 py-0.5 text-[10px] font-semibold rounded-full bg-red-200 text-red-800 uppercase">High</span>
+                      <span class="font-semibold text-slate-900 text-base">Schedule Conflict</span>
+                      <span class="px-2 py-0.5 text-xs font-semibold rounded-full bg-red-200 text-red-800 uppercase">High</span>
                     </div>
-                    <p class="text-sm text-slate-700 mt-1">Mike Chen is already assigned to XYZ Ltd. audit on Jun 10-11</p>
+                    <p class="text-base text-slate-700 mt-1">Mike Chen is already assigned to XYZ Ltd. audit on Jun 10-11</p>
                   </div>
                 </div>
-                <div class="flex items-center gap-2 mt-2 text-xs">
+                <div class="flex items-center gap-2 mt-2 text-sm">
                   <span class="text-slate-500">Suggestion:</span>
                   <span class="text-slate-800 font-medium">Consider Sarah Johnson or reschedule</span>
                 </div>
@@ -283,13 +286,13 @@
                 <div class="flex items-start justify-between mb-1.5">
                   <div>
                     <div class="flex items-center gap-2">
-                      <span class="font-semibold text-slate-900 text-sm">Duplicate Visit</span>
-                      <span class="px-2 py-0.5 text-[10px] font-semibold rounded-full bg-amber-200 text-amber-800 uppercase">Medium</span>
+                      <span class="font-semibold text-slate-900 text-base">Duplicate Visit</span>
+                      <span class="px-2 py-0.5 text-xs font-semibold rounded-full bg-amber-200 text-amber-800 uppercase">Medium</span>
                     </div>
-                    <p class="text-sm text-slate-700 mt-1">Commercial team visiting TechCorp Industries on Jun 12</p>
+                    <p class="text-base text-slate-700 mt-1">Commercial team visiting TechCorp Industries on Jun 12</p>
                   </div>
                 </div>
-                <div class="flex items-center gap-2 mt-2 text-xs">
+                <div class="flex items-center gap-2 mt-2 text-sm">
                   <span class="text-slate-500">Suggestion:</span>
                   <span class="text-slate-800 font-medium">Coordinate visit to combine meetings</span>
                 </div>
@@ -299,13 +302,13 @@
                 <div class="flex items-start justify-between mb-1.5">
                   <div>
                     <div class="flex items-center gap-2">
-                      <span class="font-semibold text-slate-900 text-sm">Certification Expiring</span>
-                      <span class="px-2 py-0.5 text-[10px] font-semibold rounded-full bg-blue-200 text-blue-800 uppercase">Low</span>
+                      <span class="font-semibold text-slate-900 text-base">Certification Expiring</span>
+                      <span class="px-2 py-0.5 text-xs font-semibold rounded-full bg-blue-200 text-blue-800 uppercase">Low</span>
                     </div>
-                    <p class="text-sm text-slate-700 mt-1">Emma Davis's GOTS certification expires Jun 20</p>
+                    <p class="text-base text-slate-700 mt-1">Emma Davis's GOTS certification expires Jun 20</p>
                   </div>
                 </div>
-                <div class="flex items-center gap-2 mt-2 text-xs">
+                <div class="flex items-center gap-2 mt-2 text-sm">
                   <span class="text-slate-500">Suggestion:</span>
                   <span class="text-slate-800 font-medium">Schedule renewal before assignment</span>
                 </div>
@@ -314,32 +317,32 @@
           </div>
 
           <!-- Cost Optimization -->
-          <div class="bg-white rounded-2xl border border-gray-200 p-6 mb-5" style="box-shadow:0 2px 12px rgba(0,0,0,.04);">
-            <div class="flex items-center gap-2 mb-4">
-              <span class="material-symbols-outlined text-emerald-600">trending_up</span>
+          <div class="bg-white rounded-2xl border border-gray-200 p-5 mb-5" style="box-shadow:0 2px 12px rgba(0,0,0,.04);">
+            <div class="flex items-center gap-2 mb-3">
+              <span class="material-symbols-outlined text-emerald-600 text-2xl">trending_up</span>
               <h2 class="text-base font-bold text-slate-900">Cost Optimization Opportunities</h2>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div class="p-4 bg-emerald-50/70 border border-emerald-200/60 rounded-xl">
                 <div class="flex items-start justify-between mb-2">
-                  <h3 class="font-semibold text-slate-900 text-sm">TechCorp Industries</h3>
-                  <span class="px-2.5 py-1 bg-emerald-600 text-white text-[11px] font-semibold rounded-lg">Save $1,200</span>
+                  <h3 class="font-semibold text-slate-900 text-base">TechCorp Industries</h3>
+                  <span class="px-2.5 py-1 bg-emerald-600 text-white text-sm font-semibold rounded-lg">Save $1,200</span>
                 </div>
-                <div class="text-sm text-slate-700 space-y-0.5 mb-2">
+                <div class="text-base text-slate-700 space-y-0.5 mb-2">
                   <p>&bull; ISO 9001 - Jun 10</p>
                   <p>&bull; ISO 14001 - Jun 11</p>
                 </div>
-                <p class="text-xs text-emerald-800 font-medium">Assign multi-certified auditor for both</p>
+                <p class="text-sm text-emerald-800 font-medium">Assign multi-certified auditor for both</p>
               </div>
               <div class="p-4 bg-emerald-50/70 border border-emerald-200/60 rounded-xl">
                 <div class="flex items-start justify-between mb-2">
-                  <h3 class="font-semibold text-slate-900 text-sm">EcoTextiles Ltd.</h3>
-                  <span class="px-2.5 py-1 bg-emerald-600 text-white text-[11px] font-semibold rounded-lg">Save $800</span>
+                  <h3 class="font-semibold text-slate-900 text-base">EcoTextiles Ltd.</h3>
+                  <span class="px-2.5 py-1 bg-emerald-600 text-white text-sm font-semibold rounded-lg">Save $800</span>
                 </div>
-                <div class="text-sm text-slate-700 space-y-0.5 mb-2">
+                <div class="text-base text-slate-700 space-y-0.5 mb-2">
                   <p>&bull; Pacific Fabrics (5 km) - Jun 16</p>
                 </div>
-                <p class="text-xs text-emerald-800 font-medium">Schedule back-to-back to reduce travel</p>
+                <p class="text-sm text-emerald-800 font-medium">Schedule back-to-back to reduce travel</p>
               </div>
             </div>
           </div>
@@ -351,7 +354,7 @@
             <div class="lg:col-span-3 bg-white rounded-2xl border border-gray-200 overflow-hidden" style="box-shadow:0 2px 12px rgba(0,0,0,.04);">
               <div class="p-5 border-b border-gray-100">
                 <h2 class="text-base font-bold text-slate-900">Clients & Units</h2>
-                <p class="text-xs text-slate-500 mt-0.5">Select a client to plan units</p>
+                <p class="text-sm text-slate-500 mt-0.5">Select a client to plan units</p>
               </div>
               <div class="divide-y divide-gray-100" id="clientList"></div>
             </div>
@@ -364,8 +367,8 @@
                 </div>
                 <div id="unitPanelBody">
                   <div class="text-center py-14 text-slate-400 px-6">
-                    <span class="material-symbols-outlined text-4xl opacity-40">account_tree</span>
-                    <p class="mt-2 text-sm">Select a client to see their units and plan audits</p>
+                    <span class="material-symbols-outlined text-5xl opacity-40">account_tree</span>
+                    <p class="mt-3 text-base">Select a client to see their units and plan audits</p>
                   </div>
                 </div>
               </div>
@@ -373,12 +376,12 @@
 
             <!-- Recommendations (Right) -->
             <div class="lg:col-span-5">
-              <div class="bg-white rounded-2xl border border-gray-200 p-6" style="box-shadow:0 2px 12px rgba(0,0,0,.04);" id="recommendationsPanel">
+              <div class="bg-white rounded-2xl border border-gray-200 p-5" style="box-shadow:0 2px 12px rgba(0,0,0,.04);" id="recommendationsPanel">
                 <h2 class="text-base font-bold text-slate-900 mb-4" id="recTitle">Select a unit to view recommendations</h2>
 
                 <div id="recEmpty" class="text-center py-14 text-slate-400">
-                  <span class="material-symbols-outlined text-4xl opacity-40">search</span>
-                  <p class="mt-2 text-sm">Select a unit from the planning panel to view auditor recommendations</p>
+                  <span class="material-symbols-outlined text-5xl opacity-40">search</span>
+                  <p class="mt-3 text-base">Select a unit from the planning panel to view auditor recommendations</p>
                 </div>
 
                 <div id="recCards" class="hidden space-y-4"></div>
@@ -468,16 +471,16 @@
 
           html += '<button type="button" data-client="' + c.id + '" class="audit-card w-full text-left p-4 hover:bg-slate-50 ' + (isSelected ? 'selected' : '') + '">';
           html += '<div class="flex items-start justify-between mb-1.5">';
-          html += '<h3 class="font-semibold text-slate-900 text-sm">' + c.name + '</h3>';
-          html += '<span class="px-1.5 py-0.5 text-[9px] font-bold rounded-full ' + (planned === total ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700') + '">' + planned + '/' + total + '</span>';
+          html += '<h3 class="font-semibold text-slate-900 text-base">' + c.name + '</h3>';
+          html += '<span class="px-2 py-0.5 text-xs font-bold rounded-full ' + (planned === total ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700') + '">' + planned + '/' + total + '</span>';
           html += '</div>';
-          html += '<div class="space-y-1 text-xs text-slate-500">';
-          html += '<div class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[14px]">location_on</span>' + c.location + '</div>';
-          html += '<div class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[14px]">apartment</span>' + total + ' unit' + (total > 1 ? 's' : '') + '</div>';
+          html += '<div class="space-y-1 text-sm text-slate-500">';
+          html += '<div class="flex items-center gap-1.5"><span class="material-symbols-outlined text-base">location_on</span>' + c.location + '</div>';
+          html += '<div class="flex items-center gap-1.5"><span class="material-symbols-outlined text-base">apartment</span>' + total + ' unit' + (total > 1 ? 's' : '') + '</div>';
           html += '</div>';
           html += '<div class="flex gap-1.5 mt-2">';
-          html += '<span class="px-2 py-0.5 bg-blue-100 text-blue-800 text-[10px] font-medium rounded-full">' + c.sector + '</span>';
-          html += '<span class="px-2 py-0.5 ' + complexCls + ' text-[10px] font-medium rounded-full">' + c.complexity + '</span>';
+          html += '<span class="px-2 py-0.5 bg-blue-100 text-blue-800 text-xs font-medium rounded-full">' + c.sector + '</span>';
+          html += '<span class="px-2 py-0.5 ' + complexCls + ' text-xs font-medium rounded-full">' + c.complexity + '</span>';
           html += '</div>';
           html += '<div class="mt-2.5"><div class="w-full h-1.5 bg-gray-100 rounded-full overflow-hidden"><div class="h-full rounded-full transition-all ' + (planned === total ? 'bg-emerald-500' : 'bg-amber-400') + '" style="width:' + pct + '%"></div></div></div>';
           html += '</button>';
@@ -502,7 +505,7 @@
         var body = document.getElementById('unitPanelBody');
         if (!selectedClient) {
           title.textContent = 'Unit Planning Overview';
-          body.innerHTML = '<div class="text-center py-14 text-slate-400 px-6"><span class="material-symbols-outlined text-4xl opacity-40">account_tree</span><p class="mt-2 text-sm">Select a client to see their units and plan audits</p></div>';
+          body.innerHTML = '<div class="text-center py-14 text-slate-400 px-6"><span class="material-symbols-outlined text-5xl opacity-40">account_tree</span><p class="mt-3 text-base">Select a client to see their units and plan audits</p></div>';
           return;
         }
         var c = selectedClient;
@@ -512,7 +515,7 @@
         var html = '';
         // Progress header
         html += '<div class="px-5 py-3 bg-slate-50/80 border-b border-gray-100">';
-        html += '<div class="flex items-center justify-between mb-1.5"><span class="text-[11px] font-semibold text-slate-600">Planning Progress</span><span class="text-[11px] font-bold ' + (planned === c.units.length ? 'text-emerald-600' : 'text-amber-600') + '">' + planned + ' of ' + c.units.length + ' units planned</span></div>';
+        html += '<div class="flex items-center justify-between mb-1.5"><span class="text-sm font-semibold text-slate-600">Planning Progress</span><span class="text-sm font-bold ' + (planned === c.units.length ? 'text-emerald-600' : 'text-amber-600') + '">' + planned + ' of ' + c.units.length + ' units planned</span></div>';
         var pct = Math.round((planned / c.units.length) * 100);
         html += '<div class="w-full h-2 bg-gray-200 rounded-full overflow-hidden"><div class="h-full rounded-full transition-all ' + (planned === c.units.length ? 'bg-emerald-500' : 'bg-gradient-to-r from-amber-400 to-amber-500') + '" style="width:' + pct + '%"></div></div>';
         html += '</div>';
@@ -520,7 +523,7 @@
         // Assign all button
         if (planned < c.units.length) {
           html += '<div class="px-5 py-2.5 border-b border-gray-100">';
-          html += '<button id="assignAllBtn" class="w-full px-3 py-2 bg-[#1b1e42] hover:bg-[#2a2e55] text-white text-xs font-semibold rounded-lg flex items-center justify-center gap-1.5 transition"><span class="material-symbols-outlined text-sm">group_add</span>Assign Same Auditor to All Pending Units</button>';
+          html += '<button id="assignAllBtn" class="w-full px-3 py-2.5 bg-[#1b1e42] hover:bg-[#2a2e55] text-white text-sm font-semibold rounded-lg flex items-center justify-center gap-1.5 transition"><span class="material-symbols-outlined text-base">group_add</span>Assign Same Auditor to All Pending Units</button>';
           html += '</div>';
         }
 
@@ -534,16 +537,16 @@
 
           html += '<button type="button" data-unit="' + u.id + '" class="w-full text-left p-4 hover:bg-slate-50 transition ' + (isSelected ? 'bg-blue-50 border-l-[3px] border-l-blue-500' : '') + '">';
           html += '<div class="flex items-start justify-between mb-1">';
-          html += '<div class="flex items-center gap-2"><span class="material-symbols-outlined text-[16px] ' + (u.status === 'assigned' ? 'text-emerald-500' : 'text-amber-500') + '">' + statusIcon + '</span>';
-          html += '<h4 class="text-xs font-bold text-slate-900">' + u.name + '</h4></div>';
-          html += '<span class="px-1.5 py-0.5 text-[9px] font-bold rounded-full ' + statusCls + '">' + statusLabel + '</span>';
+          html += '<div class="flex items-center gap-2"><span class="material-symbols-outlined text-lg ' + (u.status === 'assigned' ? 'text-emerald-500' : 'text-amber-500') + '">' + statusIcon + '</span>';
+          html += '<h4 class="text-sm font-bold text-slate-900">' + u.name + '</h4></div>';
+          html += '<span class="px-2 py-0.5 text-xs font-bold rounded-full ' + statusCls + '">' + statusLabel + '</span>';
           html += '</div>';
-          html += '<div class="ml-6 space-y-0.5 text-[11px] text-slate-500">';
-          html += '<div class="flex items-center gap-1"><span class="material-symbols-outlined text-[12px]">location_on</span>' + u.location + '</div>';
-          html += '<div class="flex items-center gap-1"><span class="material-symbols-outlined text-[12px]">verified</span>' + u.auditType + '</div>';
-          html += '<div class="flex items-center gap-1"><span class="material-symbols-outlined text-[12px]">calendar_today</span>' + u.date + '</div>';
+          html += '<div class="ml-7 space-y-0.5 text-sm text-slate-500">';
+          html += '<div class="flex items-center gap-1"><span class="material-symbols-outlined text-base">location_on</span>' + u.location + '</div>';
+          html += '<div class="flex items-center gap-1"><span class="material-symbols-outlined text-base">verified</span>' + u.auditType + '</div>';
+          html += '<div class="flex items-center gap-1"><span class="material-symbols-outlined text-base">calendar_today</span>' + u.date + '</div>';
           if (u.assignee) {
-            html += '<div class="flex items-center gap-1 mt-1"><span class="material-symbols-outlined text-[12px] text-emerald-500">person</span><span class="font-semibold text-emerald-700">' + u.assignee + '</span></div>';
+            html += '<div class="flex items-center gap-1 mt-1"><span class="material-symbols-outlined text-base text-emerald-500">person</span><span class="font-semibold text-emerald-700">' + u.assignee + '</span></div>';
           }
           html += '</div>';
           html += '</button>';
@@ -583,7 +586,7 @@
           recEmpty.classList.remove('hidden');
           recCards.classList.add('hidden');
           if (selectedClient) {
-            recEmpty.innerHTML = '<span class="material-symbols-outlined text-4xl opacity-40">search</span><p class="mt-2 text-sm">Select a unit from ' + selectedClient.name + ' to view auditor recommendations</p>';
+            recEmpty.innerHTML = '<span class="material-symbols-outlined text-5xl opacity-40">search</span><p class="mt-3 text-base">Select a unit from ' + selectedClient.name + ' to view auditor recommendations</p>';
           }
           return;
         }
@@ -600,39 +603,39 @@
           html += '<div class="rec-card border border-gray-200 rounded-xl p-5">';
           html += '<div class="flex items-start justify-between mb-3">';
           html += '<div class="flex items-start gap-3 flex-1">';
-          html += '<div class="w-11 h-11 bg-gradient-to-br ' + a.color + ' rounded-full flex items-center justify-center flex-shrink-0"><span class="text-white font-semibold text-sm">' + a.initials + '</span></div>';
+          html += '<div class="w-12 h-12 bg-gradient-to-br ' + a.color + ' rounded-full flex items-center justify-center flex-shrink-0"><span class="text-white font-semibold text-base">' + a.initials + '</span></div>';
           html += '<div class="flex-1 min-w-0">';
-          html += '<div class="flex items-center gap-2 mb-0.5"><h3 class="font-bold text-slate-900 text-sm">' + a.name + '</h3><span class="text-xs text-slate-500">&bull; ' + a.role + '</span></div>';
-          html += '<div class="flex flex-wrap items-center gap-3 text-xs text-slate-500 mb-2">';
-          html += '<span class="inline-flex items-center gap-1"><span class="material-symbols-outlined text-amber-400 text-sm" style="font-variation-settings:\'FILL\' 1">star</span>' + a.rating + '</span>';
-          html += '<span class="inline-flex items-center gap-1"><span class="material-symbols-outlined text-[13px]">location_on</span>' + a.location + '</span>';
+          html += '<div class="flex items-center gap-2 mb-0.5"><h3 class="font-bold text-slate-900 text-base">' + a.name + '</h3><span class="text-sm text-slate-500">&bull; ' + a.role + '</span></div>';
+          html += '<div class="flex flex-wrap items-center gap-3 text-sm text-slate-500 mb-2">';
+          html += '<span class="inline-flex items-center gap-1"><span class="material-symbols-outlined text-amber-400 text-base" style="font-variation-settings:\'FILL\' 1">star</span>' + a.rating + '</span>';
+          html += '<span class="inline-flex items-center gap-1"><span class="material-symbols-outlined text-base">location_on</span>' + a.location + '</span>';
           var avCls = a.availability === 'Available' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800';
-          html += '<span class="px-2 py-0.5 rounded-full ' + avCls + ' text-[10px] font-semibold">' + a.availability + '</span>';
+          html += '<span class="px-2 py-0.5 rounded-full ' + avCls + ' text-xs font-semibold">' + a.availability + '</span>';
           html += '</div>';
           html += '<div class="flex flex-wrap gap-1">';
-          a.quals.forEach(function (q) { html += '<span class="px-2 py-0.5 bg-slate-100 text-slate-700 text-[10px] rounded font-medium">' + q + '</span>'; });
+          a.quals.forEach(function (q) { html += '<span class="px-2 py-0.5 bg-slate-100 text-slate-700 text-xs rounded font-medium">' + q + '</span>'; });
           html += '</div></div></div>';
-          html += '<span class="px-3 py-1.5 rounded-lg font-bold text-sm ' + scoreColor + '">' + a.matchScore + '% Match</span>';
+          html += '<span class="px-3 py-1.5 rounded-lg font-bold text-base ' + scoreColor + '">' + a.matchScore + '% Match</span>';
           html += '</div>';
-          html += '<div class="grid grid-cols-3 gap-3 mb-3 text-xs">';
+          html += '<div class="grid grid-cols-3 gap-3 mb-3 text-sm">';
           html += '<div><span class="text-slate-400">Distance:</span><span class="ml-1 text-slate-800 font-medium">' + a.distance + '</span></div>';
           html += '<div><span class="text-slate-400">Experience:</span><span class="ml-1 text-slate-800 font-medium">' + a.experience + '</span></div>';
           html += '<div><span class="text-slate-400">Cost:</span><span class="ml-1 text-slate-800 font-medium">' + a.cost + '</span></div>';
           html += '</div>';
-          html += '<div class="bg-slate-50 rounded-lg p-3 mb-3"><p class="text-[11px] font-semibold text-slate-600 mb-1.5">Why this recommendation:</p><ul class="space-y-1">';
+          html += '<div class="bg-slate-50 rounded-lg p-3 mb-3"><p class="text-sm font-semibold text-slate-600 mb-1.5">Why this recommendation:</p><ul class="space-y-1">';
           a.reasons.forEach(function (r, ri) {
             var icon = ri < 2 ? 'check_circle' : 'info';
             var iconCls = ri < 2 ? 'text-emerald-500' : 'text-amber-500';
-            html += '<li class="flex items-start gap-1.5 text-[11px] text-slate-600"><span class="material-symbols-outlined ' + iconCls + ' text-[13px] mt-0.5">' + icon + '</span>' + r + '</li>';
+            html += '<li class="flex items-start gap-1.5 text-sm text-slate-600"><span class="material-symbols-outlined ' + iconCls + ' text-base mt-0.5">' + icon + '</span>' + r + '</li>';
           });
           html += '</ul></div>';
           html += '<div class="flex gap-2">';
           if (isAssignAll) {
-            html += '<button class="assign-all-auditor flex-1 px-4 py-2 bg-[#1b1e42] hover:bg-[#2a2e55] text-white text-xs font-semibold rounded-lg transition flex items-center justify-center gap-1.5" data-auditor="' + a.name + '"><span class="material-symbols-outlined text-sm">group_add</span>Assign to All Pending Units</button>';
+            html += '<button class="assign-all-auditor flex-1 px-4 py-2.5 bg-[#1b1e42] hover:bg-[#2a2e55] text-white text-sm font-semibold rounded-lg transition flex items-center justify-center gap-1.5" data-auditor="' + a.name + '"><span class="material-symbols-outlined text-base">group_add</span>Assign to All Pending Units</button>';
           } else {
-            html += '<button class="assign-unit-auditor flex-1 px-4 py-2 bg-[#3eb2ed] hover:bg-[#2ea2d6] text-white text-xs font-semibold rounded-lg transition" data-auditor="' + a.name + '">Assign Auditor</button>';
+            html += '<button class="assign-unit-auditor flex-1 px-4 py-2.5 bg-[#3eb2ed] hover:bg-[#2ea2d6] text-white text-sm font-semibold rounded-lg transition" data-auditor="' + a.name + '">Assign Auditor</button>';
           }
-          html += '<button class="px-4 py-2 border border-gray-200 text-slate-700 text-xs font-medium rounded-lg hover:bg-slate-50 transition">View Profile</button>';
+          html += '<button class="px-4 py-2.5 border border-gray-200 text-slate-700 text-sm font-medium rounded-lg hover:bg-slate-50 transition">View Profile</button>';
           html += '</div></div>';
         });
 
