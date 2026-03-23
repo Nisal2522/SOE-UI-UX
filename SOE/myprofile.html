@@ -3,12 +3,10 @@
 <head>
   <meta charset="utf-8" />
   <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-  <title>My Profile</title>
+  <title>My Profile — Employee 360</title>
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&amp;display=swap" rel="stylesheet" />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
-    rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
   <script>
     tailwind.config = {
       theme: {
@@ -18,19 +16,19 @@
             'light-gray': '#F5F7FA',
             'dark-text': '#1A1A1A',
             'sidebar-dark': '#1b1e42',
+            'cu-light-blue': '#3eb2ed',
+            'cu-light-blue-60': '#8bd1f4',
             background: 'var(--color-background)',
-            sidebar: 'var(--color-sidebar)'
+            sidebar: 'var(--color-sidebar)',
+            accent: '#1b1e42',
           },
           boxShadow: {
-            soft: '0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05)'
-          },
-          borderRadius: {
-            xl: '18px',
-            '2xl': '24px'
+            soft: '0 4px 6px -1px rgba(0,0,0,.05), 0 2px 4px -2px rgba(0,0,0,.05)',
+            card: '0 1px 3px rgba(0,0,0,.06), 0 6px 16px rgba(0,0,0,.04)',
           },
           fontFamily: {
-            display: ['Roboto', 'sans-serif'],
-            sans: ['Roboto', 'sans-serif'],
+            display: ['Inter', 'sans-serif'],
+            sans: ['Inter', 'sans-serif'],
           }
         }
       }
@@ -47,23 +45,14 @@
     #sidebar.collapsed nav a>span:last-child { display: none; }
     #sidebar.collapsed .submenu { display: none !important; }
     #sidebarToggle { position: absolute; z-index: 60; }
-    #sidebarToggle:hover { }
-    /* tooltip labels when collapsed */
     #sidebar.collapsed a[title] { position: relative; }
     #sidebar.collapsed a[title]:hover::after {
       content: attr(title);
-      position: absolute;
-      left: 72px;
-      top: 50%;
-      transform: translateY(-50%);
-      background: #111827;
-      color: #fff;
-      padding: 6px 10px;
-      border-radius: 6px;
-      white-space: nowrap;
-      font-size: 12px;
-      box-shadow: 0 6px 18px rgba(2, 6, 23, 0.12);
+      position: absolute; left: 72px; top: 50%; transform: translateY(-50%);
+      background: #111827; color: #fff; padding: 6px 10px; border-radius: 6px;
+      white-space: nowrap; font-size: 12px; box-shadow: 0 6px 18px rgba(2,6,23,.12);
     }
+    .profile-tab-btn.active { border-bottom-color: #3eb2ed !important; color: #0f172a !important; font-weight: 600; }
   </style>
 </head>
 
@@ -73,14 +62,13 @@
       <div class="h-16 flex items-center justify-between px-6 border-b border-white/10 flex-shrink-0">
         <div class="flex items-center gap-2">
           <span class="text-2xl font-bold tracking-wider">SOE</span>
-          <div class="w-8 h-1 bg-gradient-to-r from-cu-light-blue to-[#8bd1f4] rounded"></div>
+          <div class="w-8 h-1 bg-gradient-to-r from-cu-light-blue to-cu-light-blue-60 rounded"></div>
         </div>
       </div>
 
       <nav class="flex-1 overflow-y-auto p-4 space-y-1">
         <div>
-          <button
-            class="menu-toggle flex items-center justify-between p-3 rounded-lg text-slate-200 hover:bg-white/10 w-full text-left">
+          <button class="menu-toggle flex items-center justify-between p-3 rounded-lg text-slate-200 hover:bg-white/10 w-full text-left">
             <div class="flex items-center gap-3">
               <span class="material-symbols-outlined">dashboard</span>
               <span class="font-medium text-sm">Dashboard</span>
@@ -88,9 +76,7 @@
             <span class="material-symbols-outlined text-lg transform transition-transform">expand_more</span>
           </button>
           <div class="submenu hidden ml-6 mt-1 space-y-1">
-            <a href="index.html"
-              class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-200/70 hover:bg-white/10 hover:text-white"
-              title="My Dashboard">
+            <a href="index.html" class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-200/70 hover:bg-white/10 hover:text-white" title="My Dashboard">
               <span class="material-symbols-outlined text-base">arrow_right</span>
               <span>My Dashboard</span>
             </a>
@@ -98,9 +84,7 @@
         </div>
 
         <div>
-          <a href="#"
-            class="menu-toggle flex items-center justify-between p-3 rounded-lg text-slate-200 hover:bg-white/10 w-full text-left"
-            title="Task">
+          <a href="#" class="menu-toggle flex items-center justify-between p-3 rounded-lg text-slate-200 hover:bg-white/10 w-full text-left" title="Task">
             <div class="flex items-center gap-3">
               <span class="material-symbols-outlined">task_alt</span>
               <span class="font-medium text-sm">Task</span>
@@ -110,8 +94,7 @@
         </div>
 
         <div>
-          <button
-            class="menu-toggle flex items-center justify-between p-3 rounded-lg text-slate-200 hover:bg-white/10 w-full text-left">
+          <button class="menu-toggle flex items-center justify-between p-3 rounded-lg text-slate-200 hover:bg-white/10 w-full text-left">
             <div class="flex items-center gap-3">
               <span class="material-symbols-outlined">trending_up</span>
               <span class="font-medium text-sm">CRM</span>
@@ -119,19 +102,15 @@
             <span class="material-symbols-outlined text-lg transform transition-transform">expand_more</span>
           </button>
           <div class="submenu hidden ml-6 mt-1 space-y-1">
-            <a href="allclient.html#leads"
-              class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-200/70 hover:bg-white/10 hover:text-white"
-              title="Accounts">
+            <a href="allclient.html#leads" class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-200/70 hover:bg-white/10 hover:text-white" title="Accounts">
               <span class="material-symbols-outlined text-base">arrow_right</span>
               <span>Accounts</span>
             </a>
           </div>
         </div>
 
-        <!-- Regional & Global -->
         <div>
-          <button
-            class="menu-toggle flex items-center justify-between p-3 rounded-lg text-slate-200 hover:bg-cu-dark-blue-80 w-full text-left">
+          <button class="menu-toggle flex items-center justify-between p-3 rounded-lg text-slate-200 hover:bg-cu-dark-blue-80 w-full text-left">
             <div class="flex items-center gap-3">
               <span class="material-symbols-outlined">public</span>
               <span class="font-medium text-sm">Regional & Global</span>
@@ -139,28 +118,20 @@
             <span class="material-symbols-outlined text-lg transform transition-transform">chevron_right</span>
           </button>
           <div class="submenu hidden ml-6 mt-1 space-y-1">
-            <a href="COEdashboard.html"
-              class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-400 hover:bg-cu-dark-blue-80 hover:text-white">
-              <span class="material-symbols-outlined text-base">arrow_right</span>
-              <span>COEs</span>
+            <a href="COEdashboard.html" class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-400 hover:bg-cu-dark-blue-80 hover:text-white">
+              <span class="material-symbols-outlined text-base">arrow_right</span><span>COEs</span>
             </a>
-            <a href="#"
-              class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-400 hover:bg-cu-dark-blue-80 hover:text-white">
-              <span class="material-symbols-outlined text-base">arrow_right</span>
-              <span>Regional Team</span>
+            <a href="#" class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-400 hover:bg-cu-dark-blue-80 hover:text-white">
+              <span class="material-symbols-outlined text-base">arrow_right</span><span>Regional Team</span>
             </a>
-            <a href="#"
-              class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-400 hover:bg-cu-dark-blue-80 hover:text-white">
-              <span class="material-symbols-outlined text-base">arrow_right</span>
-              <span>MarComs</span>
+            <a href="#" class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-400 hover:bg-cu-dark-blue-80 hover:text-white">
+              <span class="material-symbols-outlined text-base">arrow_right</span><span>MarComs</span>
             </a>
           </div>
         </div>
 
-        <!-- HR Manager -->
         <div>
-          <button
-            class="menu-toggle flex items-center justify-between p-3 rounded-lg text-slate-200 hover:bg-cu-dark-blue-80 w-full text-left">
+          <button class="menu-toggle flex items-center justify-between p-3 rounded-lg text-slate-200 hover:bg-cu-dark-blue-80 w-full text-left">
             <div class="flex items-center gap-3">
               <span class="material-symbols-outlined">groups</span>
               <span class="font-medium text-sm">HR Manager</span>
@@ -173,16 +144,12 @@
           </ul>
         </div>
 
-        <!-- Department Manager -->
-        <a class="flex items-center gap-3 p-3 rounded-lg text-sm font-medium text-slate-200 hover:bg-white/10"
-          href="#">
+        <a class="flex items-center gap-3 p-3 rounded-lg text-sm font-medium text-slate-200 hover:bg-white/10" href="#">
           <span class="material-symbols-outlined">corporate_fare</span>Department Manager
         </a>
 
-        <!-- User Manager -->
         <div>
-          <button
-            class="menu-toggle flex items-center justify-between p-3 rounded-lg text-slate-200 hover:bg-cu-dark-blue-80 w-full text-left">
+          <button class="menu-toggle flex items-center justify-between p-3 rounded-lg text-slate-200 hover:bg-cu-dark-blue-80 w-full text-left">
             <div class="flex items-center gap-3">
               <span class="material-symbols-outlined">manage_accounts</span>
               <span class="font-medium text-sm">User Manager</span>
@@ -195,10 +162,8 @@
           </ul>
         </div>
 
-        <!-- Working Days -->
         <div>
-          <button
-            class="menu-toggle flex items-center justify-between p-3 rounded-lg text-slate-200 hover:bg-cu-dark-blue-80 w-full text-left">
+          <button class="menu-toggle flex items-center justify-between p-3 rounded-lg text-slate-200 hover:bg-cu-dark-blue-80 w-full text-left">
             <div class="flex items-center gap-3">
               <span class="material-symbols-outlined">calendar_month</span>
               <span class="font-medium text-sm">Working Days</span>
@@ -211,10 +176,8 @@
           </ul>
         </div>
 
-        <!-- Settings (with submenu) -->
         <div>
-          <button
-            class="menu-toggle flex items-center justify-between p-3 rounded-lg text-slate-200 hover:bg-cu-dark-blue-80 w-full text-left">
+          <button class="menu-toggle flex items-center justify-between p-3 rounded-lg text-slate-200 hover:bg-cu-dark-blue-80 w-full text-left">
             <div class="flex items-center gap-3">
               <span class="material-symbols-outlined">settings</span>
               <span class="font-medium text-sm">Settings</span>
@@ -229,122 +192,762 @@
       </nav>
     </aside>
 
-    <button id="sidebarToggle" aria-expanded="true"
-      class="p-2 rounded-full text-slate-300 hover:bg-cu-dark-blue transition-colors"
-      style="left: 0; top: 0;">
+    <button id="sidebarToggle" type="button" aria-expanded="true" aria-label="Toggle sidebar"
+      class="fixed p-2 rounded-full text-slate-300 hover:bg-[#2a2e55] bg-[#1b1e42]/90 z-[70] shadow-md">
       <span class="material-symbols-outlined text-xl">keyboard_double_arrow_left</span>
     </button>
 
-    <div class="flex-1 flex flex-col bg-white">
+    <div class="flex-1 flex flex-col bg-white min-w-0">
       <header class="flex-shrink-0 bg-[#1b1e42] h-16 flex items-center justify-end px-6 border-b border-slate-200">
         <div class="flex items-center space-x-4">
-          <button class="p-2 rounded-full text-slate-300 hover:bg-cu-dark-blue-80 relative" type="button" aria-label="Notifications">
-            <span class="material-symbols-outlined text-yellow-500">notifications</span>
+          <button class="p-2 rounded-full text-slate-300 hover:bg-white/10 relative" type="button" aria-label="Notifications">
+            <span class="material-symbols-outlined text-amber-400">notifications</span>
             <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full"></span>
           </button>
           <div class="flex items-center space-x-3">
-            <img alt="User avatar" class="w-10 h-10 rounded-full object-cover"
-              src="https://i.pravatar.cc/200?u=soe-man" />
+            <img alt="User avatar" class="w-10 h-10 rounded-full object-cover" src="https://i.pravatar.cc/200?u=soe-man" />
             <div>
               <div class="font-semibold text-sm text-white">Nisal Amarasekara</div>
               <div class="text-xs text-slate-400">Sri Lanka</div>
             </div>
           </div>
-          <button class="p-2 rounded-full text-slate-300 hover:bg-cu-dark-blue-80" type="button" aria-label="Lock">
+          <button class="p-2 rounded-full text-slate-300 hover:bg-white/10" type="button" aria-label="Lock">
             <span class="material-symbols-outlined">lock</span>
           </button>
-          <button class="p-2 rounded-full text-slate-300 hover:bg-cu-dark-blue-80" type="button" aria-label="Expand">
+          <button class="p-2 rounded-full text-slate-300 hover:bg-white/10" type="button" aria-label="Menu">
             <span class="material-symbols-outlined">expand_more</span>
           </button>
         </div>
       </header>
 
-      <main class="flex-1 p-6 overflow-y-auto bg-[#f5f7fa]">
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
-          <div class="lg:col-span-3 bg-white rounded-xl border border-slate-200 shadow-soft p-4">
-            <div class="bg-white border border-slate-100 rounded-lg p-3 flex items-center justify-center min-h-[240px]">
-              <img alt="Profile illustration" class="w-full h-auto max-h-[210px] object-contain"
-                src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" />
+      <main class="flex-1 overflow-y-auto bg-slate-50/80 px-4 py-5 sm:px-5 lg:px-6 lg:py-7">
+        <div class="w-full min-w-0 max-w-none">
+
+          <a href="index.html" class="inline-flex items-center gap-2 text-sm text-slate-600 hover:text-[#1b1e42] mb-5">
+            <span class="material-symbols-outlined text-lg">arrow_back</span>
+            Back to Dashboard
+          </a>
+
+          <!-- Profile header -->
+          <div class="bg-white rounded-2xl border border-gray-200 shadow-[0_2px_12px_rgba(0,0,0,.04)] p-6 lg:p-8 mb-6">
+            <div class="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6">
+              <div class="flex flex-col sm:flex-row sm:items-start gap-6">
+                <div class="w-24 h-24 shrink-0 bg-gradient-to-br from-[#3eb2ed] to-[#1b1e42] rounded-full flex items-center justify-center ring-4 ring-white shadow-lg">
+                  <span class="text-white font-bold text-3xl tracking-tight">NA</span>
+                </div>
+                <div>
+                  <h1 class="text-3xl font-extrabold text-slate-900">Nisal Amarasekara</h1>
+                  <p class="text-lg text-slate-600 mt-1">Senior Auditor <span class="text-slate-400">•</span> Certification</p>
+                  <div class="flex flex-wrap items-center gap-x-6 gap-y-2 mt-4 text-sm text-slate-600">
+                    <span class="inline-flex items-center gap-1.5"><span class="material-symbols-outlined text-[#3eb2ed] text-xl">mail</span>nisal.amarasekara@controlunion.com</span>
+                    <span class="inline-flex items-center gap-1.5"><span class="material-symbols-outlined text-[#3eb2ed] text-xl">call</span>+94 77 555 0123</span>
+                    <span class="inline-flex items-center gap-1.5"><span class="material-symbols-outlined text-[#3eb2ed] text-xl">location_on</span>Sri Lanka <span class="text-slate-400">•</span> South Asia</span>
+                  </div>
+                </div>
+              </div>
+              <div class="text-left lg:text-right shrink-0">
+                <div class="inline-flex items-center justify-end gap-1 mb-1">
+                  <span class="material-symbols-outlined text-amber-400 text-3xl" style="font-variation-settings:'FILL' 1">star</span>
+                  <span class="text-3xl font-bold text-slate-900">4.8</span>
+                  <span class="text-slate-500">/ 5.0</span>
+                </div>
+                <p class="text-sm text-slate-500">Overall Rating</p>
+                <span class="inline-block mt-3 px-3 py-1 rounded-full text-sm font-medium bg-emerald-100 text-emerald-800">Permanent</span>
+              </div>
             </div>
-            <div class="mt-3">
-              <h3 class="text-xl font-bold text-[#1b1e42]">Nisal Amarasekara</h3>
-              <p class="text-sm text-slate-500">Profile Owner</p>
-            </div>
-            <div class="mt-4 space-y-2">
-              <button type="button" class="w-full h-9 rounded-lg border border-slate-300 text-xs text-slate-700 bg-white">🏆 Achievements</button>
-              <button type="button" class="w-full h-9 rounded-lg border border-slate-300 text-xs text-slate-700 bg-white">📜 CV</button>
-              <button type="button" class="w-full h-9 rounded-lg border border-slate-300 text-xs text-slate-700 bg-white">✏️ Edit personal info</button>
+
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 mt-8 pt-8 border-t border-gray-200">
+              <div class="text-center sm:text-left">
+                <div class="flex items-center justify-center sm:justify-start gap-2 text-slate-500 mb-1 text-sm">
+                  <span class="material-symbols-outlined text-base">calendar_today</span>
+                  Join Date
+                </div>
+                <p class="font-semibold text-slate-900">Jan 15, 2016</p>
+              </div>
+              <div class="text-center sm:text-left">
+                <div class="flex items-center justify-center sm:justify-start gap-2 text-slate-500 mb-1 text-sm">
+                  <span class="material-symbols-outlined text-base">work</span>
+                  Service
+                </div>
+                <p class="font-semibold text-slate-900">8 years 3 months</p>
+              </div>
+              <div class="text-center sm:text-left">
+                <div class="flex items-center justify-center sm:justify-start gap-2 text-slate-500 mb-1 text-sm">
+                  <span class="material-symbols-outlined text-base">verified</span>
+                  Certifications
+                </div>
+                <p class="font-semibold text-slate-900">3 Active</p>
+              </div>
+              <div class="text-center sm:text-left">
+                <div class="flex items-center justify-center sm:justify-start gap-2 text-slate-500 mb-1 text-sm">
+                  <span class="material-symbols-outlined text-base">analytics</span>
+                  Total Audits
+                </div>
+                <p class="font-semibold text-slate-900">105</p>
+              </div>
+              <div class="text-center sm:text-left col-span-2 sm:col-span-1">
+                <div class="flex items-center justify-center sm:justify-start gap-2 text-slate-500 mb-1 text-sm">
+                  <span class="material-symbols-outlined text-base">track_changes</span>
+                  Task Load
+                </div>
+                <p class="font-semibold text-slate-900">75%</p>
+              </div>
             </div>
           </div>
 
-          <div class="lg:col-span-9 space-y-4">
-            <section class="bg-white rounded-xl border border-slate-200 shadow-soft p-4">
-              <h3 class="text-base font-bold text-[#1b1e42] mb-3">Basic Information</h3>
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
-                <div><label class="block mb-1 text-slate-600">Department</label><input class="w-full h-9 rounded border border-slate-300 bg-[#f8fafc] px-3" value="Certification" /></div>
-                <div><label class="block mb-1 text-slate-600">Role</label><input class="w-full h-9 rounded border border-slate-300 bg-[#f8fafc] px-3" value="Auditor" /></div>
-                <div><label class="block mb-1 text-slate-600">Department and role allocation</label><input class="w-full h-9 rounded border border-slate-300 bg-[#f8fafc] px-3" value="Textile - Lead Auditor" /></div>
-                <div><label class="block mb-1 text-slate-600">Country</label><input class="w-full h-9 rounded border border-slate-300 bg-[#f8fafc] px-3" value="Sri Lanka" /></div>
-                <div><label class="block mb-1 text-slate-600">Region</label><input class="w-full h-9 rounded border border-slate-300 bg-[#f8fafc] px-3" value="South Asia" /></div>
+          <!-- Tabs -->
+          <div class="bg-white rounded-2xl border border-gray-200 shadow-[0_2px_12px_rgba(0,0,0,.04)] mb-6 overflow-hidden">
+            <div class="border-b border-gray-200 overflow-x-auto">
+              <div class="flex min-w-max">
+                <button type="button" data-profile-tab="basic" class="profile-tab-btn active flex items-center gap-2 px-5 py-4 border-b-2 border-transparent text-slate-600 hover:text-slate-900 transition-colors whitespace-nowrap">
+                  <span class="material-symbols-outlined text-xl">person</span>
+                  Basic Information
+                </button>
+                <button type="button" data-profile-tab="qualifications" class="profile-tab-btn flex items-center gap-2 px-5 py-4 border-b-2 border-transparent text-slate-600 hover:text-slate-900 transition-colors whitespace-nowrap">
+                  <span class="material-symbols-outlined text-xl">military_tech</span>
+                  Qualifications
+                </button>
+                <button type="button" data-profile-tab="ratings" class="profile-tab-btn flex items-center gap-2 px-5 py-4 border-b-2 border-transparent text-slate-600 hover:text-slate-900 transition-colors whitespace-nowrap">
+                  <span class="material-symbols-outlined text-xl">star</span>
+                  Ratings &amp; Feedback
+                </button>
+                <button type="button" data-profile-tab="experience" class="profile-tab-btn flex items-center gap-2 px-5 py-4 border-b-2 border-transparent text-slate-600 hover:text-slate-900 transition-colors whitespace-nowrap">
+                  <span class="material-symbols-outlined text-xl">business_center</span>
+                  Experience
+                </button>
+                <button type="button" data-profile-tab="availability" class="profile-tab-btn flex items-center gap-2 px-5 py-4 border-b-2 border-transparent text-slate-600 hover:text-slate-900 transition-colors whitespace-nowrap">
+                  <span class="material-symbols-outlined text-xl">event_available</span>
+                  Availability
+                </button>
+              </div>
+            </div>
+
+            <div class="p-5 lg:p-6">
+
+              <!-- Basic -->
+              <div id="panel-basic" class="profile-tab-panel space-y-6">
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-2">
+                  <h2 class="text-xl font-bold text-slate-900">Basic Information</h2>
+                  <div class="flex flex-wrap gap-2">
+                    <button type="button" class="inline-flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg text-sm text-slate-700 hover:bg-slate-50">
+                      <span class="material-symbols-outlined text-lg">upload</span> Upload CV
+                    </button>
+                    <button type="button" class="inline-flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg text-sm text-slate-700 hover:bg-slate-50">
+                      <span class="material-symbols-outlined text-lg">upload</span> Upload Achievements
+                    </button>
+                    <button type="button" class="inline-flex items-center gap-2 px-4 py-2 bg-[#3eb2ed] hover:bg-[#2ea2d6] text-white rounded-lg text-sm font-semibold transition">
+                      <span class="material-symbols-outlined text-lg">edit</span> Edit Info
+                    </button>
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                  <div class="bg-slate-50 rounded-xl p-4 border border-slate-100">
+                    <div class="flex items-center gap-2 mb-3">
+                      <span class="material-symbols-outlined text-[#3eb2ed]">person</span>
+                      <h3 class="font-semibold text-slate-900">Personal Details</h3>
+                    </div>
+                    <div class="space-y-3 text-sm">
+                      <div>
+                        <p class="text-xs text-slate-500 mb-1">Full Address</p>
+                        <p class="text-slate-900">42 Lotus Road, Colombo 03, Sri Lanka</p>
+                      </div>
+                      <div>
+                        <p class="text-xs text-slate-500 mb-1">Emergency Contact</p>
+                        <p class="text-slate-900">R. Amarasekara — +94 77 555 0100</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="bg-slate-50 rounded-xl p-4 border border-slate-100">
+                    <div class="flex items-center gap-2 mb-3">
+                      <span class="material-symbols-outlined text-[#3eb2ed]">apartment</span>
+                      <h3 class="font-semibold text-slate-900">Employment Details</h3>
+                    </div>
+                    <div class="space-y-3 text-sm">
+                      <div>
+                        <p class="text-xs text-slate-500 mb-1">Department &amp; Role</p>
+                        <p class="text-slate-900">Certification — Senior Auditor</p>
+                      </div>
+                      <div>
+                        <p class="text-xs text-slate-500 mb-1">Department Allocation</p>
+                        <p class="text-slate-900">70% Organic, 30% GOTS</p>
+                      </div>
+                      <div>
+                        <p class="text-xs text-slate-500 mb-1">Job Status</p>
+                        <span class="inline-block px-2 py-1 rounded text-xs font-medium bg-emerald-100 text-emerald-800">Permanent</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="bg-slate-50 rounded-xl p-4 border border-slate-100">
+                    <div class="flex items-center gap-2 mb-3">
+                      <span class="material-symbols-outlined text-[#3eb2ed]">public</span>
+                      <h3 class="font-semibold text-slate-900">Location Details</h3>
+                    </div>
+                    <div class="space-y-3 text-sm">
+                      <div>
+                        <p class="text-xs text-slate-500 mb-1">Country</p>
+                        <p class="text-slate-900">Sri Lanka</p>
+                      </div>
+                      <div>
+                        <p class="text-xs text-slate-500 mb-1">Region</p>
+                        <p class="text-slate-900">South Asia</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="bg-slate-50 rounded-xl p-4 border border-slate-100">
+                    <div class="flex items-center gap-2 mb-3">
+                      <span class="material-symbols-outlined text-[#3eb2ed]">school</span>
+                      <h3 class="font-semibold text-slate-900">Education</h3>
+                    </div>
+                    <div class="space-y-3 text-sm">
+                      <div>
+                        <p class="text-xs text-slate-500 mb-1">Highest Education</p>
+                        <p class="text-slate-900">Master's in Environmental Science</p>
+                      </div>
+                      <div>
+                        <p class="text-xs text-slate-500 mb-1">Service Duration</p>
+                        <p class="text-slate-900">8 years 3 months</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="bg-slate-50 rounded-xl p-4 border border-slate-100 md:col-span-2">
+                    <div class="flex items-center gap-2 mb-3">
+                      <span class="material-symbols-outlined text-[#3eb2ed]">work</span>
+                      <h3 class="font-semibold text-slate-900">Career Experience</h3>
+                    </div>
+                    <p class="text-sm text-slate-900">Previous: Environmental Consultant at EcoTech Solutions (5 years). Focus on textile sustainability and certification readiness.</p>
+                  </div>
+                </div>
+
                 <div>
-                  <label class="block mb-1 text-slate-600">Job status</label>
-                  <select class="w-full h-9 rounded border border-slate-300 bg-[#f8fafc] px-3">
-                    <option>Probation</option><option selected>Permanent</option><option>Trainee</option><option>Consultant</option><option>Freelancer</option>
-                  </select>
+                  <h3 class="font-semibold text-slate-900 mb-3">Assigned Devices</h3>
+                  <div class="flex flex-wrap gap-2">
+                    <span class="px-4 py-2 bg-sky-50 text-sky-900 rounded-lg text-sm border border-sky-200">Laptop — Dell XPS 15</span>
+                    <span class="px-4 py-2 bg-sky-50 text-sky-900 rounded-lg text-sm border border-sky-200">Phone — iPhone 13</span>
+                    <span class="px-4 py-2 bg-sky-50 text-sky-900 rounded-lg text-sm border border-sky-200">Tablet — iPad Pro</span>
+                  </div>
+                </div>
+
+                <div>
+                  <h3 class="font-semibold text-slate-900 mb-3">Documents</h3>
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="flex items-center justify-between p-4 bg-emerald-50 border border-emerald-200 rounded-xl">
+                      <div class="flex items-center gap-3">
+                        <span class="material-symbols-outlined text-emerald-600 text-2xl">description</span>
+                        <div>
+                          <p class="font-medium text-slate-900">Curriculum Vitae (CV)</p>
+                          <p class="text-xs text-slate-600">Last updated: Mar 2024</p>
+                        </div>
+                      </div>
+                      <button type="button" class="p-2 hover:bg-emerald-100 rounded-lg" aria-label="Download CV">
+                        <span class="material-symbols-outlined text-emerald-700">download</span>
+                      </button>
+                    </div>
+                    <div class="flex items-center justify-between p-4 bg-emerald-50 border border-emerald-200 rounded-xl">
+                      <div class="flex items-center gap-3">
+                        <span class="material-symbols-outlined text-emerald-600 text-2xl">workspace_premium</span>
+                        <div>
+                          <p class="font-medium text-slate-900">Achievements</p>
+                          <p class="text-xs text-slate-600">Last updated: Feb 2024</p>
+                        </div>
+                      </div>
+                      <button type="button" class="p-2 hover:bg-emerald-100 rounded-lg" aria-label="Download achievements">
+                        <span class="material-symbols-outlined text-emerald-700">download</span>
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </section>
 
-            <section class="bg-white rounded-xl border border-slate-200 shadow-soft p-4">
-              <h3 class="text-base font-bold text-[#1b1e42] mb-3">Qualifications</h3>
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
-                <div class="md:col-span-2"><label class="block mb-1 text-slate-600">House Rules</label><textarea class="w-full rounded border border-slate-300 bg-[#f8fafc] px-3 py-2" rows="2">Organic auditor cannot be assigned to the same client for more than 3 consecutive audits.</textarea></div>
-                <div><label class="block mb-1 text-slate-600">Competencies</label><input class="w-full h-9 rounded border border-slate-300 bg-[#f8fafc] px-3" value="GOTS - Modules A, B, C" /></div>
-                <div><label class="block mb-1 text-slate-600">Non-technical qualifications</label><input class="w-full h-9 rounded border border-slate-300 bg-[#f8fafc] px-3" value="ISO Internal Auditor" /></div>
-                <div><label class="block mb-1 text-slate-600">Soft Skill trainings completed/required</label><input class="w-full h-9 rounded border border-slate-300 bg-[#f8fafc] px-3" value="Completed: Communication, Required: Negotiation" /></div>
-                <div><label class="block mb-1 text-slate-600">Upcoming qualification requirements</label><input class="w-full h-9 rounded border border-slate-300 bg-[#f8fafc] px-3" value="Re-certification exam - Q4 2026" /></div>
-                <div><label class="block mb-1 text-slate-600">Exam/training/Audit/Activity history</label><input class="w-full h-9 rounded border border-slate-300 bg-[#f8fafc] px-3" value="Available in timeline below" /></div>
+              <!-- Qualifications -->
+              <div id="panel-qualifications" class="profile-tab-panel hidden space-y-8">
                 <div>
-                  <label class="block mb-1 text-slate-600">Qualification type</label>
-                  <select class="w-full h-9 rounded border border-slate-300 bg-[#f8fafc] px-3">
-                    <option selected>Existing qualification</option>
-                    <option>Potential qualification</option>
-                  </select>
+                  <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
+                    <h2 class="text-xl font-bold text-slate-900">Certifications &amp; Competencies</h2>
+                    <div class="flex gap-2">
+                      <span class="px-3 py-1 bg-emerald-100 text-emerald-800 text-sm rounded-full font-medium">3 Existing</span>
+                      <span class="px-3 py-1 bg-sky-100 text-sky-800 text-sm rounded-full font-medium">1 Potential</span>
+                    </div>
+                  </div>
+
+                  <div class="space-y-4">
+                    <div class="border border-gray-200 rounded-xl p-4 bg-white">
+                      <div class="flex flex-wrap items-start justify-between gap-3 mb-3">
+                        <div class="flex items-start gap-3">
+                          <span class="material-symbols-outlined text-emerald-500 text-2xl">check_circle</span>
+                          <div>
+                            <div class="flex flex-wrap items-center gap-2 mb-1">
+                              <h3 class="font-semibold text-slate-900">GOTS Auditor</h3>
+                              <span class="px-2 py-0.5 text-xs font-medium rounded-full bg-emerald-100 text-emerald-800">Existing</span>
+                            </div>
+                            <p class="text-sm text-slate-600">Advanced</p>
+                          </div>
+                        </div>
+                        <div class="text-right">
+                          <span class="px-2 py-1 text-xs font-medium rounded-full bg-emerald-100 text-emerald-800">Active</span>
+                          <p class="text-xs text-slate-500 mt-1">Expires: Jun 2024</p>
+                        </div>
+                      </div>
+                      <p class="text-xs font-medium text-slate-700 mb-2">Qualified Modules:</p>
+                      <div class="flex flex-wrap gap-1 mb-3">
+                        <span class="px-2 py-1 bg-slate-100 text-slate-700 text-xs rounded">Processing</span>
+                        <span class="px-2 py-1 bg-slate-100 text-slate-700 text-xs rounded">Trading</span>
+                        <span class="px-2 py-1 bg-slate-100 text-slate-700 text-xs rounded">Manufacturing</span>
+                      </div>
+                      <div class="flex items-start gap-2 p-3 bg-amber-50 border border-amber-200 rounded-lg">
+                        <span class="material-symbols-outlined text-amber-600 text-lg shrink-0">shield</span>
+                        <div>
+                          <p class="text-xs font-medium text-amber-900 mb-0.5">House Rule:</p>
+                          <p class="text-xs text-amber-800">Max 3 consecutive audits per client</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="border border-gray-200 rounded-xl p-4 bg-white">
+                      <div class="flex flex-wrap items-start justify-between gap-3 mb-3">
+                        <div class="flex items-start gap-3">
+                          <span class="material-symbols-outlined text-emerald-500 text-2xl">check_circle</span>
+                          <div>
+                            <div class="flex flex-wrap items-center gap-2 mb-1">
+                              <h3 class="font-semibold text-slate-900">ISO 9001 Lead Auditor</h3>
+                              <span class="px-2 py-0.5 text-xs font-medium rounded-full bg-emerald-100 text-emerald-800">Existing</span>
+                            </div>
+                            <p class="text-sm text-slate-600">Expert</p>
+                          </div>
+                        </div>
+                        <div class="text-right">
+                          <span class="px-2 py-1 text-xs font-medium rounded-full bg-emerald-100 text-emerald-800">Active</span>
+                          <p class="text-xs text-slate-500 mt-1">Expires: Dec 2025</p>
+                        </div>
+                      </div>
+                      <p class="text-xs font-medium text-slate-700 mb-2">Qualified Modules:</p>
+                      <div class="flex flex-wrap gap-1">
+                        <span class="px-2 py-1 bg-slate-100 text-slate-700 text-xs rounded">Quality Management Systems</span>
+                      </div>
+                    </div>
+
+                    <div class="border border-sky-200 rounded-xl p-4 bg-sky-50/50">
+                      <div class="flex flex-wrap items-start justify-between gap-3">
+                        <div class="flex items-start gap-3">
+                          <span class="material-symbols-outlined text-amber-500 text-2xl">schedule</span>
+                          <div>
+                            <div class="flex flex-wrap items-center gap-2 mb-1">
+                              <h3 class="font-semibold text-slate-900">ISO 14001</h3>
+                              <span class="px-2 py-0.5 text-xs font-medium rounded-full bg-sky-100 text-sky-800">Potential</span>
+                            </div>
+                            <p class="text-sm text-slate-600">Learning</p>
+                          </div>
+                        </div>
+                        <span class="px-2 py-1 text-xs font-medium rounded-full bg-sky-100 text-sky-800">In Progress</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <h3 class="font-semibold text-slate-900 mb-3">Non-Technical Qualifications</h3>
+                  <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                    <div class="flex items-center gap-2 p-3 bg-slate-50 rounded-lg border border-gray-200 text-sm text-slate-900">
+                      <span class="material-symbols-outlined text-emerald-500">check_circle</span>
+                      Food Safety Awareness
+                    </div>
+                    <div class="flex items-center gap-2 p-3 bg-slate-50 rounded-lg border border-gray-200 text-sm text-slate-900">
+                      <span class="material-symbols-outlined text-emerald-500">check_circle</span>
+                      Risk Assessment
+                    </div>
+                    <div class="flex items-center gap-2 p-3 bg-slate-50 rounded-lg border border-gray-200 text-sm text-slate-900">
+                      <span class="material-symbols-outlined text-emerald-500">check_circle</span>
+                      Report Writing Excellence
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <h3 class="font-semibold text-slate-900 mb-3">Soft Skills Training</h3>
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div class="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-gray-200">
+                      <div class="flex items-center gap-2">
+                        <span class="material-symbols-outlined text-emerald-500">check_circle</span>
+                        <div>
+                          <p class="text-sm font-medium text-slate-900">Leadership Training</p>
+                          <p class="text-xs text-slate-600">Dec 2023</p>
+                        </div>
+                      </div>
+                      <span class="px-2 py-0.5 text-xs font-medium rounded-full bg-emerald-100 text-emerald-800">Completed</span>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-gray-200">
+                      <div class="flex items-center gap-2">
+                        <span class="material-symbols-outlined text-amber-500">error</span>
+                        <div>
+                          <p class="text-sm font-medium text-slate-900">Advanced Communication</p>
+                          <p class="text-xs text-slate-600">Scheduled: Jul 2024</p>
+                        </div>
+                      </div>
+                      <span class="px-2 py-0.5 text-xs font-medium rounded-full bg-amber-100 text-amber-800">Required</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <h3 class="font-semibold text-slate-900 mb-3">Upcoming Requirements</h3>
+                  <div class="space-y-3">
+                    <div class="flex flex-wrap items-center justify-between gap-3 p-4 bg-amber-50 border border-amber-200 rounded-xl">
+                      <div class="flex items-center gap-3">
+                        <span class="material-symbols-outlined text-amber-600">warning</span>
+                        <div>
+                          <p class="font-medium text-slate-900">GOTS Auditor Recertification</p>
+                          <p class="text-sm text-slate-600">Deadline: Jun 20, 2024</p>
+                        </div>
+                      </div>
+                      <span class="px-2 py-1 bg-amber-200 text-amber-900 text-xs font-medium rounded-full">Renewal</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <h3 class="font-semibold text-slate-900 mb-3">Exam / Training / Audit Activity History</h3>
+                  <div class="overflow-x-auto rounded-xl border border-gray-200">
+                    <table class="w-full text-sm">
+                      <thead class="bg-slate-50 border-b border-gray-200">
+                        <tr>
+                          <th class="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase">Type</th>
+                          <th class="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase">Activity</th>
+                          <th class="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase">Date</th>
+                          <th class="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase">Result</th>
+                        </tr>
+                      </thead>
+                      <tbody class="divide-y divide-gray-200">
+                        <tr class="hover:bg-slate-50">
+                          <td class="px-4 py-3"><span class="px-2 py-1 text-xs font-medium rounded-full bg-violet-100 text-violet-800">Exam</span></td>
+                          <td class="px-4 py-3 text-slate-900">Organic Certification Renewal</td>
+                          <td class="px-4 py-3 text-slate-600">Sep 15, 2023</td>
+                          <td class="px-4 py-3 font-medium text-emerald-700">Passed (95%)</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50">
+                          <td class="px-4 py-3"><span class="px-2 py-1 text-xs font-medium rounded-full bg-sky-100 text-sky-800">Training</span></td>
+                          <td class="px-4 py-3 text-slate-900">GOTS Advanced Module</td>
+                          <td class="px-4 py-3 text-slate-600">Aug 20, 2023</td>
+                          <td class="px-4 py-3 font-medium text-emerald-700">Completed</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               </div>
-            </section>
 
-            <section class="bg-white rounded-xl border border-slate-200 shadow-soft p-4">
-              <h3 class="text-base font-bold text-[#1b1e42] mb-3">Feedback & Ratings</h3>
-              <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-sm">
-                <div><label class="block mb-1 text-slate-600">Internal employee performance feedback & evaluation</label><input class="w-full h-9 rounded border border-slate-300 bg-[#f8fafc] px-3" value="4.3 / 5" /></div>
-                <div><label class="block mb-1 text-slate-600">Audit performance ratings from certifier & client</label><input class="w-full h-9 rounded border border-slate-300 bg-[#f8fafc] px-3" value="4.6 / 5" /></div>
-                <div><label class="block mb-1 text-slate-600">Training feedback</label><input class="w-full h-9 rounded border border-slate-300 bg-[#f8fafc] px-3" value="Positive (Avg 4.5/5)" /></div>
-              </div>
-            </section>
+              <!-- Ratings -->
+              <div id="panel-ratings" class="profile-tab-panel hidden space-y-8">
+                <div class="bg-gradient-to-br from-sky-50 to-indigo-50 rounded-xl p-6 border border-sky-200">
+                  <h2 class="text-xl font-bold text-slate-900 mb-4">Overall Performance</h2>
+                  <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="text-center">
+                      <p class="text-sm text-slate-600 mb-1">Technical</p>
+                      <div class="flex items-center justify-center gap-1">
+                        <span class="material-symbols-outlined text-amber-400 text-xl" style="font-variation-settings:'FILL' 1">star</span>
+                        <span class="text-2xl font-bold text-slate-900">4.9</span>
+                      </div>
+                    </div>
+                    <div class="text-center">
+                      <p class="text-sm text-slate-600 mb-1">Communication</p>
+                      <div class="flex items-center justify-center gap-1">
+                        <span class="material-symbols-outlined text-amber-400 text-xl" style="font-variation-settings:'FILL' 1">star</span>
+                        <span class="text-2xl font-bold text-slate-900">4.8</span>
+                      </div>
+                    </div>
+                    <div class="text-center">
+                      <p class="text-sm text-slate-600 mb-1">Professionalism</p>
+                      <div class="flex items-center justify-center gap-1">
+                        <span class="material-symbols-outlined text-amber-400 text-xl" style="font-variation-settings:'FILL' 1">star</span>
+                        <span class="text-2xl font-bold text-slate-900">4.7</span>
+                      </div>
+                    </div>
+                    <div class="text-center">
+                      <p class="text-sm text-slate-600 mb-1">Reliability</p>
+                      <div class="flex items-center justify-center gap-1">
+                        <span class="material-symbols-outlined text-amber-400 text-xl" style="font-variation-settings:'FILL' 1">star</span>
+                        <span class="text-2xl font-bold text-slate-900">4.9</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
 
-            <section class="bg-white rounded-xl border border-slate-200 shadow-soft p-4">
-              <h3 class="text-base font-bold text-[#1b1e42] mb-3">Experience</h3>
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
-                <div><label class="block mb-1 text-slate-600">Past audits/projects handled</label><input class="w-full h-9 rounded border border-slate-300 bg-[#f8fafc] px-3" value="128 audits / 26 projects" /></div>
-                <div><label class="block mb-1 text-slate-600">Client-specific experience</label><input class="w-full h-9 rounded border border-slate-300 bg-[#f8fafc] px-3" value="Textile, Apparel, Organic clients" /></div>
-                <div><label class="block mb-1 text-slate-600">Sector expertise</label><input class="w-full h-9 rounded border border-slate-300 bg-[#f8fafc] px-3" value="Textile & Sustainability" /></div>
-                <div><label class="block mb-1 text-slate-600">Seniority level</label><input class="w-full h-9 rounded border border-slate-300 bg-[#f8fafc] px-3" value="Senior" /></div>
-              </div>
-            </section>
+                <div>
+                  <h3 class="font-semibold text-slate-900 mb-3">Internal Performance Evaluation</h3>
+                  <div class="space-y-3">
+                    <div class="bg-white border border-gray-200 rounded-xl p-4">
+                      <div class="flex flex-wrap items-start justify-between gap-2 mb-2">
+                        <div>
+                          <p class="font-medium text-slate-900">Q1 2024</p>
+                          <p class="text-sm text-slate-600">Evaluated by: Department Head</p>
+                        </div>
+                        <div class="flex items-center gap-1">
+                          <span class="material-symbols-outlined text-amber-400">star</span>
+                          <span class="text-lg font-bold text-slate-900">4.8</span>
+                        </div>
+                      </div>
+                      <div class="flex items-start gap-2 mt-3 p-3 bg-sky-50 rounded-lg">
+                        <span class="material-symbols-outlined text-[#3eb2ed] text-lg shrink-0">chat</span>
+                        <p class="text-sm text-slate-700">Excellent performance, strong leadership.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
 
-            <section class="bg-white rounded-xl border border-slate-200 shadow-soft p-4">
-              <h3 class="text-base font-bold text-[#1b1e42] mb-3">Availability & Personal Details</h3>
-              <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-sm">
-                <div><label class="block mb-1 text-slate-600">Task load</label><input class="w-full h-9 rounded border border-slate-300 bg-[#f8fafc] px-3" value="Medium" /></div>
-                <div><label class="block mb-1 text-slate-600">Audit schedules</label><input class="w-full h-9 rounded border border-slate-300 bg-[#f8fafc] px-3" value="Weekly schedule assigned" /></div>
-                <div><label class="block mb-1 text-slate-600">Meetings</label><input class="w-full h-9 rounded border border-slate-300 bg-[#f8fafc] px-3" value="3 planned this week" /></div>
-                <div><label class="block mb-1 text-slate-600">Client Visits</label><input class="w-full h-9 rounded border border-slate-300 bg-[#f8fafc] px-3" value="2 planned this month" /></div>
-                <div><label class="block mb-1 text-slate-600">Leaves</label><input class="w-full h-9 rounded border border-slate-300 bg-[#f8fafc] px-3" value="1 pending approval" /></div>
-                <div><label class="block mb-1 text-slate-600">Work Location</label><input class="w-full h-9 rounded border border-slate-300 bg-[#f8fafc] px-3" value="Colombo Office / Hybrid" /></div>
+                <div>
+                  <h3 class="font-semibold text-slate-900 mb-3">Audit Performance Ratings (Certifier &amp; Client)</h3>
+                  <div class="overflow-x-auto rounded-xl border border-gray-200">
+                    <table class="w-full text-sm">
+                      <thead class="bg-slate-50 border-b border-gray-200">
+                        <tr>
+                          <th class="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase">Client</th>
+                          <th class="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase">Certifier</th>
+                          <th class="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase">Date</th>
+                          <th class="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase">Rating</th>
+                          <th class="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase">Feedback</th>
+                        </tr>
+                      </thead>
+                      <tbody class="divide-y divide-gray-200">
+                        <tr class="hover:bg-slate-50">
+                          <td class="px-4 py-3 font-medium text-slate-900">ABC Inc.</td>
+                          <td class="px-4 py-3 text-slate-600">Control Union</td>
+                          <td class="px-4 py-3 text-slate-600">Feb 2024</td>
+                          <td class="px-4 py-3"><span class="inline-flex items-center gap-0.5 font-semibold"><span class="material-symbols-outlined text-amber-400 text-base">star</span>5.0</span></td>
+                          <td class="px-4 py-3 text-slate-700">Thorough and professional</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50">
+                          <td class="px-4 py-3 font-medium text-slate-900">Global Foods</td>
+                          <td class="px-4 py-3 text-slate-600">Control Union</td>
+                          <td class="px-4 py-3 text-slate-600">Dec 2023</td>
+                          <td class="px-4 py-3"><span class="inline-flex items-center gap-0.5 font-semibold"><span class="material-symbols-outlined text-amber-400 text-base">star</span>4.9</span></td>
+                          <td class="px-4 py-3 text-slate-700">Excellent communicator</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                <div>
+                  <h3 class="font-semibold text-slate-900 mb-3">Training Feedback</h3>
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-white border border-gray-200 rounded-xl p-4">
+                      <div class="flex items-start justify-between mb-2">
+                        <div>
+                          <p class="font-medium text-slate-900">Leadership Training</p>
+                          <p class="text-sm text-slate-600">Dec 2023</p>
+                        </div>
+                        <span class="inline-flex items-center gap-0.5 text-lg font-bold"><span class="material-symbols-outlined text-amber-400 text-base">star</span>4.9</span>
+                      </div>
+                      <p class="text-sm text-slate-700 mt-2">Active participation, applied concepts well.</p>
+                    </div>
+                  </div>
+                </div>
               </div>
-            </section>
+
+              <!-- Experience -->
+              <div id="panel-experience" class="profile-tab-panel hidden space-y-8">
+                <div class="bg-gradient-to-br from-violet-50 to-sky-50 rounded-xl p-6 border border-violet-200">
+                  <h2 class="text-xl font-bold text-slate-900 mb-4">Seniority Level</h2>
+                  <div class="grid grid-cols-2 md:grid-cols-5 gap-4 text-sm">
+                    <div>
+                      <p class="text-slate-600 mb-1">Current Level</p>
+                      <p class="text-lg font-bold text-slate-900">Senior Auditor</p>
+                    </div>
+                    <div>
+                      <p class="text-slate-600 mb-1">Years in Role</p>
+                      <p class="text-lg font-bold text-slate-900">3 years</p>
+                    </div>
+                    <div>
+                      <p class="text-slate-600 mb-1">Total Audits</p>
+                      <p class="text-lg font-bold text-slate-900">105</p>
+                    </div>
+                    <div>
+                      <p class="text-slate-600 mb-1">Complex Audits</p>
+                      <p class="text-lg font-bold text-slate-900">42</p>
+                    </div>
+                    <div>
+                      <p class="text-slate-600 mb-1">Mentored</p>
+                      <p class="text-lg font-bold text-slate-900">8 people</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <h3 class="font-semibold text-slate-900 mb-3">Sector Expertise</h3>
+                  <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="bg-white border border-gray-200 rounded-xl p-4">
+                      <div class="flex items-start justify-between mb-3">
+                        <h4 class="font-semibold text-slate-900">Organic</h4>
+                        <span class="px-2 py-1 text-xs font-medium rounded-full bg-violet-100 text-violet-800">Expert</span>
+                      </div>
+                      <div class="space-y-2 text-sm">
+                        <div class="flex justify-between"><span class="text-slate-600">Total Audits</span><span class="font-semibold text-slate-900">45</span></div>
+                        <div class="flex justify-between"><span class="text-slate-600">Experience</span><span class="font-semibold text-slate-900">8 years</span></div>
+                      </div>
+                    </div>
+                    <div class="bg-white border border-gray-200 rounded-xl p-4">
+                      <div class="flex items-start justify-between mb-3">
+                        <h4 class="font-semibold text-slate-900">GOTS</h4>
+                        <span class="px-2 py-1 text-xs font-medium rounded-full bg-sky-100 text-sky-800">Advanced</span>
+                      </div>
+                      <div class="space-y-2 text-sm">
+                        <div class="flex justify-between"><span class="text-slate-600">Total Audits</span><span class="font-semibold text-slate-900">32</span></div>
+                        <div class="flex justify-between"><span class="text-slate-600">Experience</span><span class="font-semibold text-slate-900">6 years</span></div>
+                      </div>
+                    </div>
+                    <div class="bg-white border border-gray-200 rounded-xl p-4">
+                      <div class="flex items-start justify-between mb-3">
+                        <h4 class="font-semibold text-slate-900">ISO 9001</h4>
+                        <span class="px-2 py-1 text-xs font-medium rounded-full bg-sky-100 text-sky-800">Advanced</span>
+                      </div>
+                      <div class="space-y-2 text-sm">
+                        <div class="flex justify-between"><span class="text-slate-600">Total Audits</span><span class="font-semibold text-slate-900">28</span></div>
+                        <div class="flex justify-between"><span class="text-slate-600">Experience</span><span class="font-semibold text-slate-900">5 years</span></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <h3 class="font-semibold text-slate-900 mb-3">Past Audits &amp; Client Experience</h3>
+                  <div class="overflow-x-auto rounded-xl border border-gray-200">
+                    <table class="w-full text-sm">
+                      <thead class="bg-slate-50 border-b border-gray-200">
+                        <tr>
+                          <th class="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase">Client</th>
+                          <th class="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase">Sector</th>
+                          <th class="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase">Total Audits</th>
+                          <th class="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase">Last Audit</th>
+                          <th class="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase">Complexity</th>
+                        </tr>
+                      </thead>
+                      <tbody class="divide-y divide-gray-200">
+                        <tr class="hover:bg-slate-50">
+                          <td class="px-4 py-3 font-medium text-slate-900">ABC Inc.</td>
+                          <td class="px-4 py-3"><span class="px-2 py-1 bg-sky-100 text-sky-800 text-xs rounded-full">Organic</span></td>
+                          <td class="px-4 py-3 text-slate-900">12</td>
+                          <td class="px-4 py-3 text-slate-600">Jan 2024</td>
+                          <td class="px-4 py-3"><span class="px-2 py-1 text-xs font-medium rounded-full bg-red-100 text-red-800">High</span></td>
+                        </tr>
+                        <tr class="hover:bg-slate-50">
+                          <td class="px-4 py-3 font-medium text-slate-900">EcoTex Manufacturing</td>
+                          <td class="px-4 py-3"><span class="px-2 py-1 bg-sky-100 text-sky-800 text-xs rounded-full">ISO 9001</span></td>
+                          <td class="px-4 py-3 text-slate-900">15</td>
+                          <td class="px-4 py-3 text-slate-600">Dec 2023</td>
+                          <td class="px-4 py-3"><span class="px-2 py-1 text-xs font-medium rounded-full bg-red-100 text-red-800">High</span></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Availability -->
+              <div id="panel-availability" class="profile-tab-panel hidden space-y-8">
+                <div class="bg-white border border-gray-200 rounded-xl p-6">
+                  <h2 class="text-xl font-bold text-slate-900 mb-4">Current Task Load</h2>
+                  <div class="flex flex-col sm:flex-row sm:items-center gap-4 mb-4">
+                    <div class="flex-1 min-w-0">
+                      <div class="flex items-center justify-between mb-2">
+                        <span class="text-sm font-medium text-slate-700">Capacity Utilization</span>
+                        <span class="text-lg font-bold text-slate-900">75%</span>
+                      </div>
+                      <div class="w-full h-4 bg-slate-200 rounded-full overflow-hidden">
+                        <div class="h-full bg-[#3eb2ed] rounded-full transition-all" style="width:75%"></div>
+                      </div>
+                    </div>
+                    <span class="px-3 py-1 rounded-full text-sm font-medium bg-sky-100 text-sky-800 shrink-0 self-start sm:self-center">Moderate</span>
+                  </div>
+                  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+                    <div class="flex items-center gap-2">
+                      <span class="material-symbols-outlined text-slate-500">event_available</span>
+                      <span class="text-slate-600">Assigned Audits:</span>
+                      <span class="font-semibold text-slate-900">3</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                      <span class="material-symbols-outlined text-slate-500">groups</span>
+                      <span class="text-slate-600">Upcoming Meetings:</span>
+                      <span class="font-semibold text-slate-900">2</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="bg-slate-50 rounded-xl p-4 border border-gray-200">
+                  <h3 class="font-semibold text-slate-900 mb-3">Work Location Details</h3>
+                  <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                    <div>
+                      <p class="text-slate-600 mb-1">Primary Office</p>
+                      <p class="font-medium text-slate-900">Colombo Office</p>
+                    </div>
+                    <div>
+                      <p class="text-slate-600 mb-1">Remote Work</p>
+                      <p class="font-medium text-slate-900">2 days/week</p>
+                    </div>
+                    <div>
+                      <p class="text-slate-600 mb-1">Travel Percentage</p>
+                      <p class="font-medium text-slate-900">40%</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <h3 class="font-semibold text-slate-900 mb-3">Upcoming Schedule</h3>
+                  <div class="space-y-3">
+                    <div class="border border-emerald-200 bg-emerald-50/80 rounded-xl p-4">
+                      <div class="flex flex-wrap items-start justify-between gap-2">
+                        <div class="flex items-start gap-3 flex-1 min-w-0">
+                          <div class="p-2 rounded-lg bg-emerald-100"><span class="material-symbols-outlined text-emerald-800">work</span></div>
+                          <div>
+                            <h4 class="font-semibold text-slate-900">ABC Inc. Audit</h4>
+                            <div class="flex flex-wrap gap-3 mt-1 text-sm text-slate-600">
+                              <span class="inline-flex items-center gap-1"><span class="material-symbols-outlined text-base">calendar_today</span>May 20 – May 21, 2024</span>
+                              <span class="inline-flex items-center gap-1"><span class="material-symbols-outlined text-base">location_on</span>Colombo, Sri Lanka</span>
+                            </div>
+                          </div>
+                        </div>
+                        <span class="px-2 py-1 text-xs font-medium rounded-full bg-emerald-100 text-emerald-800">Confirmed</span>
+                      </div>
+                    </div>
+                    <div class="border border-sky-200 bg-sky-50/80 rounded-xl p-4">
+                      <div class="flex flex-wrap items-start justify-between gap-2">
+                        <div class="flex items-start gap-3 flex-1 min-w-0">
+                          <div class="p-2 rounded-lg bg-sky-100"><span class="material-symbols-outlined text-sky-800">groups</span></div>
+                          <div>
+                            <h4 class="font-semibold text-slate-900">Team Planning Meeting</h4>
+                            <div class="flex flex-wrap gap-3 mt-1 text-sm text-slate-600">
+                              <span class="inline-flex items-center gap-1"><span class="material-symbols-outlined text-base">calendar_today</span>May 23, 2024</span>
+                              <span class="inline-flex items-center gap-1"><span class="material-symbols-outlined text-base">location_on</span>Office</span>
+                            </div>
+                          </div>
+                        </div>
+                        <span class="px-2 py-1 text-xs font-medium rounded-full bg-sky-100 text-sky-800">Scheduled</span>
+                      </div>
+                    </div>
+                    <div class="border border-amber-200 bg-amber-50/80 rounded-xl p-4">
+                      <div class="flex flex-wrap items-start justify-between gap-2">
+                        <div class="flex items-start gap-3 flex-1 min-w-0">
+                          <div class="p-2 rounded-lg bg-amber-100"><span class="material-symbols-outlined text-amber-800">event</span></div>
+                          <div>
+                            <h4 class="font-semibold text-slate-900">Annual Leave</h4>
+                            <div class="flex flex-wrap gap-3 mt-1 text-sm text-slate-600">
+                              <span class="inline-flex items-center gap-1"><span class="material-symbols-outlined text-base">calendar_today</span>Jun 1 – Jun 7, 2024</span>
+                              <span class="inline-flex items-center gap-1"><span class="material-symbols-outlined text-base">location_on</span>—</span>
+                            </div>
+                          </div>
+                        </div>
+                        <span class="px-2 py-1 text-xs font-medium rounded-full bg-emerald-100 text-emerald-800">Approved</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
           </div>
+
         </div>
       </main>
     </div>
@@ -352,7 +955,6 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', function () {
-      // Sidebar submenu toggle
       document.querySelectorAll('#sidebar .menu-toggle').forEach(function (btn) {
         btn.addEventListener('click', function () {
           var submenu = this.nextElementSibling;
@@ -380,33 +982,27 @@
       if (sidebarToggle && sidebar) {
         sidebarToggle.setAttribute('aria-expanded', String(!sidebar.classList.contains('collapsed')));
         positionToggle();
-
         sidebarToggle.addEventListener('click', function () {
           var collapsed = !sidebar.classList.contains('collapsed');
           sidebar.classList.toggle('collapsed', collapsed);
           if (icon) icon.textContent = collapsed ? 'keyboard_double_arrow_right' : 'keyboard_double_arrow_left';
           positionToggle();
-          // collapse all submenus when collapsed
           if (collapsed) document.querySelectorAll('#sidebar .submenu').forEach(function (s) { s.classList.add('hidden'); });
         });
-
-        sidebar.addEventListener('mouseenter', function () {
-          if (sidebar.classList.contains('collapsed')) {
-            sidebar.classList.add('expanded-temp');
-            positionToggle();
-          }
-        });
-        sidebar.addEventListener('mouseleave', function () {
-          if (sidebar.classList.contains('collapsed')) {
-            sidebar.classList.remove('expanded-temp');
-            positionToggle();
-          }
-        });
-
         window.addEventListener('resize', positionToggle);
       }
+
+      document.querySelectorAll('[data-profile-tab]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var id = btn.getAttribute('data-profile-tab');
+          document.querySelectorAll('.profile-tab-panel').forEach(function (p) { p.classList.add('hidden'); });
+          var panel = document.getElementById('panel-' + id);
+          if (panel) panel.classList.remove('hidden');
+          document.querySelectorAll('.profile-tab-btn').forEach(function (b) { b.classList.remove('active'); });
+          btn.classList.add('active');
+        });
+      });
     });
   </script>
 </body>
 </html>
-
