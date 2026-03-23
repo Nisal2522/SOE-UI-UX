@@ -955,7 +955,15 @@
               <!-- Availability -->
               <div id="panel-availability" class="profile-tab-panel hidden space-y-8">
                 <div class="fut-section-glow p-6 pt-8">
-                  <h2 class="text-xl font-bold text-[#1b1e42] mb-4 flex items-center gap-2"><span class="material-symbols-outlined text-[#3eb2ed]">speed</span> Current Task Load</h2>
+                  <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3 mb-4">
+                    <h2 class="text-xl font-bold text-[#1b1e42] flex items-center gap-2"><span class="material-symbols-outlined text-[#3eb2ed]">speed</span> Current Task Load</h2>
+                    <button id="currentTaskDateBtn" type="button" class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border border-[#1b1e42]/10 bg-white text-sm hover:border-sky-300 hover:bg-sky-50/50 transition-colors">
+                      <span class="material-symbols-outlined text-base text-[#3eb2ed]">calendar_month</span>
+                      <span class="text-slate-500">Current Date:</span>
+                      <span id="currentTaskDate" class="font-semibold text-[#1b1e42]">--</span>
+                      <input id="currentTaskDatePicker" type="date" class="sr-only" />
+                    </button>
+                  </div>
                   <div class="flex flex-col sm:flex-row sm:items-center gap-4 mb-4">
                     <div class="flex-1 min-w-0">
                       <div class="flex items-center justify-between mb-2">
@@ -968,14 +976,18 @@
                     </div>
                     <span class="px-4 py-1.5 rounded-full text-sm font-semibold bg-gradient-to-r from-sky-500 to-cyan-400 text-white shadow-lg shadow-sky-500/30 shrink-0 self-start sm:self-center">Moderate</span>
                   </div>
-                  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+                  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 text-sm">
                     <div class="flex items-center gap-3 p-3 rounded-xl bg-white/80 border border-[#1b1e42]/8">
                       <span class="flex h-10 w-10 items-center justify-center rounded-lg bg-orange-100 text-orange-600"><span class="material-symbols-outlined">event_available</span></span>
-                      <div><span class="text-slate-600">Assigned Audits:</span> <span class="font-bold text-[#1b1e42]">3</span></div>
+                      <div><span class="text-slate-600">Assigned Audits:</span> <span class="font-bold text-[#1b1e42]">1</span></div>
                     </div>
                     <div class="flex items-center gap-3 p-3 rounded-xl bg-white/80 border border-[#1b1e42]/8">
                       <span class="flex h-10 w-10 items-center justify-center rounded-lg bg-pink-100 text-pink-600"><span class="material-symbols-outlined">groups</span></span>
                       <div><span class="text-slate-600">Upcoming Meetings:</span> <span class="font-bold text-[#1b1e42]">2</span></div>
+                    </div>
+                    <div class="flex items-center gap-3 p-3 rounded-xl bg-white/80 border border-[#1b1e42]/8">
+                      <span class="flex h-10 w-10 items-center justify-center rounded-lg bg-sky-100 text-sky-600"><span class="material-symbols-outlined">task_alt</span></span>
+                      <div><span class="text-slate-600">SOE Task:</span> <span class="font-bold text-[#1b1e42]">4</span></div>
                     </div>
                   </div>
                 </div>
@@ -1107,6 +1119,45 @@
           btn.classList.add('active');
         });
       });
+
+      var currentTaskDateEl = document.getElementById('currentTaskDate');
+      var currentTaskDateBtn = document.getElementById('currentTaskDateBtn');
+      var currentTaskDatePicker = document.getElementById('currentTaskDatePicker');
+
+      function formatDisplayDate(date) {
+        return new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: '2-digit' }).format(date);
+      }
+
+      function formatInputDate(date) {
+        var year = date.getFullYear();
+        var month = String(date.getMonth() + 1).padStart(2, '0');
+        var day = String(date.getDate()).padStart(2, '0');
+        return year + '-' + month + '-' + day;
+      }
+
+      if (currentTaskDateEl) {
+        var today = new Date();
+        var todayInputValue = formatInputDate(today);
+        currentTaskDateEl.textContent = formatDisplayDate(today);
+        if (currentTaskDatePicker) currentTaskDatePicker.value = todayInputValue;
+
+        if (currentTaskDateBtn && currentTaskDatePicker) {
+          currentTaskDateBtn.addEventListener('click', function () {
+            if (typeof currentTaskDatePicker.showPicker === 'function') {
+              currentTaskDatePicker.showPicker();
+            } else {
+              currentTaskDatePicker.click();
+            }
+          });
+
+          currentTaskDatePicker.addEventListener('change', function () {
+            if (!currentTaskDatePicker.value) return;
+            var pickedDate = new Date(currentTaskDatePicker.value + 'T00:00:00');
+            currentTaskDateEl.textContent = formatDisplayDate(pickedDate);
+          });
+        }
+
+      }
     });
   </script>
 </body>
