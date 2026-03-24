@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Add New Employee | SOE</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { display: ['Inter', 'sans-serif'], sans: ['Inter', 'sans-serif'] },
+          colors: {
+            sidebar: '#1b1e42',
+            'cu-light-blue': '#3eb2ed',
+            'cu-light-blue-60': '#8bd1f4',
+            'cu-dark-blue-80': '#2a2e55'
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    body { font-family: Inter, sans-serif; }
+    .tab-btn.active { background: #1e3a8a; color: #fff; border-color: #1e3a8a; }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+    #sidebar.collapsed { width: 72px !important; }
+    #sidebar.collapsed nav a > span:last-child { display: none; }
+    #sidebar.collapsed .submenu { display: none !important; }
+    #sidebarToggle { position: absolute; z-index: 60; }
+    #sidebar.collapsed a[title] { position: relative; }
+    #sidebar.collapsed a[title]:hover::after {
+      content: attr(title);
+      position: absolute; left: 72px; top: 50%; transform: translateY(-50%);
+      background: #111827; color: #fff; padding: 6px 10px; border-radius: 6px;
+      white-space: nowrap; font-size: 12px; box-shadow: 0 6px 18px rgba(2,6,23,.12);
+    }
+
+    /* Futuristic visual theme for Add User page (white background) */
+    #adduser-page main {
+      background: #ffffff;
+    }
+    #adduser-page main section.bg-white,
+    #adduser-page main .neo-card {
+      background: #ffffff;
+      backdrop-filter: blur(6px);
+      border-color: rgba(226,232,240,0.95);
+      box-shadow: 0 8px 22px rgba(15,23,42,0.05), inset 0 1px 0 rgba(255,255,255,0.95);
+      position: relative;
+      border-radius: 14px;
+      overflow: hidden;
+    }
+    #adduser-page main .neo-card::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, #38bdf8 0%, #818cf8 50%, #22c55e 100%);
+      border-top-left-radius: 6px;
+      border-top-right-radius: 6px;
+    }
+    #adduser-page main .neo-card > .px-3.py-2 {
+      padding: 12px 14px;
+      background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+      border-bottom-color: rgba(226,232,240,0.95) !important;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    #adduser-page main .neo-card > .p-3 {
+      padding: 14px;
+    }
+    #adduser-page main .border-slate-200 {
+      border-color: rgba(148,163,184,0.28) !important;
+    }
+    #adduser-page main input,
+    #adduser-page main select,
+    #adduser-page main textarea {
+      background: #fcfdff;
+      border-color: rgba(203,213,225,0.95);
+      transition: all .2s ease;
+      border-radius: 10px;
+    }
+    #adduser-page main input:focus,
+    #adduser-page main select:focus,
+    #adduser-page main textarea:focus {
+      outline: none;
+      border-color: #60a5fa;
+      box-shadow: 0 0 0 3px rgba(96,165,250,0.16), 0 6px 16px rgba(30,64,175,0.10);
+      background: #fff;
+    }
+    #adduser-page main label.block.text-xs.font-semibold {
+      font-size: 11px;
+      letter-spacing: .02em;
+      color: #475569;
+    }
+    #adduser-page main .grid.text-\[11px\].font-semibold {
+      color: #334155;
+    }
+    #adduser-page main .text-xs.font-semibold {
+      letter-spacing: .02em;
+      color: #334155;
+    }
+    #adduser-page main .card-title-icon {
+      width: 24px;
+      height: 24px;
+      border-radius: 8px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 8px;
+      background: linear-gradient(135deg, #e0f2fe 0%, #eef2ff 100%);
+      color: #2563eb;
+      border: 1px solid rgba(147,197,253,0.55);
+    }
+    #adduser-page main button.bg-\[\#1b1e42\],
+    #adduser-page main a.bg-\[\#1b1e42\] {
+      background: linear-gradient(135deg, #1b1e42 0%, #2b377a 100%);
+      box-shadow: 0 8px 20px rgba(27,30,66,0.28);
+    }
+    #adduser-page main button.bg-emerald-500 {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      box-shadow: 0 8px 20px rgba(5,150,105,0.25);
+    }
+    #adduser-page main .inv-tab-btn {
+      border: 1px solid rgba(148,163,184,0.28);
+      transition: all .2s ease;
+    }
+    #adduser-page main .inv-tab-btn:hover {
+      transform: translateY(-1px);
+    }
+    #adduser-page main .inv-pane > .grid.grid-cols-12.gap-2:not(.text-\[11px\]) {
+      padding: 10px;
+      border: 1px solid rgba(226,232,240,0.95);
+      border-radius: 12px;
+      background: #f8fafc;
+    }
+    #adduser-page main .inv-pane .text-rose-600 {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      background: #fff1f2;
+      border: 1px solid #fecdd3;
+    }
+    #adduser-page main .inv-pane .text-rose-600:hover {
+      background: #ffe4e6;
+    }
+    #adduser-page .top-action-btn {
+      border-radius: 10px;
+      padding: 8px 12px;
+      font-size: 12px;
+      font-weight: 600;
+      box-shadow: 0 8px 20px rgba(27,30,66,0.20);
+    }
+  </style>
+</head>
+<body id="adduser-page" class="font-display bg-white text-slate-800 antialiased">
+  <div class="flex h-screen overflow-hidden relative">
+    <aside id="sidebar" class="w-64 flex-shrink-0 bg-sidebar text-white flex flex-col transition-all duration-300">
+      <div class="h-16 flex items-center justify-between px-6 border-b border-white/10 flex-shrink-0">
+        <div class="flex items-center gap-2">
+          <span class="text-2xl font-bold tracking-wider">SOE</span>
+          <div class="w-8 h-1 bg-gradient-to-r from-cu-light-blue to-cu-light-blue-60 rounded"></div>
+        </div>
+      </div>
+      <nav class="flex-1 overflow-y-auto p-4 space-y-1">
+        <div>
+          <button class="menu-toggle flex items-center justify-between p-3 rounded-lg text-slate-200 hover:bg-white/10 w-full text-left">
+            <div class="flex items-center gap-3"><span class="material-symbols-outlined">dashboard</span><span class="font-medium text-sm">Dashboard</span></div>
+            <span class="material-symbols-outlined text-lg transform transition-transform">expand_more</span>
+          </button>
+          <div class="submenu hidden ml-6 mt-1 space-y-1">
+            <a href="index.html" class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-200/70 hover:bg-white/10 hover:text-white" title="My Dashboard"><span class="material-symbols-outlined text-base">arrow_right</span><span>My Dashboard</span></a>
+          </div>
+        </div>
+        <div>
+          <a href="#" class="menu-toggle flex items-center justify-between p-3 rounded-lg text-slate-200 hover:bg-white/10 w-full text-left" title="Task">
+            <div class="flex items-center gap-3"><span class="material-symbols-outlined">task_alt</span><span class="font-medium text-sm">Task</span></div>
+            <span class="material-symbols-outlined text-lg opacity-60">chevron_right</span>
+          </a>
+        </div>
+        <div>
+          <button class="menu-toggle flex items-center justify-between p-3 rounded-lg text-slate-200 hover:bg-white/10 w-full text-left">
+            <div class="flex items-center gap-3"><span class="material-symbols-outlined">trending_up</span><span class="font-medium text-sm">CRM</span></div>
+            <span class="material-symbols-outlined text-lg transform transition-transform">expand_more</span>
+          </button>
+          <div class="submenu hidden ml-6 mt-1 space-y-1">
+            <a href="allclient.html#leads" class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-200/70 hover:bg-white/10 hover:text-white" title="Accounts"><span class="material-symbols-outlined text-base">arrow_right</span><span>Accounts</span></a>
+          </div>
+        </div>
+        <div>
+          <button class="menu-toggle flex items-center justify-between p-3 rounded-lg text-slate-200 hover:bg-cu-dark-blue-80 w-full text-left">
+            <div class="flex items-center gap-3"><span class="material-symbols-outlined">public</span><span class="font-medium text-sm">Regional &amp; Global</span></div>
+            <span class="material-symbols-outlined text-lg transform transition-transform">chevron_right</span>
+          </button>
+          <div class="submenu hidden ml-6 mt-1 space-y-1">
+            <a href="COEdashboard.html" class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-400 hover:bg-cu-dark-blue-80 hover:text-white"><span class="material-symbols-outlined text-base">arrow_right</span><span>COEs</span></a>
+          </div>
+        </div>
+        <div>
+          <button class="menu-toggle flex items-center justify-between p-3 rounded-lg text-slate-200 hover:bg-cu-dark-blue-80 w-full text-left">
+            <div class="flex items-center gap-3"><span class="material-symbols-outlined">groups</span><span class="font-medium text-sm">HR Manager</span></div>
+            <span class="material-symbols-outlined text-lg">expand_more</span>
+          </button>
+          <ul class="submenu hidden pl-6 mt-2 space-y-1 text-sm">
+            <li><a class="block p-2 rounded text-slate-400 hover:bg-cu-dark-blue-80 hover:text-slate-200" href="user.html">User</a></li>
+          </ul>
+        </div>
+        <a class="flex items-center gap-3 p-3 rounded-lg text-sm font-medium text-slate-200 hover:bg-white/10" href="#"><span class="material-symbols-outlined">corporate_fare</span>Department Manager</a>
+        <div>
+          <button class="menu-toggle flex items-center justify-between p-3 rounded-lg text-slate-200 hover:bg-cu-dark-blue-80 w-full text-left">
+            <div class="flex items-center gap-3"><span class="material-symbols-outlined">manage_accounts</span><span class="font-medium text-sm">User Manager</span></div>
+            <span class="material-symbols-outlined text-lg">expand_more</span>
+          </button>
+          <ul class="submenu hidden pl-6 mt-2 space-y-1 text-sm">
+            <li><a class="block p-2 rounded text-slate-200 bg-cu-dark-blue-80" href="adduser.html">Add User</a></li>
+            <li><a class="block p-2 rounded text-slate-400 hover:bg-cu-dark-blue-80 hover:text-slate-200" href="user.html">Manage Users</a></li>
+          </ul>
+        </div>
+        <div>
+          <button class="menu-toggle flex items-center justify-between p-3 rounded-lg text-slate-200 hover:bg-cu-dark-blue-80 w-full text-left">
+            <div class="flex items-center gap-3"><span class="material-symbols-outlined">settings</span><span class="font-medium text-sm">Settings</span></div>
+            <span class="material-symbols-outlined text-lg">expand_more</span>
+          </button>
+          <ul class="submenu hidden pl-6 mt-2 space-y-1 text-sm">
+            <li><a class="block p-2 rounded text-slate-400 hover:bg-cu-dark-blue-80 hover:text-slate-200" href="configuration.html">Configuration</a></li>
+          </ul>
+        </div>
+      </nav>
+    </aside>
+
+    <button id="sidebarToggle" type="button" aria-expanded="true" aria-label="Toggle sidebar" class="fixed p-2 rounded-full text-slate-300 hover:bg-[#2a2e55] bg-[#1b1e42]/90 z-[70] shadow-md">
+      <span class="material-symbols-outlined text-xl">keyboard_double_arrow_left</span>
+    </button>
+
+    <div class="flex-1 flex flex-col bg-white min-w-0">
+      <header class="flex-shrink-0 bg-[#1b1e42] h-16 flex items-center justify-end px-6 border-b border-slate-200">
+        <div class="flex items-center space-x-4">
+          <button class="p-2 rounded-full text-slate-300 hover:bg-white/10 relative" type="button"><span class="material-symbols-outlined text-amber-400">notifications</span><span class="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full"></span></button>
+          <div class="flex items-center space-x-3">
+            <img alt="User avatar" class="w-10 h-10 rounded-full object-cover" src="https://i.pravatar.cc/200?u=soe-man" />
+            <div><div class="font-semibold text-sm text-white">Nisal Amarasekara</div><div class="text-xs text-slate-400">Sri Lanka</div></div>
+          </div>
+          <button class="p-2 rounded-full text-slate-300 hover:bg-white/10" type="button"><span class="material-symbols-outlined">lock</span></button>
+        </div>
+      </header>
+
+      <main class="flex-1 overflow-y-auto bg-slate-50 p-4 lg:p-5">
+        <div class="w-full">
+          <div class="flex items-start justify-between mb-3">
+            <div>
+              <h1 class="text-xl font-semibold text-slate-900">Basic Information</h1>
+              <p class="text-xs text-slate-500 mt-0.5">Identify and configure employee core form details</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <button class="top-action-btn inline-flex items-center gap-1.5 bg-[#1b1e42] text-white"><span class="material-symbols-outlined text-sm">restart_alt</span>Reset</button>
+              <button class="top-action-btn inline-flex items-center gap-1.5 bg-[#1b1e42] text-white"><span class="material-symbols-outlined text-sm">save</span>Save</button>
+              <a href="user.html" class="top-action-btn inline-flex items-center gap-1.5 bg-[#1b1e42] text-white"><span class="material-symbols-outlined text-sm">arrow_back</span>Back</a>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 xl:grid-cols-12 gap-4">
+            <div class="xl:col-span-8 space-y-3">
+              <section class="bg-white border border-slate-200 rounded-md neo-card">
+                <div class="px-3 py-2 text-xs font-semibold text-slate-700 border-b border-slate-200"><span class="card-title-icon"><span class="material-symbols-outlined text-sm">person</span></span>User Info</div>
+                <div class="p-3 grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+                  <div>
+                    <label class="block text-xs font-semibold mb-1">Name <span class="text-rose-500">*</span> :</label>
+                    <input class="w-full px-3 py-1.5 border border-slate-300 rounded">
+                  </div>
+                  <div>
+                    <label class="block text-xs font-semibold mb-1">Email <span class="text-rose-500">*</span> :</label>
+                    <div class="flex">
+                      <input class="flex-1 px-3 py-1.5 border border-slate-300 rounded-l">
+                      <span class="px-3 py-1.5 border border-l-0 border-slate-300 bg-slate-50 rounded-r text-slate-600">@pcugroup.com</span>
+                    </div>
+                  </div>
+                  <div>
+                    <label class="block text-xs font-semibold mb-1">Contacts :</label>
+                    <input class="w-full px-3 py-1.5 border border-slate-300 rounded mb-2">
+                    <input class="w-full px-3 py-1.5 border border-slate-300 rounded">
+                  </div>
+                  <div>
+                    <label class="block text-xs font-semibold mb-1">Full Address :</label>
+                    <input class="w-full px-3 py-1.5 border border-slate-300 rounded">
+                  </div>
+                  <div>
+                    <label class="block text-xs font-semibold mb-1">Emergency Contact Name :</label>
+                    <input class="w-full px-3 py-1.5 border border-slate-300 rounded">
+                  </div>
+                  <div>
+                    <label class="block text-xs font-semibold mb-1">Emergency Contact Number :</label>
+                    <input class="w-full px-3 py-1.5 border border-slate-300 rounded">
+                  </div>
+                  <div class="flex items-end">
+                    <label class="inline-flex items-center gap-2 text-xs font-semibold"><span>Active :</span><input type="checkbox" class="rounded border-slate-300"></label>
+                  </div>
+                </div>
+              </section>
+
+              <section class="bg-white border border-slate-200 rounded-md neo-card">
+                <div class="px-3 py-2 text-xs font-semibold text-slate-700 border-b border-slate-200"><span class="card-title-icon"><span class="material-symbols-outlined text-sm">badge</span></span>Employment Info</div>
+                <div class="p-3 grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+                  <div>
+                    <label class="block text-xs font-semibold mb-1">Employee No <span class="text-rose-500">*</span> :</label>
+                    <input class="w-full px-3 py-1.5 border border-slate-300 rounded">
+                  </div>
+                  <div>
+                    <label class="block text-xs font-semibold mb-1">Reports To :</label>
+                    <select class="w-full px-3 py-1.5 border border-slate-300 rounded"><option></option></select>
+                  </div>
+                  <div>
+                    <label class="block text-xs font-semibold mb-1">Regional Group :</label>
+                    <select class="w-full px-3 py-1.5 border border-slate-300 rounded"><option></option></select>
+                  </div>
+                  <div>
+                    <label class="block text-xs font-semibold mb-1">Reported To(Regional) :</label>
+                    <input class="w-full px-3 py-1.5 border border-slate-300 rounded bg-slate-100" readonly>
+                  </div>
+                </div>
+              </section>
+
+              <section class="bg-white border border-slate-200 rounded-md neo-card">
+                <div class="px-3 py-2 text-xs font-semibold text-slate-700 border-b border-slate-200"><span class="card-title-icon"><span class="material-symbols-outlined text-sm">home_work</span></span>WFH &amp; Leave Info</div>
+                <div class="p-3 grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+                  <div>
+                    <label class="block text-xs font-semibold mb-1">Annual Leaves :</label>
+                    <input class="w-full px-3 py-1.5 border border-slate-300 rounded">
+                  </div>
+                  <div>
+                    <label class="block text-xs font-semibold mb-1">Casual Leaves :</label>
+                    <input class="w-full px-3 py-1.5 border border-slate-300 rounded">
+                  </div>
+                  <div>
+                    <label class="block text-xs font-semibold mb-1">Sick :</label>
+                    <input class="w-full px-3 py-1.5 border border-slate-300 rounded">
+                  </div>
+                  <div>
+                    <label class="block text-xs font-semibold mb-1">Paid :</label>
+                    <input class="w-full px-3 py-1.5 border border-slate-300 rounded">
+                  </div>
+                </div>
+              </section>
+
+              <section class="bg-white border border-slate-200 rounded-md neo-card">
+                <div class="px-3 py-2 text-xs font-semibold text-slate-700 border-b border-slate-200"><span class="card-title-icon"><span class="material-symbols-outlined text-sm">workspace_premium</span></span>Career Info</div>
+                <div class="p-3 grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+                  <div>
+                    <label class="block text-xs font-semibold mb-1">Joined Date :</label>
+                    <div class="relative">
+                      <input type="date" class="w-full px-3 py-1.5 border border-slate-300 rounded">
+                    </div>
+                  </div>
+                  <div>
+                    <label class="block text-xs font-semibold mb-1">Career Experience :</label>
+                    <div class="flex">
+                      <input class="flex-1 px-3 py-1.5 border border-slate-300 rounded-l">
+                      <span class="px-3 py-1.5 border border-l-0 border-slate-300 bg-slate-50 rounded-r text-slate-600">Years</span>
+                    </div>
+                  </div>
+                  <div>
+                    <label class="block text-xs font-semibold mb-1">Highest Education :</label>
+                    <input class="w-full px-3 py-1.5 border border-slate-300 rounded">
+                  </div>
+                </div>
+              </section>
+
+              <section class="bg-white border border-slate-200 rounded-md neo-card">
+                <div class="px-3 py-2 border-b border-slate-200">
+                  <div class="flex flex-wrap gap-1 text-[11px] font-semibold">
+                    <button type="button" data-inv-tab="inventory" class="inv-tab-btn px-3 py-1 bg-slate-100 text-slate-600 rounded-sm">User Inventory</button>
+                    <button type="button" data-inv-tab="country" class="inv-tab-btn px-3 py-1 bg-[#1b1e42] text-white rounded-sm">Country Allocation</button>
+                    <button type="button" data-inv-tab="department" class="inv-tab-btn px-3 py-1 bg-slate-100 text-slate-600 rounded-sm">Department Allocation</button>
+                    <button type="button" data-inv-tab="role" class="inv-tab-btn px-3 py-1 bg-slate-100 text-slate-600 rounded-sm">Role Allocation</button>
+                  </div>
+                </div>
+                <div class="p-3 inv-pane hidden" data-inv-pane="inventory">
+                  <div class="grid grid-cols-12 gap-2 text-[11px] font-semibold text-slate-700 mb-1">
+                    <div class="col-span-3">Device</div>
+                    <div class="col-span-3">Model Name</div>
+                    <div class="col-span-3">Model Number</div>
+                    <div class="col-span-2">Issued Date</div>
+                    <div class="col-span-1 text-right">Action</div>
+                  </div>
+                  <div class="grid grid-cols-12 gap-2">
+                    <div class="col-span-3"><select class="w-full px-2 py-1 border border-slate-300 rounded text-sm"><option></option><option>Laptop</option><option>Phone</option><option>Tablet</option></select></div>
+                    <div class="col-span-3"><input class="w-full px-2 py-1 border border-slate-300 rounded text-sm"></div>
+                    <div class="col-span-3"><input class="w-full px-2 py-1 border border-slate-300 rounded text-sm"></div>
+                    <div class="col-span-2"><input type="date" class="w-full px-2 py-1 border border-slate-300 rounded text-sm"></div>
+                    <div class="col-span-1"></div>
+                  </div>
+                  <div class="flex justify-end mt-2">
+                    <button type="button" class="px-3 py-1.5 text-xs font-semibold bg-[#1b1e42] text-white rounded">+ Add Device</button>
+                  </div>
+                </div>
+                <div class="p-3 inv-pane" data-inv-pane="country">
+                  <div class="grid grid-cols-12 gap-2 text-[11px] font-semibold text-slate-700 mb-1">
+                    <div class="col-span-7">Country</div>
+                    <div class="col-span-2">Allocation</div>
+                    <div class="col-span-2">Primary</div>
+                    <div class="col-span-1 text-right">Action</div>
+                  </div>
+                  <div class="grid grid-cols-12 gap-2 items-center">
+                    <div class="col-span-7"><select class="w-full px-2 py-1 border border-slate-300 rounded text-sm"><option>Select country</option><option>Sri Lanka</option><option>India</option><option>Singapore</option></select></div>
+                    <div class="col-span-2">
+                      <div class="flex">
+                        <input class="w-full px-2 py-1 border border-slate-300 rounded-l text-sm">
+                        <span class="px-2 py-1 border border-l-0 border-slate-300 bg-slate-50 rounded-r text-xs">%</span>
+                      </div>
+                    </div>
+                    <div class="col-span-2"><input type="checkbox" class="rounded border-slate-300"></div>
+                    <div class="col-span-1 text-right"><button type="button" class="text-rose-600 hover:text-rose-700"><span class="material-symbols-outlined text-sm">delete</span></button></div>
+                  </div>
+                  <div class="flex justify-end mt-2">
+                    <button type="button" class="px-3 py-1.5 text-xs font-semibold bg-[#1b1e42] text-white rounded">+ Add Offices</button>
+                  </div>
+                </div>
+                <div class="p-3 inv-pane hidden" data-inv-pane="department">
+                  <div class="grid grid-cols-12 gap-2 text-[11px] font-semibold text-slate-700 mb-1">
+                    <div class="col-span-5">Country</div>
+                    <div class="col-span-4">Department</div>
+                    <div class="col-span-2">Dep. Allocation</div>
+                    <div class="col-span-1 text-right">Action</div>
+                  </div>
+                  <div class="grid grid-cols-12 gap-2 items-center">
+                    <div class="col-span-5"><select class="w-full px-2 py-1 border border-slate-300 rounded text-sm"><option></option><option>Sri Lanka</option><option>India</option><option>Singapore</option></select></div>
+                    <div class="col-span-4"><select class="w-full px-2 py-1 border border-slate-300 rounded text-sm"><option></option><option>Textile</option><option>Certification</option><option>Operations</option><option>Finance</option><option>HR</option></select></div>
+                    <div class="col-span-2">
+                      <div class="flex">
+                        <input class="w-full px-2 py-1 border border-slate-300 rounded-l text-sm">
+                        <span class="px-2 py-1 border border-l-0 border-slate-300 bg-slate-50 rounded-r text-xs">%</span>
+                      </div>
+                    </div>
+                    <div class="col-span-1 text-right"><button type="button" class="text-rose-600 hover:text-rose-700"><span class="material-symbols-outlined text-sm">delete</span></button></div>
+                  </div>
+                  <div class="flex justify-end mt-2">
+                    <button type="button" class="px-3 py-1.5 text-xs font-semibold bg-[#1b1e42] text-white rounded">+ Add FTE Department</button>
+                  </div>
+                </div>
+                <div class="p-3 inv-pane hidden" data-inv-pane="role">
+                  <div class="grid grid-cols-12 gap-2 text-[11px] font-semibold text-slate-700 mb-1">
+                    <div class="col-span-3">Country</div>
+                    <div class="col-span-3">Department</div>
+                    <div class="col-span-3">Role</div>
+                    <div class="col-span-2">Role Allocation</div>
+                    <div class="col-span-1 text-right">Action</div>
+                  </div>
+                  <div class="grid grid-cols-12 gap-2 items-center">
+                    <div class="col-span-3"><select class="w-full px-2 py-1 border border-slate-300 rounded text-sm"><option></option><option>Sri Lanka</option><option>India</option><option>Singapore</option></select></div>
+                    <div class="col-span-3"><select class="w-full px-2 py-1 border border-slate-300 rounded text-sm"><option></option><option>Textile</option><option>Certification</option><option>Operations</option><option>Finance</option><option>HR</option></select></div>
+                    <div class="col-span-3"><select class="w-full px-2 py-1 border border-slate-300 rounded text-sm"><option></option><option>Senior Auditor</option><option>Lead Auditor</option><option>Auditor</option><option>Manager</option></select></div>
+                    <div class="col-span-2">
+                      <div class="flex">
+                        <input class="w-full px-2 py-1 border border-slate-300 rounded-l text-sm">
+                        <span class="px-2 py-1 border border-l-0 border-slate-300 bg-slate-50 rounded-r text-xs">%</span>
+                      </div>
+                    </div>
+                    <div class="col-span-1 text-right"><button type="button" class="text-rose-600 hover:text-rose-700"><span class="material-symbols-outlined text-sm">delete</span></button></div>
+                  </div>
+                  <div class="flex justify-end mt-2">
+                    <button type="button" class="px-3 py-1.5 text-xs font-semibold bg-[#1b1e42] text-white rounded">+ Add FTE Role</button>
+                  </div>
+                </div>
+              </section>
+            </div>
+
+            <div class="xl:col-span-4">
+              <section class="bg-white border border-slate-200 rounded-md neo-card">
+                <div class="px-3 py-2 text-xs font-semibold text-slate-700 border-b border-slate-200"><span class="card-title-icon"><span class="material-symbols-outlined text-sm">verified_user</span></span>Permission Info</div>
+                <div class="p-3">
+                  <div class="flex gap-2 mb-3">
+                    <select class="flex-1 px-3 py-1.5 border border-slate-300 rounded text-sm">
+                      <option>Select Preset</option>
+                    </select>
+                    <button class="px-3 py-1.5 text-xs font-semibold bg-emerald-500 text-white rounded">Add New Role</button>
+                  </div>
+                  <div class="border border-slate-200 rounded overflow-hidden">
+                    <div class="grid grid-cols-12 bg-slate-50 text-xs font-semibold text-slate-700 border-b border-slate-200">
+                      <div class="col-span-10 px-3 py-2">Permission Group Name</div>
+                      <div class="col-span-2 px-3 py-2 text-right">Select</div>
+                    </div>
+                    <div class="max-h-[560px] overflow-y-auto text-sm">
+                      <div class="grid grid-cols-12 border-b border-slate-100"><div class="col-span-10 px-3 py-2">Dashboard</div><div class="col-span-2 px-3 py-2 text-right"><input type="checkbox" class="rounded border-slate-300"></div></div>
+                      <div class="grid grid-cols-12 border-b border-slate-100"><div class="col-span-10 px-3 py-2">Task</div><div class="col-span-2 px-3 py-2 text-right"><input type="checkbox" class="rounded border-slate-300"></div></div>
+                      <div class="grid grid-cols-12 border-b border-slate-100"><div class="col-span-10 px-3 py-2">Client/Sales</div><div class="col-span-2 px-3 py-2 text-right"><input type="checkbox" class="rounded border-slate-300"></div></div>
+                      <div class="grid grid-cols-12 border-b border-slate-100"><div class="col-span-10 px-3 py-2">Settings</div><div class="col-span-2 px-3 py-2 text-right"><input type="checkbox" class="rounded border-slate-300"></div></div>
+                      <div class="grid grid-cols-12 border-b border-slate-100"><div class="col-span-10 px-3 py-2">Performance</div><div class="col-span-2 px-3 py-2 text-right"><input type="checkbox" class="rounded border-slate-300"></div></div>
+                      <div class="grid grid-cols-12 border-b border-slate-100"><div class="col-span-10 px-3 py-2">Reports</div><div class="col-span-2 px-3 py-2 text-right"><input type="checkbox" class="rounded border-slate-300"></div></div>
+                      <div class="grid grid-cols-12 border-b border-slate-100"><div class="col-span-10 px-3 py-2">HR</div><div class="col-span-2 px-3 py-2 text-right"><input type="checkbox" class="rounded border-slate-300"></div></div>
+                      <div class="grid grid-cols-12 border-b border-slate-100"><div class="col-span-10 px-3 py-2">Leave Management</div><div class="col-span-2 px-3 py-2 text-right"><input type="checkbox" class="rounded border-slate-300"></div></div>
+                      <div class="grid grid-cols-12 border-b border-slate-100"><div class="col-span-10 px-3 py-2">Pay Slip Access</div><div class="col-span-2 px-3 py-2 text-right"><input type="checkbox" class="rounded border-slate-300"></div></div>
+                      <div class="grid grid-cols-12 border-b border-slate-100"><div class="col-span-10 px-3 py-2">Kpi</div><div class="col-span-2 px-3 py-2 text-right"><input type="checkbox" class="rounded border-slate-300"></div></div>
+                      <div class="grid grid-cols-12 border-b border-slate-100"><div class="col-span-10 px-3 py-2">IT Manager</div><div class="col-span-2 px-3 py-2 text-right"><input type="checkbox" class="rounded border-slate-300"></div></div>
+                      <div class="grid grid-cols-12 border-b border-slate-100"><div class="col-span-10 px-3 py-2">News Manager</div><div class="col-span-2 px-3 py-2 text-right"><input type="checkbox" class="rounded border-slate-300"></div></div>
+                      <div class="grid grid-cols-12 border-b border-slate-100"><div class="col-span-10 px-3 py-2">Recycle Bin</div><div class="col-span-2 px-3 py-2 text-right"><input type="checkbox" class="rounded border-slate-300"></div></div>
+                      <div class="grid grid-cols-12 border-b border-slate-100"><div class="col-span-10 px-3 py-2">Country</div><div class="col-span-2 px-3 py-2 text-right"><input type="checkbox" class="rounded border-slate-300"></div></div>
+                      <div class="grid grid-cols-12 border-b border-slate-100"><div class="col-span-10 px-3 py-2">Configuration</div><div class="col-span-2 px-3 py-2 text-right"><input type="checkbox" class="rounded border-slate-300"></div></div>
+                      <div class="grid grid-cols-12 border-b border-slate-100"><div class="col-span-10 px-3 py-2">TC Organic</div><div class="col-span-2 px-3 py-2 text-right"><input type="checkbox" class="rounded border-slate-300"></div></div>
+                      <div class="grid grid-cols-12 border-b border-slate-100"><div class="col-span-10 px-3 py-2">TC Textile</div><div class="col-span-2 px-3 py-2 text-right"><input type="checkbox" class="rounded border-slate-300"></div></div>
+                      <div class="grid grid-cols-12 border-b border-slate-100"><div class="col-span-10 px-3 py-2">TC Summary</div><div class="col-span-2 px-3 py-2 text-right"><input type="checkbox" class="rounded border-slate-300"></div></div>
+                      <div class="grid grid-cols-12"><div class="col-span-10 px-3 py-2">TC Configuration</div><div class="col-span-2 px-3 py-2 text-right"><input type="checkbox" class="rounded border-slate-300"></div></div>
+                    </div>
+                  </div>
+                </div>
+              </section>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      document.querySelectorAll('#sidebar .menu-toggle').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var submenu = this.nextElementSibling;
+          var arrow = this.querySelector('.material-symbols-outlined:last-child');
+          if (submenu && submenu.classList.contains('submenu')) {
+            submenu.classList.toggle('hidden');
+            if (arrow) arrow.style.transform = submenu.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)';
+          }
+        });
+      });
+
+      var sidebar = document.getElementById('sidebar');
+      var sidebarToggle = document.getElementById('sidebarToggle');
+      var icon = sidebarToggle ? sidebarToggle.querySelector('.material-symbols-outlined') : null;
+      function positionToggle() {
+        try {
+          var left = (sidebar.offsetLeft || 0) + (sidebar.offsetWidth || 0) - Math.round((sidebarToggle.offsetWidth || 36) / 2) - 8;
+          var top = (sidebar.offsetTop || 0) + 8;
+          sidebarToggle.style.left = left + 'px';
+          sidebarToggle.style.top = top + 'px';
+        } catch (e) {}
+      }
+      if (sidebarToggle && sidebar) {
+        sidebarToggle.setAttribute('aria-expanded', String(!sidebar.classList.contains('collapsed')));
+        positionToggle();
+        sidebarToggle.addEventListener('click', function () {
+          var collapsed = !sidebar.classList.contains('collapsed');
+          sidebar.classList.toggle('collapsed', collapsed);
+          if (icon) icon.textContent = collapsed ? 'keyboard_double_arrow_right' : 'keyboard_double_arrow_left';
+          positionToggle();
+          if (collapsed) document.querySelectorAll('#sidebar .submenu').forEach(function (s) { s.classList.add('hidden'); });
+        });
+        window.addEventListener('resize', positionToggle);
+      }
+
+      document.querySelectorAll('.tab-btn').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var id = btn.getAttribute('data-tab');
+          document.querySelectorAll('.tab-btn').forEach(function (b) { b.classList.remove('active'); });
+          document.querySelectorAll('.tab-panel').forEach(function (p) { p.classList.remove('active'); });
+          btn.classList.add('active');
+          var panel = document.getElementById('panel-' + id);
+          if (panel) panel.classList.add('active');
+        });
+      });
+
+      document.querySelectorAll('.inv-tab-btn').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var tab = btn.getAttribute('data-inv-tab');
+          document.querySelectorAll('.inv-tab-btn').forEach(function (b) {
+            b.classList.remove('bg-[#1b1e42]', 'text-white');
+            b.classList.add('bg-slate-100', 'text-slate-600');
+          });
+          btn.classList.remove('bg-slate-100', 'text-slate-600');
+          btn.classList.add('bg-[#1b1e42]', 'text-white');
+          document.querySelectorAll('.inv-pane').forEach(function (p) { p.classList.add('hidden'); });
+          var pane = document.querySelector('[data-inv-pane="' + tab + '"]');
+          if (pane) pane.classList.remove('hidden');
+        });
+      });
+
+      function saveAndBack() {
+        alert('Employee profile saved (demo).');
+        window.location.href = 'user.html';
+      }
+      var saveTopBtn = document.getElementById('saveTopBtn');
+      var saveBottomBtn = document.getElementById('saveBottomBtn');
+      if (saveTopBtn) saveTopBtn.addEventListener('click', saveAndBack);
+      if (saveBottomBtn) saveBottomBtn.addEventListener('click', saveAndBack);
+    });
+  </script>
+</body>
+</html>
