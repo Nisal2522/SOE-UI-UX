@@ -39,19 +39,23 @@
       white-space: nowrap; font-size: 12px; box-shadow: 0 6px 18px rgba(2,6,23,.12);
     }
 
-    /* Futuristic visual theme for Add User page (white background) */
+    /* Futuristic visual theme for Add User page */
     #adduser-page main {
       background: #ffffff;
     }
     #adduser-page main section.bg-white,
     #adduser-page main .neo-card {
       background: #ffffff;
-      backdrop-filter: blur(6px);
-      border-color: rgba(226,232,240,0.95);
-      box-shadow: 0 8px 22px rgba(15,23,42,0.05), inset 0 1px 0 rgba(255,255,255,0.95);
+      border: 1px solid #3eb2ed;
+      box-shadow: 0 12px 36px -16px rgba(62, 178, 237, 0.2);
       position: relative;
-      border-radius: 14px;
+      border-radius: 16px;
       overflow: hidden;
+      transition: all 0.3s ease;
+    }
+    #adduser-page main .neo-card:hover {
+      box-shadow: 0 16px 48px -20px rgba(62, 178, 237, 0.35);
+      transform: translateY(-2px);
     }
     #adduser-page main .neo-card::before {
       content: "";
@@ -59,106 +63,143 @@
       left: 0;
       top: 0;
       width: 100%;
-      height: 3px;
-      background: linear-gradient(90deg, #38bdf8 0%, #818cf8 50%, #22c55e 100%);
-      border-top-left-radius: 6px;
-      border-top-right-radius: 6px;
+      height: 4px;
+      background: linear-gradient(90deg, #3eb2ed 0%, #8bd1f4 50%, #1b1e42 100%);
+      border-top-left-radius: 16px;
+      border-top-right-radius: 16px;
     }
     #adduser-page main .neo-card > .px-3.py-2 {
-      padding: 12px 14px;
-      background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
-      border-bottom-color: rgba(226,232,240,0.95) !important;
+      padding: 16px 20px;
+      background: linear-gradient(180deg, rgba(62, 178, 237, 0.04) 0%, rgba(255, 255, 255, 0) 100%);
+      border-bottom: 1px solid rgba(62, 178, 237, 0.15);
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 10px;
     }
     #adduser-page main .neo-card > .p-3 {
-      padding: 14px;
+      padding: 20px;
     }
     #adduser-page main .border-slate-200 {
-      border-color: rgba(148,163,184,0.28) !important;
+      border-color: rgba(62, 178, 237, 0.15) !important;
     }
     #adduser-page main input,
     #adduser-page main select,
     #adduser-page main textarea {
-      background: #fcfdff;
-      border-color: rgba(203,213,225,0.95);
-      transition: all .2s ease;
+      background: #ffffff;
+      border: 1px solid rgba(62, 178, 237, 0.25);
+      transition: all .3s ease;
       border-radius: 10px;
+      font-size: 14px;
+      padding: 10px 14px;
     }
     #adduser-page main input:focus,
     #adduser-page main select:focus,
     #adduser-page main textarea:focus {
       outline: none;
-      border-color: #60a5fa;
-      box-shadow: 0 0 0 3px rgba(96,165,250,0.16), 0 6px 16px rgba(30,64,175,0.10);
+      border-color: #3eb2ed;
+      box-shadow: 0 0 0 3px rgba(62, 178, 237, 0.12), 0 8px 20px rgba(62, 178, 237, 0.15);
       background: #fff;
     }
     #adduser-page main label.block.text-xs.font-semibold {
-      font-size: 11px;
-      letter-spacing: .02em;
-      color: #475569;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: .01em;
+      color: #1b1e42;
+      margin-bottom: 8px;
     }
     #adduser-page main .grid.text-\[11px\].font-semibold {
-      color: #334155;
+      color: #1b1e42;
+      font-size: 12px;
+      font-weight: 600;
     }
-    #adduser-page main .text-xs.font-semibold {
-      letter-spacing: .02em;
-      color: #334155;
+    #adduser-page main .text-xs.font-semibold:not(button):not(a) {
+      letter-spacing: .01em;
+      color: #1b1e42;
+      font-size: 14px;
+      font-weight: 600;
     }
     #adduser-page main .card-title-icon {
-      width: 24px;
-      height: 24px;
-      border-radius: 8px;
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      margin-right: 8px;
-      background: linear-gradient(135deg, #e0f2fe 0%, #eef2ff 100%);
-      color: #2563eb;
-      border: 1px solid rgba(147,197,253,0.55);
+      margin-right: 10px;
+      background: linear-gradient(135deg, rgba(62, 178, 237, 0.15) 0%, rgba(139, 209, 244, 0.15) 100%);
+      color: #3eb2ed;
+      border: 1px solid rgba(62, 178, 237, 0.25);
+    }
+    #adduser-page main .card-title-icon .material-symbols-outlined {
+      font-size: 20px;
     }
     #adduser-page main button.bg-\[\#1b1e42\],
     #adduser-page main a.bg-\[\#1b1e42\] {
-      background: linear-gradient(135deg, #1b1e42 0%, #2b377a 100%);
-      box-shadow: 0 8px 20px rgba(27,30,66,0.28);
+      background: linear-gradient(135deg, #1b1e42 0%, #2a3f7a 100%);
+      box-shadow: 0 10px 28px rgba(27,30,66,0.35);
+      transition: all 0.3s ease;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 10px 16px;
+    }
+    #adduser-page main button.bg-\[\#1b1e42\]:hover,
+    #adduser-page main a.bg-\[\#1b1e42\]:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 36px rgba(27,30,66,0.45);
     }
     #adduser-page main button.bg-emerald-500 {
       background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-      box-shadow: 0 8px 20px rgba(5,150,105,0.25);
+      box-shadow: 0 10px 28px rgba(5,150,105,0.3);
+      transition: all 0.3s ease;
+    }
+    #adduser-page main button.bg-emerald-500:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 36px rgba(5,150,105,0.4);
     }
     #adduser-page main .inv-tab-btn {
-      border: 1px solid rgba(148,163,184,0.28);
-      transition: all .2s ease;
+      border: 1px solid rgba(62, 178, 237, 0.25);
+      transition: all .3s ease;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 8px 16px;
+      border-radius: 8px;
     }
     #adduser-page main .inv-tab-btn:hover {
       transform: translateY(-1px);
+      border-color: #3eb2ed;
     }
     #adduser-page main .inv-pane > .grid.grid-cols-12.gap-2:not(.text-\[11px\]) {
-      padding: 10px;
-      border: 1px solid rgba(226,232,240,0.95);
+      padding: 14px;
+      border: 1px solid rgba(62, 178, 237, 0.2);
       border-radius: 12px;
-      background: #f8fafc;
+      background: rgba(62, 178, 237, 0.02);
     }
     #adduser-page main .inv-pane .text-rose-600 {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 28px;
-      height: 28px;
+      width: 32px;
+      height: 32px;
       border-radius: 8px;
       background: #fff1f2;
       border: 1px solid #fecdd3;
+      transition: all 0.2s ease;
     }
     #adduser-page main .inv-pane .text-rose-600:hover {
       background: #ffe4e6;
+      transform: scale(1.05);
     }
     #adduser-page .top-action-btn {
       border-radius: 10px;
-      padding: 8px 12px;
-      font-size: 12px;
+      padding: 10px 16px;
+      font-size: 13px;
       font-weight: 600;
-      box-shadow: 0 8px 20px rgba(27,30,66,0.20);
+      box-shadow: 0 10px 28px rgba(27,30,66,0.25);
+      transition: all 0.3s ease;
+    }
+    #adduser-page .top-action-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 36px rgba(27,30,66,0.35);
     }
   </style>
 </head>
@@ -255,10 +296,10 @@
 
       <main class="flex-1 overflow-y-auto bg-slate-50 p-4 lg:p-5">
         <div class="w-full">
-          <div class="flex items-start justify-between mb-3">
+          <div class="flex items-start justify-between mb-6">
             <div>
-              <h1 class="text-xl font-semibold text-slate-900">Basic Information</h1>
-              <p class="text-xs text-slate-500 mt-0.5">Identify and configure employee core form details</p>
+              <h1 class="text-3xl font-bold bg-gradient-to-r from-[#1b1e42] to-[#3eb2ed] bg-clip-text text-transparent">Add User</h1>
+              <p class="text-sm text-slate-600 mt-2">Identify and configure employee core form details</p>
             </div>
             <div class="flex items-center gap-2">
               <button class="top-action-btn inline-flex items-center gap-1.5 bg-[#1b1e42] text-white"><span class="material-symbols-outlined text-sm">restart_alt</span>Reset</button>
@@ -271,104 +312,104 @@
             <div class="xl:col-span-8 space-y-3">
               <section class="bg-white border border-slate-200 rounded-md neo-card">
                 <div class="px-3 py-2 text-xs font-semibold text-slate-700 border-b border-slate-200"><span class="card-title-icon"><span class="material-symbols-outlined text-sm">person</span></span>User Info</div>
-                <div class="p-3 grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+                <div class="p-3 grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                   <div>
-                    <label class="block text-xs font-semibold mb-1">Name <span class="text-rose-500">*</span> :</label>
-                    <input class="w-full px-3 py-1.5 border border-slate-300 rounded">
+                    <label class="block text-xs font-semibold mb-1">Name <span class="text-rose-500">*</span></label>
+                    <input class="w-full border border-slate-300 rounded">
                   </div>
                   <div>
-                    <label class="block text-xs font-semibold mb-1">Email <span class="text-rose-500">*</span> :</label>
+                    <label class="block text-xs font-semibold mb-1">Email <span class="text-rose-500">*</span></label>
                     <div class="flex">
-                      <input class="flex-1 px-3 py-1.5 border border-slate-300 rounded-l">
-                      <span class="px-3 py-1.5 border border-l-0 border-slate-300 bg-slate-50 rounded-r text-slate-600">@pcugroup.com</span>
+                      <input class="flex-1 border border-slate-300 rounded-l">
+                      <span class="px-4 py-2.5 border border-l-0 border-slate-300 bg-slate-50 rounded-r text-slate-600 text-sm">@pcugroup.com</span>
                     </div>
                   </div>
                   <div>
-                    <label class="block text-xs font-semibold mb-1">Contacts :</label>
-                    <input class="w-full px-3 py-1.5 border border-slate-300 rounded mb-2">
-                    <input class="w-full px-3 py-1.5 border border-slate-300 rounded">
+                    <label class="block text-xs font-semibold mb-1">Contacts</label>
+                    <input class="w-full border border-slate-300 rounded mb-3">
+                    <input class="w-full border border-slate-300 rounded">
                   </div>
                   <div>
-                    <label class="block text-xs font-semibold mb-1">Full Address :</label>
-                    <input class="w-full px-3 py-1.5 border border-slate-300 rounded">
+                    <label class="block text-xs font-semibold mb-1">Full Address</label>
+                    <input class="w-full border border-slate-300 rounded">
                   </div>
                   <div>
-                    <label class="block text-xs font-semibold mb-1">Emergency Contact Name :</label>
-                    <input class="w-full px-3 py-1.5 border border-slate-300 rounded">
+                    <label class="block text-xs font-semibold mb-1">Emergency Contact Name</label>
+                    <input class="w-full border border-slate-300 rounded">
                   </div>
                   <div>
-                    <label class="block text-xs font-semibold mb-1">Emergency Contact Number :</label>
-                    <input class="w-full px-3 py-1.5 border border-slate-300 rounded">
+                    <label class="block text-xs font-semibold mb-1">Emergency Contact Number</label>
+                    <input class="w-full border border-slate-300 rounded">
                   </div>
                   <div class="flex items-end">
-                    <label class="inline-flex items-center gap-2 text-xs font-semibold"><span>Active :</span><input type="checkbox" class="rounded border-slate-300"></label>
+                    <label class="inline-flex items-center gap-2 text-sm font-semibold"><span>Active</span><input type="checkbox" class="rounded border-slate-300 w-5 h-5"></label>
                   </div>
                 </div>
               </section>
 
               <section class="bg-white border border-slate-200 rounded-md neo-card">
                 <div class="px-3 py-2 text-xs font-semibold text-slate-700 border-b border-slate-200"><span class="card-title-icon"><span class="material-symbols-outlined text-sm">badge</span></span>Employment Info</div>
-                <div class="p-3 grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+                <div class="p-3 grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                   <div>
-                    <label class="block text-xs font-semibold mb-1">Employee No <span class="text-rose-500">*</span> :</label>
-                    <input class="w-full px-3 py-1.5 border border-slate-300 rounded">
+                    <label class="block text-xs font-semibold mb-1">Employee No <span class="text-rose-500">*</span></label>
+                    <input class="w-full border border-slate-300 rounded">
                   </div>
                   <div>
-                    <label class="block text-xs font-semibold mb-1">Reports To :</label>
-                    <select class="w-full px-3 py-1.5 border border-slate-300 rounded"><option></option></select>
+                    <label class="block text-xs font-semibold mb-1">Reports To</label>
+                    <select class="w-full border border-slate-300 rounded"><option></option></select>
                   </div>
                   <div>
-                    <label class="block text-xs font-semibold mb-1">Regional Group :</label>
-                    <select class="w-full px-3 py-1.5 border border-slate-300 rounded"><option></option></select>
+                    <label class="block text-xs font-semibold mb-1">Regional Group</label>
+                    <select class="w-full border border-slate-300 rounded"><option></option></select>
                   </div>
                   <div>
-                    <label class="block text-xs font-semibold mb-1">Reported To(Regional) :</label>
-                    <input class="w-full px-3 py-1.5 border border-slate-300 rounded bg-slate-100" readonly>
+                    <label class="block text-xs font-semibold mb-1">Reported To (Regional)</label>
+                    <input class="w-full border border-slate-300 rounded bg-slate-50" readonly>
                   </div>
                 </div>
               </section>
 
               <section class="bg-white border border-slate-200 rounded-md neo-card">
                 <div class="px-3 py-2 text-xs font-semibold text-slate-700 border-b border-slate-200"><span class="card-title-icon"><span class="material-symbols-outlined text-sm">home_work</span></span>WFH &amp; Leave Info</div>
-                <div class="p-3 grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+                <div class="p-3 grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                   <div>
-                    <label class="block text-xs font-semibold mb-1">Annual Leaves :</label>
-                    <input class="w-full px-3 py-1.5 border border-slate-300 rounded">
+                    <label class="block text-xs font-semibold mb-1">Annual Leaves</label>
+                    <input class="w-full border border-slate-300 rounded">
                   </div>
                   <div>
-                    <label class="block text-xs font-semibold mb-1">Casual Leaves :</label>
-                    <input class="w-full px-3 py-1.5 border border-slate-300 rounded">
+                    <label class="block text-xs font-semibold mb-1">Casual Leaves</label>
+                    <input class="w-full border border-slate-300 rounded">
                   </div>
                   <div>
-                    <label class="block text-xs font-semibold mb-1">Sick :</label>
-                    <input class="w-full px-3 py-1.5 border border-slate-300 rounded">
+                    <label class="block text-xs font-semibold mb-1">Sick</label>
+                    <input class="w-full border border-slate-300 rounded">
                   </div>
                   <div>
-                    <label class="block text-xs font-semibold mb-1">Paid :</label>
-                    <input class="w-full px-3 py-1.5 border border-slate-300 rounded">
+                    <label class="block text-xs font-semibold mb-1">Paid</label>
+                    <input class="w-full border border-slate-300 rounded">
                   </div>
                 </div>
               </section>
 
               <section class="bg-white border border-slate-200 rounded-md neo-card">
                 <div class="px-3 py-2 text-xs font-semibold text-slate-700 border-b border-slate-200"><span class="card-title-icon"><span class="material-symbols-outlined text-sm">workspace_premium</span></span>Career Info</div>
-                <div class="p-3 grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+                <div class="p-3 grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                   <div>
-                    <label class="block text-xs font-semibold mb-1">Joined Date :</label>
+                    <label class="block text-xs font-semibold mb-1">Joined Date</label>
                     <div class="relative">
-                      <input type="date" class="w-full px-3 py-1.5 border border-slate-300 rounded">
+                      <input type="date" class="w-full border border-slate-300 rounded">
                     </div>
                   </div>
                   <div>
-                    <label class="block text-xs font-semibold mb-1">Career Experience :</label>
+                    <label class="block text-xs font-semibold mb-1">Career Experience</label>
                     <div class="flex">
-                      <input class="flex-1 px-3 py-1.5 border border-slate-300 rounded-l">
-                      <span class="px-3 py-1.5 border border-l-0 border-slate-300 bg-slate-50 rounded-r text-slate-600">Years</span>
+                      <input class="flex-1 border border-slate-300 rounded-l">
+                      <span class="px-4 py-2.5 border border-l-0 border-slate-300 bg-slate-50 rounded-r text-slate-600 text-sm">Years</span>
                     </div>
                   </div>
                   <div>
-                    <label class="block text-xs font-semibold mb-1">Highest Education :</label>
-                    <input class="w-full px-3 py-1.5 border border-slate-300 rounded">
+                    <label class="block text-xs font-semibold mb-1">Highest Education</label>
+                    <input class="w-full border border-slate-300 rounded">
                   </div>
                 </div>
               </section>
@@ -383,7 +424,7 @@
                   </div>
                 </div>
                 <div class="p-3 inv-pane hidden" data-inv-pane="inventory">
-                  <div class="grid grid-cols-12 gap-2 text-[11px] font-semibold text-slate-700 mb-1">
+                  <div class="grid grid-cols-12 gap-2 text-[11px] font-semibold text-slate-700 mb-2">
                     <div class="col-span-3">Device</div>
                     <div class="col-span-3">Model Name</div>
                     <div class="col-span-3">Model Number</div>
@@ -391,62 +432,62 @@
                     <div class="col-span-1 text-right">Action</div>
                   </div>
                   <div class="grid grid-cols-12 gap-2">
-                    <div class="col-span-3"><select class="w-full px-2 py-1 border border-slate-300 rounded text-sm"><option></option><option>Laptop</option><option>Phone</option><option>Tablet</option></select></div>
-                    <div class="col-span-3"><input class="w-full px-2 py-1 border border-slate-300 rounded text-sm"></div>
-                    <div class="col-span-3"><input class="w-full px-2 py-1 border border-slate-300 rounded text-sm"></div>
-                    <div class="col-span-2"><input type="date" class="w-full px-2 py-1 border border-slate-300 rounded text-sm"></div>
+                    <div class="col-span-3"><select class="w-full border border-slate-300 rounded text-sm"><option></option><option>Laptop</option><option>Phone</option><option>Tablet</option></select></div>
+                    <div class="col-span-3"><input class="w-full border border-slate-300 rounded text-sm"></div>
+                    <div class="col-span-3"><input class="w-full border border-slate-300 rounded text-sm"></div>
+                    <div class="col-span-2"><input type="date" class="w-full border border-slate-300 rounded text-sm"></div>
                     <div class="col-span-1"></div>
                   </div>
-                  <div class="flex justify-end mt-2">
-                    <button type="button" class="px-3 py-1.5 text-xs font-semibold bg-[#1b1e42] text-white rounded">+ Add Device</button>
+                  <div class="flex justify-end mt-3">
+                    <button type="button" class="px-4 py-2 text-sm font-semibold bg-[#1b1e42] text-white rounded">+ Add Device</button>
                   </div>
                 </div>
                 <div class="p-3 inv-pane" data-inv-pane="country">
-                  <div class="grid grid-cols-12 gap-2 text-[11px] font-semibold text-slate-700 mb-1">
+                  <div class="grid grid-cols-12 gap-2 text-[11px] font-semibold text-slate-700 mb-2">
                     <div class="col-span-7">Country</div>
                     <div class="col-span-2">Allocation</div>
                     <div class="col-span-2">Primary</div>
                     <div class="col-span-1 text-right">Action</div>
                   </div>
                   <div class="grid grid-cols-12 gap-2 items-center">
-                    <div class="col-span-7"><select class="w-full px-2 py-1 border border-slate-300 rounded text-sm"><option>Select country</option><option>Sri Lanka</option><option>India</option><option>Singapore</option></select></div>
+                    <div class="col-span-7"><select class="w-full border border-slate-300 rounded text-sm"><option>Select country</option><option>Sri Lanka</option><option>India</option><option>Singapore</option></select></div>
                     <div class="col-span-2">
                       <div class="flex">
-                        <input class="w-full px-2 py-1 border border-slate-300 rounded-l text-sm">
-                        <span class="px-2 py-1 border border-l-0 border-slate-300 bg-slate-50 rounded-r text-xs">%</span>
+                        <input class="w-full border border-slate-300 rounded-l text-sm">
+                        <span class="px-3 py-2 border border-l-0 border-slate-300 bg-slate-50 rounded-r text-xs">%</span>
                       </div>
                     </div>
-                    <div class="col-span-2"><input type="checkbox" class="rounded border-slate-300"></div>
-                    <div class="col-span-1 text-right"><button type="button" class="text-rose-600 hover:text-rose-700"><span class="material-symbols-outlined text-sm">delete</span></button></div>
+                    <div class="col-span-2"><input type="checkbox" class="rounded border-slate-300 w-5 h-5"></div>
+                    <div class="col-span-1 text-right"><button type="button" class="text-rose-600 hover:text-rose-700"><span class="material-symbols-outlined text-base">delete</span></button></div>
                   </div>
-                  <div class="flex justify-end mt-2">
-                    <button type="button" class="px-3 py-1.5 text-xs font-semibold bg-[#1b1e42] text-white rounded">+ Add Offices</button>
+                  <div class="flex justify-end mt-3">
+                    <button type="button" class="px-4 py-2 text-sm font-semibold bg-[#1b1e42] text-white rounded">+ Add Offices</button>
                   </div>
                 </div>
                 <div class="p-3 inv-pane hidden" data-inv-pane="department">
-                  <div class="grid grid-cols-12 gap-2 text-[11px] font-semibold text-slate-700 mb-1">
+                  <div class="grid grid-cols-12 gap-2 text-[11px] font-semibold text-slate-700 mb-2">
                     <div class="col-span-5">Country</div>
                     <div class="col-span-4">Department</div>
                     <div class="col-span-2">Dep. Allocation</div>
                     <div class="col-span-1 text-right">Action</div>
                   </div>
                   <div class="grid grid-cols-12 gap-2 items-center">
-                    <div class="col-span-5"><select class="w-full px-2 py-1 border border-slate-300 rounded text-sm"><option></option><option>Sri Lanka</option><option>India</option><option>Singapore</option></select></div>
-                    <div class="col-span-4"><select class="w-full px-2 py-1 border border-slate-300 rounded text-sm"><option></option><option>Textile</option><option>Certification</option><option>Operations</option><option>Finance</option><option>HR</option></select></div>
+                    <div class="col-span-5"><select class="w-full border border-slate-300 rounded text-sm"><option></option><option>Sri Lanka</option><option>India</option><option>Singapore</option></select></div>
+                    <div class="col-span-4"><select class="w-full border border-slate-300 rounded text-sm"><option></option><option>Textile</option><option>Certification</option><option>Operations</option><option>Finance</option><option>HR</option></select></div>
                     <div class="col-span-2">
                       <div class="flex">
-                        <input class="w-full px-2 py-1 border border-slate-300 rounded-l text-sm">
-                        <span class="px-2 py-1 border border-l-0 border-slate-300 bg-slate-50 rounded-r text-xs">%</span>
+                        <input class="w-full border border-slate-300 rounded-l text-sm">
+                        <span class="px-3 py-2 border border-l-0 border-slate-300 bg-slate-50 rounded-r text-xs">%</span>
                       </div>
                     </div>
-                    <div class="col-span-1 text-right"><button type="button" class="text-rose-600 hover:text-rose-700"><span class="material-symbols-outlined text-sm">delete</span></button></div>
+                    <div class="col-span-1 text-right"><button type="button" class="text-rose-600 hover:text-rose-700"><span class="material-symbols-outlined text-base">delete</span></button></div>
                   </div>
-                  <div class="flex justify-end mt-2">
-                    <button type="button" class="px-3 py-1.5 text-xs font-semibold bg-[#1b1e42] text-white rounded">+ Add FTE Department</button>
+                  <div class="flex justify-end mt-3">
+                    <button type="button" class="px-4 py-2 text-sm font-semibold bg-[#1b1e42] text-white rounded">+ Add FTE Department</button>
                   </div>
                 </div>
                 <div class="p-3 inv-pane hidden" data-inv-pane="role">
-                  <div class="grid grid-cols-12 gap-2 text-[11px] font-semibold text-slate-700 mb-1">
+                  <div class="grid grid-cols-12 gap-2 text-[11px] font-semibold text-slate-700 mb-2">
                     <div class="col-span-3">Country</div>
                     <div class="col-span-3">Department</div>
                     <div class="col-span-3">Role</div>
@@ -454,19 +495,19 @@
                     <div class="col-span-1 text-right">Action</div>
                   </div>
                   <div class="grid grid-cols-12 gap-2 items-center">
-                    <div class="col-span-3"><select class="w-full px-2 py-1 border border-slate-300 rounded text-sm"><option></option><option>Sri Lanka</option><option>India</option><option>Singapore</option></select></div>
-                    <div class="col-span-3"><select class="w-full px-2 py-1 border border-slate-300 rounded text-sm"><option></option><option>Textile</option><option>Certification</option><option>Operations</option><option>Finance</option><option>HR</option></select></div>
-                    <div class="col-span-3"><select class="w-full px-2 py-1 border border-slate-300 rounded text-sm"><option></option><option>Senior Auditor</option><option>Lead Auditor</option><option>Auditor</option><option>Manager</option></select></div>
+                    <div class="col-span-3"><select class="w-full border border-slate-300 rounded text-sm"><option></option><option>Sri Lanka</option><option>India</option><option>Singapore</option></select></div>
+                    <div class="col-span-3"><select class="w-full border border-slate-300 rounded text-sm"><option></option><option>Textile</option><option>Certification</option><option>Operations</option><option>Finance</option><option>HR</option></select></div>
+                    <div class="col-span-3"><select class="w-full border border-slate-300 rounded text-sm"><option></option><option>Senior Auditor</option><option>Lead Auditor</option><option>Auditor</option><option>Manager</option></select></div>
                     <div class="col-span-2">
                       <div class="flex">
-                        <input class="w-full px-2 py-1 border border-slate-300 rounded-l text-sm">
-                        <span class="px-2 py-1 border border-l-0 border-slate-300 bg-slate-50 rounded-r text-xs">%</span>
+                        <input class="w-full border border-slate-300 rounded-l text-sm">
+                        <span class="px-3 py-2 border border-l-0 border-slate-300 bg-slate-50 rounded-r text-xs">%</span>
                       </div>
                     </div>
-                    <div class="col-span-1 text-right"><button type="button" class="text-rose-600 hover:text-rose-700"><span class="material-symbols-outlined text-sm">delete</span></button></div>
+                    <div class="col-span-1 text-right"><button type="button" class="text-rose-600 hover:text-rose-700"><span class="material-symbols-outlined text-base">delete</span></button></div>
                   </div>
-                  <div class="flex justify-end mt-2">
-                    <button type="button" class="px-3 py-1.5 text-xs font-semibold bg-[#1b1e42] text-white rounded">+ Add FTE Role</button>
+                  <div class="flex justify-end mt-3">
+                    <button type="button" class="px-4 py-2 text-sm font-semibold bg-[#1b1e42] text-white rounded">+ Add FTE Role</button>
                   </div>
                 </div>
               </section>
@@ -476,37 +517,37 @@
               <section class="bg-white border border-slate-200 rounded-md neo-card">
                 <div class="px-3 py-2 text-xs font-semibold text-slate-700 border-b border-slate-200"><span class="card-title-icon"><span class="material-symbols-outlined text-sm">verified_user</span></span>Permission Info</div>
                 <div class="p-3">
-                  <div class="flex gap-2 mb-3">
-                    <select class="flex-1 px-3 py-1.5 border border-slate-300 rounded text-sm">
+                  <div class="flex gap-3 mb-4">
+                    <select class="flex-1 border border-slate-300 rounded text-sm">
                       <option>Select Preset</option>
                     </select>
-                    <button class="px-3 py-1.5 text-xs font-semibold bg-emerald-500 text-white rounded">Add New Role</button>
+                    <button class="px-4 py-2.5 text-sm font-semibold bg-emerald-500 text-white rounded">Add New Role</button>
                   </div>
-                  <div class="border border-slate-200 rounded overflow-hidden">
-                    <div class="grid grid-cols-12 bg-slate-50 text-xs font-semibold text-slate-700 border-b border-slate-200">
-                      <div class="col-span-10 px-3 py-2">Permission Group Name</div>
-                      <div class="col-span-2 px-3 py-2 text-right">Select</div>
+                  <div class="border border-slate-200 rounded-xl overflow-hidden">
+                    <div class="grid grid-cols-12 bg-gradient-to-r from-slate-50 to-slate-100 text-sm font-semibold text-slate-700 border-b border-slate-200">
+                      <div class="col-span-10 px-4 py-3">Permission Group Name</div>
+                      <div class="col-span-2 px-4 py-3 text-right">Select</div>
                     </div>
                     <div class="max-h-[560px] overflow-y-auto text-sm">
-                      <div class="grid grid-cols-12 border-b border-slate-100"><div class="col-span-10 px-3 py-2">Dashboard</div><div class="col-span-2 px-3 py-2 text-right"><input type="checkbox" class="rounded border-slate-300"></div></div>
-                      <div class="grid grid-cols-12 border-b border-slate-100"><div class="col-span-10 px-3 py-2">Task</div><div class="col-span-2 px-3 py-2 text-right"><input type="checkbox" class="rounded border-slate-300"></div></div>
-                      <div class="grid grid-cols-12 border-b border-slate-100"><div class="col-span-10 px-3 py-2">Client/Sales</div><div class="col-span-2 px-3 py-2 text-right"><input type="checkbox" class="rounded border-slate-300"></div></div>
-                      <div class="grid grid-cols-12 border-b border-slate-100"><div class="col-span-10 px-3 py-2">Settings</div><div class="col-span-2 px-3 py-2 text-right"><input type="checkbox" class="rounded border-slate-300"></div></div>
-                      <div class="grid grid-cols-12 border-b border-slate-100"><div class="col-span-10 px-3 py-2">Performance</div><div class="col-span-2 px-3 py-2 text-right"><input type="checkbox" class="rounded border-slate-300"></div></div>
-                      <div class="grid grid-cols-12 border-b border-slate-100"><div class="col-span-10 px-3 py-2">Reports</div><div class="col-span-2 px-3 py-2 text-right"><input type="checkbox" class="rounded border-slate-300"></div></div>
-                      <div class="grid grid-cols-12 border-b border-slate-100"><div class="col-span-10 px-3 py-2">HR</div><div class="col-span-2 px-3 py-2 text-right"><input type="checkbox" class="rounded border-slate-300"></div></div>
-                      <div class="grid grid-cols-12 border-b border-slate-100"><div class="col-span-10 px-3 py-2">Leave Management</div><div class="col-span-2 px-3 py-2 text-right"><input type="checkbox" class="rounded border-slate-300"></div></div>
-                      <div class="grid grid-cols-12 border-b border-slate-100"><div class="col-span-10 px-3 py-2">Pay Slip Access</div><div class="col-span-2 px-3 py-2 text-right"><input type="checkbox" class="rounded border-slate-300"></div></div>
-                      <div class="grid grid-cols-12 border-b border-slate-100"><div class="col-span-10 px-3 py-2">Kpi</div><div class="col-span-2 px-3 py-2 text-right"><input type="checkbox" class="rounded border-slate-300"></div></div>
-                      <div class="grid grid-cols-12 border-b border-slate-100"><div class="col-span-10 px-3 py-2">IT Manager</div><div class="col-span-2 px-3 py-2 text-right"><input type="checkbox" class="rounded border-slate-300"></div></div>
-                      <div class="grid grid-cols-12 border-b border-slate-100"><div class="col-span-10 px-3 py-2">News Manager</div><div class="col-span-2 px-3 py-2 text-right"><input type="checkbox" class="rounded border-slate-300"></div></div>
-                      <div class="grid grid-cols-12 border-b border-slate-100"><div class="col-span-10 px-3 py-2">Recycle Bin</div><div class="col-span-2 px-3 py-2 text-right"><input type="checkbox" class="rounded border-slate-300"></div></div>
-                      <div class="grid grid-cols-12 border-b border-slate-100"><div class="col-span-10 px-3 py-2">Country</div><div class="col-span-2 px-3 py-2 text-right"><input type="checkbox" class="rounded border-slate-300"></div></div>
-                      <div class="grid grid-cols-12 border-b border-slate-100"><div class="col-span-10 px-3 py-2">Configuration</div><div class="col-span-2 px-3 py-2 text-right"><input type="checkbox" class="rounded border-slate-300"></div></div>
-                      <div class="grid grid-cols-12 border-b border-slate-100"><div class="col-span-10 px-3 py-2">TC Organic</div><div class="col-span-2 px-3 py-2 text-right"><input type="checkbox" class="rounded border-slate-300"></div></div>
-                      <div class="grid grid-cols-12 border-b border-slate-100"><div class="col-span-10 px-3 py-2">TC Textile</div><div class="col-span-2 px-3 py-2 text-right"><input type="checkbox" class="rounded border-slate-300"></div></div>
-                      <div class="grid grid-cols-12 border-b border-slate-100"><div class="col-span-10 px-3 py-2">TC Summary</div><div class="col-span-2 px-3 py-2 text-right"><input type="checkbox" class="rounded border-slate-300"></div></div>
-                      <div class="grid grid-cols-12"><div class="col-span-10 px-3 py-2">TC Configuration</div><div class="col-span-2 px-3 py-2 text-right"><input type="checkbox" class="rounded border-slate-300"></div></div>
+                      <div class="grid grid-cols-12 border-b border-slate-100 hover:bg-slate-50 transition-colors"><div class="col-span-10 px-4 py-3">Dashboard</div><div class="col-span-2 px-4 py-3 text-right"><input type="checkbox" class="rounded border-slate-300 w-5 h-5" checked></div></div>
+                      <div class="grid grid-cols-12 border-b border-slate-100 hover:bg-slate-50 transition-colors"><div class="col-span-10 px-4 py-3">Task</div><div class="col-span-2 px-4 py-3 text-right"><input type="checkbox" class="rounded border-slate-300 w-5 h-5" checked></div></div>
+                      <div class="grid grid-cols-12 border-b border-slate-100 hover:bg-slate-50 transition-colors"><div class="col-span-10 px-4 py-3">Client/Sales</div><div class="col-span-2 px-4 py-3 text-right"><input type="checkbox" class="rounded border-slate-300 w-5 h-5" checked></div></div>
+                      <div class="grid grid-cols-12 border-b border-slate-100 hover:bg-slate-50 transition-colors"><div class="col-span-10 px-4 py-3">Settings</div><div class="col-span-2 px-4 py-3 text-right"><input type="checkbox" class="rounded border-slate-300 w-5 h-5" checked></div></div>
+                      <div class="grid grid-cols-12 border-b border-slate-100 hover:bg-slate-50 transition-colors"><div class="col-span-10 px-4 py-3">Performance</div><div class="col-span-2 px-4 py-3 text-right"><input type="checkbox" class="rounded border-slate-300 w-5 h-5" checked></div></div>
+                      <div class="grid grid-cols-12 border-b border-slate-100 hover:bg-slate-50 transition-colors"><div class="col-span-10 px-4 py-3">Reports</div><div class="col-span-2 px-4 py-3 text-right"><input type="checkbox" class="rounded border-slate-300 w-5 h-5" checked></div></div>
+                      <div class="grid grid-cols-12 border-b border-slate-100 hover:bg-slate-50 transition-colors"><div class="col-span-10 px-4 py-3">HR</div><div class="col-span-2 px-4 py-3 text-right"><input type="checkbox" class="rounded border-slate-300 w-5 h-5" checked></div></div>
+                      <div class="grid grid-cols-12 border-b border-slate-100 hover:bg-slate-50 transition-colors"><div class="col-span-10 px-4 py-3">Leave Management</div><div class="col-span-2 px-4 py-3 text-right"><input type="checkbox" class="rounded border-slate-300 w-5 h-5" checked></div></div>
+                      <div class="grid grid-cols-12 border-b border-slate-100 hover:bg-slate-50 transition-colors"><div class="col-span-10 px-4 py-3">Pay Slip Access</div><div class="col-span-2 px-4 py-3 text-right"><input type="checkbox" class="rounded border-slate-300 w-5 h-5" checked></div></div>
+                      <div class="grid grid-cols-12 border-b border-slate-100 hover:bg-slate-50 transition-colors"><div class="col-span-10 px-4 py-3">Kpi</div><div class="col-span-2 px-4 py-3 text-right"><input type="checkbox" class="rounded border-slate-300 w-5 h-5" checked></div></div>
+                      <div class="grid grid-cols-12 border-b border-slate-100 hover:bg-slate-50 transition-colors"><div class="col-span-10 px-4 py-3">IT Manager</div><div class="col-span-2 px-4 py-3 text-right"><input type="checkbox" class="rounded border-slate-300 w-5 h-5" checked></div></div>
+                      <div class="grid grid-cols-12 border-b border-slate-100 hover:bg-slate-50 transition-colors"><div class="col-span-10 px-4 py-3">News Manager</div><div class="col-span-2 px-4 py-3 text-right"><input type="checkbox" class="rounded border-slate-300 w-5 h-5" checked></div></div>
+                      <div class="grid grid-cols-12 border-b border-slate-100 hover:bg-slate-50 transition-colors"><div class="col-span-10 px-4 py-3">Recycle Bin</div><div class="col-span-2 px-4 py-3 text-right"><input type="checkbox" class="rounded border-slate-300 w-5 h-5"></div></div>
+                      <div class="grid grid-cols-12 border-b border-slate-100 hover:bg-slate-50 transition-colors"><div class="col-span-10 px-4 py-3">Country</div><div class="col-span-2 px-4 py-3 text-right"><input type="checkbox" class="rounded border-slate-300 w-5 h-5"></div></div>
+                      <div class="grid grid-cols-12 border-b border-slate-100 hover:bg-slate-50 transition-colors"><div class="col-span-10 px-4 py-3">Configuration</div><div class="col-span-2 px-4 py-3 text-right"><input type="checkbox" class="rounded border-slate-300 w-5 h-5"></div></div>
+                      <div class="grid grid-cols-12 border-b border-slate-100 hover:bg-slate-50 transition-colors"><div class="col-span-10 px-4 py-3">TC Organic</div><div class="col-span-2 px-4 py-3 text-right"><input type="checkbox" class="rounded border-slate-300 w-5 h-5"></div></div>
+                      <div class="grid grid-cols-12 border-b border-slate-100 hover:bg-slate-50 transition-colors"><div class="col-span-10 px-4 py-3">TC Textile</div><div class="col-span-2 px-4 py-3 text-right"><input type="checkbox" class="rounded border-slate-300 w-5 h-5"></div></div>
+                      <div class="grid grid-cols-12 border-b border-slate-100 hover:bg-slate-50 transition-colors"><div class="col-span-10 px-4 py-3">TC Summary</div><div class="col-span-2 px-4 py-3 text-right"><input type="checkbox" class="rounded border-slate-300 w-5 h-5"></div></div>
+                      <div class="grid grid-cols-12 hover:bg-slate-50 transition-colors"><div class="col-span-10 px-4 py-3">TC Configuration</div><div class="col-span-2 px-4 py-3 text-right"><input type="checkbox" class="rounded border-slate-300 w-5 h-5"></div></div>
                     </div>
                   </div>
                 </div>
