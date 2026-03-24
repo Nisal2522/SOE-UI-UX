@@ -277,7 +277,7 @@
                 </div>
                 <div class="flex items-center gap-2 mt-2 text-sm">
                   <span class="text-slate-500">Suggestion:</span>
-                  <span class="text-slate-800 font-medium">Consider Sarah Johnson or reschedule</span>
+                  <span class="text-slate-800 font-medium">Consider Nisal Amarasekara or reschedule</span>
                 </div>
               </div>
               <!-- Duplicate Visit -->
@@ -424,39 +424,40 @@
       // ==================== DATA ====================
       var clients = [
         {
-          id: 'techcorp', name: 'TechCorp Industries', location: 'Toronto, Canada', sector: 'ISO 9001', complexity: 'High', previousInvoiceStatus: 'paid',
+          id: 'techcorp', name: 'TechCorp Industries', location: 'No. 245, Galle Road, Colombo 03, Sri Lanka', sector: 'ISO 9001', complexity: 'High', previousInvoiceStatus: 'paid',
           units: [
-            { id: 'tc-hq', name: 'HQ Office', location: 'Toronto, Canada', auditType: 'ISO 9001', status: 'pending', assignee: null, date: 'Jun 10, 2024' },
-            { id: 'tc-mfg', name: 'Manufacturing Plant A', location: 'Toronto, Canada', auditType: 'ISO 9001', status: 'assigned', assignee: 'Sarah Johnson', date: 'Jun 11, 2024' },
-            { id: 'tc-wh', name: 'Warehouse & Logistics', location: 'Mississauga, Canada', auditType: 'ISO 14001', status: 'pending', assignee: null, date: 'Jun 12, 2024' },
-            { id: 'tc-lab', name: 'R&D Laboratory', location: 'Toronto, Canada', auditType: 'ISO 9001', status: 'pending', assignee: null, date: 'Jun 12, 2024' },
+            { id: 'tc-hq', name: 'HQ Office', location: 'No. 245, Galle Road, Colombo 03, Sri Lanka', auditType: 'ISO 9001', status: 'pending', assignee: null, date: 'Jun 10, 2024' },
+            { id: 'tc-mfg', name: 'Manufacturing Plant A', location: 'No. 18, Export Processing Zone, Katunayake, Sri Lanka', auditType: 'ISO 9001', status: 'assigned', assignee: 'Nisal Amarasekara', date: 'Jun 11, 2024' },
+            { id: 'tc-wh', name: 'Warehouse & Logistics', location: 'No. 102, Kandy Road, Wattala, Sri Lanka', auditType: 'ISO 14001', status: 'pending', assignee: null, date: 'Jun 12, 2024' },
+            { id: 'tc-lab', name: 'R&D Laboratory', location: 'No. 44, Bauddhaloka Mawatha, Colombo 07, Sri Lanka', auditType: 'ISO 9001', status: 'pending', assignee: null, date: 'Jun 12, 2024' },
           ]
         },
         {
-          id: 'ecotex', name: 'EcoTextiles Ltd.', location: 'Vancouver, Canada', sector: 'GOTS', complexity: 'Medium', previousInvoiceStatus: 'paid',
+          id: 'ecotex', name: 'EcoTextiles Ltd.', location: 'No. 77, Hospital Road, Maharagama, Sri Lanka', sector: 'GOTS', complexity: 'Medium', previousInvoiceStatus: 'paid',
           units: [
-            { id: 'et-spin', name: 'Spinning Mill', location: 'Vancouver, Canada', auditType: 'GOTS', status: 'pending', assignee: null, date: 'Jun 15, 2024' },
-            { id: 'et-dye', name: 'Dyeing & Finishing', location: 'Vancouver, Canada', auditType: 'GOTS', status: 'assigned', assignee: 'Lisa Anderson', date: 'Jun 15, 2024' },
-            { id: 'et-pkg', name: 'Packaging Unit', location: 'Vancouver, Canada', auditType: 'GOTS', status: 'pending', assignee: null, date: 'Jun 16, 2024' },
+            { id: 'et-spin', name: 'Spinning Mill', location: 'No. 12, Industrial Estate, Horana, Sri Lanka', auditType: 'GOTS', status: 'pending', assignee: null, date: 'Jun 15, 2024' },
+            { id: 'et-dye', name: 'Dyeing & Finishing', location: 'No. 88, High Level Road, Nugegoda, Sri Lanka', auditType: 'GOTS', status: 'assigned', assignee: 'Lisa Anderson', date: 'Jun 15, 2024' },
+            { id: 'et-pkg', name: 'Packaging Unit', location: 'No. 25, Temple Road, Dehiwala, Sri Lanka', auditType: 'GOTS', status: 'pending', assignee: null, date: 'Jun 16, 2024' },
           ]
         },
         {
-          id: 'greenval', name: 'Green Valley Farms', location: 'Calgary, Canada', sector: 'Organic', complexity: 'Low', previousInvoiceStatus: 'unpaid',
+          id: 'greenval', name: 'Green Valley Farms', location: 'No. 9, Lake Road, Nuwara Eliya, Sri Lanka', sector: 'Organic', complexity: 'Low', previousInvoiceStatus: 'unpaid',
           units: [
-            { id: 'gv-farm', name: 'Farm Operations', location: 'Calgary, Canada', auditType: 'Organic', status: 'pending', assignee: null, date: 'Jun 20, 2024' },
-            { id: 'gv-proc', name: 'Processing Facility', location: 'Calgary, Canada', auditType: 'Organic', status: 'pending', assignee: null, date: 'Jun 20, 2024' },
+            { id: 'gv-farm', name: 'Farm Operations', location: 'No. 150, Badulla Road, Bandarawela, Sri Lanka', auditType: 'Organic', status: 'pending', assignee: null, date: 'Jun 20, 2024' },
+            { id: 'gv-proc', name: 'Processing Facility', location: 'No. 33, Peradeniya Road, Kandy, Sri Lanka', auditType: 'Organic', status: 'pending', assignee: null, date: 'Jun 20, 2024' },
           ]
         }
       ];
 
       var auditors = [
-        { name: 'Sarah Johnson', role: 'Senior Auditor', initials: 'SJ', color: 'from-blue-600 to-blue-800', rating: 4.8, location: 'Calgary, Canada', availability: 'Available', quals: ['ISO 9001','GOTS','Organic'], experience: '12 similar audits', distance: '0 km', cost: 'Level 2 - $$$', matchScore: 95, reasons: ['Expert qualification match','Same city - no travel costs','High client satisfaction (4.9/5)','Available during requested dates'] },
-        { name: 'David Kim', role: 'Lead Auditor', initials: 'DK', color: 'from-violet-600 to-violet-800', rating: 4.9, location: 'Vancouver, Canada', availability: 'Available', quals: ['ISO 9001','ISO 14001','ISO 45001'], experience: '25 similar audits', distance: '280 km', cost: 'Level 3 - $$$$', matchScore: 88, reasons: ['Highest experience level','Top performer (4.9 rating)','Requires travel coordination','Premium auditor rate'] },
-        { name: 'Lisa Anderson', role: 'Auditor', initials: 'LA', color: 'from-rose-500 to-rose-700', rating: 4.7, location: 'Calgary, Canada', availability: 'Available (after Jun 8)', quals: ['GOTS','ISO 9001','ISO 14001'], experience: '8 similar audits', distance: '0 km', cost: 'Level 1 - $$', matchScore: 82, reasons: ['Good qualification match','Cost-effective option','Local - no travel required','Limited availability window'] },
+        { name: 'Nisal Amarasekara', role: 'Senior Auditor', initials: 'NA', color: 'from-blue-600 to-blue-800', rating: 4.8, location: 'Galle, Sri Lanka', availability: 'Available', quals: ['ISO 9001','GOTS','Organic'], experience: '12 similar audits', distance: '0 km', matchScore: 95, reasons: ['Expert qualification match','Same city - no travel costs','High client satisfaction (4.9/5)','Available during requested dates'] },
+        { name: 'David Kim', role: 'Lead Auditor', initials: 'DK', color: 'from-violet-600 to-violet-800', rating: 4.9, location: 'Kandy, Sri Lanka', availability: 'Available', quals: ['ISO 9001','ISO 14001','ISO 45001'], experience: '25 similar audits', distance: '115 km', matchScore: 88, reasons: ['Highest experience level','Top performer (4.9 rating)','Requires travel coordination','Premium auditor rate'] },
+        { name: 'Lisa Anderson', role: 'Auditor', initials: 'LA', color: 'from-rose-500 to-rose-700', rating: 4.7, location: 'Colombo, Sri Lanka', availability: 'Available (after Jun 8)', quals: ['GOTS','ISO 9001','ISO 14001'], experience: '8 similar audits', distance: '130 km', matchScore: 82, reasons: ['Good qualification match','Cost-effective option','Local - no travel required','Limited availability window'] },
       ];
 
       var selectedClient = null;
       var selectedUnit = null;
+      var selectedUnitIds = [];
 
       // ==================== RENDER CLIENTS ====================
       function renderClients() {
@@ -502,6 +503,7 @@
             var cid = btn.getAttribute('data-client');
             selectedClient = clients.find(function (c) { return c.id === cid; });
             selectedUnit = null;
+            selectedUnitIds = [];
             renderClients();
             renderUnitPanel();
             renderRecommendations();
@@ -520,15 +522,19 @@
         }
         var c = selectedClient;
         var planned = c.units.filter(function (u) { return u.status === 'assigned'; }).length;
+        var selectedCount = selectedUnitIds.length;
         title.textContent = c.name + ' â€” Units';
 
         var html = '';
         // Progress header
         html += '<div class="px-5 py-3 bg-slate-50/80 border-b border-gray-100">';
-        html += '<div class="flex items-center justify-between mb-1.5"><span class="text-sm font-semibold text-slate-600">Planning Progress</span><span class="text-sm font-bold ' + (planned === c.units.length ? 'text-emerald-600' : 'text-amber-600') + '">' + planned + ' of ' + c.units.length + ' units planned</span></div>';
+        html += '<div class="flex items-center justify-between mb-1.5"><span class="text-sm font-semibold text-slate-600">Planning Progress</span><span class="text-sm font-bold ' + (planned === c.units.length ? 'text-emerald-600' : 'text-amber-600') + '">' + planned + ' of ' + c.units.length + ' units assigned</span></div>';
         var pct = Math.round((planned / c.units.length) * 100);
         html += '<div class="w-full h-2 bg-gray-200 rounded-full overflow-hidden"><div class="h-full rounded-full transition-all ' + (planned === c.units.length ? 'bg-emerald-500' : 'bg-gradient-to-r from-amber-400 to-amber-500') + '" style="width:' + pct + '%"></div></div>';
         html += '</div>';
+        if (selectedCount > 0) {
+          html += '<div class="px-5 py-2 border-b border-gray-100 text-xs font-semibold text-blue-700 bg-blue-50/60">' + selectedCount + ' unit' + (selectedCount > 1 ? 's' : '') + ' selected</div>';
+        }
 
         // Assign all button
         if (planned < c.units.length) {
@@ -541,13 +547,14 @@
         html += '<div class="divide-y divide-gray-100">';
         c.units.forEach(function (u) {
           var isSelected = selectedUnit && selectedUnit.id === u.id;
+          var isChecked = selectedUnitIds.indexOf(u.id) !== -1;
           var statusCls = u.status === 'assigned' ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700';
           var statusIcon = u.status === 'assigned' ? 'check_circle' : 'pending';
-          var statusLabel = u.status === 'assigned' ? 'Planned' : 'Pending';
+          var statusLabel = u.status === 'assigned' ? 'Assigned' : 'Pending';
 
-          html += '<button type="button" data-unit="' + u.id + '" class="w-full text-left p-4 hover:bg-slate-50 transition ' + (isSelected ? 'bg-blue-50 border-l-[3px] border-l-blue-500' : '') + '">';
+          html += '<button type="button" data-unit="' + u.id + '" class="w-full text-left p-4 hover:bg-slate-50 transition ' + (isSelected ? 'bg-blue-50 border-l-[3px] border-l-blue-500' : '') + ' ' + (isChecked ? 'ring-1 ring-blue-200 bg-blue-50/40' : '') + '">';
           html += '<div class="flex items-start justify-between mb-1">';
-          html += '<div class="flex items-center gap-2"><span class="material-symbols-outlined text-lg ' + (u.status === 'assigned' ? 'text-emerald-500' : 'text-amber-500') + '">' + statusIcon + '</span>';
+          html += '<div class="flex items-center gap-2"><input type="checkbox" data-unit-check="' + u.id + '" class="h-4 w-4 rounded border-slate-300 text-[#1b1e42] focus:ring-[#3eb2ed]" ' + (isChecked ? 'checked' : '') + ' /><span class="material-symbols-outlined text-lg ' + (u.status === 'assigned' ? 'text-emerald-500' : 'text-amber-500') + '">' + statusIcon + '</span>';
           html += '<h4 class="text-sm font-bold text-slate-900">' + u.name + '</h4></div>';
           html += '<span class="px-2 py-0.5 text-xs font-bold rounded-full ' + statusCls + '">' + statusLabel + '</span>';
           html += '</div>';
@@ -574,6 +581,22 @@
             renderRecommendations();
           });
         });
+        body.querySelectorAll('[data-unit-check]').forEach(function (check) {
+          check.addEventListener('click', function (e) {
+            e.stopPropagation();
+          });
+          check.addEventListener('change', function (e) {
+            var uid = check.getAttribute('data-unit-check');
+            if (check.checked) {
+              if (selectedUnitIds.indexOf(uid) === -1) selectedUnitIds.push(uid);
+            } else {
+              selectedUnitIds = selectedUnitIds.filter(function (id) { return id !== uid; });
+            }
+            e.stopPropagation();
+            renderUnitPanel();
+            renderRecommendations();
+          });
+        });
 
         // Assign all button
         var assignAllBtn = document.getElementById('assignAllBtn');
@@ -586,12 +609,50 @@
       }
 
       // ==================== RENDER RECOMMENDATIONS ====================
+      function rankAuditorsForUnits(units) {
+        return auditors.map(function (a) {
+          var requiredTypes = [];
+          units.forEach(function (u) {
+            if (requiredTypes.indexOf(u.auditType) === -1) requiredTypes.push(u.auditType);
+          });
+
+          var typeMatches = 0;
+          requiredTypes.forEach(function (t) {
+            if (a.quals.indexOf(t) !== -1) typeMatches += 1;
+          });
+          // Keep multi-unit coverage impact moderate to avoid everyone hitting 99
+          var typeCoverageScore = requiredTypes.length ? Math.round((typeMatches / requiredTypes.length) * 10) : 0;
+
+          var locationBonus = 0;
+          if (units.some(function (u) { return u.location === a.location; })) locationBonus = 8;
+
+          var availabilityPenalty = a.availability === 'Available' ? 0 : 5;
+          var distanceKm = parseInt(String(a.distance || '0').replace(/[^\d]/g, ''), 10) || 0;
+          var distancePenalty = Math.min(10, Math.round(distanceKm / 40));
+
+          var score = a.matchScore + typeCoverageScore + locationBonus - availabilityPenalty - distancePenalty;
+          if (score > 99) score = 99;
+          if (score < 0) score = 0;
+
+          return { auditor: a, score: score };
+        }).sort(function (x, y) { return y.score - x.score; });
+      }
+
       function renderRecommendations(isAssignAll) {
         var recTitle = document.getElementById('recTitle');
         var recEmpty = document.getElementById('recEmpty');
         var recCards = document.getElementById('recCards');
+        var recommendationUnits = [];
 
-        if (!isAssignAll && !selectedUnit) {
+        if (isAssignAll) {
+          recommendationUnits = selectedClient.units.filter(function (u) { return u.status === 'pending'; });
+        } else if (selectedUnitIds.length > 0) {
+          recommendationUnits = selectedClient.units.filter(function (u) { return selectedUnitIds.indexOf(u.id) !== -1; });
+        } else if (selectedUnit) {
+          recommendationUnits = [selectedUnit];
+        }
+
+        if (!isAssignAll && recommendationUnits.length === 0) {
           recTitle.textContent = 'Select a unit to view recommendations';
           recEmpty.classList.remove('hidden');
           recCards.classList.add('hidden');
@@ -603,13 +664,18 @@
 
         if (isAssignAll) {
           recTitle.textContent = 'Assign auditor to all pending units of ' + selectedClient.name;
+        } else if (recommendationUnits.length > 1) {
+          recTitle.textContent = 'Recommendations for ' + recommendationUnits.length + ' selected units';
         } else {
           recTitle.textContent = 'Recommendations for ' + selectedUnit.name + ' (' + selectedUnit.auditType + ')';
         }
 
+        var rankedAuditors = rankAuditorsForUnits(recommendationUnits);
         var html = '';
-        auditors.forEach(function (a, idx) {
-          var scoreColor = a.matchScore >= 90 ? 'text-emerald-700 bg-emerald-50' : a.matchScore >= 80 ? 'text-blue-700 bg-blue-50' : 'text-amber-700 bg-amber-50';
+        rankedAuditors.forEach(function (entry, idx) {
+          var a = entry.auditor;
+          var effectiveScore = entry.score;
+          var scoreColor = effectiveScore >= 90 ? 'text-emerald-700 bg-emerald-50' : effectiveScore >= 80 ? 'text-blue-700 bg-blue-50' : 'text-amber-700 bg-amber-50';
           html += '<div class="rec-card border border-gray-200 rounded-xl p-5">';
           html += '<div class="flex items-start justify-between mb-3">';
           html += '<div class="flex items-start gap-3 flex-1">';
@@ -625,12 +691,14 @@
           html += '<div class="flex flex-wrap gap-1">';
           a.quals.forEach(function (q) { html += '<span class="px-2 py-0.5 bg-slate-100 text-slate-700 text-xs rounded font-medium">' + q + '</span>'; });
           html += '</div></div></div>';
-          html += '<span class="px-3 py-1.5 rounded-lg font-bold text-base ' + scoreColor + '">' + a.matchScore + '% Match</span>';
+          html += '<span class="px-3 py-1.5 rounded-lg font-bold text-base ' + scoreColor + '">' + effectiveScore + '% Match</span>';
           html += '</div>';
-          html += '<div class="grid grid-cols-3 gap-3 mb-3 text-sm">';
+          if (recommendationUnits.length > 1 && idx === 0) {
+            html += '<div class="mb-3"><span class="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-semibold rounded-full bg-emerald-100 text-emerald-800"><span class="material-symbols-outlined text-sm">auto_awesome</span>Best for selected units</span></div>';
+          }
+          html += '<div class="grid grid-cols-2 gap-3 mb-3 text-sm">';
           html += '<div><span class="text-slate-400">Distance:</span><span class="ml-1 text-slate-800 font-medium">' + a.distance + '</span></div>';
           html += '<div><span class="text-slate-400">Experience:</span><span class="ml-1 text-slate-800 font-medium">' + a.experience + '</span></div>';
-          html += '<div><span class="text-slate-400">Cost:</span><span class="ml-1 text-slate-800 font-medium">' + a.cost + '</span></div>';
           html += '</div>';
           html += '<div class="bg-slate-50 rounded-lg p-3 mb-3"><p class="text-sm font-semibold text-slate-600 mb-1.5">Why this recommendation:</p><ul class="space-y-1">';
           a.reasons.forEach(function (r, ri) {
@@ -659,9 +727,21 @@
         // Assign to single unit
         recCards.querySelectorAll('.assign-unit-auditor').forEach(function (btn) {
           btn.addEventListener('click', function () {
-            if (!selectedUnit) return;
-            selectedUnit.status = 'assigned';
-            selectedUnit.assignee = btn.getAttribute('data-auditor');
+            var auditorName = btn.getAttribute('data-auditor');
+            if (selectedUnitIds.length > 0) {
+              // Multi-select flow: assign selected pending units
+              selectedClient.units.forEach(function (u) {
+                if (selectedUnitIds.indexOf(u.id) !== -1 && u.status === 'pending') {
+                  u.status = 'assigned';
+                  u.assignee = auditorName;
+                }
+              });
+            } else {
+              // Fallback: assign currently selected single unit
+              if (!selectedUnit) return;
+              selectedUnit.status = 'assigned';
+              selectedUnit.assignee = auditorName;
+            }
             renderClients();
             renderUnitPanel();
             renderRecommendations();
