@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -201,7 +201,7 @@
 .active-link { background-color: rgba(62, 178, 237, 0.1); color: #3eb2ed; font-weight: 500 }
 .active-link .material-symbols-outlined { font-variation-settings: "FILL" 1, "wght" 400 }
 input::placeholder, textarea::placeholder, select { color: #9ca3af }
-/* CRM top nav tabs: attachment style – subtle active (darker/bolder), no heavy background */
+/* CRM top nav tabs: attachment style â€“ subtle active (darker/bolder), no heavy background */
 [aria-label="CRM Portal tabs"] ul { border-bottom: 1px solid #e2e8f0; gap: 0; }
 [aria-label="CRM Portal tabs"] [role="tab"] {
   border-radius: 0;
@@ -638,7 +638,7 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
 
 <body class="font-display bg-white text-dark-text">
   <style>
-    /* Compact contact entries styling — tuned to match provided screenshot */
+    /* Compact contact entries styling â€” tuned to match provided screenshot */
     .contact-list {
       display: flex;
       flex-direction: column;
@@ -1113,9 +1113,9 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
             </a>
             <a href="calendar.html"
               class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-200/70 hover:bg-white/10 hover:text-white"
-              title="Schedule Calendar">
+              title="Office Calendar">
               <span class="material-symbols-outlined text-base">arrow_right</span>
-              <span>Schedule Calendar</span>
+              <span>Office Calendar</span>
             </a>
           </div>
         </div>
@@ -2736,7 +2736,7 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
                 <h3 id="contactsModalTitle" class="text-lg font-semibold">Contacts</h3>
                 <div class="text-sm text-slate-400">Contacts for selected account</div>
               </div>
-              <button id="closeContactsModal" class="text-slate-600 p-2">Close ✕</button>
+              <button id="closeContactsModal" class="text-slate-600 p-2">Close âœ•</button>
             </div>
             <div class="p-6">
               <div class="border rounded" style="max-height:350px; overflow-y:auto;">
@@ -2777,7 +2777,7 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
             const modal = document.getElementById('contactsModal');
             const title = document.getElementById('contactsModalTitle');
             const body = document.getElementById('contactsModalBody');
-            title.textContent = 'Contacts — ' + companyName;
+            title.textContent = 'Contacts â€” ' + companyName;
             body.innerHTML = '';
             const rows = SAMPLE_CONTACTS[companyName] || [];
             if (rows.length === 0) {
@@ -3162,19 +3162,19 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
             </div>
             <div class="divider"></div>
             <div class="stat-box">
-              <span class="stat-label">New Leads <span class="info-icon">ⓘ</span></span>
+              <span class="stat-label">New Leads <span class="info-icon">â“˜</span></span>
               <span class="stat-value">2</span>
             </div>
             <div class="stat-box">
-              <span class="stat-label">Verified Leads <span class="info-icon">ⓘ</span></span>
+              <span class="stat-label">Verified Leads <span class="info-icon">â“˜</span></span>
               <span class="stat-value">1</span>
             </div>
             <div class="stat-box">
-              <span class="stat-label">In Progress Leads <span class="info-icon">ⓘ</span></span>
+              <span class="stat-label">In Progress Leads <span class="info-icon">â“˜</span></span>
               <span class="stat-value">1</span>
             </div>
             <div class="stat-box">
-              <span class="stat-label">Converted Leads <span class="info-icon">ⓘ</span></span>
+              <span class="stat-label">Converted Leads <span class="info-icon">â“˜</span></span>
               <span class="stat-value">1</span>
             </div>
             <div class="stat-box">
@@ -3561,15 +3561,15 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
             </div>
             <div class="divider"></div>
             <div class="stat-box">
-              <span class="stat-label">Active <span class="info-icon">ⓘ</span></span>
+              <span class="stat-label">Active <span class="info-icon">â“˜</span></span>
               <span class="stat-value">0</span>
             </div>
             <div class="stat-box">
-              <span class="stat-label">Inactive <span class="info-icon">ⓘ</span></span>
+              <span class="stat-label">Inactive <span class="info-icon">â“˜</span></span>
               <span class="stat-value">0</span>
             </div>
             <!-- <div class="stat-box">
-            <span class="stat-label">No Upcoming <span class="info-icon">ⓘ</span></span>
+            <span class="stat-label">No Upcoming <span class="info-icon">â“˜</span></span>
             <span class="stat-value">0</span>
           </div>
           <div class="stat-box">
@@ -3581,7 +3581,7 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
             <span class="stat-value">0</span>
           </div>
           <div class="stat-box">
-            <span class="stat-label">Upcoming <span class="info-icon">ⓘ</span></span>
+            <span class="stat-label">Upcoming <span class="info-icon">â“˜</span></span>
             <span class="stat-value">0</span>
           </div> -->
           </div>
@@ -3593,7 +3593,7 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
               <div class="flex items-center justify-between px-6 py-4" style="background:#1b2540;">
                 <h3 class="text-lg font-semibold text-white">Add Contact</h3>
                 <button id="closeAddContactModal"
-                  class="text-white p-2 text-xl bg-transparent hover:bg-white/10 rounded-full">✕</button>
+                  class="text-white p-2 text-xl bg-transparent hover:bg-white/10 rounded-full">âœ•</button>
               </div>
               <form class="p-8 pt-6">
                 <div class="space-y-6">
@@ -3634,9 +3634,9 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
                 <div class="flex justify-end items-center gap-4">
                   <button type="button" id="cancelAddContact"
                     class="w-10 h-10 flex items-center justify-center rounded-full border-2 border-[#3eb2ed] text-[#3eb2ed] bg-white hover:bg-[#e6f6fd] text-2xl"><span
-                      style="font-size:22px;">✕</span></button>
+                      style="font-size:22px;">âœ•</span></button>
                   <button type="submit"
-                    class="w-10 h-10 flex items-center justify-center rounded-full bg-[#3eb2ed] text-white text-2xl hover:bg-[#2499d6]">✓</button>
+                    class="w-10 h-10 flex items-center justify-center rounded-full bg-[#3eb2ed] text-white text-2xl hover:bg-[#2499d6]">âœ“</button>
                 </div>
               </form>
             </div>
@@ -4562,13 +4562,13 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
               <!-- Won - Aligned with Probability column -->
               <div class="flex flex-col items-center text-center py-3" style="width: 140px;">
                 <span class="text-xs uppercase tracking-wider mb-1" style="color: rgba(255,255,255,0.6);">Won <span
-                    style="color: rgba(255,255,255,0.4);">ⓘ</span></span>
+                    style="color: rgba(255,255,255,0.4);">â“˜</span></span>
                 <span class="text-xl font-bold text-white">0</span>
               </div>
               <!-- Lost - Next to Won -->
               <div class="flex flex-col items-center text-center py-3" style="width: 140px;">
                 <span class="text-xs uppercase tracking-wider mb-1" style="color: rgba(255,255,255,0.6);">Lost <span
-                    style="color: rgba(255,255,255,0.4);">ⓘ</span></span>
+                    style="color: rgba(255,255,255,0.4);">â“˜</span></span>
                 <span class="text-xl font-bold text-white">0</span>
               </div>
             </div>
@@ -4930,7 +4930,7 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
       const insertIndex = (positionIndex >= 0) ? positionIndex + 1 : 4;
       Array.from(tbody.querySelectorAll('tr')).forEach(tr => {
         const tds = Array.from(tr.querySelectorAll('td'));
-        // existing email cell (static) — move it if present
+        // existing email cell (static) â€” move it if present
         const existingEmail = tr.querySelector('.contacts-email-cell');
         const emailTd = existingEmail && existingEmail.parentElement ? existingEmail : document.createElement('td');
         if (!existingEmail) {

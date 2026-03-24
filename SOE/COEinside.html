@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -855,9 +855,9 @@
 						</a>
 						<a href="calendar.html"
 							class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-200/70 hover:bg-white/10 hover:text-white"
-							title="Schedule Calendar">
+							title="Office Calendar">
 							<span class="material-symbols-outlined text-base">arrow_right</span>
-							<span>Schedule Calendar</span>
+							<span>Office Calendar</span>
 						</a>
 					</div>
 				</div>
@@ -3941,7 +3941,7 @@
 																<div class="text-sm font-medium text-slate-700">No
 																	services offered yet</div>
 																<div class="text-xs text-slate-400 mt-1">Services will
-																	appear here once they’re added.</div>
+																	appear here once theyâ€™re added.</div>
 															</div>
 														</div>
 													</div>
@@ -3977,7 +3977,7 @@
 																<div class="text-sm font-medium text-slate-700">No
 																	services offered yet</div>
 																<div class="text-xs text-slate-400 mt-1">Services will
-																	appear here once they’re added.</div>
+																	appear here once theyâ€™re added.</div>
 															</div>
 														</div>
 													</div>
@@ -4082,7 +4082,7 @@
 															</ul>
 
 															<style>
-																/* organic list — refined professional styling */
+																/* organic list â€” refined professional styling */
 																#organicList {
 																	padding: 0;
 																	margin: 0;
@@ -4191,7 +4191,7 @@
 																<div class="text-sm font-medium text-slate-700">No
 																	services offered yet</div>
 																<div class="text-xs text-slate-400 mt-1">Services will
-																	appear here once they’re added.</div>
+																	appear here once theyâ€™re added.</div>
 															</div>
 														</div>
 													</div>
@@ -5033,7 +5033,7 @@
 													</div>
 													<div>
 														<div class="text-xs text-slate-400">Amount</div>
-														<div class="font-medium text-slate-800">—</div>
+														<div class="font-medium text-slate-800">â€”</div>
 													</div>
 													<div>
 														<div class="text-xs text-slate-400">Close Date</div>
@@ -5053,7 +5053,7 @@
 													</div>
 													<div>
 														<div class="text-xs text-slate-400">Amount</div>
-														<div class="font-medium text-slate-800">—</div>
+														<div class="font-medium text-slate-800">â€”</div>
 													</div>
 													<div>
 														<div class="text-xs text-slate-400">Close Date</div>
@@ -5146,7 +5146,7 @@
 													</div>
 													<div>
 														<a href="#" class="text-cu-light-blue font-medium">Business Registration</a>
-														<div class="text-xs text-slate-500 mt-1">Jan 7, 2026 • 15KB • docx</div>
+														<div class="text-xs text-slate-500 mt-1">Jan 7, 2026 â€¢ 15KB â€¢ docx</div>
 													</div>
 												</div>
 												<div class="flex items-start gap-3">
@@ -5157,7 +5157,7 @@
 													</div>
 													<div>
 														<a href="#" class="text-cu-light-blue font-medium">This client is very sensitive.</a>
-														<div class="text-xs text-slate-500 mt-1">Jan 7, 2026 • Note</div>
+														<div class="text-xs text-slate-500 mt-1">Jan 7, 2026 â€¢ Note</div>
 													</div>
 												</div>
 											</div>
@@ -5303,7 +5303,7 @@
 			<div class="w-9 h-9 rounded-full bg-slate-100 flex items-center justify-center text-slate-600">${initials}</div>
 			<div>
 				<div class="text-sm font-medium">${escapeHtml(payload.name || '')} ${payload.key ? '<span class="contact-key-badge text-xs ml-2 rounded px-2 bg-[#e6f7ff] text-[#2b9bd7]">Key</span>' : ''}</div>
-				<div class="text-xs text-slate-400">${escapeHtml(payload.position || '')}${payload.position ? ' • ' : ''}${escapeHtml(payload.email || '')}</div>
+				<div class="text-xs text-slate-400">${escapeHtml(payload.position || '')}${payload.position ? ' â€¢ ' : ''}${escapeHtml(payload.email || '')}</div>
 			</div>
 		</div>
 		<button class="text-sm text-cu-light-blue">Details</button>
@@ -5459,7 +5459,7 @@
 						<div class="text-sm font-medium text-slate-900 truncate">${escapeHtml(it.title)}</div>
 						<div class="text-xs text-slate-400 ml-2 whitespace-nowrap">${formatDate(it.at)}</div>
 					</div>
-					<div class="text-xs text-slate-500 truncate">${escapeHtml(it.detail)} • ${escapeHtml(it.by)}</div>
+					<div class="text-xs text-slate-500 truncate">${escapeHtml(it.detail)} â€¢ ${escapeHtml(it.by)}</div>
 				</div>
 			`;
 								container.appendChild(el);
@@ -6281,8 +6281,8 @@
 												const cur = current[idx] || 0;
 												const diff = cur - prev;
 												const sign = diff >= 0 ? '+' : '';
-												const pct = prev ? ((diff / prev) * 100).toFixed(1) : '—';
-												return 'Change vs prev: ' + sign + diff.toLocaleString() + ' (' + (pct === '—' ? pct : (pct + '%')) + ')';
+												const pct = prev ? ((diff / prev) * 100).toFixed(1) : 'â€”';
+												return 'Change vs prev: ' + sign + diff.toLocaleString() + ' (' + (pct === 'â€”' ? pct : (pct + '%')) + ')';
 											}
 											return '';
 										}
@@ -6462,7 +6462,7 @@
 
 						function openMonthBreakdown(idx) {
 							const month = monthLabels[idx] || ('#' + idx);
-							breakdownTitle.textContent = month + ' — Department breakdown';
+							breakdownTitle.textContent = month + ' â€” Department breakdown';
 							const values = Object.keys(deptData).map(k => deptData[k][idx] || 0);
 							breakdownChart.data.datasets[0].data = values;
 							breakdownChart.update();

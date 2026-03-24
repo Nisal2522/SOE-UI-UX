@@ -1,10 +1,10 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>Client — Nisal Amarasekara</title>
+	<title>Client â€” Nisal Amarasekara</title>
 	<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&amp;display=swap" rel="stylesheet" />
 	<link
@@ -785,9 +785,9 @@
 						</a>
 						<a href="calendar.html"
 							class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-200/70 hover:bg-white/10 hover:text-white"
-							title="Schedule Calendar">
+							title="Office Calendar">
 							<span class="material-symbols-outlined text-base">arrow_right</span>
-							<span>Schedule Calendar</span>
+							<span>Office Calendar</span>
 						</a>
 					</div>
 				</div>
@@ -1318,10 +1318,10 @@
 													2: { name: 'Needs Analysis', icon: 'forum', expected: '', opportunityExplanation: 'Detailed client requirements, locations, volumes, and service scope are being defined to prepare an accurate proposal.', recommended: ['Gather detailed client requirements', 'Confirm sites, volumes, and complexity', 'Finalize service scope', 'Prepare inputs for proposal or quotation'], required: [{ key: 'requirements', label: 'Document requirements' }], rulesText: '' },
 													3: { name: 'Quotation', icon: 'receipt_long', expected: '', opportunityExplanation: 'Proposal or quotation has been prepared and shared with the client based on the agreed scope and requirements.', recommended: ['Prepare proposal or quotation', 'Review internally if required', 'Share with the client', 'Record validity period and key terms'], required: [{ key: 'quotation', label: 'Attach quotation document' }], rulesText: '' },
 													4: { name: 'Negotiation', icon: 'handshake', expected: '', opportunityExplanation: 'Pricing, scope clarifications, commercial terms, and internal or client approvals are being discussed before the final decision.', recommended: ['Address pricing and scope questions', 'Discuss terms and conditions', 'Obtain internal and client approvals', 'Prepare for final decision'], required: [{ key: 'approval', label: 'Obtain approval if required' }], rulesText: '' },
-													5: { name: 'Closed', icon: 'check_circle', expected: '', opportunityExplanation: 'Opportunity is completed. Record the outcome as Won if the deal was successful or Lost if not.', recommended: ['Select Closed – Won or Closed – Lost', 'For Lost, select a loss reason (mandatory)', 'For Won, ensure handover to operations is initiated'], required: [], rulesText: '' }
+													5: { name: 'Closed', icon: 'check_circle', expected: '', opportunityExplanation: 'Opportunity is completed. Record the outcome as Won if the deal was successful or Lost if not.', recommended: ['Select Closed â€“ Won or Closed â€“ Lost', 'For Lost, select a loss reason (mandatory)', 'For Won, ensure handover to operations is initiated'], required: [], rulesText: '' }
 												};
 
-												// Readiness state for required items (dummy for now — can be wired to real form fields later)
+												// Readiness state for required items (dummy for now â€” can be wired to real form fields later)
 												const requiredState = {
 													owner: true,
 													initialContact: true,
@@ -1332,7 +1332,7 @@
 													approval: true
 												};
 
-												// Readiness checklist removed — soft rules still show note but are not enforced here
+												// Readiness checklist removed â€” soft rules still show note but are not enforced here
 
 												function render() {
 													arrowSteps.forEach((el, i) => {
@@ -1394,7 +1394,7 @@
 													if (idx === 5 && closedOutcome) {
 														if (closedOutcome === 'won') {
 															meta = {
-																name: 'Closed – Won',
+																name: 'Closed â€“ Won',
 																icon: 'emoji_events',
 																expected: '',
 																opportunityExplanation: 'Great work! You\'ve closed a successful deal. Handover to operations should be initiated to start service delivery.',
@@ -1408,7 +1408,7 @@
 															};
 														} else {
 															meta = {
-																name: 'Closed – Lost',
+																name: 'Closed â€“ Lost',
 																icon: 'cancel',
 																expected: '',
 																opportunityExplanation: 'Opportunity was not converted. The reason for the loss is recorded. Schedule follow-ups if needed.',
@@ -1449,12 +1449,12 @@
 														if (idx === 5 && closedOutcome) {
 															// Add icon and animation for Won/Lost
 															if (closedOutcome === 'won') {
-																sgOpportunityExplanation.innerHTML = '<span class="mr-2">🎉</span>' + meta.opportunityExplanation;
+																sgOpportunityExplanation.innerHTML = '<span class="mr-2">ðŸŽ‰</span>' + meta.opportunityExplanation;
 																sgOpportunityExplanation.className = 'text-sm text-slate-700 mt-3';
 																sgOpportunityExplanation.style.background = '';
 																sgOpportunityExplanation.style.border = '';
 															} else {
-																sgOpportunityExplanation.innerHTML = '<span class="mr-2">📝</span>' + meta.opportunityExplanation;
+																sgOpportunityExplanation.innerHTML = '<span class="mr-2">ðŸ“</span>' + meta.opportunityExplanation;
 																sgOpportunityExplanation.className = 'text-sm text-slate-700 mt-3';
 																sgOpportunityExplanation.style.background = '';
 																sgOpportunityExplanation.style.border = '';
@@ -1707,7 +1707,7 @@
 															<div class="text-sm font-medium text-slate-700">No services
 																offered yet</div>
 															<div class="text-xs text-slate-400 mt-1">Services will
-																appear here once they’re added.</div>
+																appear here once theyâ€™re added.</div>
 														</div>
 													</div>
 												</div>
@@ -1742,7 +1742,7 @@
 															<div class="text-sm font-medium text-slate-700">No services
 																offered yet</div>
 															<div class="text-xs text-slate-400 mt-1">Services will
-																appear here once they’re added.</div>
+																appear here once theyâ€™re added.</div>
 														</div>
 													</div>
 												</div>
@@ -1890,7 +1890,7 @@
 															<div class="text-sm font-medium text-slate-700">No services
 																offered yet</div>
 															<div class="text-xs text-slate-400 mt-1">Services will
-																appear here once they’re added.</div>
+																appear here once theyâ€™re added.</div>
 														</div>
 													</div>
 												</div>
@@ -1977,7 +1977,7 @@
 																<div class="space-y-3 text-sm">
 																	<div class="flex justify-between">
 																		<div class="font-medium">INV-2025-9876</div>
-																		<div class="text-slate-500">Due: 2025-12-31 •
+																		<div class="text-slate-500">Due: 2025-12-31 â€¢
 																			Settled: 2026-01-20</div>
 																	</div>
 																	<div class="text-lg font-bold">$1,234,000.00</div>
@@ -2222,7 +2222,7 @@
 													<div>
 														<a href="#" class="text-cu-light-blue font-medium">Business
 															Registration</a>
-														<div class="text-xs text-slate-500 mt-1">Jan 7, 2026 • 15KB •
+														<div class="text-xs text-slate-500 mt-1">Jan 7, 2026 â€¢ 15KB â€¢
 															docx</div>
 													</div>
 												</div>
@@ -2238,7 +2238,7 @@
 													<div>
 														<a href="#" class="text-cu-light-blue font-medium">This
 															Opportunity is very urgent.</a>
-														<div class="text-xs text-slate-500 mt-1">Jan 7, 2026 • Note
+														<div class="text-xs text-slate-500 mt-1">Jan 7, 2026 â€¢ Note
 														</div>
 													</div>
 												</div>
@@ -2410,7 +2410,7 @@
 												</div>
 												<div>
 													<div class="text-xs text-slate-500">Status</div>
-													<div class="font-medium">Prospect • Active</div>
+													<div class="font-medium">Prospect â€¢ Active</div>
 												</div>
 											</div>
 											<div class="col-span-1 p-4 rounded-lg bg-gradient-to-r from-slate-50 to-white border flex items-center gap-4">
@@ -2791,7 +2791,7 @@
 			const initials = (payload.name || '').split(' ').map(s => s.trim()).filter(Boolean).map(s => s[0]).slice(0, 2).join('').toUpperCase() || 'NA';
 			const item = document.createElement('div');
 			item.className = 'flex items-center justify-between';
-			item.innerHTML = '<div class="flex items-center gap-3"><div class="w-9 h-9 rounded-full bg-slate-100 flex items-center justify-center text-slate-600">' + initials + '</div><div><div class="text-sm font-medium">' + escapeHtml(payload.name || '') + (payload.key ? ' <span class="contact-key-badge text-xs ml-2 rounded px-2 bg-[#e6f7ff] text-[#2b9bd7]">Key</span>' : '') + '</div><div class="text-xs text-slate-400">' + escapeHtml(payload.position || '') + (payload.positionType ? ' · ' + escapeHtml(payload.positionType) : '') + ((payload.position || payload.positionType) ? ' • ' : '') + escapeHtml(payload.email || '') + '</div>' + (payload.number ? '<div class="text-xs text-slate-500">' + escapeHtml(payload.number) + '</div>' : '') + '</div></div><button class="text-sm text-cu-light-blue">Details</button>';
+			item.innerHTML = '<div class="flex items-center gap-3"><div class="w-9 h-9 rounded-full bg-slate-100 flex items-center justify-center text-slate-600">' + initials + '</div><div><div class="text-sm font-medium">' + escapeHtml(payload.name || '') + (payload.key ? ' <span class="contact-key-badge text-xs ml-2 rounded px-2 bg-[#e6f7ff] text-[#2b9bd7]">Key</span>' : '') + '</div><div class="text-xs text-slate-400">' + escapeHtml(payload.position || '') + (payload.positionType ? ' Â· ' + escapeHtml(payload.positionType) : '') + ((payload.position || payload.positionType) ? ' â€¢ ' : '') + escapeHtml(payload.email || '') + '</div>' + (payload.number ? '<div class="text-xs text-slate-500">' + escapeHtml(payload.number) + '</div>' : '') + '</div></div><button class="text-sm text-cu-light-blue">Details</button>';
 			if (list.firstChild) list.insertBefore(item, list.firstChild);
 			else list.appendChild(item);
 		}
@@ -3529,3 +3529,4 @@
 			}
 		});
 	</script>
+

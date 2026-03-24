@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -743,9 +743,9 @@ main .feedback-panel .panel-content {
             </a>
             <a href="calendar.html"
               class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-200/70 hover:bg-white/10 hover:text-white"
-              title="Schedule Calendar">
+              title="Office Calendar">
               <span class="material-symbols-outlined text-base">arrow_right</span>
-              <span>Schedule Calendar</span>
+              <span>Office Calendar</span>
             </a>
           </div>
         </div>
@@ -1523,8 +1523,8 @@ main .feedback-panel .panel-content {
           if (!criteria && addFeedbackCriteriaInput && addFeedbackCriteriaInput.selectedIndex >= 0 && addFeedbackCriteriaInput.options[addFeedbackCriteriaInput.selectedIndex]) {
             criteria = addFeedbackCriteriaInput.options[addFeedbackCriteriaInput.selectedIndex].text.trim();
           }
-          criteria = criteria || '—';
-          var text = (addFeedbackTextInput && addFeedbackTextInput.value.trim()) || '—';
+          criteria = criteria || 'â€”';
+          var text = (addFeedbackTextInput && addFeedbackTextInput.value.trim()) || 'â€”';
           var rating = rateStarsEl ? (rateStarsEl.getAttribute('data-rating') || '0') : '0';
           var tr = document.createElement('tr');
           var starHtml = renderStarsHtml(rating);
@@ -1548,7 +1548,7 @@ main .feedback-panel .panel-content {
         }
       });
 
-      // Submit (✓) in Add Feedback modal -> add summary row to main Feedback table
+      // Submit (âœ“) in Add Feedback modal -> add summary row to main Feedback table
       const feedbackMainTableBody = document.getElementById('feedbackMainTableBody');
       const addFeedbackForm = document.getElementById('addFeedbackForm');
       const periodSelect = document.getElementById('addFeedbackPeriod');
@@ -1583,17 +1583,17 @@ main .feedback-panel .panel-content {
           }
 
           var tr = document.createElement('tr');
-          var feedbackCriteria = '—';
-          var feedbackText = '—';
+          var feedbackCriteria = 'â€”';
+          var feedbackText = 'â€”';
           if (addFeedbackModalTableBody) {
             var firstRow = addFeedbackModalTableBody.querySelector('tr');
             if (firstRow) {
               var tds = firstRow.querySelectorAll('td');
-              if (tds.length >= 1) feedbackCriteria = (tds[0] && tds[0].textContent) ? tds[0].textContent.trim() : '—';
-              if (tds.length >= 2) feedbackText = (tds[1] && tds[1].textContent) ? tds[1].textContent.trim() : '—';
+              if (tds.length >= 1) feedbackCriteria = (tds[0] && tds[0].textContent) ? tds[0].textContent.trim() : 'â€”';
+              if (tds.length >= 2) feedbackText = (tds[1] && tds[1].textContent) ? tds[1].textContent.trim() : 'â€”';
             }
           }
-          tr.innerHTML = '<td class="center">' + (dateVal || '—') + '</td><td>' + escapeHtml(feedbackCriteria) + '</td><td>' + escapeHtml(feedbackText || '—') + '</td><td class="center">' + mainStarsHtml(avgRating) + '</td><td><a href="#" class="action-link" title="Edit" aria-label="Edit"><span class="material-symbols-outlined">edit</span></a></td>';
+          tr.innerHTML = '<td class="center">' + (dateVal || 'â€”') + '</td><td>' + escapeHtml(feedbackCriteria) + '</td><td>' + escapeHtml(feedbackText || 'â€”') + '</td><td class="center">' + mainStarsHtml(avgRating) + '</td><td><a href="#" class="action-link" title="Edit" aria-label="Edit"><span class="material-symbols-outlined">edit</span></a></td>';
           feedbackMainTableBody.appendChild(tr);
 
           if (periodSelect) periodSelect.value = '';
@@ -1651,8 +1651,8 @@ main .feedback-panel .panel-content {
 
       if (addAdditionalInfoAddBtn && addAdditionalInfoModalTableBody) {
         addAdditionalInfoAddBtn.addEventListener('click', function () {
-          var context = (addAdditionalInfoContextInput && addAdditionalInfoContextInput.value.trim()) || '—';
-          var answer = (addAdditionalInfoAnswerInput && addAdditionalInfoAnswerInput.value.trim()) || '—';
+          var context = (addAdditionalInfoContextInput && addAdditionalInfoContextInput.value.trim()) || 'â€”';
+          var answer = (addAdditionalInfoAnswerInput && addAdditionalInfoAnswerInput.value.trim()) || 'â€”';
           var tr = document.createElement('tr');
           tr.innerHTML = '<td class="border-b border-slate-100 px-3 py-2 text-slate-600">' + escapeHtmlAdditional(context) + '</td><td class="border-b border-slate-100 px-3 py-2 text-slate-600">' + escapeHtmlAdditional(answer) + '</td><td class="border-b border-slate-100 px-3 py-2"><button type="button" class="additional-info-modal-delete-row p-1 rounded text-[#3eb2ed] hover:bg-[#e0f2fe] inline-flex items-center justify-center" title="Delete" aria-label="Delete"><span class="material-symbols-outlined" style="font-size:20px">delete</span></button></td>';
           addAdditionalInfoModalTableBody.appendChild(tr);
@@ -1678,10 +1678,10 @@ main .feedback-panel .panel-content {
             addAdditionalInfoModalTableBody.querySelectorAll('tr').forEach(function (tr) {
               var tds = tr.querySelectorAll('td');
               if (tds.length >= 2) {
-                var contextText = tds[0].textContent || '—';
-                var answerText = tds[1].textContent || '—';
+                var contextText = tds[0].textContent || 'â€”';
+                var answerText = tds[1].textContent || 'â€”';
                 var newTr = document.createElement('tr');
-                newTr.innerHTML = '<td class="center">' + (dateVal || '—') + '</td><td>' + escapeHtmlAdditional(contextText) + '</td><td>' + escapeHtmlAdditional(answerText) + '</td><td><a href="#" class="action-link" title="Edit" aria-label="Edit"><span class="material-symbols-outlined">edit</span></a></td>';
+                newTr.innerHTML = '<td class="center">' + (dateVal || 'â€”') + '</td><td>' + escapeHtmlAdditional(contextText) + '</td><td>' + escapeHtmlAdditional(answerText) + '</td><td><a href="#" class="action-link" title="Edit" aria-label="Edit"><span class="material-symbols-outlined">edit</span></a></td>';
                 additionalInfoMainTableBody.appendChild(newTr);
               }
             });
@@ -1699,3 +1699,4 @@ main .feedback-panel .panel-content {
 </body>
 
 </html>
+

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -658,7 +658,7 @@
     .dashboard-header-right { display: flex; align-items: center; gap: 16px; }
     .nav-btn { transition: all 0.3s ease; }
 
-    /* Market Share comparison chart ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“ CU palette */
+    /* Market Share comparison chart ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œ CU palette */
     .market-share-chart { --bar-h: 20px; --gap: 6px; --last-year: #3eb2ed; --this-year: #1b1e42; }
     .market-share-chart .bar-track { background: #f1f5f9; border-radius: 9999px; overflow: visible; }
     .market-share-chart .bar-segment { border-radius: 9999px; transition: filter 0.2s ease, opacity 0.2s ease; }
@@ -1150,7 +1150,7 @@
       .market-program-subtitle { font-size: 0.75rem; }
     }
 
-    /* Card 3D effect – depth and subtle lift on hover */
+    /* Card 3D effect â€“ depth and subtle lift on hover */
     .card-3d {
       box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(0, 0, 0, 0.03);
       transition: box-shadow 0.25s ease, transform 0.25s ease;
@@ -1278,7 +1278,7 @@
       width: 100%;
     }
 
-    /* Employee Distribution sunburst card – enterprise KPI style */
+    /* Employee Distribution sunburst card â€“ enterprise KPI style */
     .resources-overview-card {
       border-radius: 20px;
       background: #ffffff;
@@ -1855,7 +1855,7 @@
       border-bottom: none !important;
       box-sizing: border-box;
     }
-    /* Service TAT card header – attachment style: navy #1F263E, sky blue #59B4E3, white text, rounded corners */
+    /* Service TAT card header â€“ attachment style: navy #1F263E, sky blue #59B4E3, white text, rounded corners */
     #serviceTatCard .tatx-table thead th {
       background: #1F263E !important;
       color: #ffffff !important;
@@ -1898,7 +1898,7 @@
     #serviceTatCard .tatx-country-start {
       border-left: 4px solid #ffffff !important;
     }
-    /* Service TAT card – professional alignment & clear grid lines */
+    /* Service TAT card â€“ professional alignment & clear grid lines */
     #serviceTatCard .tatx-grid-wrap {
       border: 1px solid #d0d7e2;
       border-radius: 10px;
@@ -1945,7 +1945,7 @@
     }
     #serviceTatCard #tatxCatPane { border-right: 1px solid #d0d7e2; }
     #serviceTatCard #tatxCritPane { border-right: 1px solid #d0d7e2; }
-    /* Service TAT – category color across full row (Criteria + Data columns) */
+    /* Service TAT â€“ category color across full row (Criteria + Data columns) */
     #serviceTatCard #tatxCritTable tbody tr.tatx-cat-audits td,
     #serviceTatCard #tatxProgTable tbody tr.tatx-cat-audits td {
       background: #b2e0f8 !important; color: #1b1e42 !important;
@@ -1966,7 +1966,7 @@
     #serviceTatCard #tatxProgTable tbody tr.tatx-cat-sc td {
       background: #c9d4d5 !important; color: #1b1e42 !important;
     }
-    /* Cost card – same header style & merged Category/Criteria, professional grid */
+    /* Cost card â€“ same header style & merged Category/Criteria, professional grid */
     #costOverProgramCard .tatx-table thead th {
       background: #1F263E !important;
       color: #ffffff !important;
@@ -2040,7 +2040,7 @@
     }
     #costOverProgramCard #costxCatPane { border-right: 1px solid #d0d7e2; }
     #costOverProgramCard #costxCritPane { border-right: 1px solid #d0d7e2; }
-    /* Cost card – category color across full row (Criteria + Data columns) */
+    /* Cost card â€“ category color across full row (Criteria + Data columns) */
     #costOverProgramCard #costxCritTable tbody tr.tatx-g-a td,
     #costOverProgramCard #costxProgTable tbody tr.tatx-g-a td {
       background: #d8f0fb !important; color: #1b1e42 !important;
@@ -2061,7 +2061,7 @@
     #costOverProgramCard #costxProgTable tbody tr.tatx-g-e td {
       background: #afbfbf !important; color: #1b1e42 !important;
     }
-    /* Strategy card – same header style, merged Category/Criteria, professional grid, row colors */
+    /* Strategy card â€“ same header style, merged Category/Criteria, professional grid, row colors */
     #strategyOverviewCard .tatx-table thead th {
       background: #1F263E !important;
       color: #ffffff !important;
@@ -2699,9 +2699,9 @@
             </a>
             <a href="calendar.html"
               class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-200/70 hover:bg-white/10 hover:text-white"
-              title="Schedule Calendar">
+              title="Office Calendar">
               <span class="material-symbols-outlined text-base">arrow_right</span>
-              <span>Schedule Calendar</span>
+              <span>Office Calendar</span>
             </a>
           </div>
         </div>
@@ -4129,7 +4129,7 @@
                 </div>
               </section>
 
-              <!-- Employee Distribution by Role & Type – sunburst -->
+              <!-- Employee Distribution by Role & Type â€“ sunburst -->
 
               <!-- Client portfolio over programs - YTD, projections, trend -->
               <div id="clientPortfolioCard"
@@ -4529,14 +4529,14 @@
             );
 
             if (!isFinite(ratio) || ratio <= 0) {
-              console.warn('Invalid ratio for', target.id, '→ skipping page');
+              console.warn('Invalid ratio for', target.id, 'â†’ skipping page');
               return;
             }
 
             var imgWidth = canvas.width * ratio;
             var imgHeight = canvas.height * ratio;
             if (!isFinite(imgWidth) || !isFinite(imgHeight) || imgWidth <= 0 || imgHeight <= 0) {
-              console.warn('Invalid image size for', target.id, '→ skipping page');
+              console.warn('Invalid image size for', target.id, 'â†’ skipping page');
               return;
             }
 
@@ -4791,7 +4791,7 @@
         window.addEventListener('scroll', positionToggle, true);
       }
 
-      // Program Information by Country – collapse / expand
+      // Program Information by Country â€“ collapse / expand
       function toggleProgramCountryCard() {
         if (!programCountryCard || !programCountryBody || !programCountryToggle) return;
         var isCollapsed = programCountryCard.classList.toggle('is-collapsed');
@@ -4820,7 +4820,7 @@
         if (icon) icon.textContent = isCollapsed ? 'expand_more' : 'expand_less';
       }
 
-      // Service TAT – collapse / expand (header + toggle)
+      // Service TAT â€“ collapse / expand (header + toggle)
       function toggleServiceTatCard() {
         if (!serviceTatCard || !serviceTatToggle) return;
         var isCollapsed = serviceTatCard.classList.toggle('is-collapsed');
@@ -4845,7 +4845,7 @@
         applyCollapsibleState(serviceTatCard, serviceTatToggle, serviceTatCard.classList.contains('is-collapsed'));
       }
 
-      // Cost Across Program Groups – collapse / expand
+      // Cost Across Program Groups â€“ collapse / expand
       function toggleCostOverProgramCard() {
         if (!costOverProgramCard || !costOverProgramToggle) return;
         var isCollapsed = costOverProgramCard.classList.toggle('is-collapsed');
@@ -4868,7 +4868,7 @@
         applyCollapsibleState(costOverProgramCard, costOverProgramToggle, costOverProgramCard.classList.contains('is-collapsed'));
       }
 
-      // Strategy Overview – collapse / expand
+      // Strategy Overview â€“ collapse / expand
       function toggleStrategyOverviewCard() {
         if (!strategyOverviewCard || !strategyOverviewToggle) return;
         var isCollapsed = strategyOverviewCard.classList.toggle('is-collapsed');
@@ -4891,7 +4891,7 @@
         applyCollapsibleState(strategyOverviewCard, strategyOverviewToggle, strategyOverviewCard.classList.contains('is-collapsed'));
       }
 
-      // Resources Overview (employeeDistCard) – collapse / expand
+      // Resources Overview (employeeDistCard) â€“ collapse / expand
       function toggleEmployeeDistCard() {
         if (!employeeDistCard || !employeeDistCollapseToggle) return;
         var isCollapsed = employeeDistCard.classList.toggle('is-collapsed');
@@ -5000,14 +5000,14 @@
       window.addEventListener('resize', syncAllCardHeights);
       window.addEventListener('load', syncAllCardHeights);
 
-      // Program portfolio: YTD bars, projection bars, trend line (per COE ÃƒÆ’Ã¢â‚¬â€ View As)
+      // Program portfolio: YTD bars, projection bars, trend line (per COE ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â View As)
       const programPortfolioDefaults = {
         labels: ['GOTS', 'GRS', 'RCS', 'OCS', 'Regenagri'],
         ytd: [68, 122, 182, 148, 198],
         projection: [18, 28, 58, 42, 28],
         trend: [70, 115, 180, 140, 210]
       };
-      // Mock data for filters (COE ÃƒÆ’Ã¢â‚¬â€ View As)
+      // Mock data for filters (COE ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â View As)
       const mockData = {
         Textile: {
           APAC: { portfolio: 124, marketShare: 32, activeYtd: 89, bars: [65, 42, 38, 28, 22], labels: ['GOTS', 'TE', 'OCS', 'RCS', 'Other'], line: [40, 52, 48, 65, 70, 68], programs: { labels: programPortfolioDefaults.labels, ytd: [68, 122, 182, 148, 198], projection: [18, 28, 58, 42, 28], trend: [70, 115, 180, 140, 210] } },
@@ -6261,7 +6261,7 @@
       });
     }
 
-    // Performance & Market Insights ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“ data aligned with Client Portfolio table (BusinessOverview.html#client-portfolio)
+    // Performance & Market Insights ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œ data aligned with Client Portfolio table (BusinessOverview.html#client-portfolio)
     const portfolioPerformanceData = {
       labels: ['GOTS', 'OCS', 'GRS', 'RCS', 'RWS', 'RDS', 'Regenagri', 'OBP', 'SRCCS', 'BCI', 'Others'],
       activeDec2024: [30, 11, 27, 15, 8, 3, 6, 4, 2, 15, 0],
@@ -6282,7 +6282,7 @@
       const red = '#dc2626';
       const gray = '#94a3b8';
 
-      // 1. Comparative Growth ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“ grouped bar
+      // 1. Comparative Growth ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œ grouped bar
       const ctxGrowth = document.getElementById('chartGrowthComparison');
       if (ctxGrowth && typeof Chart !== 'undefined') {
         const pct24 = d.pctChange2023vs2024.map(function (v) { return v == null ? 0 : v; });
@@ -6308,7 +6308,7 @@
         });
       }
 
-      // 2. Client Retention & Churn ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“ stacked bar
+      // 2. Client Retention & Churn ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œ stacked bar
       const ctxChurn = document.getElementById('chartChurn');
       if (ctxChurn && typeof Chart !== 'undefined') {
         new Chart(ctxChurn, {
@@ -6332,7 +6332,7 @@
         });
       }
 
-      // 3. TCs Volume ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“ horizontal bar (log scale)
+      // 3. TCs Volume ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œ horizontal bar (log scale)
       const ctxTCs = document.getElementById('chartTCsVolume');
       if (ctxTCs && typeof Chart !== 'undefined') {
         const tcsData = d.tcs2024.map(function (v) { return v === 0 ? 0.5 : v; });
@@ -6355,7 +6355,7 @@
         });
       }
 
-      // 4. Competitor Market Share ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“ pie
+      // 4. Competitor Market Share ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œ pie
       const ctxComp = document.getElementById('chartCompetitors');
       if (ctxComp && typeof Chart !== 'undefined') {
         new Chart(ctxComp, {
@@ -6377,7 +6377,7 @@
         });
       }
 
-      // 5. Auditor Efficiency ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“ scatter (Auditors vs Active clients Dec 2024)
+      // 5. Auditor Efficiency ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œ scatter (Auditors vs Active clients Dec 2024)
       const ctxScatter = document.getElementById('chartAuditorEfficiency');
       if (ctxScatter && typeof Chart !== 'undefined') {
         const points = d.labels.map(function (_, i) {
@@ -6418,7 +6418,7 @@
         });
       }
 
-      // 6. Client Projection Trajectory ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“ line/bar (Active 2024 vs Projection 2025)
+      // 6. Client Projection Trajectory ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œ line/bar (Active 2024 vs Projection 2025)
       const ctxProj = document.getElementById('chartProjection');
       if (ctxProj && typeof Chart !== 'undefined') {
         new Chart(ctxProj, {
@@ -8700,7 +8700,7 @@
   </div>
 
   <script>
-    // Modal helpers: open/close + confirm → export
+    // Modal helpers: open/close + confirm â†’ export
     (function () {
       var modal = document.getElementById('bizExportModal');
       if (!modal) return;
@@ -8724,6 +8724,7 @@
 </body>
 
 </html>
+
 
 
 

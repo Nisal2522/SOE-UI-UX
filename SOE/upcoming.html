@@ -115,9 +115,9 @@
               <span class="material-symbols-outlined text-base">arrow_right</span>
               <span>Upcoming Event</span>
             </a>
-            <a href="calendar.html" class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-200/70 hover:bg-white/10 hover:text-white" title="Schedule Calendar">
+            <a href="calendar.html" class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-200/70 hover:bg-white/10 hover:text-white" title="Office Calendar">
               <span class="material-symbols-outlined text-base">arrow_right</span>
-              <span>Schedule Calendar</span>
+              <span>Office Calendar</span>
             </a>
           </div>
         </div>
@@ -249,7 +249,7 @@
       <main class="flex-1 overflow-y-auto bg-white p-5 lg:p-7">
         <div class="max-w-[1500px] w-full ml-0 mr-auto">
 
-          <!-- Page Header (aligned with Schedule Calendar) -->
+          <!-- Page Header (aligned with Office Calendar) -->
           <div class="mb-5">
             <h1 class="text-3xl font-extrabold text-slate-900 flex items-center gap-2">
               <span class="material-symbols-outlined text-[#3eb2ed] text-4xl">event_upcoming</span>
@@ -424,7 +424,7 @@
       // ==================== DATA ====================
       var clients = [
         {
-          id: 'techcorp', name: 'TechCorp Industries', location: 'Toronto, Canada', sector: 'ISO 9001', complexity: 'High',
+          id: 'techcorp', name: 'TechCorp Industries', location: 'Toronto, Canada', sector: 'ISO 9001', complexity: 'High', previousInvoiceStatus: 'paid',
           units: [
             { id: 'tc-hq', name: 'HQ Office', location: 'Toronto, Canada', auditType: 'ISO 9001', status: 'pending', assignee: null, date: 'Jun 10, 2024' },
             { id: 'tc-mfg', name: 'Manufacturing Plant A', location: 'Toronto, Canada', auditType: 'ISO 9001', status: 'assigned', assignee: 'Sarah Johnson', date: 'Jun 11, 2024' },
@@ -433,7 +433,7 @@
           ]
         },
         {
-          id: 'ecotex', name: 'EcoTextiles Ltd.', location: 'Vancouver, Canada', sector: 'GOTS', complexity: 'Medium',
+          id: 'ecotex', name: 'EcoTextiles Ltd.', location: 'Vancouver, Canada', sector: 'GOTS', complexity: 'Medium', previousInvoiceStatus: 'paid',
           units: [
             { id: 'et-spin', name: 'Spinning Mill', location: 'Vancouver, Canada', auditType: 'GOTS', status: 'pending', assignee: null, date: 'Jun 15, 2024' },
             { id: 'et-dye', name: 'Dyeing & Finishing', location: 'Vancouver, Canada', auditType: 'GOTS', status: 'assigned', assignee: 'Lisa Anderson', date: 'Jun 15, 2024' },
@@ -441,7 +441,7 @@
           ]
         },
         {
-          id: 'greenval', name: 'Green Valley Farms', location: 'Calgary, Canada', sector: 'Organic', complexity: 'Low',
+          id: 'greenval', name: 'Green Valley Farms', location: 'Calgary, Canada', sector: 'Organic', complexity: 'Low', previousInvoiceStatus: 'unpaid',
           units: [
             { id: 'gv-farm', name: 'Farm Operations', location: 'Calgary, Canada', auditType: 'Organic', status: 'pending', assignee: null, date: 'Jun 20, 2024' },
             { id: 'gv-proc', name: 'Processing Facility', location: 'Calgary, Canada', auditType: 'Organic', status: 'pending', assignee: null, date: 'Jun 20, 2024' },
@@ -468,6 +468,15 @@
           var pct = Math.round((planned / total) * 100);
           var isSelected = selectedClient && selectedClient.id === c.id;
           var complexCls = c.complexity === 'High' ? 'bg-red-100 text-red-800' : c.complexity === 'Medium' ? 'bg-amber-100 text-amber-800' : 'bg-emerald-100 text-emerald-800';
+          var invoiceBadgeCls = 'bg-rose-100 text-rose-800';
+          var invoiceBadgeText = 'Unpaid';
+          if (c.previousInvoiceStatus === 'paid') {
+            invoiceBadgeCls = 'bg-emerald-100 text-emerald-800';
+            invoiceBadgeText = 'Paid';
+          } else if (c.previousInvoiceStatus === 'overdue') {
+            invoiceBadgeCls = 'bg-amber-100 text-amber-800 border border-amber-200';
+            invoiceBadgeText = 'Overdue';
+          }
 
           html += '<button type="button" data-client="' + c.id + '" class="audit-card w-full text-left p-4 hover:bg-slate-50 ' + (isSelected ? 'selected' : '') + '">';
           html += '<div class="flex items-start justify-between mb-1.5">';
@@ -477,6 +486,7 @@
           html += '<div class="space-y-1 text-sm text-slate-500">';
           html += '<div class="flex items-center gap-1.5"><span class="material-symbols-outlined text-base">location_on</span>' + c.location + '</div>';
           html += '<div class="flex items-center gap-1.5"><span class="material-symbols-outlined text-base">apartment</span>' + total + ' unit' + (total > 1 ? 's' : '') + '</div>';
+          html += '<div class="flex items-center justify-between gap-1.5"><span class="inline-flex items-center gap-1.5"><span class="material-symbols-outlined text-base">receipt_long</span>Previous Invoice</span><span class="px-2 py-0.5 text-xs font-semibold rounded-full ' + invoiceBadgeCls + '">' + invoiceBadgeText + '</span></div>';
           html += '</div>';
           html += '<div class="flex gap-1.5 mt-2">';
           html += '<span class="px-2 py-0.5 bg-blue-100 text-blue-800 text-xs font-medium rounded-full">' + c.sector + '</span>';
@@ -510,7 +520,7 @@
         }
         var c = selectedClient;
         var planned = c.units.filter(function (u) { return u.status === 'assigned'; }).length;
-        title.textContent = c.name + ' — Units';
+        title.textContent = c.name + ' â€” Units';
 
         var html = '';
         // Progress header
@@ -679,3 +689,4 @@
   </script>
 </body>
 </html>
+

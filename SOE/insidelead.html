@@ -1,10 +1,10 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>Client — Nisal Amarasekara</title>
+	<title>Client â€” Nisal Amarasekara</title>
 	<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&amp;display=swap" rel="stylesheet" />
 	<link
@@ -870,9 +870,9 @@
 						</a>
 						<a href="calendar.html"
 							class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-200/70 hover:bg-white/10 hover:text-white"
-							title="Schedule Calendar">
+							title="Office Calendar">
 							<span class="material-symbols-outlined text-base">arrow_right</span>
-							<span>Schedule Calendar</span>
+							<span>Office Calendar</span>
 						</a>
 					</div>
 				</div>
@@ -1330,7 +1330,7 @@
 														], readiness: [], rules: [], outcome: ''
 													},
 													4: {
-														key: 'qualify', icon: 'how_to_reg', whatNext: [], expectation: 'Review the lead and decide whether it should be Qualified or Disqualified. Use the popup to confirm if the lead has a valid requirement and fits Control Union’s service scope.', recommended: [
+														key: 'qualify', icon: 'how_to_reg', whatNext: [], expectation: 'Review the lead and decide whether it should be Qualified or Disqualified. Use the popup to confirm if the lead has a valid requirement and fits Control Unionâ€™s service scope.', recommended: [
 															'Review lead readiness and fit',
 															'Click Qualify to proceed or Disqualify if not suitable',
 															'Ensure mandatory fields are completed',
@@ -1352,7 +1352,7 @@
 												// helpers to render lists
 												function setList(id, items) {
 													var el = document.getElementById(id); if (!el) return; el.innerHTML = '';
-													items.forEach(function (i) { var li = document.createElement('div'); li.textContent = '• ' + i; el.appendChild(li); });
+													items.forEach(function (i) { var li = document.createElement('div'); li.textContent = 'â€¢ ' + i; el.appendChild(li); });
 												}
 
 												// renderPanel: update the guidance panel content for a given index without changing stepper visuals
@@ -1370,7 +1370,7 @@
 													setList('sgRecommendedList', meta.recommended || []);
 													setList('sgRulesList', meta.rules || []);
 													// readiness checklist uses check style
-													var readyEl = document.getElementById('sgReadinessList'); if (readyEl) { readyEl.innerHTML = ''; (meta.readiness || []).forEach(function (r) { var d = document.createElement('div'); d.className = 'flex items-center gap-2'; d.innerHTML = '<span class="text-emerald-600">✔</span><span class="text-sm text-slate-600">' + r + '</span>'; readyEl.appendChild(d); }); }
+													var readyEl = document.getElementById('sgReadinessList'); if (readyEl) { readyEl.innerHTML = ''; (meta.readiness || []).forEach(function (r) { var d = document.createElement('div'); d.className = 'flex items-center gap-2'; d.innerHTML = '<span class="text-emerald-600">âœ”</span><span class="text-sm text-slate-600">' + r + '</span>'; readyEl.appendChild(d); }); }
 
 													// hide empty sections to avoid showing empty headings
 													function toggleSection(containerId) { var el = document.getElementById(containerId); if (!el) return; var hasContent = el.querySelector('ul') ? el.querySelector('ul').children.length > 0 : (el.querySelector('#sgExpectationText') ? (el.querySelector('#sgExpectationText').textContent || '').trim().length > 0 : (el.textContent || '').trim().length > 0); el.style.display = hasContent ? '' : 'none'; }
@@ -1387,10 +1387,10 @@
 													var modalExists = !!document.getElementById(modalId);
 													var sgNext = document.getElementById('sgNextActions'); if (sgNext) sgNext.innerHTML = '';
 													if (modalExists) {
-														(meta.recommended || []).forEach(function (a) { var div = document.createElement('div'); div.className = 'text-sm text-slate-700'; div.textContent = '• ' + a; sgNext.appendChild(div); });
+														(meta.recommended || []).forEach(function (a) { var div = document.createElement('div'); div.className = 'text-sm text-slate-700'; div.textContent = 'â€¢ ' + a; sgNext.appendChild(div); });
 													} else {
 														if ((meta.outcome || '').trim().length > 0) { var o = document.createElement('div'); o.className = 'text-sm text-slate-700 font-medium'; o.textContent = meta.outcome; sgNext.appendChild(o); }
-														(meta.recommended || []).forEach(function (a) { var div = document.createElement('div'); div.className = 'text-sm text-slate-700'; div.textContent = '• ' + a; sgNext.appendChild(div); });
+														(meta.recommended || []).forEach(function (a) { var div = document.createElement('div'); div.className = 'text-sm text-slate-700'; div.textContent = 'â€¢ ' + a; sgNext.appendChild(div); });
 														if (sgNext.children.length === 0 && (meta.expectation || '').trim().length > 0) { var e = document.createElement('div'); e.className = 'text-sm text-slate-700 font-medium'; e.textContent = meta.expectation; sgNext.appendChild(e); }
 													}
 												}
@@ -1410,7 +1410,7 @@
 													});
 												});
 
-												// Advance button (basic) — advances if no rules or we assume readiness
+												// Advance button (basic) â€” advances if no rules or we assume readiness
 												document.getElementById('sgAdvance')?.addEventListener('click', function () { var next = Math.min(current + 1, Object.keys(stageMeta).length - 1); current = next; renderPanel(); });
 
 												// initial render
@@ -1731,7 +1731,7 @@
 														confirmStepExplanation.innerHTML = changeLine;
 													}
 
-													// Remove any bullet list — modal should only show the concise status-change sentence by default
+													// Remove any bullet list â€” modal should only show the concise status-change sentence by default
 													if (confirmStepBullets) { confirmStepBullets.innerHTML = ''; }
 
 													// Special-case: when moving to Verify (index 1), customise title, explanation and buttons to match the Verify modal design
@@ -1832,7 +1832,7 @@
 													render();
 												}
 
-												// click handlers for arrow steps — preview content but do NOT change colors or step state
+												// click handlers for arrow steps â€” preview content but do NOT change colors or step state
 												// (side-panel 'Mark as Complete' still opens the confirmation flow and advances state)
 												arrowSteps.forEach((el, idx) => {
 													el.addEventListener('click', function (e) {
@@ -2099,7 +2099,7 @@
 															<div class="text-sm font-medium text-slate-700">No services
 																offered yet</div>
 															<div class="text-xs text-slate-400 mt-1">Services will
-																appear here once they’re added.</div>
+																appear here once theyâ€™re added.</div>
 														</div>
 													</div>
 												</div>
@@ -2134,7 +2134,7 @@
 															<div class="text-sm font-medium text-slate-700">No services
 																offered yet</div>
 															<div class="text-xs text-slate-400 mt-1">Services will
-																appear here once they’re added.</div>
+																appear here once theyâ€™re added.</div>
 														</div>
 													</div>
 												</div>
@@ -2286,7 +2286,7 @@
 															<div class="text-sm font-medium text-slate-700">No services
 																offered yet</div>
 															<div class="text-xs text-slate-400 mt-1">Services will
-																appear here once they’re added.</div>
+																appear here once theyâ€™re added.</div>
 														</div>
 													</div>
 												</div>
@@ -2373,7 +2373,7 @@
 																<div class="space-y-3 text-sm">
 																	<div class="flex justify-between">
 																		<div class="font-medium">INV-2025-9876</div>
-																		<div class="text-slate-500">Due: 2025-12-31 •
+																		<div class="text-slate-500">Due: 2025-12-31 â€¢
 																			Settled: 2026-01-20</div>
 																	</div>
 																	<div class="text-lg font-bold">$1,234,000.00</div>
@@ -2655,7 +2655,7 @@
 													<div>
 														<a href="#" class="text-cu-light-blue font-medium">Business
 															Registration</a>
-														<div class="text-xs text-slate-500 mt-1">Jan 7, 2026 • 15KB •
+														<div class="text-xs text-slate-500 mt-1">Jan 7, 2026 â€¢ 15KB â€¢
 															docx</div>
 													</div>
 												</div>
@@ -2671,7 +2671,7 @@
 													<div>
 														<a href="#" class="text-cu-light-blue font-medium">This Lead is
 															very sensitive.</a>
-														<div class="text-xs text-slate-500 mt-1">Jan 7, 2026 • Note
+														<div class="text-xs text-slate-500 mt-1">Jan 7, 2026 â€¢ Note
 														</div>
 													</div>
 												</div>
@@ -3305,7 +3305,7 @@
 			const initials = (payload.name || '').split(' ').map(s => s.trim()).filter(Boolean).map(s => s[0]).slice(0, 2).join('').toUpperCase() || 'NA';
 			const item = document.createElement('div');
 			item.className = 'flex items-center justify-between';
-			item.innerHTML = '<div class="flex items-center gap-3"><div class="w-9 h-9 rounded-full bg-slate-100 flex items-center justify-center text-slate-600">' + initials + '</div><div><div class="text-sm font-medium">' + escapeHtml(payload.name || '') + (payload.key ? ' <span class="contact-key-badge text-xs ml-2 rounded px-2 bg-[#e6f7ff] text-[#2b9bd7]">Key</span>' : '') + '</div><div class="text-xs text-slate-400">' + escapeHtml(payload.position || '') + (payload.positionType ? ' · ' + escapeHtml(payload.positionType) : '') + ((payload.position || payload.positionType) ? ' • ' : '') + escapeHtml(payload.email || '') + '</div>' + (payload.number ? '<div class="text-xs text-slate-500">' + escapeHtml(payload.number) + '</div>' : '') + '</div></div><button class="text-sm text-cu-light-blue">Details</button>';
+			item.innerHTML = '<div class="flex items-center gap-3"><div class="w-9 h-9 rounded-full bg-slate-100 flex items-center justify-center text-slate-600">' + initials + '</div><div><div class="text-sm font-medium">' + escapeHtml(payload.name || '') + (payload.key ? ' <span class="contact-key-badge text-xs ml-2 rounded px-2 bg-[#e6f7ff] text-[#2b9bd7]">Key</span>' : '') + '</div><div class="text-xs text-slate-400">' + escapeHtml(payload.position || '') + (payload.positionType ? ' Â· ' + escapeHtml(payload.positionType) : '') + ((payload.position || payload.positionType) ? ' â€¢ ' : '') + escapeHtml(payload.email || '') + '</div>' + (payload.number ? '<div class="text-xs text-slate-500">' + escapeHtml(payload.number) + '</div>' : '') + '</div></div><button class="text-sm text-cu-light-blue">Details</button>';
 			if (list.firstChild) list.insertBefore(item, list.firstChild);
 			else list.appendChild(item);
 		}
