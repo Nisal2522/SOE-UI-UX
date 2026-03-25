@@ -80,6 +80,25 @@
     .ev-popup-close:hover { background: rgba(255,255,255,.35); }
     .ev-overlay { display: none; position: fixed; inset: 0; z-index: 199; }
     .ev-overlay.show { display: block; }
+    .new-event-overlay { display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.45); z-index: 220; }
+    .new-event-overlay.show { display: block; }
+    .new-event-modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: min(96vw, 1024px); background: #fff; border-radius: 14px; border: 1px solid #e5e7eb; box-shadow: 0 20px 50px rgba(0,0,0,.2); z-index: 221; overflow-x: hidden; overflow-y: auto; max-height: 85vh; }
+    .new-event-modal.show { display: block; }
+    .new-event-head { background: #1b1e42; color: #fff; padding: 16px 18px; display: flex; align-items: center; justify-content: space-between; }
+    .new-event-close { border: none; background: rgba(255,255,255,.2); color: #fff; width: 28px; height: 28px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+    .new-event-close:hover { background: rgba(255,255,255,.32); }
+    .new-event-body { padding: 16px 18px; }
+    .new-event-grid { display: grid; gap: 12px; }
+    .new-event-actions { margin-top: 14px; display: flex; justify-content: flex-end; gap: 8px; }
+    .event-type-tabs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-bottom: 14px; }
+    .event-type-tab { border: 1px solid #cbd5e1; border-radius: 10px; padding: 9px 10px; font-size: 0.875rem; font-weight: 600; color: #475569; background: #fff; cursor: pointer; transition: all .15s; }
+    .event-type-tab.active { background: #1b1e42; color: #fff; border-color: #1b1e42; }
+    .common-only { display: none; }
+    .common-only.show { display: block; }
+    .planning-only { display: none; }
+    .planning-only.show { display: block; }
+
+    .auditor-card.selected { border-color: #1b1e42 !important; box-shadow: 0 0 0 3px rgba(27,30,66,.12); }
 
     .cal-cell { min-height: 118px; border: 1px solid #e5e7eb; position: relative; transition: background .15s; }
     .cal-cell:hover { background: #f8fafc; }
@@ -305,7 +324,7 @@
               <button class="px-4 py-2.5 border border-gray-200 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50 flex items-center gap-1.5">
                 <span class="material-symbols-outlined text-base">sync</span>Sync Calendar
               </button>
-              <button class="px-4 py-2.5 bg-[#3eb2ed] hover:bg-[#2ea2d6] text-white rounded-lg text-sm font-semibold flex items-center gap-1.5 transition">
+              <button id="newEventBtn" class="px-4 py-2.5 bg-[#3eb2ed] hover:bg-[#2ea2d6] text-white rounded-lg text-sm font-semibold flex items-center gap-1.5 transition">
                 <span class="material-symbols-outlined text-base">add</span>New Event
               </button>
             </div>
@@ -565,6 +584,120 @@
     </div>
     <div class="ev-popup-body" id="evPopupBody"></div>
   </div>
+  <div class="new-event-overlay" id="newEventOverlay"></div>
+  <div class="new-event-modal" id="newEventModal" role="dialog" aria-modal="true" aria-labelledby="newEventTitle">
+    <div class="new-event-head">
+      <h3 id="newEventTitle" class="text-lg font-bold">Plan New Event</h3>
+      <button type="button" class="new-event-close" id="newEventCloseBtn" aria-label="Close">
+        <span class="material-symbols-outlined text-base">close</span>
+      </button>
+    </div>
+    <form id="newEventForm" class="new-event-body">
+      <input type="hidden" id="neType" value="planning" />
+      <div class="event-type-tabs" style="grid-template-columns: repeat(2, minmax(0, 1fr));">
+        <button type="button" class="event-type-tab" data-eventtype="meetings">Meeting</button>
+        <button type="button" class="event-type-tab active" data-eventtype="planning">Planning</button>
+      </div>
+      <div class="new-event-grid">
+        <div id="commonFields" class="common-only">
+          <div>
+          <label for="neLabel" class="block text-sm font-semibold text-slate-700 mb-1">Event Name</label>
+          <input id="neLabel" type="text" placeholder="Planned event title" class="w-full rounded-lg border-gray-300 text-sm" />
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-3">
+            <div>
+              <label for="neDay" class="block text-sm font-semibold text-slate-700 mb-1">Day of Month</label>
+              <input id="neDay" min="1" max="31" type="number" class="w-full rounded-lg border-gray-300 text-sm" />
+            </div>
+            <div>
+              <label for="neTime" class="block text-sm font-semibold text-slate-700 mb-1">Time</label>
+              <input id="neTime" type="text" placeholder="09:00 - 11:00" class="w-full rounded-lg border-gray-300 text-sm" />
+            </div>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-3">
+            <div>
+              <label for="neAssignee" class="block text-sm font-semibold text-slate-700 mb-1">Assigned To</label>
+              <input id="neAssignee" type="text" value="Nisal Amarasekara" class="w-full rounded-lg border-gray-300 text-sm" />
+            </div>
+            <div>
+              <label for="neLocation" class="block text-sm font-semibold text-slate-700 mb-1">Location</label>
+              <input id="neLocation" type="text" placeholder="Office / Client site" class="w-full rounded-lg border-gray-300 text-sm" />
+            </div>
+          </div>
+        </div>
+        <div id="planningFields" class="planning-only show">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label for="neClient" class="block text-sm font-semibold text-slate-700 mb-1">Client</label>
+              <select id="neClient" class="w-full rounded-lg border-gray-300 text-sm">
+                <option value="">Select Client</option>
+                <option value="__add_new__">+ Add New</option>
+                <option>EcoTextiles Ltd.</option>
+                <option>TechCorp Industries</option>
+                <option>Pacific Fabrics</option>
+                <option>Global Foods</option>
+              </select>
+              <input id="neClientNew" type="text" placeholder="New client name" class="hidden mt-2 w-full rounded-lg border-gray-300 text-sm" />
+            </div>
+            <div>
+              <label for="neCycle" class="block text-sm font-semibold text-slate-700 mb-1">Cycle</label>
+              <select id="neCycle" class="w-full rounded-lg border-gray-300 text-sm">
+                <option value="">Select Cycle</option>
+                <option value="__add_new__">+ Add New</option>
+                <option>Cycle 1</option>
+                <option>Cycle 2</option>
+                <option>Recertification</option>
+                <option>Surveillance</option>
+              </select>
+              <input id="neCycleNew" type="text" placeholder="New cycle name" class="hidden mt-2 w-full rounded-lg border-gray-300 text-sm" />
+            </div>
+          </div>
+          <div class="mt-3">
+            <label for="neCategory" class="block text-sm font-semibold text-slate-700 mb-1">Certification Category</label>
+            <select id="neCategory" class="w-full rounded-lg border-gray-300 text-sm">
+              <option value="">Select Certification Category</option>
+              <option>ISO 9001</option>
+              <option>ISO 14001</option>
+              <option>ISO 45001</option>
+              <option>GOTS</option>
+              <option>Organic</option>
+            </select>
+          </div>
+          <div class="mt-4">
+            <div class="flex items-center justify-between mb-2">
+              <h4 class="text-sm font-extrabold text-slate-900">Units & Auditor Recommendations</h4>
+              <span id="neUnitSelectedCount" class="text-xs font-bold text-slate-700 bg-white border border-gray-200 rounded-full px-2 py-1">0 selected</span>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              <div class="bg-slate-50 border border-gray-200 rounded-xl p-3">
+                <div class="flex items-center justify-between mb-2">
+                  <h5 class="text-sm font-bold text-slate-900">Units</h5>
+                </div>
+                <div id="neUnitList" class="space-y-2 max-h-56 overflow-y-auto"></div>
+                <div id="neUnitEmptyState" class="text-xs text-slate-500 mt-2">Select a client to load units.</div>
+              </div>
+              <div class="bg-white border border-gray-200 rounded-xl p-3">
+                <div class="flex items-center justify-between mb-2">
+                  <h5 class="text-sm font-bold text-slate-900">Auditor Recommendations</h5>
+                </div>
+                <div id="neAuditorRecos" class="space-y-2 max-h-56 overflow-y-auto"></div>
+                <input type="hidden" id="neSelectedAuditor" value="" />
+                <div class="text-xs text-slate-500 mt-2">Choose one auditor from the list above.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <label for="neDesc" class="block text-sm font-semibold text-slate-700 mb-1">Details</label>
+          <textarea id="neDesc" rows="3" placeholder="Describe this planned event..." class="w-full rounded-lg border-gray-300 text-sm"></textarea>
+        </div>
+      </div>
+      <div class="new-event-actions">
+        <button type="button" id="newEventCancelBtn" class="px-3 py-2 text-sm font-medium text-slate-600 border border-gray-300 rounded-lg hover:bg-slate-50">Cancel</button>
+        <button type="submit" class="px-4 py-2 text-sm font-semibold text-white bg-[#1b1e42] hover:bg-[#151738] rounded-lg">Save Event</button>
+      </div>
+    </form>
+  </div>
 
   <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -718,6 +851,228 @@
       var overlay = document.getElementById('evOverlay');
       var popupHeader = document.getElementById('evPopupHeader');
       var popupBody = document.getElementById('evPopupBody');
+      var newEventBtn = document.getElementById('newEventBtn');
+      var newEventOverlay = document.getElementById('newEventOverlay');
+      var newEventModal = document.getElementById('newEventModal');
+      var newEventCloseBtn = document.getElementById('newEventCloseBtn');
+      var newEventCancelBtn = document.getElementById('newEventCancelBtn');
+      var newEventForm = document.getElementById('newEventForm');
+      var typeTabs = document.querySelectorAll('.event-type-tab');
+      var neType = document.getElementById('neType');
+      var planningFields = document.getElementById('planningFields');
+      var neClient = document.getElementById('neClient');
+      var neCycle = document.getElementById('neCycle');
+      var neClientNew = document.getElementById('neClientNew');
+      var neCycleNew = document.getElementById('neCycleNew');
+      var neCategoryEl = document.getElementById('neCategory');
+      var neUnitList = document.getElementById('neUnitList');
+      var neAuditorRecos = document.getElementById('neAuditorRecos');
+      var neSelectedAuditorInput = document.getElementById('neSelectedAuditor');
+      var neUnitSelectedCount = document.getElementById('neUnitSelectedCount');
+      var neUnitEmptyState = document.getElementById('neUnitEmptyState');
+      var neLabelEl = document.getElementById('neLabel');
+
+      // Mock data (no backend): units and auditor recommendations.
+      var unitsByClient = {
+        'EcoTextiles Ltd.': [
+          { id: 'hq', name: 'HQ Office', address: 'No. 245, Galle Road, Colombo 03, Sri Lanka', categories: ['ISO 9001', 'GOTS', 'Organic'] },
+          { id: 'plant', name: 'Manufacturing Plant A', address: 'No. 18, Export Processing Zone, Katunayake, Sri Lanka', categories: ['ISO 9001', 'ISO 14001'] },
+          { id: 'warehouse', name: 'Warehouse & Logistics', address: 'No. 102, Kandy Road, Wattala, Sri Lanka', categories: ['ISO 9001', 'ISO 14001'] },
+          { id: 'rnd', name: 'R&D Laboratory', address: 'No. 44, Baudhaloka Mawatha, Colombo 07, Sri Lanka', categories: ['ISO 45001', 'ISO 14001'] }
+        ],
+        'TechCorp Industries': [
+          { id: 'hq', name: 'HQ Office', address: 'No. 245, Galle Road, Colombo 03, Sri Lanka', categories: ['ISO 9001', 'ISO 14001'] },
+          { id: 'plant', name: 'Manufacturing Plant A', address: 'No. 18, Export Processing Zone, Katunayake, Sri Lanka', categories: ['ISO 9001', 'ISO 14001'] },
+          { id: 'warehouse', name: 'Warehouse & Logistics', address: 'No. 102, Kandy Road, Wattala, Sri Lanka', categories: ['ISO 9001', 'ISO 14001'] },
+          { id: 'rnd', name: 'R&D Laboratory', address: 'No. 44, Baudhaloka Mawatha, Colombo 07, Sri Lanka', categories: ['ISO 45001'] }
+        ],
+        'Pacific Fabrics': [
+          { id: 'hq', name: 'HQ Office', address: 'No. 245, Galle Road, Colombo 03, Sri Lanka', categories: ['ISO 9001', 'GOTS'] },
+          { id: 'plant', name: 'Manufacturing Plant A', address: 'No. 18, Export Processing Zone, Katunayake, Sri Lanka', categories: ['ISO 9001', 'GOTS'] },
+          { id: 'warehouse', name: 'Warehouse & Logistics', address: 'No. 102, Kandy Road, Wattala, Sri Lanka', categories: ['ISO 9001'] },
+          { id: 'rnd', name: 'R&D Laboratory', address: 'No. 44, Baudhaloka Mawatha, Colombo 07, Sri Lanka', categories: ['ISO 45001'] }
+        ],
+        'Global Foods': [
+          { id: 'hq', name: 'HQ Office', address: 'No. 245, Galle Road, Colombo 03, Sri Lanka', categories: ['ISO 9001', 'Organic'] },
+          { id: 'plant', name: 'Manufacturing Plant A', address: 'No. 18, Export Processing Zone, Katunayake, Sri Lanka', categories: ['ISO 9001', 'Organic'] },
+          { id: 'warehouse', name: 'Warehouse & Logistics', address: 'No. 102, Kandy Road, Wattala, Sri Lanka', categories: ['ISO 14001', 'Organic'] },
+          { id: 'rnd', name: 'R&D Laboratory', address: 'No. 44, Baudhaloka Mawatha, Colombo 07, Sri Lanka', categories: ['ISO 45001'] }
+        ]
+      };
+
+      var auditorCatalog = [
+        { name: 'Nisal Amarasekara', role: 'Sr. Auditor', initials: 'NA', specialties: ['ISO 9001', 'GOTS', 'Organic'], location: 'Sri Lanka', available: true, baseMatch: 99 },
+        { name: 'David Kim', role: 'Lead Auditor', initials: 'DK', specialties: ['ISO 9001', 'ISO 14001'], location: 'Kandy, Sri Lanka', available: true, baseMatch: 95 },
+        { name: 'Lisa Anderson', role: 'Auditor', initials: 'LA', specialties: ['GOTS', 'ISO 14001', 'Organic'], location: 'Colombo, Sri Lanka', available: true, baseMatch: 92 },
+        { name: 'Mike Chen', role: 'Auditor', initials: 'MC', specialties: ['ISO 45001', 'ISO 14001'], location: 'Gampaha, Sri Lanka', available: false, baseMatch: 88 },
+        { name: 'Emma Davis', role: 'Jr. Auditor', initials: 'ED', specialties: ['ISO 45001', 'ISO 9001', 'GOTS'], location: 'Kandy, Sri Lanka', available: true, baseMatch: 90 }
+      ];
+
+      function getPlanningClientName() {
+        if (!neClient) return '';
+        var selected = neClient.value;
+        var custom = (selected === '__add_new__' && neClientNew) ? neClientNew.value.trim() : '';
+        if (selected === '__add_new__') return custom || '';
+        return selected || '';
+      }
+
+      function getPlanningCategoryName() {
+        if (!neCategoryEl) return '';
+        return neCategoryEl.value || '';
+      }
+
+      function getUnitsForClient(clientName) {
+        if (!clientName) return [];
+        if (unitsByClient[clientName]) return unitsByClient[clientName];
+        // Unknown client (e.g. custom add): generate placeholder units for the selected category.
+        var cat = getPlanningCategoryName() || 'ISO 9001';
+        return [
+          { id: 'unit-a', name: 'Unit A', address: 'Client Site - Unit A', categories: [cat] },
+          { id: 'unit-b', name: 'Unit B', address: 'Client Site - Unit B', categories: [cat] }
+        ];
+      }
+
+      function getSelectedUnits() {
+        if (!neUnitList) return [];
+        var checked = neUnitList.querySelectorAll('input[name="neUnitPick"]:checked');
+        var arr = [];
+        checked.forEach(function (el) {
+          arr.push({
+            id: el.value,
+            name: el.getAttribute('data-unitname') || '',
+            address: el.getAttribute('data-unitaddress') || '',
+            categories: (el.getAttribute('data-unitcategories') || '').split('|').filter(Boolean)
+          });
+        });
+        return arr;
+      }
+
+      function updateUnitSelectedCount() {
+        if (!neUnitSelectedCount) return;
+        var count = getSelectedUnits().length;
+        neUnitSelectedCount.textContent = count + ' selected';
+      }
+
+      function computeScoringCategories(selectedUnits) {
+        var cat = getPlanningCategoryName();
+        if (cat) return [cat];
+        if (!selectedUnits || selectedUnits.length === 0) return [];
+        var cats = [];
+        selectedUnits.forEach(function (u) { u.categories.forEach(function (c) { cats.push(c); }); });
+        return Array.from(new Set(cats));
+      }
+
+      function computeMatchPercent(auditor, scoringCategories) {
+        if (!scoringCategories || scoringCategories.length === 0) return auditor.baseMatch ? Math.max(75, auditor.baseMatch - 10) : 80;
+        var matches = 0;
+        scoringCategories.forEach(function (c) {
+          if (auditor.specialties && auditor.specialties.indexOf(c) !== -1) matches++;
+        });
+        if (matches === 0) return 75;
+        var ratio = matches / scoringCategories.length;
+        var availabilityBoost = auditor.available ? 4 : 0;
+        return Math.min(99, Math.round((auditor.baseMatch * ratio) + availabilityBoost));
+      }
+
+      function renderUnitsAndAuditorRecommendations() {
+        if (!neUnitList || !neAuditorRecos) return;
+        var clientName = getPlanningClientName();
+        var units = getUnitsForClient(clientName);
+
+        // Units list
+        neUnitList.innerHTML = '';
+        if (neUnitEmptyState) neUnitEmptyState.classList.toggle('hidden', units.length > 0);
+
+        if (!units || units.length === 0) {
+          neAuditorRecos.innerHTML = '';
+          updateUnitSelectedCount();
+          return;
+        }
+
+        units.forEach(function (u, idx) {
+          var cbId = 'neUnitPick_' + u.id;
+          var selectedChecked = false;
+          var html = '';
+          html += '<label for="' + cbId + '" class="flex items-start gap-3 p-2 rounded-lg bg-white border border-gray-200 cursor-pointer hover:bg-slate-50">';
+          html += '<input id="' + cbId + '" type="checkbox" name="neUnitPick" value="' + u.id + '" data-unitname="' + u.name.replace(/"/g,'&quot;') + '" data-unitaddress="' + u.address.replace(/"/g,'&quot;') + '" data-unitcategories="' + (u.categories || []).join('|') + '" ' + (selectedChecked ? 'checked' : '') + ' class="mt-1" />';
+          html += '<div class="min-w-0 flex-1">';
+          html += '<div class="flex items-center justify-between gap-2">';
+          html += '<div class="font-bold text-slate-900 text-sm truncate">' + u.name + '</div>';
+          html += '<div class="text-xs font-bold text-slate-700 bg-slate-100 border border-slate-200 rounded-full px-2 py-0.5 whitespace-nowrap">' + (u.categories && u.categories[0] ? u.categories[0] : 'ISO') + '</div>';
+          html += '</div>';
+          html += '<div class="text-xs text-slate-500 mt-1 truncate">' + u.address + '</div>';
+          html += '</div>';
+          html += '</label>';
+          neUnitList.insertAdjacentHTML('beforeend', html);
+        });
+
+        // Auditors list
+        updateUnitSelectedCount();
+        neSelectedAuditorInput.value = '';
+        renderAuditorRecommendations();
+      }
+
+      function renderAuditorRecommendations() {
+        if (!neAuditorRecos) return;
+        var selectedUnits = getSelectedUnits();
+        var scoringCategories = computeScoringCategories(selectedUnits);
+        var hint = getPlanningCategoryName() ? ('Based on ' + getPlanningCategoryName()) : 'Based on selected units';
+
+        neAuditorRecos.innerHTML = '';
+
+        if (!scoringCategories || scoringCategories.length === 0) {
+          neAuditorRecos.innerHTML = '<div class="text-xs text-slate-500">Select a certification category to see recommendations.</div>';
+          return;
+        }
+
+        var recos = auditorCatalog.map(function (a) {
+          return Object.assign({}, a, { matchPercent: computeMatchPercent(a, scoringCategories) });
+        }).sort(function (x, y) { return y.matchPercent - x.matchPercent; });
+
+        var top = recos.slice(0, 4);
+        var currentSelected = neSelectedAuditorInput ? neSelectedAuditorInput.value : '';
+        var anySelected = false;
+
+        top.forEach(function (a) {
+          var cardId = 'aud_' + a.name.replace(/[^a-zA-Z0-9]/g, '_');
+          var selectedClass = (currentSelected && currentSelected === a.name) ? ' selected' : '';
+          if (selectedClass) anySelected = true;
+          var badgeText = a.available ? 'Available' : 'Limited';
+          var badgeColor = a.available ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-amber-50 text-amber-700 border-amber-200';
+          var matchBg = a.matchPercent >= 95 ? 'bg-blue-50 text-blue-700 border-blue-200' : 'bg-slate-50 text-slate-700 border-slate-200';
+          var html = '';
+          html += '<div class="auditor-card rounded-xl border border-gray-200 p-3 ' + selectedClass + '">';
+          html += '  <div class="flex items-start justify-between gap-3">';
+          html += '    <div class="flex items-center gap-3 min-w-0">';
+          html += '      <div class="w-10 h-10 rounded-full bg-[#1b1e42] text-white flex items-center justify-center text-sm font-bold flex-shrink-0" aria-hidden="true">' + a.initials + '</div>';
+          html += '      <div class="min-w-0">';
+          html += '        <div class="text-sm font-extrabold text-slate-900 truncate">' + a.name + '</div>';
+          html += '        <div class="text-xs text-slate-500 truncate">' + a.role + '</div>';
+          html += '      </div>';
+          html += '    </div>';
+          html += '    <div class="text-right flex flex-col items-end gap-2 flex-shrink-0">';
+          html += '      <span class="text-xs font-extrabold rounded-full border px-2 py-1 ' + matchBg + '">' + a.matchPercent + '% Match</span>';
+          html += '      <span class="text-[11px] font-bold rounded-full border px-2 py-0.5 ' + badgeColor + '">' + badgeText + '</span>';
+          html += '    </div>';
+          html += '  </div>';
+          html += '  <div class="text-xs text-slate-500 mt-2">' + a.location + '</div>';
+          html += '  <div class="mt-3 flex justify-end">';
+          html += '    <button type="button" class="px-3 py-2 rounded-lg text-sm font-semibold text-white bg-[#1b1e42] hover:bg-[#151738] auditor-select-btn" data-auditor="' + a.name.replace(/"/g,'&quot;') + '" id="' + cardId + '">Select Auditor</button>';
+          html += '  </div>';
+          html += '</div>';
+          neAuditorRecos.insertAdjacentHTML('beforeend', html);
+        });
+
+        // Auto-select top match if nothing is selected yet.
+        if (!anySelected && neSelectedAuditorInput && top[0]) {
+          neSelectedAuditorInput.value = top[0].name;
+          renderAuditorRecommendations();
+        }
+      }
+
+      function refreshPlanningUI() {
+        renderUnitsAndAuditorRecommendations();
+      }
 
       function getEvColor(type) {
         var map = { 'contracting':'#3b82f6','planning':'#8b5cf6','auditing':'#ef4444','certification':'#f59e0b','cert-other':'#d97706','supportive':'#6366f1','work-location':'#0ea5e9','leaves':'#10b981','client-visits':'#ec4899','meetings':'#14b8a6','trainings':'#a855f7','events':'#f97316','soe-workload':'#1b1e42' };
@@ -768,7 +1123,207 @@
       function closePopup() { popup.classList.remove('show'); overlay.classList.remove('show'); }
       document.getElementById('evPopupClose').addEventListener('click', closePopup);
       overlay.addEventListener('click', closePopup);
-      document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closePopup(); });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') {
+          closePopup();
+          closeNewEventModal();
+        }
+      });
+
+      function openNewEventModal() {
+        newEventOverlay.classList.add('show');
+        newEventModal.classList.add('show');
+        syncTypeUI();
+        if (neType.value === 'planning') {
+          if (neClient) neClient.focus();
+          refreshPlanningUI();
+        } else {
+          if (neLabelEl) neLabelEl.focus();
+        }
+      }
+      function closeNewEventModal() {
+        newEventOverlay.classList.remove('show');
+        newEventModal.classList.remove('show');
+      }
+      if (newEventBtn) newEventBtn.addEventListener('click', openNewEventModal);
+      if (newEventCloseBtn) newEventCloseBtn.addEventListener('click', closeNewEventModal);
+      if (newEventCancelBtn) newEventCancelBtn.addEventListener('click', closeNewEventModal);
+      if (newEventOverlay) newEventOverlay.addEventListener('click', closeNewEventModal);
+      function syncTypeUI() {
+        var selectedType = neType.value;
+        typeTabs.forEach(function (tab) {
+          tab.classList.toggle('active', tab.getAttribute('data-eventtype') === selectedType);
+        });
+        var commonFields = document.getElementById('commonFields');
+        commonFields.classList.toggle('show', selectedType === 'meetings');
+        planningFields.classList.toggle('show', selectedType === 'planning');
+      }
+      typeTabs.forEach(function (tab) {
+        tab.addEventListener('click', function () {
+          neType.value = tab.getAttribute('data-eventtype');
+          syncTypeUI();
+        });
+      });
+      if (neClient) {
+        neClient.addEventListener('change', function () {
+          var isAddNew = neClient.value === '__add_new__';
+          neClientNew.classList.toggle('hidden', !isAddNew);
+          if (isAddNew) neClientNew.focus();
+          refreshPlanningUI();
+        });
+      }
+      if (neCycle) {
+        neCycle.addEventListener('change', function () {
+          var isAddNew = neCycle.value === '__add_new__';
+          neCycleNew.classList.toggle('hidden', !isAddNew);
+          if (isAddNew) neCycleNew.focus();
+        });
+      }
+
+      if (neClientNew) {
+        neClientNew.addEventListener('input', function () {
+          if (neClient && neClient.value === '__add_new__') refreshPlanningUI();
+        });
+      }
+      if (neCategoryEl) {
+        neCategoryEl.addEventListener('change', function () {
+          // Keep units, re-score auditors.
+          renderAuditorRecommendations();
+        });
+      }
+
+      if (neUnitList) {
+        neUnitList.addEventListener('change', function (e) {
+          if (e.target && e.target.name === 'neUnitPick') {
+            updateUnitSelectedCount();
+            if (neSelectedAuditorInput) neSelectedAuditorInput.value = '';
+            renderAuditorRecommendations();
+          }
+        });
+      }
+      if (neAuditorRecos) {
+        neAuditorRecos.addEventListener('click', function (e) {
+          var btn = e.target.closest('.auditor-select-btn');
+          if (!btn) return;
+          var name = btn.getAttribute('data-auditor') || '';
+          if (neSelectedAuditorInput) neSelectedAuditorInput.value = name;
+          // Visual selection: re-render quick to apply .selected class.
+          renderAuditorRecommendations();
+        });
+      }
+      if (newEventForm) {
+        newEventForm.addEventListener('submit', function (e) {
+          e.preventDefault();
+          var newId = calEvents.length ? Math.max.apply(null, calEvents.map(function (x) { return x.id; })) + 1 : 1;
+          var selectedType = neType.value || 'planning';
+          var maxDay = new Date(currentYear, currentMonth + 1, 0).getDate();
+          var now = new Date();
+          var day = parseInt(document.getElementById('neDay').value, 10);
+          var defaultDay = (now.getMonth() === currentMonth && now.getFullYear() === currentYear) ? now.getDate() : 1;
+          if (!day || day < 1 || day > maxDay) day = defaultDay;
+          if (!day || day < 1) day = 1;
+          if (day > maxDay) day = maxDay;
+
+          var selectedClient = document.getElementById('neClient') ? document.getElementById('neClient').value : '';
+          var selectedCycle = document.getElementById('neCycle') ? document.getElementById('neCycle').value : '';
+          var selectedCategory = document.getElementById('neCategory') ? document.getElementById('neCategory').value : '';
+          var customClient = (selectedClient === '__add_new__' && neClientNew) ? neClientNew.value.trim() : '';
+          var customCycle = (selectedCycle === '__add_new__' && neCycleNew) ? neCycleNew.value.trim() : '';
+          var finalClient = customClient || selectedClient;
+          var finalCycle = customCycle || selectedCycle;
+          var finalCategory = selectedCategory;
+          var details = document.getElementById('neDesc').value.trim();
+          var eventLabel = document.getElementById('neLabel').value.trim();
+          var eventTime = document.getElementById('neTime').value.trim();
+          if (!eventTime) eventTime = (selectedType === 'meetings') ? '09:00 - 10:00' : 'Full Day';
+          var eventAssignee = document.getElementById('neAssignee').value.trim() || currentUser;
+          var eventLocation = document.getElementById('neLocation').value.trim() || 'Office';
+          if (selectedType === 'planning') {
+            if (!finalClient || !finalCategory || !finalCycle) {
+              alert('For Planning, please select Client, Certification Category, and Cycle.');
+              return;
+            }
+            var selectedUnits = getSelectedUnits();
+            if (!selectedUnits || selectedUnits.length === 0) {
+              alert('For Planning, please select at least one Unit.');
+              return;
+            }
+            var chosenAuditor = neSelectedAuditorInput ? neSelectedAuditorInput.value : '';
+            if (!chosenAuditor) {
+              alert('For Planning, please select an Auditor from recommendations.');
+              return;
+            }
+            eventAssignee = chosenAuditor;
+            var baseLabel = eventLabel || (finalCategory + ' Planning');
+            var selectedUnitNames = selectedUnits.map(function (u) { return u.name; }).join(', ');
+            var nextId = newId;
+            selectedUnits.forEach(function (u) {
+              var unitLabel = baseLabel + ' - ' + u.name;
+              var unitLocation = u.address || u.name;
+              var unitDesc = details;
+              if (!unitDesc) {
+                unitDesc = 'Client: ' + finalClient + ' | Category: ' + finalCategory + ' | Cycle: ' + finalCycle + ' | Planned Unit(s): ' + selectedUnitNames;
+              } else {
+                unitDesc = unitDesc + ' | Category: ' + finalCategory + ' | Cycle: ' + finalCycle + ' | Unit: ' + u.name;
+              }
+              calEvents.push({
+                id: nextId++,
+                day: day,
+                label: unitLabel,
+                type: selectedType,
+                time: eventTime,
+                assignee: eventAssignee,
+                location: unitLocation,
+                client: finalClient,
+                desc: unitDesc
+              });
+            });
+          } else {
+            if (!eventLabel) {
+              alert('Please enter Event Name.');
+              return;
+            }
+            calEvents.push({
+              id: newId,
+              day: day,
+              label: eventLabel,
+              type: selectedType,
+              time: eventTime,
+              assignee: eventAssignee,
+              location: eventLocation,
+              client: finalClient,
+              desc: details || 'New event added from calendar.'
+            });
+          }
+
+          if (customClient && document.getElementById('neClient')) {
+            var clOpt = document.createElement('option');
+            clOpt.value = customClient;
+            clOpt.textContent = customClient;
+            document.getElementById('neClient').insertBefore(clOpt, document.getElementById('neClient').querySelector('option[value="__add_new__"]'));
+            document.getElementById('neClient').value = customClient;
+          }
+          if (customCycle && document.getElementById('neCycle')) {
+            var cyOpt = document.createElement('option');
+            cyOpt.value = customCycle;
+            cyOpt.textContent = customCycle;
+            document.getElementById('neCycle').insertBefore(cyOpt, document.getElementById('neCycle').querySelector('option[value="__add_new__"]'));
+            document.getElementById('neCycle').value = customCycle;
+          }
+
+          newEventForm.reset();
+          document.getElementById('neAssignee').value = currentUser;
+          neType.value = 'planning';
+          if (neClientNew) neClientNew.classList.add('hidden');
+          if (neCycleNew) neCycleNew.classList.add('hidden');
+          syncTypeUI();
+          closeNewEventModal();
+          renderCalendar();
+          updateViews();
+          applyWeeklyFilter();
+        });
+      }
+      syncTypeUI();
 
       var currentMonth = 5;
       var currentYear = 2024;
