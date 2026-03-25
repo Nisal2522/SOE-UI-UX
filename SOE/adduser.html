@@ -223,6 +223,34 @@
       border-radius: 0.25rem;
       accent-color: #3eb2ed;
     }
+    #adduser-page .tech-qual-card {
+      border-radius: 0.75rem;
+      border: 1px solid rgba(62, 178, 237, 0.22);
+      background: linear-gradient(165deg, #ffffff 0%, rgba(248, 250, 252, 0.95) 100%);
+      box-shadow: 0 4px 20px rgba(27, 30, 66, 0.06);
+    }
+    #adduser-page .tech-mod-dropdown label {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.375rem 0.5rem;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      font-size: 13px;
+      color: #334155;
+    }
+    #adduser-page .tech-mod-dropdown label:hover {
+      background: rgba(62, 178, 237, 0.08);
+    }
+    #adduser-page .tech-mod-dropdown input[type="checkbox"] {
+      width: 1rem;
+      height: 1rem;
+      border-radius: 0.25rem;
+      accent-color: #3eb2ed;
+    }
+    #adduser-page .tech-mod-trigger[aria-expanded="true"] .tech-mod-chevron {
+      transform: rotate(180deg);
+    }
   </style>
 </head>
 <body id="adduser-page" class="font-display bg-white text-slate-800 antialiased">
@@ -562,14 +590,73 @@
                     <button type="button" data-qual-sub="non-technical" class="qual-sub-btn px-4 py-2 rounded-lg text-sm font-semibold bg-slate-100 text-slate-600 transition">Non Technical</button>
                   </div>
                   <div class="qual-sub-pane space-y-3" data-qual-sub-pane="technical">
-                    <p class="text-xs text-slate-500 mb-2">Select applicable technical qualifications (dummy list).</p>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm">
-                      <label class="flex items-center gap-2 p-2 rounded-lg border border-slate-200 hover:bg-slate-50 cursor-pointer"><input type="checkbox" class="rounded border-slate-300 accent-[#3eb2ed]"> GOTS Auditor</label>
-                      <label class="flex items-center gap-2 p-2 rounded-lg border border-slate-200 hover:bg-slate-50 cursor-pointer"><input type="checkbox" class="rounded border-slate-300"> ISO 9001 Lead Auditor</label>
-                      <label class="flex items-center gap-2 p-2 rounded-lg border border-slate-200 hover:bg-slate-50 cursor-pointer"><input type="checkbox" class="rounded border-slate-300"> ISO 14001</label>
-                      <label class="flex items-center gap-2 p-2 rounded-lg border border-slate-200 hover:bg-slate-50 cursor-pointer"><input type="checkbox" class="rounded border-slate-300"> GRS Specialist</label>
-                      <label class="flex items-center gap-2 p-2 rounded-lg border border-slate-200 hover:bg-slate-50 cursor-pointer"><input type="checkbox" class="rounded border-slate-300"> Textile Processing Expert</label>
-                      <label class="flex items-center gap-2 p-2 rounded-lg border border-slate-200 hover:bg-slate-50 cursor-pointer"><input type="checkbox" class="rounded border-slate-300"> Organic Certification</label>
+                    <div class="tech-qual-card p-4 sm:p-5">
+                      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-5 pb-4 border-b border-slate-200/90">
+                        <div class="flex items-start gap-3">
+                          <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-[#1b1e42] to-[#2a3f7a] text-white shadow-md shadow-[#1b1e42]/20">
+                            <span class="material-symbols-outlined text-[22px]">workspace_premium</span>
+                          </span>
+                          <div>
+                            <h4 class="text-sm font-semibold text-[#1b1e42] tracking-tight">Technical certification</h4>
+                            <p class="text-xs text-slate-500 mt-0.5">Define category, program, modules, and validity period.</p>
+                          </div>
+                        </div>
+                        <span class="inline-flex items-center gap-1 self-start rounded-full border border-[#3eb2ed]/30 bg-[#3eb2ed]/10 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide text-[#1b1e42]">Technical</span>
+                      </div>
+
+                      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                        <div>
+                          <label class="block text-xs font-semibold mb-1.5 text-[#1b1e42]">Certification Category <span class="text-rose-500">*</span></label>
+                          <select name="techCertCategory" class="w-full border border-slate-300 rounded-lg text-sm" required>
+                            <option value="">Select category</option>
+                            <option value="textile">Textile</option>
+                            <option value="organic">Organic</option>
+                            <option value="food">Food</option>
+                          </select>
+                        </div>
+                        <div>
+                          <label class="block text-xs font-semibold mb-1.5 text-[#1b1e42]">Program <span class="text-rose-500">*</span></label>
+                          <select name="techProgram" class="w-full border border-slate-300 rounded-lg text-sm" required>
+                            <option value="">Select program</option>
+                            <option value="gots-7">GOTS 7.0</option>
+                            <option value="grs-4">GRS 4.0</option>
+                            <option value="ocs">OCS / Organic Content</option>
+                            <option value="iso9001">ISO 9001:2015</option>
+                            <option value="iso14001">ISO 14001:2015</option>
+                            <option value="fssc">FSSC 22000</option>
+                            <option value="brc">BRC Food</option>
+                          </select>
+                        </div>
+
+                        <div class="md:col-span-2">
+                          <label class="block text-xs font-semibold mb-1.5 text-[#1b1e42]">Qualified module <span class="text-slate-400 font-normal">(multi-select)</span></label>
+                          <button type="button" id="techModuleTrigger" class="tech-mod-trigger w-full flex items-center justify-between gap-2 border border-slate-300 rounded-lg px-3 py-2.5 text-left text-sm bg-white hover:border-[#3eb2ed] transition-colors" aria-expanded="false" aria-haspopup="listbox" aria-controls="techModuleDropdown">
+                            <span id="techModuleSummary" class="text-slate-600 truncate">Select one or more modules…</span>
+                            <span class="material-symbols-outlined text-slate-500 text-xl shrink-0 tech-mod-chevron transition-transform">expand_more</span>
+                          </button>
+                          <div id="techModuleDropdown" class="tech-mod-dropdown hidden mt-1 border border-slate-200 rounded-lg bg-white shadow-md max-h-52 overflow-y-auto py-2 px-1" role="listbox" aria-multiselectable="true">
+                            <label><input type="checkbox" name="techQualifiedModule[]" value="processing" class="tech-mod-cb rounded border-slate-300"><span class="tech-mod-name">Processing</span></label>
+                            <label><input type="checkbox" name="techQualifiedModule[]" value="trading" class="tech-mod-cb rounded border-slate-300"><span class="tech-mod-name">Trading</span></label>
+                            <label><input type="checkbox" name="techQualifiedModule[]" value="manufacturing" class="tech-mod-cb rounded border-slate-300"><span class="tech-mod-name">Manufacturing</span></label>
+                            <label><input type="checkbox" name="techQualifiedModule[]" value="dyeing" class="tech-mod-cb rounded border-slate-300"><span class="tech-mod-name">Dyeing &amp; Finishing</span></label>
+                            <label><input type="checkbox" name="techQualifiedModule[]" value="spinning" class="tech-mod-cb rounded border-slate-300"><span class="tech-mod-name">Spinning</span></label>
+                            <label><input type="checkbox" name="techQualifiedModule[]" value="garment" class="tech-mod-cb rounded border-slate-300"><span class="tech-mod-name">Garment</span></label>
+                            <label><input type="checkbox" name="techQualifiedModule[]" value="farming" class="tech-mod-cb rounded border-slate-300"><span class="tech-mod-name">Farming / First processor</span></label>
+                            <label><input type="checkbox" name="techQualifiedModule[]" value="warehouse" class="tech-mod-cb rounded border-slate-300"><span class="tech-mod-name">Warehouse / Storage</span></label>
+                          </div>
+                        </div>
+
+                        <div>
+                          <label class="block text-xs font-semibold mb-1.5 text-[#1b1e42]">Start date</label>
+                          <input type="date" name="techCertStart" class="w-full border border-slate-300 rounded-lg text-sm">
+                        </div>
+                        <div>
+                          <label class="block text-xs font-semibold mb-1.5 text-[#1b1e42]">End date</label>
+                          <input type="date" name="techCertEnd" class="w-full border border-slate-300 rounded-lg text-sm">
+                        </div>
+                      </div>
+
+                      <p class="mt-4 pt-4 border-t border-slate-200/80 text-[11px] text-slate-500">Qualified modules should align with the certificate scope. Repeat this block for additional certifications when your workflow supports multiple rows.</p>
                     </div>
                   </div>
                   <div class="qual-sub-pane hidden space-y-3" data-qual-sub-pane="non-technical">
@@ -751,22 +838,65 @@
         reportsToTrigger.setAttribute('aria-expanded', open ? 'true' : 'false');
       }
 
+      var techModuleTrigger = document.getElementById('techModuleTrigger');
+      var techModuleDropdown = document.getElementById('techModuleDropdown');
+      var techModuleSummary = document.getElementById('techModuleSummary');
+
+      function updateTechModuleSummary() {
+        var names = [];
+        document.querySelectorAll('#techModuleDropdown label').forEach(function (lab) {
+          var cb = lab.querySelector('.tech-mod-cb');
+          var nm = lab.querySelector('.tech-mod-name');
+          if (cb && cb.checked && nm) names.push(nm.textContent.trim());
+        });
+        if (techModuleSummary) {
+          techModuleSummary.textContent = names.length ? names.join(', ') : 'Select one or more modules…';
+          techModuleSummary.classList.toggle('text-slate-900', names.length > 0);
+          techModuleSummary.classList.toggle('text-slate-600', names.length === 0);
+        }
+      }
+
+      function setTechModuleOpen(open) {
+        if (!techModuleDropdown || !techModuleTrigger) return;
+        techModuleDropdown.classList.toggle('hidden', !open);
+        techModuleTrigger.setAttribute('aria-expanded', open ? 'true' : 'false');
+      }
+
+      document.addEventListener('click', function () {
+        setReportsToOpen(false);
+        setTechModuleOpen(false);
+      });
+
       if (reportsToTrigger && reportsToDropdown) {
         reportsToTrigger.addEventListener('click', function (e) {
           e.stopPropagation();
           var open = reportsToDropdown.classList.contains('hidden');
+          setTechModuleOpen(false);
           setReportsToOpen(open);
         });
         reportsToDropdown.addEventListener('click', function (e) {
           e.stopPropagation();
         });
-        document.addEventListener('click', function () {
-          setReportsToOpen(false);
-        });
         reportsToCbs.forEach(function (cb) {
           cb.addEventListener('change', updateReportsToSummary);
         });
         updateReportsToSummary();
+      }
+
+      if (techModuleTrigger && techModuleDropdown) {
+        techModuleTrigger.addEventListener('click', function (e) {
+          e.stopPropagation();
+          var willOpen = techModuleDropdown.classList.contains('hidden');
+          setReportsToOpen(false);
+          setTechModuleOpen(willOpen);
+        });
+        techModuleDropdown.addEventListener('click', function (e) {
+          e.stopPropagation();
+        });
+        document.querySelectorAll('.tech-mod-cb').forEach(function (cb) {
+          cb.addEventListener('change', updateTechModuleSummary);
+        });
+        updateTechModuleSummary();
       }
     });
   </script>
