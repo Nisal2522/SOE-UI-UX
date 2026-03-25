@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
@@ -382,7 +382,7 @@
               <div class="fut-stat-pill p-4 text-center sm:text-left">
                 <div class="flex items-center justify-center sm:justify-start gap-2 text-slate-500 mb-2 text-xs font-medium uppercase tracking-wide">
                   <span class="flex h-8 w-8 items-center justify-center rounded-lg bg-rose-100 text-rose-600"><span class="material-symbols-outlined text-lg">verified</span></span>
-                  Certifications
+                  Qualified Programs
                 </div>
                 <p class="font-bold text-[#1b1e42]">3 Active</p>
               </div>
@@ -481,17 +481,25 @@
                       <h3 class="font-semibold text-[#1b1e42]">Employment Details</h3>
                     </div>
                     <div class="space-y-3 text-sm">
-                      <div>
-                        <p class="text-xs text-slate-500 mb-1">Department &amp; Role</p>
-                        <p class="text-slate-900">Textile</p>
-                      </div>
-                      <div>
-                        <p class="text-xs text-slate-500 mb-1">Department Allocation</p>
-                        <p class="text-slate-900">70% Textile, 30% ISO</p>
-                      </div>
-                      <div>
-                        <p class="text-xs text-slate-500 mb-1">Role Allocation</p>
-                        <p class="text-slate-900">60% Lead Auditor, 40% Reviewer</p>
+                      <div class="rounded-xl border border-[#3eb2ed]/30 overflow-hidden">
+                        <div class="grid grid-cols-12 bg-[#3eb2ed]/10 text-[11px] font-semibold text-[#1b1e42] uppercase tracking-wide">
+                          <div class="col-span-3 px-3 py-2 border-r border-[#3eb2ed]/25">Country</div>
+                          <div class="col-span-3 px-3 py-2 border-r border-[#3eb2ed]/25">Department</div>
+                          <div class="col-span-3 px-3 py-2 border-r border-[#3eb2ed]/25">Role</div>
+                          <div class="col-span-3 px-3 py-2">Allocation</div>
+                        </div>
+                        <div class="grid grid-cols-12 text-sm bg-white">
+                          <div class="col-span-3 px-3 py-2.5 border-r border-slate-200">Sri Lanka</div>
+                          <div class="col-span-3 px-3 py-2.5 border-r border-slate-200">Textile</div>
+                          <div class="col-span-3 px-3 py-2.5 border-r border-slate-200">Lead Auditor</div>
+                          <div class="col-span-3 px-3 py-2.5">60%</div>
+                        </div>
+                        <div class="grid grid-cols-12 text-sm bg-slate-50/70 border-t border-slate-200">
+                          <div class="col-span-3 px-3 py-2.5 border-r border-slate-200">Sri Lanka</div>
+                          <div class="col-span-3 px-3 py-2.5 border-r border-slate-200">ISO</div>
+                          <div class="col-span-3 px-3 py-2.5 border-r border-slate-200">Reviewer</div>
+                          <div class="col-span-3 px-3 py-2.5">40%</div>
+                        </div>
                       </div>
                       <div>
                         <p class="text-xs text-slate-500 mb-1">Job Status</p>
@@ -564,20 +572,42 @@
                 <div>
                   <h3 class="font-semibold text-[#1b1e42] mb-3 flex items-center gap-2"><span class="material-symbols-outlined text-cyan-500">devices</span> Assigned Devices</h3>
                   <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-                    <div class="bg-white border border-[#1b1e42]/10 rounded-xl p-4 shadow-sm">
+                    <button type="button" class="device-card text-left bg-white border border-[#1b1e42]/10 rounded-xl p-4 shadow-sm hover:shadow-md hover:border-[#3eb2ed] transition-all" data-device-id="laptop">
                       <p class="inline-flex items-center gap-2 font-medium text-slate-900"><span class="text-blue-500"><span class="material-symbols-outlined text-lg">laptop_mac</span></span> Laptop — Dell XPS 15</p>
                       <p class="text-xs text-slate-500 mt-2">Issued on: Jan 15, 2022</p>
                       <p class="text-xs text-slate-600">In use: 4.2 years</p>
-                    </div>
-                    <div class="bg-white border border-[#1b1e42]/10 rounded-xl p-4 shadow-sm">
+                    </button>
+                    <button type="button" class="device-card text-left bg-white border border-[#1b1e42]/10 rounded-xl p-4 shadow-sm hover:shadow-md hover:border-[#3eb2ed] transition-all" data-device-id="phone">
                       <p class="inline-flex items-center gap-2 font-medium text-slate-900"><span class="text-violet-500"><span class="material-symbols-outlined text-lg">smartphone</span></span> Phone — iPhone 13</p>
                       <p class="text-xs text-slate-500 mt-2">Issued on: Mar 10, 2023</p>
                       <p class="text-xs text-slate-600">In use: 3.1 years</p>
-                    </div>
-                    <div class="bg-white border border-[#1b1e42]/10 rounded-xl p-4 shadow-sm">
+                    </button>
+                    <button type="button" class="device-card text-left bg-white border border-[#1b1e42]/10 rounded-xl p-4 shadow-sm hover:shadow-md hover:border-[#3eb2ed] transition-all" data-device-id="tablet">
                       <p class="inline-flex items-center gap-2 font-medium text-slate-900"><span class="text-orange-500"><span class="material-symbols-outlined text-lg">tablet_mac</span></span> Tablet — iPad Pro</p>
                       <p class="text-xs text-slate-500 mt-2">Issued on: Sep 05, 2021</p>
                       <p class="text-xs text-slate-600">In use: 4.6 years</p>
+                    </button>
+                  </div>
+                  <div id="deviceInventoryPanel" class="hidden mt-4 rounded-xl border border-[#3eb2ed]/40 bg-[#3eb2ed]/[0.06] p-4">
+                    <div class="flex items-center justify-between gap-3 mb-3">
+                      <h4 class="font-semibold text-[#1b1e42]">Device Inventory</h4>
+                      <button type="button" id="closeDeviceInventory" class="text-slate-500 hover:text-slate-700" aria-label="Close device inventory">
+                        <span class="material-symbols-outlined text-xl">close</span>
+                      </button>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+                      <div><p class="text-xs text-slate-500">Device Type</p><p id="invType" class="font-medium text-slate-900">-</p></div>
+                      <div><p class="text-xs text-slate-500">Model</p><p id="invModel" class="font-medium text-slate-900">-</p></div>
+                      <div><p class="text-xs text-slate-500">Serial Number</p><p id="invSerial" class="font-medium text-slate-900">-</p></div>
+                      <div><p class="text-xs text-slate-500">Asset Tag</p><p id="invAsset" class="font-medium text-slate-900">-</p></div>
+                      <div><p class="text-xs text-slate-500">Assigned User</p><p id="invUser" class="font-medium text-slate-900">-</p></div>
+                      <div><p class="text-xs text-slate-500">Status</p><p id="invStatus" class="font-medium text-emerald-700">-</p></div>
+                      <div><p class="text-xs text-slate-500">Issued Date</p><p id="invIssued" class="font-medium text-slate-900">-</p></div>
+                      <div><p class="text-xs text-slate-500">Warranty End</p><p id="invWarranty" class="font-medium text-slate-900">-</p></div>
+                    </div>
+                    <div class="mt-4 pt-4 border-t border-[#3eb2ed]/30">
+                      <h5 class="font-semibold text-[#1b1e42] mb-2">Service Log</h5>
+                      <div id="invServiceLog" class="space-y-2"></div>
                     </div>
                   </div>
                 </div>
@@ -1157,6 +1187,78 @@
           btn.classList.add('active');
         });
       });
+
+      var deviceInventoryData = {
+        laptop: {
+          type: 'Laptop', model: 'Dell XPS 15', serial: 'DXP15-9K2L-4471', asset: 'AST-LAP-00192', user: 'Marina Silva', status: 'Active', issued: 'Jan 15, 2022', warranty: 'Jan 14, 2027',
+          serviceLog: [
+            { date: 'Feb 11, 2026', type: 'Battery Health Check', by: 'IT Support', note: 'Battery wear at 84%, normal range.' },
+            { date: 'Sep 08, 2025', type: 'Keyboard Replacement', by: 'Dell Service', note: 'Replaced faulty key module.' },
+            { date: 'Jan 19, 2024', type: 'Annual Preventive Service', by: 'IT Support', note: 'Internal clean, BIOS update, diagnostics passed.' }
+          ]
+        },
+        phone: {
+          type: 'Phone', model: 'iPhone 13', serial: 'IPH13-XR91-7720', asset: 'AST-PHN-00461', user: 'Marina Silva', status: 'Active', issued: 'Mar 10, 2023', warranty: 'Mar 09, 2026',
+          serviceLog: [
+            { date: 'Dec 02, 2025', type: 'Screen Protector & Case', by: 'Mobile Desk', note: 'Changed protective kit.' },
+            { date: 'Jun 15, 2025', type: 'iOS Major Update Support', by: 'IT Support', note: 'Updated to latest stable iOS and MDM profile synced.' }
+          ]
+        },
+        tablet: {
+          type: 'Tablet', model: 'iPad Pro', serial: 'IPDPR-3Q88-1185', asset: 'AST-TAB-00077', user: 'Marina Silva', status: 'Active', issued: 'Sep 05, 2021', warranty: 'Sep 04, 2025',
+          serviceLog: [
+            { date: 'Nov 21, 2025', type: 'Battery Replacement', by: 'Authorized Service', note: 'Battery replaced under maintenance contract.' },
+            { date: 'Apr 07, 2024', type: 'Charging Port Cleaning', by: 'IT Support', note: 'Port cleaned and charging normalized.' },
+            { date: 'Oct 30, 2023', type: 'Annual Inspection', by: 'IT Support', note: 'No hardware faults detected.' }
+          ]
+        }
+      };
+      var devicePanel = document.getElementById('deviceInventoryPanel');
+      var closeDeviceInventory = document.getElementById('closeDeviceInventory');
+      var invServiceLog = document.getElementById('invServiceLog');
+      function updateDeviceInventory(data) {
+        if (!data || !devicePanel) return;
+        var map = {
+          invType: data.type, invModel: data.model, invSerial: data.serial, invAsset: data.asset,
+          invUser: data.user, invStatus: data.status, invIssued: data.issued, invWarranty: data.warranty
+        };
+        Object.keys(map).forEach(function (id) {
+          var el = document.getElementById(id);
+          if (el) el.textContent = map[id];
+        });
+        if (invServiceLog) {
+          invServiceLog.innerHTML = '';
+          var logs = Array.isArray(data.serviceLog) ? data.serviceLog : [];
+          if (!logs.length) {
+            invServiceLog.innerHTML = '<p class="text-xs text-slate-500">No service records available.</p>';
+          } else {
+            logs.forEach(function (log) {
+              var row = document.createElement('div');
+              row.className = 'rounded-lg border border-slate-200 bg-white px-3 py-2';
+              row.innerHTML =
+                '<div class="flex flex-wrap items-center justify-between gap-2">' +
+                '<p class="text-xs font-semibold text-slate-900">' + log.type + '</p>' +
+                '<p class="text-[11px] text-slate-500">' + log.date + '</p>' +
+                '</div>' +
+                '<p class="text-[11px] text-slate-600 mt-1">By: ' + log.by + '</p>' +
+                '<p class="text-xs text-slate-700 mt-1">' + log.note + '</p>';
+              invServiceLog.appendChild(row);
+            });
+          }
+        }
+        devicePanel.classList.remove('hidden');
+      }
+      document.querySelectorAll('.device-card').forEach(function (card) {
+        card.addEventListener('click', function () {
+          var id = card.getAttribute('data-device-id');
+          updateDeviceInventory(deviceInventoryData[id]);
+        });
+      });
+      if (closeDeviceInventory) {
+        closeDeviceInventory.addEventListener('click', function () {
+          if (devicePanel) devicePanel.classList.add('hidden');
+        });
+      }
 
       var currentTaskDateEl = document.getElementById('currentTaskDate');
       var currentTaskDateBtn = document.getElementById('currentTaskDateBtn');
