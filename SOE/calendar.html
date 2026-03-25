@@ -123,6 +123,18 @@
     .planner-cell.today-col { background: #eff6ff; }
     .planner-emp { position: sticky; left: 0; z-index: 5; background: #fff; min-width: 158px; width: 158px; border-right: 2px solid #e2e8f0; }
     .planner-head-emp { position: sticky; left: 0; z-index: 6; background: #f8fafc; min-width: 158px; width: 158px; border-right: 2px solid #e2e8f0; }
+
+    /* Daily time-slot view */
+    .daily-scroll { max-height: 78vh; overflow-y: auto; border-radius: 14px; border: 1px solid #e5e7eb; background: #fff; box-shadow: 0 2px 12px rgba(0,0,0,.04); }
+    .daily-schedule { display: flex; min-width: 900px; }
+    .daily-time-col { width: 96px; background: #f8fafc; border-right: 1px solid #e5e7eb; position: relative; }
+    .daily-time-label { position: absolute; left: 0; right: 0; transform: translateY(-50%); padding-left: 12px; font-size: 12px; color: #64748b; font-weight: 700; }
+    .daily-body-col { flex: 1; position: relative; }
+    .daily-timeline { position: relative; height: var(--timeline-h, 1400px); width: 100%; background-image: repeating-linear-gradient(to bottom, rgba(148,163,184,.25) 0px, rgba(148,163,184,.25) 1px, transparent 1px, transparent var(--slot-h, 44px)); }
+    .daily-event { position: absolute; border-radius: 12px; padding: 7px 10px; font-size: 12px; cursor: pointer; box-shadow: 0 1px 0 rgba(15, 23, 42, 0.06); overflow: hidden; }
+    .daily-event:hover { filter: brightness(1.06); transform: translateY(-1px); }
+    .daily-event-title { font-weight: 900; color: #0f172a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+    .daily-event-time { margin-top: 2px; font-weight: 700; color: rgba(15, 23, 42, 0.65); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   </style>
 </head>
 
@@ -473,6 +485,33 @@
               </div>
             </div>
 
+            <!-- Daily Time-Slot View -->
+            <div id="dailyView" class="hidden">
+              <div class="bg-white rounded-2xl border border-gray-200 overflow-hidden" style="box-shadow:0 2px 12px rgba(0,0,0,.04);">
+                <div class="flex items-center justify-between px-5 py-3 border-b border-gray-100">
+                  <div class="flex items-center gap-2">
+                    <button id="dailyBackBtn" class="p-1.5 rounded-lg hover:bg-slate-100 transition" type="button">
+                      <span class="material-symbols-outlined text-xl text-slate-600">chevron_left</span>
+                    </button>
+                    <h3 id="dailyDateLabel" class="text-lg font-bold text-slate-900 min-w-[200px]"></h3>
+                  </div>
+                  <div class="text-sm text-slate-500 font-semibold">
+                    Time slots: 06:00 - 22:00
+                  </div>
+                </div>
+                <div class="p-4">
+                  <div id="dailyScheduleWrap" class="daily-scroll">
+                    <div id="dailySchedule" class="daily-schedule">
+                      <div class="daily-time-col" id="dailyTimeLabels"></div>
+                      <div class="daily-body-col">
+                        <div id="dailyTimeline" class="daily-timeline"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <!-- Weekly View -->
             <div id="weeklyView" class="hidden">
               <div class="overflow-x-auto">
@@ -731,20 +770,42 @@
       var monthlyView = document.getElementById('monthlyView');
       var monthlyPlannerView = document.getElementById('monthlyPlannerView');
       var weeklyView = document.getElementById('weeklyView');
+      var dailyView = document.getElementById('dailyView');
+      var dailyBackBtn = document.getElementById('dailyBackBtn');
+      var selectedDay = null;
+
+      if (dailyBackBtn) {
+        dailyBackBtn.addEventListener('click', function () {
+          currentView = 'monthly';
+          viewTabs.forEach(function (t) { t.classList.remove('active'); });
+          var monthlyTab = document.querySelector('.view-tab[data-view="monthly"]');
+          if (monthlyTab) monthlyTab.classList.add('active');
+          updateViews();
+        });
+      }
 
       function updateViews() {
         monthlyView.classList.add('hidden');
         monthlyPlannerView.classList.add('hidden');
         weeklyView.classList.add('hidden');
+        if (dailyView) dailyView.classList.add('hidden');
         if (currentView === 'monthly') {
           if (currentScope === 'all') {
             monthlyPlannerView.classList.remove('hidden');
             renderMonthlyPlanner();
           } else {
             monthlyView.classList.remove('hidden');
+            renderCalendar();
           }
         } else {
-          weeklyView.classList.remove('hidden');
+          if (currentView === 'weekly') {
+            weeklyView.classList.remove('hidden');
+          } else if (currentView === 'daily') {
+            if (dailyView) dailyView.classList.remove('hidden');
+            renderDaily(selectedDay);
+          } else {
+            weeklyView.classList.remove('hidden');
+          }
         }
       }
 
@@ -754,7 +815,7 @@
           tab.classList.add('active');
           currentView = tab.getAttribute('data-view');
           updateViews();
-          applyWeeklyFilter();
+          if (currentView === 'weekly') applyWeeklyFilter();
         });
       });
 
@@ -1381,10 +1442,10 @@
           var dow = new Date(currentYear, currentMonth, d).getDay();
           var isWe = (dow === 0 || dow === 6);
           var isToday = (d === todayDay);
-          var cls = 'px-1 py-2.5 text-center border-l border-gray-100';
+          var cls = 'px-1 py-2.5 text-center border-l border-gray-100 cursor-pointer hover:bg-slate-100/70';
           if (isToday) cls += ' today-col';
           else if (isWe) cls += ' weekend';
-          html += '<div class="' + cls + '">';
+          html += '<div class="' + cls + '" data-daily-day="' + d + '">';
           html += '<div class="text-xs font-semibold text-slate-400 uppercase">' + dayNames[dow] + '</div>';
           html += '<div class="text-sm font-bold ' + (isToday ? 'text-blue-600' : 'text-slate-700') + '">' + d + '</div>';
           html += '</div>';
@@ -1410,7 +1471,7 @@
             else if (isWe) cls += ' weekend';
 
             var dayEvs = empEvents.filter(function (e) { return e.day === d; });
-            html += '<div class="' + cls + '">';
+            html += '<div class="' + cls + '" data-daily-day="' + d + '">';
             if (dayEvs.length > 0) {
               dayEvs.forEach(function (ev) {
                 var hasConflict = getConflicts(ev, empEvents).length > 0;
@@ -1441,6 +1502,18 @@
             if (ev) showEventPopup(ev, bar.getBoundingClientRect());
           });
         });
+
+        // Click any day cell/header in planner to open daily slot view.
+        container.querySelectorAll('[data-daily-day]').forEach(function (el) {
+          el.addEventListener('click', function (e) {
+            if (e.target && e.target.closest('.ev-bar[data-evid]')) return;
+            var dayNum = parseInt(el.getAttribute('data-daily-day'), 10);
+            if (!dayNum) return;
+            selectedDay = dayNum;
+            currentView = 'daily';
+            updateViews();
+          });
+        });
       }
 
       function renderCalendar() {
@@ -1469,6 +1542,14 @@
           var cls = 'cal-cell p-2';
           if (isCurrentMonth && d === today.getDate()) cls += ' today';
           cell.className = cls;
+          cell.style.cursor = 'pointer';
+          (function (dayNum) {
+            cell.addEventListener('click', function () {
+              selectedDay = dayNum;
+              currentView = 'daily';
+              updateViews();
+            });
+          })(d);
 
           var html = '<span class="text-sm font-semibold text-slate-700">' + d + '</span>';
           html += '<div class="mt-1 space-y-0.5">';
@@ -1516,6 +1597,143 @@
             var ev = calEvents.find(function (x) { return x.id === evId; });
             if (ev) showEventPopup(ev, bar.getBoundingClientRect());
           });
+        });
+      }
+
+      function pad2(n) { return String(n).padStart(2, '0'); }
+
+      function renderDaily(dayNum) {
+        var timelineEl = document.getElementById('dailyTimeline');
+        var timeLabelsEl = document.getElementById('dailyTimeLabels');
+        var scheduleEl = document.getElementById('dailySchedule');
+        var dateLabelEl = document.getElementById('dailyDateLabel');
+        if (!timelineEl || !timeLabelsEl || !scheduleEl) return;
+
+        var rangeStartMin = 6 * 60;
+        var rangeEndMin = 22 * 60;
+        var slotMinutes = 30;
+        var slotHeightPx = 44;
+
+        if (!dayNum) {
+          var now = new Date();
+          dayNum = (now.getMonth() === currentMonth && now.getFullYear() === currentYear) ? now.getDate() : 1;
+        }
+
+        var months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+        var dateObj = new Date(currentYear, currentMonth, dayNum);
+        if (dateLabelEl) dateLabelEl.textContent = months[currentMonth] + ' ' + dayNum + ', ' + currentYear;
+
+        var totalMinutes = rangeEndMin - rangeStartMin;
+        var totalSlots = totalMinutes / slotMinutes;
+        var timelineH = totalSlots * slotHeightPx;
+
+        scheduleEl.style.setProperty('--slot-h', slotHeightPx + 'px');
+        scheduleEl.style.setProperty('--timeline-h', timelineH + 'px');
+
+        // Time labels (hourly)
+        timeLabelsEl.innerHTML = '';
+        for (var h = 6; h <= 22; h++) {
+          var y = ((h * 60 - rangeStartMin) / slotMinutes) * slotHeightPx;
+          var label = document.createElement('div');
+          label.className = 'daily-time-label';
+          label.style.top = y + 'px';
+          label.textContent = pad2(h) + ':00';
+          timeLabelsEl.appendChild(label);
+        }
+
+        // Events
+        timelineEl.innerHTML = '';
+        var filtered = getFilteredEvents();
+        var dayEvents = filtered.filter(function (e) { return e.day === dayNum; });
+
+        var normalized = dayEvents.map(function (ev) {
+          var tr = parseTime(ev.time);
+          if (!tr) tr = { start: rangeStartMin, end: rangeEndMin };
+          var start = Math.max(rangeStartMin, tr.start);
+          var end = Math.min(rangeEndMin, tr.end);
+          if (end <= start) return null;
+          return Object.assign({}, ev, { __start: start, __end: end });
+        }).filter(Boolean).sort(function (a, b) { return a.__start - b.__start; });
+
+        // Overlap layout:
+        // 1) Greedy column assignment so overlapping events never share a column.
+        // 2) For each event, compute max concurrency within its own time range,
+        //    then set width = 100/maxConcurrency so overlap blocks look consistent.
+        var colEnds = [];
+        normalized.forEach(function (ev) {
+          var assigned = 0;
+          for (var c = 0; c < colEnds.length; c++) {
+            if (colEnds[c] <= ev.__start) { assigned = c; break; }
+            assigned = c + 1;
+          }
+          if (colEnds.length === 0) assigned = 0;
+          colEnds[assigned] = ev.__end;
+          ev.__col = assigned;
+        });
+
+        normalized.forEach(function (ev) {
+          // Collect events overlapping this event interval
+          var overlaps = normalized.filter(function (o) {
+            return o.id !== ev.id && o.__start < ev.__end && o.__end > ev.__start;
+          });
+          overlaps.push(ev);
+
+          // Sweep line for maximum concurrency inside [ev.__start, ev.__end]
+          var points = [];
+          overlaps.forEach(function (o) {
+            points.push({ t: Math.max(ev.__start, o.__start), k: 's' });
+            points.push({ t: Math.min(ev.__end, o.__end), k: 'e' });
+          });
+          points.sort(function (a, b) {
+            if (a.t !== b.t) return a.t - b.t;
+            // end before start at same time for half-open interval correctness
+            if (a.k === b.k) return 0;
+            return a.k === 'e' ? -1 : 1;
+          });
+
+          var count = 0;
+          var maxCount = 1;
+          points.forEach(function (p) {
+            if (p.k === 's') count++;
+            if (p.k === 'e') count--;
+            if (count > maxCount) maxCount = count;
+          });
+          ev.__maxConcurrent = Math.max(1, maxCount);
+        });
+
+        normalized.forEach(function (ev) {
+          var color = getEvColor(ev.type);
+          var topPx = ((ev.__start - rangeStartMin) / slotMinutes) * slotHeightPx;
+          var heightPx = ((ev.__end - ev.__start) / slotMinutes) * slotHeightPx;
+          heightPx = Math.max(28, heightPx);
+          var widthPct = 100 / (ev.__maxConcurrent || 1);
+          var leftPct = (ev.__col || 0) * widthPct;
+
+          var timeShort = (ev.time === 'Full Day' || !ev.time) ? 'All day' : ev.time;
+
+          var block = document.createElement('div');
+          block.className = 'daily-event';
+          block.setAttribute('data-evid', ev.id);
+          block.style.top = topPx + 'px';
+          block.style.height = heightPx + 'px';
+          block.style.left = leftPct + '%';
+          block.style.width = widthPct + '%';
+          block.style.border = '1px solid rgba(15, 23, 42, 0.08)';
+          block.style.borderLeft = '4px solid ' + color;
+          block.style.background = 'linear-gradient(180deg, ' + color + '26 0%, rgba(255,255,255,0) 100%)';
+          block.setAttribute('title', ev.label + ' (' + timeShort + ')');
+
+          block.innerHTML = '<div class="daily-event-title">' + ev.label + '</div>' +
+            '<div class="daily-event-time">' + timeShort + '</div>';
+
+          block.addEventListener('click', function (e) {
+            e.stopPropagation();
+            var evId = parseInt(this.getAttribute('data-evid'), 10);
+            var matched = calEvents.find(function (x) { return x.id === evId; });
+            if (matched) showEventPopup(matched, this.getBoundingClientRect());
+          });
+
+          timelineEl.appendChild(block);
         });
       }
 
