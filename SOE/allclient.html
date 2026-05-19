@@ -499,6 +499,23 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
       box-shadow: 0 8px 24px rgba(16, 185, 129, 0.12)
     }
 
+    /* Header actions — match All Accounts tab (solid blue + emerald) */
+    .crm-btn-new {
+      background: #3eb2ed;
+    }
+
+    .crm-btn-new:hover {
+      background: #2e9fd9;
+    }
+
+    .crm-btn-export {
+      background: #10b981;
+    }
+
+    .crm-btn-export:hover {
+      background: #059669;
+    }
+
     .leads-stats {
       display: flex;
       gap: 1rem;
@@ -3136,12 +3153,12 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
             </div>
             <div class="flex items-center gap-3">
               <a href="addlead.html" title="New Lead"
-                class="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-full shadow-lg text-sm font-medium hover:shadow-xl hover:scale-105 transition-all duration-200">
-                <span class="material-symbols-outlined filled text-base">add_circle</span>
+                class="crm-btn-new flex items-center gap-2 px-5 py-2.5 text-white rounded-xl text-sm font-medium transition-colors shadow-sm">
+                <span class="material-symbols-outlined filled text-base">add</span>
                 <span>New Lead</span>
               </a>
               <button title="Export"
-                class="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-emerald-500 to-teal-600 text-white rounded-full shadow-lg text-sm font-medium hover:shadow-xl hover:scale-105 transition-all duration-200">
+                class="crm-btn-export flex items-center gap-2 px-5 py-2.5 text-white rounded-xl text-sm font-medium transition-colors shadow-sm">
                 <span class="material-symbols-outlined filled text-base">download</span>
                 <span>Export</span>
               </button>
@@ -3535,12 +3552,12 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
             </div>
             <div class="flex items-center gap-3">
               <button id="newContactBtn" type="button" title="New Contact"
-                class="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-full shadow-lg text-sm font-medium hover:shadow-xl hover:scale-105 transition-all duration-200">
-                <span class="material-symbols-outlined filled text-base">person_add</span>
+                class="crm-btn-new flex items-center gap-2 px-5 py-2.5 text-white rounded-xl text-sm font-medium transition-colors shadow-sm">
+                <span class="material-symbols-outlined filled text-base">add</span>
                 <span>New Contact</span>
               </button>
               <button title="Export"
-                class="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-emerald-500 to-teal-600 text-white rounded-full shadow-lg text-sm font-medium hover:shadow-xl hover:scale-105 transition-all duration-200">
+                class="crm-btn-export flex items-center gap-2 px-5 py-2.5 text-white rounded-xl text-sm font-medium transition-colors shadow-sm">
                 <span class="material-symbols-outlined filled text-base">download</span>
                 <span>Export</span>
               </button>
@@ -4268,8 +4285,8 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
             </div>
             <div class="flex items-center gap-3">
               <button type="button" title="New Opportunity"
-                class="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-full shadow-lg text-sm font-medium hover:shadow-xl hover:scale-105 transition-all duration-200">
-                <span class="material-symbols-outlined filled text-base">add_circle</span>
+                class="crm-btn-new flex items-center gap-2 px-5 py-2.5 text-white rounded-xl text-sm font-medium transition-colors shadow-sm">
+                <span class="material-symbols-outlined filled text-base">add</span>
                 <span>New Opportunity</span>
               </button>
               <script>
@@ -4283,7 +4300,7 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
                 });
               </script>
               <button title="Export"
-                class="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-emerald-500 to-teal-600 text-white rounded-full shadow-lg text-sm font-medium hover:shadow-xl hover:scale-105 transition-all duration-200">
+                class="crm-btn-export flex items-center gap-2 px-5 py-2.5 text-white rounded-xl text-sm font-medium transition-colors shadow-sm">
                 <span class="material-symbols-outlined filled text-base">download</span>
                 <span>Export</span>
               </button>
@@ -4532,7 +4549,7 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
             </div>
             <div class="flex items-center gap-3">
               <button title="Export"
-                class="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-emerald-500 to-teal-600 text-white rounded-full shadow-lg text-sm font-medium hover:shadow-xl hover:scale-105 transition-all duration-200">
+                class="crm-btn-export flex items-center gap-2 px-5 py-2.5 text-white rounded-xl text-sm font-medium transition-colors shadow-sm">
                 <span class="material-symbols-outlined filled text-base">download</span>
                 <span>Export</span>
               </button>
