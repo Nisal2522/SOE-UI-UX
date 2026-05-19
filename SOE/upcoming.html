@@ -21,6 +21,7 @@
             background: 'var(--color-background)',
             sidebar: 'var(--color-sidebar)',
             accent: '#1b1e42',
+            'cu-dark-blue': 'var(--cu-dark-blue)',
           },
           boxShadow: {
             soft: '0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05)',
@@ -59,6 +60,263 @@
     .rec-card:hover { border-color: #93c5fd; box-shadow: 0 8px 24px rgba(59,130,246,.08); }
     @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     .fade-up { animation: fadeUp .35s ease forwards; }
+    .sales-pool-table-wrap { width: 100%; overflow-x: auto; }
+    .sales-pool-table {
+      width: 100%;
+      table-layout: fixed;
+      border-collapse: separate;
+      border-spacing: 0 0.5rem;
+      font-size: 0.8125rem;
+    }
+    .sales-pool-table thead th {
+      padding: 0.5rem 0.65rem;
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: #94a3b8;
+      text-align: left;
+      vertical-align: bottom;
+      white-space: nowrap;
+    }
+    .sales-pool-table tbody tr {
+      background: #f8fafc;
+      transition: box-shadow 0.2s, background 0.15s;
+    }
+    .sales-pool-table tbody tr:hover {
+      background: #f1f5f9;
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05);
+    }
+    .sales-pool-table tbody td {
+      padding: 0.75rem 0.65rem;
+      color: #334155;
+      vertical-align: middle;
+      border-top: 1px solid #f1f5f9;
+      border-bottom: 1px solid #f1f5f9;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .sales-pool-table tbody td:first-child {
+      border-left: 1px solid #f1f5f9;
+      border-radius: 0.75rem 0 0 0.75rem;
+      font-weight: 600;
+      color: #0f172a;
+    }
+    .sales-pool-table tbody td:last-child {
+      border-right: 1px solid #f1f5f9;
+      border-radius: 0 0.75rem 0.75rem 0;
+      width: auto;
+      min-width: 10.5rem;
+      padding: 0.65rem 0.75rem;
+      text-align: center;
+      overflow: visible;
+    }
+    .sales-pool-table .col-account { width: 11%; }
+    .sales-pool-table .col-service { width: 8%; }
+    .sales-pool-table .col-program { width: 8%; }
+    .sales-pool-table .col-audit { width: 10%; }
+    .sales-pool-table .col-date { width: 9%; }
+    .sales-pool-table .col-billable { width: 7%; }
+    .sales-pool-table .col-saleref { width: 22%; }
+    .sales-pool-table .col-action { text-align: center; }
+    .sales-pool-table .cell-truncate {
+      display: block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      max-width: 100%;
+    }
+    #addSaleModal.show { display: flex; }
+    #addSaleModal .sale-modal-card {
+      width: 100%;
+      max-width: 56rem;
+      max-height: 90vh;
+      border-radius: 20px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    #addSaleModal .sale-modal-header {
+      background: #1b2540;
+      padding: 1rem 1.5rem;
+      flex-shrink: 0;
+    }
+    #addSaleModal .sale-modal-header h2 {
+      font-size: 1.125rem;
+      font-weight: 600;
+    }
+    #addSaleModal .sale-form-body {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      min-height: 0;
+      padding: 0;
+    }
+    #addSaleModal .sale-form-scroll {
+      flex: 1;
+      min-height: 0;
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding: 1.75rem 2rem 1rem;
+      -webkit-overflow-scrolling: touch;
+    }
+    #addSaleModal .sale-form-rows {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem 1.75rem;
+    }
+    #addSaleModal .sale-form-row--full {
+      grid-column: 1 / -1;
+    }
+    #addSaleModal .sale-form-row {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      min-width: 0;
+    }
+    @media (min-width: 640px) {
+      #addSaleModal .sale-form-row {
+        flex-direction: row;
+        align-items: center;
+        gap: 0.65rem;
+      }
+      #addSaleModal .sale-form-row--top {
+        align-items: flex-start;
+      }
+    }
+    #addSaleModal .sale-form-label {
+      font-weight: 500;
+      color: #334155;
+      font-size: 14px;
+      width: 8.5rem;
+      flex-shrink: 0;
+      text-align: left;
+      margin: 0;
+    }
+    @media (max-width: 639px) {
+      #addSaleModal .sale-form-rows {
+        grid-template-columns: 1fr;
+      }
+      #addSaleModal .sale-form-label {
+        width: 100%;
+      }
+    }
+    #addSaleModal .sale-form-control {
+      flex: 1;
+      min-width: 0;
+    }
+    #addSaleModal .sale-field-input {
+      width: 100%;
+      border: 1px solid #d1d5db;
+      border-radius: 0.25rem;
+      padding: 0 0.75rem;
+      height: 42px;
+      font-size: 0.875rem;
+      color: #1e293b;
+      background: #fff;
+    }
+    #addSaleModal .sale-field-input:focus {
+      outline: none;
+      border-color: #3eb2ed;
+      box-shadow: 0 0 0 2px rgba(62, 178, 237, 0.2);
+    }
+    #addSaleModal textarea.sale-field-input {
+      height: auto;
+      min-height: 84px;
+      padding: 0.5rem 0.75rem;
+      resize: vertical;
+    }
+    #addSaleModal .sale-amount-group {
+      display: flex;
+      gap: 0.5rem;
+    }
+    #addSaleModal .sale-amount-group .sale-field-input { flex: 1; }
+    #addSaleModal .sale-amount-group select.sale-field-input { flex: 0 0 7rem; }
+    #saleAmountRow.hidden { display: none; }
+    #addSaleModal .sale-form-footer {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 1rem;
+      flex-shrink: 0;
+      margin-top: 0;
+      padding: 1rem 2rem 1.5rem;
+      border-top: 1px solid #f1f5f9;
+      background: #fff;
+    }
+    #addSaleModal .sale-modal-btn-cancel,
+    #addSaleModal .sale-modal-btn-submit {
+      width: 2.5rem;
+      height: 2.5rem;
+      border-radius: 9999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: background 0.2s, border-color 0.2s, opacity 0.2s;
+    }
+    #addSaleModal .sale-modal-btn-cancel {
+      border: 2px solid #3eb2ed;
+      color: #3eb2ed;
+      background: #fff;
+    }
+    #addSaleModal .sale-modal-btn-cancel:hover { background: #e6f6fd; }
+    #addSaleModal .sale-modal-btn-submit {
+      border: none;
+      background: #3eb2ed;
+      color: #fff;
+    }
+    #addSaleModal .sale-modal-btn-submit:hover { background: #2499d6; }
+    #addSaleModal .sale-modal-btn-cancel .material-symbols-outlined,
+    #addSaleModal .sale-modal-btn-submit .material-symbols-outlined {
+      font-size: 1.35rem;
+    }
+    .sale-action-cell {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.3rem;
+      padding: 0.3rem 0.45rem;
+      background: #e8eef5;
+      border-radius: 9999px;
+      white-space: nowrap;
+    }
+    .sale-action-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 2rem;
+      height: 2rem;
+      border-radius: 0.4rem;
+      background: #fff;
+      border: 1px solid #dbe2ea;
+      flex-shrink: 0;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .sale-action-btn .material-symbols-outlined {
+      font-size: 1.15rem;
+    }
+    .sale-action-btn--user { color: #1b1e42; }
+    .sale-action-btn--user:hover {
+      background: #f8fafc;
+      border-color: #cbd5e1;
+    }
+    .sale-action-btn--timesheet,
+    .sale-action-btn--edit { color: #3eb2ed; }
+    .sale-action-btn--timesheet:hover,
+    .sale-action-btn--edit:hover {
+      background: #e0f4fd;
+      border-color: #93d4f7;
+    }
+    .sale-action-btn--delete { color: #ef4444; }
+    .sale-action-btn--delete:hover {
+      background: #fef2f2;
+      border-color: #fca5a5;
+    }
+    .sales-pool-table .col-action { width: 14%; }
+    @media (max-width: 1280px) {
+      .sales-pool-table { min-width: 1100px; }
+    }
   </style>
 </head>
 
@@ -249,6 +507,55 @@
       <main class="flex-1 overflow-y-auto bg-white p-5 lg:p-7">
         <div class="max-w-[1500px] w-full ml-0 mr-auto">
 
+          <!-- Sale / Events tabs (same style as My Dashboard toggle on index.html) -->
+          <div class="flex flex-wrap items-center gap-4 mb-5">
+            <div class="flex items-center gap-2 bg-white p-1 rounded-xl shadow-sm border border-slate-200" id="upcomingViewTabs" role="tablist">
+              <button type="button" role="tab" aria-selected="false" data-upcoming-tab="sale" class="upcoming-tab-btn px-4 py-2 bg-white text-[#1b1e42] rounded-lg text-sm font-semibold flex items-center hover:bg-slate-50 transition-colors">
+                <span class="material-symbols-outlined mr-2 text-base">sell</span>Sale
+              </button>
+              <button type="button" role="tab" aria-selected="true" data-upcoming-tab="events" class="upcoming-tab-btn px-4 py-2 bg-cu-dark-blue text-white rounded-lg text-sm font-semibold flex items-center transition-colors">
+                <span class="material-symbols-outlined mr-2 text-base">event_upcoming</span>Events
+              </button>
+            </div>
+          </div>
+
+          <!-- Sale tab panel -->
+          <div id="panel-sale" class="upcoming-tab-panel hidden" role="tabpanel">
+            <div class="flex flex-wrap items-start justify-between gap-4 mb-5">
+              <h1 class="text-3xl font-extrabold text-slate-900 flex items-center gap-2">
+                <span class="material-symbols-outlined text-[#3eb2ed] text-4xl">sell</span>
+                Upcoming Sales Pool
+              </h1>
+              <button type="button" id="openAddSaleModal" class="px-4 py-2 bg-[#3eb2ed] text-white rounded-2xl text-sm font-semibold flex items-center shadow-sm hover:opacity-90 transition-opacity shrink-0">
+                <span class="material-symbols-outlined mr-2 text-base">add</span>Add New Sale
+              </button>
+            </div>
+
+            <div class="bg-white rounded-2xl border border-gray-200 p-5" style="box-shadow:0 2px 12px rgba(0,0,0,.04);">
+              <div class="sales-pool-table-wrap">
+                <table class="sales-pool-table">
+                  <thead>
+                    <tr>
+                      <th class="col-account">Account</th>
+                      <th class="col-service">Service</th>
+                      <th class="col-program">Program</th>
+                      <th class="col-audit">Audit Type</th>
+                      <th class="col-date">Start Date</th>
+                      <th class="col-date">End Date</th>
+                      <th class="col-billable">Billable</th>
+                      <th class="col-saleref">Sale Reference</th>
+                      <th class="col-action">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody id="salesPoolList"></tbody>
+                </table>
+              </div>
+              <p id="salesPoolEmpty" class="hidden text-center text-sm text-slate-500 py-8">No sales in the pool yet. Click <strong>Add Sale</strong> to create one.</p>
+            </div>
+          </div>
+
+          <!-- Events tab panel -->
+          <div id="panel-events" class="upcoming-tab-panel" role="tabpanel">
           <!-- Page Header (aligned with Office Calendar) -->
           <div class="mb-5">
             <h1 class="text-3xl font-extrabold text-slate-900 flex items-center gap-2">
@@ -389,13 +696,425 @@
             </div>
 
           </div>
+
+          </div>
         </div>
       </main>
     </div>
   </div>
 
+  <!-- Add New Sale modal -->
+  <div id="addSaleModal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4 bg-black/40" role="dialog" aria-modal="true" aria-labelledby="addSaleModalTitle">
+    <div class="absolute inset-0" id="addSaleModalBackdrop" aria-hidden="true"></div>
+    <div class="sale-modal-card relative w-full bg-white shadow-2xl">
+      <div class="sale-modal-header">
+        <h2 id="addSaleModalTitle" class="text-white">Add New Sale</h2>
+      </div>
+      <form id="addSaleForm" class="sale-form-body">
+        <div class="sale-form-scroll">
+        <div class="sale-form-rows">
+          <div class="sale-form-row sale-form-row--full">
+            <label for="saleSalesRefOptional" class="sale-form-label">Sales Reference :</label>
+            <div class="sale-form-control">
+              <input id="saleSalesRefOptional" type="text" class="sale-field-input" placeholder="Enter sales reference" />
+            </div>
+          </div>
+          <div class="sale-form-row">
+            <label for="saleAccount" class="sale-form-label">Account :</label>
+            <div class="sale-form-control">
+              <select id="saleAccount" name="account" required class="sale-field-input">
+                <option value="">Select account</option>
+              </select>
+            </div>
+          </div>
+          <div class="sale-form-row">
+            <label for="saleService" class="sale-form-label">Service :</label>
+            <div class="sale-form-control">
+              <select id="saleService" name="service" required class="sale-field-input">
+                <option value="">Select service</option>
+              </select>
+            </div>
+          </div>
+          <div class="sale-form-row">
+            <label for="saleProgram" class="sale-form-label">Program :</label>
+            <div class="sale-form-control">
+              <select id="saleProgram" name="program" required class="sale-field-input">
+                <option value="">Select program</option>
+              </select>
+            </div>
+          </div>
+          <div class="sale-form-row">
+            <label for="saleAuditType" class="sale-form-label">Audit Type :</label>
+            <div class="sale-form-control">
+              <select id="saleAuditType" name="auditType" required class="sale-field-input">
+                <option value="">Select audit type</option>
+              </select>
+            </div>
+          </div>
+          <div class="sale-form-row">
+            <label for="saleUnits" class="sale-form-label">Units :</label>
+            <div class="sale-form-control">
+              <select id="saleUnits" name="units" required class="sale-field-input">
+                <option value="">Select units</option>
+              </select>
+            </div>
+          </div>
+          <div class="sale-form-row">
+            <label for="saleIsBillable" class="sale-form-label">Is Billable :</label>
+            <div class="sale-form-control">
+              <select id="saleIsBillable" required class="sale-field-input">
+                <option value="">Select</option>
+                <option value="true">True</option>
+                <option value="false">False</option>
+              </select>
+            </div>
+          </div>
+          <div class="sale-form-row">
+            <label for="saleStartDate" class="sale-form-label">Start Date :</label>
+            <div class="sale-form-control">
+              <input id="saleStartDate" name="startDate" type="date" required class="sale-field-input" />
+            </div>
+          </div>
+          <div class="sale-form-row">
+            <label for="saleEndDate" class="sale-form-label">End Date :</label>
+            <div class="sale-form-control">
+              <input id="saleEndDate" name="endDate" type="date" required class="sale-field-input" />
+            </div>
+          </div>
+          <div class="sale-form-row sale-form-row--full sale-form-row--top">
+            <label for="saleDescription" class="sale-form-label">Sale Description :</label>
+            <div class="sale-form-control">
+              <textarea id="saleDescription" rows="3" class="sale-field-input"></textarea>
+            </div>
+          </div>
+          <div id="saleAmountRow" class="sale-form-row sale-form-row--full hidden">
+            <label class="sale-form-label">Amount :</label>
+            <div class="sale-form-control sale-amount-group">
+              <input id="saleAmount" type="number" min="0" step="0.01" placeholder="Enter amount" class="sale-field-input" />
+              <select id="saleCurrency" class="sale-field-input">
+                <option value="USD">USD</option>
+                <option value="LKR">LKR</option>
+                <option value="EUR">EUR</option>
+                <option value="GBP">GBP</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        </div>
+        <div class="sale-form-footer">
+          <button type="button" id="cancelAddSale" class="sale-modal-btn-cancel" aria-label="Cancel">
+            <span class="material-symbols-outlined">close</span>
+          </button>
+          <button type="submit" class="sale-modal-btn-submit" aria-label="Save sale">
+            <span class="material-symbols-outlined">check</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <script>
     document.addEventListener('DOMContentLoaded', function () {
+      // Sale / Events tab switcher
+      document.querySelectorAll('[data-upcoming-tab]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var tab = btn.getAttribute('data-upcoming-tab');
+          document.querySelectorAll('.upcoming-tab-panel').forEach(function (panel) {
+            panel.classList.add('hidden');
+          });
+          var activePanel = document.getElementById('panel-' + tab);
+          if (activePanel) activePanel.classList.remove('hidden');
+          document.querySelectorAll('[data-upcoming-tab]').forEach(function (b) {
+            var isActive = b === btn;
+            b.setAttribute('aria-selected', isActive ? 'true' : 'false');
+            b.classList.toggle('bg-cu-dark-blue', isActive);
+            b.classList.toggle('text-white', isActive);
+            b.classList.toggle('bg-white', !isActive);
+            b.classList.toggle('text-[#1b1e42]', !isActive);
+            b.classList.toggle('hover:bg-slate-50', !isActive);
+          });
+        });
+      });
+
+      // ==================== UPCOMING SALES POOL ====================
+      var saleFieldOptions = {
+        account: ['TechCorp Industries', 'EcoTextiles Ltd.', 'Green Valley Farms', 'Pacific Fabrics', 'GreenWeave Textiles'],
+        service: ['Certification', 'Inspection', 'Training', 'Consulting'],
+        program: ['ISO 9001', 'ISO 14001', 'GOTS', 'Organic', 'SA8000'],
+        auditType: ['Initial', 'Surveillance', 'Recertification', 'Transfer'],
+        units: ['1', '2', '3', '4', '5', '6+']
+      };
+
+      var salesPool = [
+        { account: 'TechCorp Industries', service: 'Certification', program: 'ISO 9001', auditType: 'Surveillance', units: '3', salesRefOptional: '', startDate: '2026-03-01', endDate: '2026-03-15', description: 'Surveillance audit scope.', isBillable: true, amount: 12500, currency: 'USD', saleReference: 'ISO 9001, Certification – Surveillance – 2026' },
+        { account: 'EcoTextiles Ltd.', service: 'Certification', program: 'GOTS', auditType: 'Initial', units: '2', salesRefOptional: '', startDate: '2026-08-01', endDate: '2026-08-20', description: '', isBillable: true, amount: 8900, currency: 'USD', saleReference: 'GOTS, Certification – Initial – 2026' },
+        { account: 'Green Valley Farms', service: 'Inspection', program: 'Organic', auditType: 'Surveillance', units: '4', salesRefOptional: '', startDate: '2025-11-20', endDate: '2025-12-01', description: 'Organic inspection.', isBillable: false, amount: 0, currency: 'USD', saleReference: 'Organic, Inspection – Surveillance – 2025' },
+        { account: 'Pacific Fabrics', service: 'Certification', program: 'ISO 14001', auditType: 'Recertification', units: '1', salesRefOptional: '', startDate: '2026-11-15', endDate: '2026-11-30', description: '', isBillable: true, amount: 6200, currency: 'USD', saleReference: 'ISO 14001, Certification – Recertification – 2026' }
+      ];
+
+      var salesPoolList = document.getElementById('salesPoolList');
+      var addSaleModal = document.getElementById('addSaleModal');
+      var addSaleForm = document.getElementById('addSaleForm');
+      var addSaleModalTitle = document.getElementById('addSaleModalTitle');
+      var saleEditIndex = null;
+
+      function populateSaleSelect(selectId, options) {
+        var el = document.getElementById(selectId);
+        if (!el) return;
+        while (el.options.length > 1) el.remove(1);
+        options.forEach(function (opt) {
+          var o = document.createElement('option');
+          o.value = opt;
+          o.textContent = opt;
+          el.appendChild(o);
+        });
+      }
+
+      function initSaleFormOptions() {
+        populateSaleSelect('saleAccount', saleFieldOptions.account);
+        populateSaleSelect('saleService', saleFieldOptions.service);
+        populateSaleSelect('saleProgram', saleFieldOptions.program);
+        populateSaleSelect('saleAuditType', saleFieldOptions.auditType);
+        populateSaleSelect('saleUnits', saleFieldOptions.units);
+      }
+
+      function generateSaleReference(program, service, auditType, deadline) {
+        var parts = [];
+        if (program) parts.push(program);
+        if (service) parts.push(service);
+        var main = parts.length ? parts.join(', ') : '—';
+        var year = deadline ? new Date(deadline + 'T00:00:00').getFullYear() : new Date().getFullYear();
+        return main + ' – ' + (auditType || '—') + ' – ' + year;
+      }
+
+      function toggleSaleAmountRow() {
+        var row = document.getElementById('saleAmountRow');
+        var billable = document.getElementById('saleIsBillable').value === 'true';
+        if (row) row.classList.toggle('hidden', !billable);
+      }
+
+      function buildSaleActionCell(index) {
+        return (
+          '<div class="sale-action-cell">' +
+            '<button type="button" class="sale-action-btn sale-action-btn--user" data-action="add-user" data-sale-index="' + index + '" title="Add user" aria-label="Add user">' +
+              '<span class="material-symbols-outlined" aria-hidden="true">person_add</span>' +
+            '</button>' +
+            '<button type="button" class="sale-action-btn sale-action-btn--timesheet" data-action="timesheet" data-sale-index="' + index + '" title="Time sheet" aria-label="Time sheet">' +
+              '<span class="material-symbols-outlined" aria-hidden="true">edit_calendar</span>' +
+            '</button>' +
+            '<button type="button" class="sale-action-btn sale-action-btn--edit" data-action="edit" data-sale-index="' + index + '" title="Edit sale" aria-label="Edit sale">' +
+              '<span class="material-symbols-outlined" aria-hidden="true">edit</span>' +
+            '</button>' +
+            '<button type="button" class="sale-action-btn sale-action-btn--delete" data-action="delete" data-sale-index="' + index + '" title="Delete sale" aria-label="Delete sale">' +
+              '<span class="material-symbols-outlined" aria-hidden="true">delete</span>' +
+            '</button>' +
+          '</div>'
+        );
+      }
+
+      function setSaleSelectValue(selectId, value) {
+        var el = document.getElementById(selectId);
+        if (!el || value == null || value === '') return;
+        el.value = value;
+        if (el.value !== value) {
+          var o = document.createElement('option');
+          o.value = value;
+          o.textContent = value;
+          el.appendChild(o);
+          el.value = value;
+        }
+      }
+
+      function populateSaleFormFromRecord(sale) {
+        setSaleSelectValue('saleAccount', sale.account);
+        setSaleSelectValue('saleService', sale.service);
+        setSaleSelectValue('saleProgram', sale.program);
+        setSaleSelectValue('saleAuditType', sale.auditType);
+        setSaleSelectValue('saleUnits', sale.units);
+        var salesRefEl = document.getElementById('saleSalesRefOptional');
+        if (salesRefEl) salesRefEl.value = sale.salesRefOptional || sale.saleReference || '';
+        var startEl = document.getElementById('saleStartDate');
+        var endEl = document.getElementById('saleEndDate');
+        if (startEl) startEl.value = sale.startDate || '';
+        if (endEl) endEl.value = sale.endDate || '';
+        var descEl = document.getElementById('saleDescription');
+        if (descEl) descEl.value = sale.description || '';
+        var billableEl = document.getElementById('saleIsBillable');
+        if (billableEl) billableEl.value = sale.isBillable ? 'true' : 'false';
+        var amountEl = document.getElementById('saleAmount');
+        if (amountEl) amountEl.value = sale.amount ? String(sale.amount) : '';
+        setSaleSelectValue('saleCurrency', sale.currency || 'USD');
+        toggleSaleAmountRow();
+      }
+
+      function formatExpiryDate(isoDate) {
+        if (!isoDate) return '—';
+        var d = new Date(isoDate + 'T00:00:00');
+        if (isNaN(d.getTime())) return isoDate;
+        return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+      }
+
+      function escAttr(s) {
+        if (s == null) return '';
+        return String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
+      }
+
+      function renderSalesPool() {
+        if (!salesPoolList) return;
+        var emptyEl = document.getElementById('salesPoolEmpty');
+        var tableWrap = document.querySelector('.sales-pool-table-wrap');
+        if (!salesPool.length) {
+          salesPoolList.innerHTML = '';
+          if (emptyEl) emptyEl.classList.remove('hidden');
+          if (tableWrap) tableWrap.classList.add('hidden');
+          return;
+        }
+        if (emptyEl) emptyEl.classList.add('hidden');
+        if (tableWrap) tableWrap.classList.remove('hidden');
+        salesPoolList.innerHTML = salesPool.map(function (sale, index) {
+          return (
+            '<tr>' +
+              '<td><span class="cell-truncate" title="' + escAttr(sale.account) + '">' + escAttr(sale.account) + '</span></td>' +
+              '<td><span class="cell-truncate">' + escAttr(sale.service) + '</span></td>' +
+              '<td><span class="cell-truncate">' + escAttr(sale.program) + '</span></td>' +
+              '<td><span class="cell-truncate">' + escAttr(sale.auditType) + '</span></td>' +
+              '<td class="text-slate-600">' + formatExpiryDate(sale.startDate) + '</td>' +
+              '<td class="text-slate-600">' + formatExpiryDate(sale.endDate) + '</td>' +
+              '<td>' + (sale.isBillable ? 'Yes' : 'No') + '</td>' +
+              '<td><span class="cell-truncate text-slate-700" title="' + escAttr(sale.saleReference) + '">' + escAttr(sale.saleReference) + '</span></td>' +
+              '<td>' + buildSaleActionCell(index) + '</td>' +
+            '</tr>'
+          );
+        }).join('');
+      }
+
+      function openAddSaleModal() {
+        if (!addSaleModal) return;
+        saleEditIndex = null;
+        if (addSaleModalTitle) addSaleModalTitle.textContent = 'Add New Sale';
+        addSaleModal.classList.remove('hidden');
+        addSaleModal.classList.add('show');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function openEditSaleModal(index) {
+        var sale = salesPool[index];
+        if (!sale) return;
+        saleEditIndex = index;
+        if (addSaleModalTitle) addSaleModalTitle.textContent = 'Edit Sale';
+        populateSaleFormFromRecord(sale);
+        if (!addSaleModal) return;
+        addSaleModal.classList.remove('hidden');
+        addSaleModal.classList.add('show');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeAddSaleModalFn() {
+        if (!addSaleModal) return;
+        addSaleModal.classList.add('hidden');
+        addSaleModal.classList.remove('show');
+        document.body.style.overflow = '';
+        saleEditIndex = null;
+        if (addSaleModalTitle) addSaleModalTitle.textContent = 'Add New Sale';
+        if (addSaleForm) addSaleForm.reset();
+        toggleSaleAmountRow();
+      }
+
+      function deleteSaleAtIndex(index) {
+        var sale = salesPool[index];
+        if (!sale) return;
+        var label = sale.account || sale.saleReference || 'this sale';
+        if (!window.confirm('Delete sale for ' + label + '?')) return;
+        salesPool.splice(index, 1);
+        renderSalesPool();
+      }
+
+      initSaleFormOptions();
+      renderSalesPool();
+      var billableEl = document.getElementById('saleIsBillable');
+      if (billableEl) billableEl.addEventListener('change', toggleSaleAmountRow);
+
+      var openAddSaleBtn = document.getElementById('openAddSaleModal');
+      var closeAddSaleBtn = document.getElementById('closeAddSaleModal');
+      var cancelAddSaleBtn = document.getElementById('cancelAddSale');
+      var addSaleBackdrop = document.getElementById('addSaleModalBackdrop');
+
+      if (salesPoolList) {
+        salesPoolList.addEventListener('click', function (e) {
+          var btn = e.target.closest('.sale-action-btn');
+          if (!btn) return;
+          var index = parseInt(btn.getAttribute('data-sale-index'), 10);
+          if (isNaN(index)) return;
+          var action = btn.getAttribute('data-action');
+          if (action === 'add-user') {
+            alert('Add user for "' + (salesPool[index].account || 'sale') + '" will be configured here.');
+            return;
+          }
+          if (action === 'timesheet') {
+            alert('Time sheet for "' + (salesPool[index].account || 'sale') + '" will open here.');
+            return;
+          }
+          if (action === 'edit') {
+            openEditSaleModal(index);
+            return;
+          }
+          if (action === 'delete') {
+            deleteSaleAtIndex(index);
+          }
+        });
+      }
+
+      if (openAddSaleBtn) openAddSaleBtn.addEventListener('click', function () {
+        toggleSaleAmountRow();
+        openAddSaleModal();
+      });
+      if (closeAddSaleBtn) closeAddSaleBtn.addEventListener('click', closeAddSaleModalFn);
+      if (cancelAddSaleBtn) cancelAddSaleBtn.addEventListener('click', closeAddSaleModalFn);
+      if (addSaleBackdrop) addSaleBackdrop.addEventListener('click', closeAddSaleModalFn);
+
+      if (addSaleForm) {
+        addSaleForm.addEventListener('submit', function (e) {
+          e.preventDefault();
+          var program = document.getElementById('saleProgram').value;
+          var service = document.getElementById('saleService').value;
+          var auditType = document.getElementById('saleAuditType').value;
+          var endDate = document.getElementById('saleEndDate').value;
+          var isBillable = document.getElementById('saleIsBillable').value === 'true';
+          var salesRefInput = (document.getElementById('saleSalesRefOptional').value || '').trim();
+          var sale = {
+            account: document.getElementById('saleAccount').value,
+            service: service,
+            program: program,
+            auditType: auditType,
+            units: document.getElementById('saleUnits').value,
+            salesRefOptional: salesRefInput,
+            startDate: document.getElementById('saleStartDate').value,
+            endDate: endDate,
+            description: document.getElementById('saleDescription').value,
+            isBillable: isBillable,
+            amount: isBillable ? (parseFloat(document.getElementById('saleAmount').value) || 0) : 0,
+            currency: document.getElementById('saleCurrency').value,
+            saleReference: salesRefInput || generateSaleReference(program, service, auditType, endDate)
+          };
+          if (!sale.account || !sale.service || !sale.program || !sale.auditType || !sale.units || !sale.startDate || !sale.endDate || !document.getElementById('saleIsBillable').value) return;
+          if (sale.startDate > sale.endDate) { alert('End date must be on or after start date.'); return; }
+          if (isBillable && !sale.amount) { alert('Please enter an amount for billable sales.'); return; }
+          if (saleEditIndex !== null) {
+            salesPool[saleEditIndex] = sale;
+          } else {
+            salesPool.unshift(sale);
+          }
+          renderSalesPool();
+          closeAddSaleModalFn();
+        });
+      }
+
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && addSaleModal && addSaleModal.classList.contains('show')) {
+          closeAddSaleModalFn();
+        }
+      });
+
       // Sidebar submenu toggle
       document.querySelectorAll('#sidebar .menu-toggle').forEach(function (btn) {
         btn.addEventListener('click', function () {
