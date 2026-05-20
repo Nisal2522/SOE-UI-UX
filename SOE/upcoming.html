@@ -929,6 +929,16 @@
               <input id="saleEndDate" name="endDate" type="date" required class="sale-field-input" />
             </div>
           </div>
+          <div class="sale-form-row sale-form-row--full">
+            <label for="saleTimesheetEnabled" class="sale-form-label">Time Sheet Enabled :</label>
+            <div class="sale-form-control">
+              <select id="saleTimesheetEnabled" required class="sale-field-input">
+                <option value="">Select</option>
+                <option value="true">True</option>
+                <option value="false">False</option>
+              </select>
+            </div>
+          </div>
           <div class="sale-form-row sale-form-row--full sale-form-row--top">
             <label for="saleDescription" class="sale-form-label">Sale Description :</label>
             <div class="sale-form-control">
@@ -1000,10 +1010,10 @@
       };
 
       var salesPool = [
-        { account: 'TechCorp Industries', service: 'Certification', category: 'Textile', program: 'ISO 9001', auditType: 'Surveillance', units: '3', salesRefOptional: '', startDate: '2026-03-01', endDate: '2026-03-15', description: 'Surveillance audit scope.', isBillable: true, amount: 12500, currency: 'USD', exchangeRate: 1, exchangeRateCurrency: 'LKR', saleReference: 'ISO 9001, Certification – Surveillance – 2026' },
-        { account: 'EcoTextiles Ltd.', service: 'Certification', category: 'Textile', program: 'GOTS', auditType: 'Initial', units: '2', salesRefOptional: '', startDate: '2026-08-01', endDate: '2026-08-20', description: '', isBillable: true, amount: 8900, currency: 'USD', exchangeRate: 1, exchangeRateCurrency: 'LKR', saleReference: 'GOTS, Certification – Initial – 2026' },
-        { account: 'Green Valley Farms', service: 'Inspection', category: 'Agriculture', program: 'Organic', auditType: 'Surveillance', units: '4', salesRefOptional: '', startDate: '2025-11-20', endDate: '2025-12-01', description: 'Organic inspection.', isBillable: false, amount: 0, currency: 'USD', exchangeRate: 0, exchangeRateCurrency: 'LKR', saleReference: 'Organic, Inspection – Surveillance – 2025' },
-        { account: 'Pacific Fabrics', service: 'Certification', category: 'Textile', program: 'ISO 14001', auditType: 'Recertification', units: '1', salesRefOptional: '', startDate: '2026-11-15', endDate: '2026-11-30', description: '', isBillable: true, amount: 6200, currency: 'USD', exchangeRate: 1, exchangeRateCurrency: 'LKR', saleReference: 'ISO 14001, Certification – Recertification – 2026' }
+        { account: 'TechCorp Industries', service: 'Certification', category: 'Textile', program: 'ISO 9001', auditType: 'Surveillance', units: '3', salesRefOptional: '', startDate: '2026-03-01', endDate: '2026-03-15', timesheetEnabled: true, description: 'Surveillance audit scope.', isBillable: true, amount: 12500, currency: 'USD', exchangeRate: 1, exchangeRateCurrency: 'LKR', saleReference: 'ISO 9001, Certification – Surveillance – 2026' },
+        { account: 'EcoTextiles Ltd.', service: 'Certification', category: 'Textile', program: 'GOTS', auditType: 'Initial', units: '2', salesRefOptional: '', startDate: '2026-08-01', endDate: '2026-08-20', timesheetEnabled: true, description: '', isBillable: true, amount: 8900, currency: 'USD', exchangeRate: 1, exchangeRateCurrency: 'LKR', saleReference: 'GOTS, Certification – Initial – 2026' },
+        { account: 'Green Valley Farms', service: 'Inspection', category: 'Agriculture', program: 'Organic', auditType: 'Surveillance', units: '4', salesRefOptional: '', startDate: '2025-11-20', endDate: '2025-12-01', timesheetEnabled: false, description: 'Organic inspection.', isBillable: false, amount: 0, currency: 'USD', exchangeRate: 0, exchangeRateCurrency: 'LKR', saleReference: 'Organic, Inspection – Surveillance – 2025' },
+        { account: 'Pacific Fabrics', service: 'Certification', category: 'Textile', program: 'ISO 14001', auditType: 'Recertification', units: '1', salesRefOptional: '', startDate: '2026-11-15', endDate: '2026-11-30', timesheetEnabled: true, description: '', isBillable: true, amount: 6200, currency: 'USD', exchangeRate: 1, exchangeRateCurrency: 'LKR', saleReference: 'ISO 14001, Certification – Recertification – 2026' }
       ];
 
       var salesPoolList = document.getElementById('salesPoolList');
@@ -1211,6 +1221,8 @@
         var endEl = document.getElementById('saleEndDate');
         if (startEl) startEl.value = sale.startDate || '';
         if (endEl) endEl.value = sale.endDate || '';
+        var timesheetEl = document.getElementById('saleTimesheetEnabled');
+        if (timesheetEl) timesheetEl.value = sale.timesheetEnabled === false ? 'false' : (sale.timesheetEnabled ? 'true' : '');
         var descEl = document.getElementById('saleDescription');
         if (descEl) descEl.value = sale.description || '';
         var billableEl = document.getElementById('saleIsBillable');
@@ -1376,6 +1388,7 @@
             salesRefOptional: relatedSaleRef,
             startDate: document.getElementById('saleStartDate').value,
             endDate: endDate,
+            timesheetEnabled: document.getElementById('saleTimesheetEnabled').value === 'true',
             description: document.getElementById('saleDescription').value,
             isBillable: isBillable,
             amount: isBillable ? (parseFloat(document.getElementById('saleAmount').value) || 0) : 0,
@@ -1384,9 +1397,10 @@
             exchangeRateCurrency: isBillable ? document.getElementById('saleExchangeRateCurrency').value : 'LKR',
             saleReference: saleReference
           };
-          if (!sale.account || !sale.service || !sale.category || !programs.length || !sale.auditType || !sale.startDate || !sale.endDate || !document.getElementById('saleIsBillable').value) {
+          if (!sale.account || !sale.service || !sale.category || !programs.length || !sale.auditType || !sale.startDate || !sale.endDate || !document.getElementById('saleIsBillable').value || !document.getElementById('saleTimesheetEnabled').value) {
             if (!sale.service) alert('Please select an activity.');
             if (!programs.length) alert('Please select at least one program.');
+            if (!document.getElementById('saleTimesheetEnabled').value) alert('Please select Time Sheet Enabled (True or False).');
             return;
           }
           if (sale.startDate > sale.endDate) { alert('End date must be on or after start date.'); return; }
