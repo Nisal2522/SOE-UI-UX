@@ -168,6 +168,17 @@
     #addSaleModal .sale-form-row--full {
       grid-column: 1 / -1;
     }
+    #addSaleModal .sale-form-pair-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem 1.75rem;
+      grid-column: 1 / -1;
+    }
+    @media (max-width: 639px) {
+      #addSaleModal .sale-form-pair-row {
+        grid-template-columns: 1fr;
+      }
+    }
     #addSaleModal .sale-form-row {
       display: flex;
       flex-direction: column;
@@ -233,6 +244,77 @@
     #addSaleModal .sale-amount-group .sale-field-input { flex: 1; }
     #addSaleModal .sale-amount-group select.sale-field-input { flex: 0 0 7rem; }
     #saleAmountRow.hidden { display: none; }
+    #addSaleModal .sale-program-checklist {
+      width: 100%;
+      border: 1px solid #d1d5db;
+      border-radius: 0.25rem;
+      overflow: hidden;
+      background: #fff;
+    }
+    #addSaleModal .sale-program-checklist__head {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      min-height: 42px;
+      background: #64748b;
+      color: #fff;
+      padding: 0.5rem 0.75rem;
+      font-size: 0.875rem;
+      font-weight: 500;
+      border: none;
+      cursor: pointer;
+      text-align: left;
+    }
+    #addSaleModal .sale-program-checklist__head:hover {
+      background: #55657d;
+    }
+    #addSaleModal .sale-program-checklist__head-label {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    #addSaleModal .sale-program-checklist__chevron {
+      font-size: 1.25rem;
+      flex-shrink: 0;
+      transition: transform 0.2s;
+    }
+    #addSaleModal .sale-program-checklist.is-open {
+      border-color: #3eb2ed;
+      box-shadow: 0 0 0 2px rgba(62, 178, 237, 0.15);
+    }
+    #addSaleModal .sale-program-checklist.is-open .sale-program-checklist__chevron {
+      transform: rotate(180deg);
+    }
+    #addSaleModal .sale-program-checklist__body {
+      max-height: 9.5rem;
+      overflow-y: auto;
+      padding: 0.25rem 0;
+      border-top: 1px solid #e2e8f0;
+    }
+    #addSaleModal .sale-program-checklist__body.is-closed {
+      display: none;
+    }
+    #addSaleModal .sale-program-check-option {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.4rem 0.75rem;
+      cursor: pointer;
+      font-size: 0.875rem;
+      color: #334155;
+    }
+    #addSaleModal .sale-program-check-option:hover {
+      background: #f8fafc;
+    }
+    #addSaleModal .sale-program-check-option input[type="checkbox"] {
+      width: 1rem;
+      height: 1rem;
+      flex-shrink: 0;
+      accent-color: #3eb2ed;
+      cursor: pointer;
+    }
     #addSaleModal .sale-form-footer {
       display: flex;
       justify-content: flex-end;
@@ -537,7 +619,7 @@
                   <thead>
                     <tr>
                       <th class="col-account">Account</th>
-                      <th class="col-service">Service</th>
+                      <th class="col-service">Activity</th>
                       <th class="col-program">Program</th>
                       <th class="col-audit">Audit Type</th>
                       <th class="col-date">Start Date</th>
@@ -714,12 +796,6 @@
         <div class="sale-form-scroll">
         <div class="sale-form-rows">
           <div class="sale-form-row sale-form-row--full">
-            <label for="saleSalesRefOptional" class="sale-form-label">Sales Reference :</label>
-            <div class="sale-form-control">
-              <input id="saleSalesRefOptional" type="text" class="sale-field-input" placeholder="Enter sales reference" />
-            </div>
-          </div>
-          <div class="sale-form-row">
             <label for="saleAccount" class="sale-form-label">Account :</label>
             <div class="sale-form-control">
               <select id="saleAccount" name="account" required class="sale-field-input">
@@ -727,20 +803,40 @@
               </select>
             </div>
           </div>
+          <div class="sale-form-pair-row">
           <div class="sale-form-row">
-            <label for="saleService" class="sale-form-label">Service :</label>
+            <label for="saleService" class="sale-form-label">Activity :</label>
             <div class="sale-form-control">
               <select id="saleService" name="service" required class="sale-field-input">
-                <option value="">Select service</option>
+                <option value="">Select activity</option>
               </select>
             </div>
           </div>
           <div class="sale-form-row">
-            <label for="saleProgram" class="sale-form-label">Program :</label>
+            <label for="saleCategory" class="sale-form-label">Category :</label>
             <div class="sale-form-control">
-              <select id="saleProgram" name="program" required class="sale-field-input">
-                <option value="">Select program</option>
+              <select id="saleCategory" name="category" required class="sale-field-input">
+                <option value="">Select category</option>
               </select>
+            </div>
+          </div>
+          </div>
+          <div class="sale-form-row sale-form-row--full">
+            <label for="saleSalesRefOptional" class="sale-form-label">Sales Reference :</label>
+            <div class="sale-form-control">
+              <input id="saleSalesRefOptional" type="text" class="sale-field-input" placeholder="Enter sales reference" />
+            </div>
+          </div>
+          <div class="sale-form-row sale-form-row--full sale-form-row--top">
+            <label class="sale-form-label">Program :</label>
+            <div class="sale-form-control">
+              <div class="sale-program-checklist" id="saleProgramChecklist">
+                <button type="button" class="sale-program-checklist__head" id="saleProgramToggle" aria-expanded="false" aria-controls="saleProgramList">
+                  <span class="sale-program-checklist__head-label" id="saleProgramToggleLabel">Select program</span>
+                  <span class="material-symbols-outlined sale-program-checklist__chevron" aria-hidden="true">expand_more</span>
+                </button>
+                <div class="sale-program-checklist__body is-closed" id="saleProgramList"></div>
+              </div>
             </div>
           </div>
           <div class="sale-form-row">
@@ -752,20 +848,24 @@
             </div>
           </div>
           <div class="sale-form-row">
-            <label for="saleUnits" class="sale-form-label">Units :</label>
-            <div class="sale-form-control">
-              <select id="saleUnits" name="units" required class="sale-field-input">
-                <option value="">Select units</option>
-              </select>
-            </div>
-          </div>
-          <div class="sale-form-row">
             <label for="saleIsBillable" class="sale-form-label">Is Billable :</label>
             <div class="sale-form-control">
               <select id="saleIsBillable" required class="sale-field-input">
                 <option value="">Select</option>
                 <option value="true">True</option>
                 <option value="false">False</option>
+              </select>
+            </div>
+          </div>
+          <div id="saleAmountRow" class="sale-form-row sale-form-row--full hidden">
+            <label for="saleAmount" class="sale-form-label">Amount :</label>
+            <div class="sale-form-control sale-amount-group">
+              <input id="saleAmount" type="number" min="0" step="0.01" placeholder="Enter amount" class="sale-field-input" />
+              <select id="saleCurrency" class="sale-field-input">
+                <option value="USD">USD</option>
+                <option value="LKR">LKR</option>
+                <option value="EUR">EUR</option>
+                <option value="GBP">GBP</option>
               </select>
             </div>
           </div>
@@ -785,18 +885,6 @@
             <label for="saleDescription" class="sale-form-label">Sale Description :</label>
             <div class="sale-form-control">
               <textarea id="saleDescription" rows="3" class="sale-field-input"></textarea>
-            </div>
-          </div>
-          <div id="saleAmountRow" class="sale-form-row sale-form-row--full hidden">
-            <label class="sale-form-label">Amount :</label>
-            <div class="sale-form-control sale-amount-group">
-              <input id="saleAmount" type="number" min="0" step="0.01" placeholder="Enter amount" class="sale-field-input" />
-              <select id="saleCurrency" class="sale-field-input">
-                <option value="USD">USD</option>
-                <option value="LKR">LKR</option>
-                <option value="EUR">EUR</option>
-                <option value="GBP">GBP</option>
-              </select>
             </div>
           </div>
         </div>
@@ -857,16 +945,17 @@
       var saleFieldOptions = {
         account: ['TechCorp Industries', 'EcoTextiles Ltd.', 'Green Valley Farms', 'Pacific Fabrics', 'GreenWeave Textiles'],
         service: ['Certification', 'Inspection', 'Training', 'Consulting'],
+        category: ['Textile', 'Food', 'Agriculture', 'Forestry', 'Chemical', 'General'],
         program: ['ISO 9001', 'ISO 14001', 'GOTS', 'Organic', 'SA8000'],
         auditType: ['Initial', 'Surveillance', 'Recertification', 'Transfer'],
         units: ['1', '2', '3', '4', '5', '6+']
       };
 
       var salesPool = [
-        { account: 'TechCorp Industries', service: 'Certification', program: 'ISO 9001', auditType: 'Surveillance', units: '3', salesRefOptional: '', startDate: '2026-03-01', endDate: '2026-03-15', description: 'Surveillance audit scope.', isBillable: true, amount: 12500, currency: 'USD', saleReference: 'ISO 9001, Certification – Surveillance – 2026' },
-        { account: 'EcoTextiles Ltd.', service: 'Certification', program: 'GOTS', auditType: 'Initial', units: '2', salesRefOptional: '', startDate: '2026-08-01', endDate: '2026-08-20', description: '', isBillable: true, amount: 8900, currency: 'USD', saleReference: 'GOTS, Certification – Initial – 2026' },
-        { account: 'Green Valley Farms', service: 'Inspection', program: 'Organic', auditType: 'Surveillance', units: '4', salesRefOptional: '', startDate: '2025-11-20', endDate: '2025-12-01', description: 'Organic inspection.', isBillable: false, amount: 0, currency: 'USD', saleReference: 'Organic, Inspection – Surveillance – 2025' },
-        { account: 'Pacific Fabrics', service: 'Certification', program: 'ISO 14001', auditType: 'Recertification', units: '1', salesRefOptional: '', startDate: '2026-11-15', endDate: '2026-11-30', description: '', isBillable: true, amount: 6200, currency: 'USD', saleReference: 'ISO 14001, Certification – Recertification – 2026' }
+        { account: 'TechCorp Industries', service: 'Certification', category: 'Textile', program: 'ISO 9001', auditType: 'Surveillance', units: '3', salesRefOptional: '', startDate: '2026-03-01', endDate: '2026-03-15', description: 'Surveillance audit scope.', isBillable: true, amount: 12500, currency: 'USD', saleReference: 'ISO 9001, Certification – Surveillance – 2026' },
+        { account: 'EcoTextiles Ltd.', service: 'Certification', category: 'Textile', program: 'GOTS', auditType: 'Initial', units: '2', salesRefOptional: '', startDate: '2026-08-01', endDate: '2026-08-20', description: '', isBillable: true, amount: 8900, currency: 'USD', saleReference: 'GOTS, Certification – Initial – 2026' },
+        { account: 'Green Valley Farms', service: 'Inspection', category: 'Agriculture', program: 'Organic', auditType: 'Surveillance', units: '4', salesRefOptional: '', startDate: '2025-11-20', endDate: '2025-12-01', description: 'Organic inspection.', isBillable: false, amount: 0, currency: 'USD', saleReference: 'Organic, Inspection – Surveillance – 2025' },
+        { account: 'Pacific Fabrics', service: 'Certification', category: 'Textile', program: 'ISO 14001', auditType: 'Recertification', units: '1', salesRefOptional: '', startDate: '2026-11-15', endDate: '2026-11-30', description: '', isBillable: true, amount: 6200, currency: 'USD', saleReference: 'ISO 14001, Certification – Recertification – 2026' }
       ];
 
       var salesPoolList = document.getElementById('salesPoolList');
@@ -890,9 +979,81 @@
       function initSaleFormOptions() {
         populateSaleSelect('saleAccount', saleFieldOptions.account);
         populateSaleSelect('saleService', saleFieldOptions.service);
-        populateSaleSelect('saleProgram', saleFieldOptions.program);
+        populateSaleSelect('saleCategory', saleFieldOptions.category);
+        initSaleProgramChecklist();
         populateSaleSelect('saleAuditType', saleFieldOptions.auditType);
-        populateSaleSelect('saleUnits', saleFieldOptions.units);
+      }
+
+      function updateSaleProgramToggleLabel() {
+        var label = document.getElementById('saleProgramToggleLabel');
+        if (!label) return;
+        var selected = getSelectedSalePrograms();
+        if (!selected.length) {
+          label.textContent = 'Select program';
+        } else if (selected.length === 1) {
+          label.textContent = selected[0];
+        } else {
+          label.textContent = selected.length + ' programs selected';
+        }
+      }
+
+      function setSaleProgramChecklistOpen(open) {
+        var wrap = document.getElementById('saleProgramChecklist');
+        var body = document.getElementById('saleProgramList');
+        var toggle = document.getElementById('saleProgramToggle');
+        if (!wrap || !body) return;
+        wrap.classList.toggle('is-open', open);
+        body.classList.toggle('is-closed', !open);
+        if (toggle) toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      }
+
+      function initSaleProgramChecklist() {
+        var container = document.getElementById('saleProgramList');
+        if (!container) return;
+        container.innerHTML = saleFieldOptions.program.map(function (p) {
+          return (
+            '<label class="sale-program-check-option">' +
+              '<input type="checkbox" name="saleProgram" value="' + escAttr(p) + '" />' +
+              '<span>' + escAttr(p) + '</span>' +
+            '</label>'
+          );
+        }).join('');
+        setSaleProgramChecklistOpen(false);
+        updateSaleProgramToggleLabel();
+        container.querySelectorAll('input[name="saleProgram"]').forEach(function (cb) {
+          cb.addEventListener('change', updateSaleProgramToggleLabel);
+        });
+        var toggle = document.getElementById('saleProgramToggle');
+        if (toggle && !toggle.dataset.bound) {
+          toggle.dataset.bound = '1';
+          toggle.addEventListener('click', function () {
+            var wrap = document.getElementById('saleProgramChecklist');
+            setSaleProgramChecklistOpen(!wrap || !wrap.classList.contains('is-open'));
+          });
+        }
+        if (!document.body.dataset.saleProgramOutsideBound) {
+          document.body.dataset.saleProgramOutsideBound = '1';
+          document.addEventListener('click', function (e) {
+            var wrap = document.getElementById('saleProgramChecklist');
+            if (!wrap || !wrap.classList.contains('is-open')) return;
+            if (!wrap.contains(e.target)) setSaleProgramChecklistOpen(false);
+          });
+        }
+      }
+
+      function getSelectedSalePrograms() {
+        var boxes = document.querySelectorAll('#saleProgramList input[name="saleProgram"]:checked');
+        return Array.prototype.map.call(boxes, function (cb) { return cb.value; });
+      }
+
+      function setSaleProgramsFromValue(programVal) {
+        var selected = [];
+        if (Array.isArray(programVal)) selected = programVal;
+        else if (programVal) selected = String(programVal).split(',').map(function (s) { return s.trim(); }).filter(Boolean);
+        document.querySelectorAll('#saleProgramList input[name="saleProgram"]').forEach(function (cb) {
+          cb.checked = selected.indexOf(cb.value) !== -1;
+        });
+        updateSaleProgramToggleLabel();
       }
 
       function generateSaleReference(program, service, auditType, deadline) {
@@ -945,9 +1106,9 @@
       function populateSaleFormFromRecord(sale) {
         setSaleSelectValue('saleAccount', sale.account);
         setSaleSelectValue('saleService', sale.service);
-        setSaleSelectValue('saleProgram', sale.program);
+        setSaleSelectValue('saleCategory', sale.category);
+        setSaleProgramsFromValue(sale.program);
         setSaleSelectValue('saleAuditType', sale.auditType);
-        setSaleSelectValue('saleUnits', sale.units);
         var salesRefEl = document.getElementById('saleSalesRefOptional');
         if (salesRefEl) salesRefEl.value = sale.salesRefOptional || sale.saleReference || '';
         var startEl = document.getElementById('saleStartDate');
@@ -1035,6 +1196,8 @@
         if (addSaleModalTitle) addSaleModalTitle.textContent = 'Add New Sale';
         if (addSaleForm) addSaleForm.reset();
         toggleSaleAmountRow();
+        setSaleProgramChecklistOpen(false);
+        updateSaleProgramToggleLabel();
       }
 
       function deleteSaleAtIndex(index) {
@@ -1092,18 +1255,20 @@
       if (addSaleForm) {
         addSaleForm.addEventListener('submit', function (e) {
           e.preventDefault();
-          var program = document.getElementById('saleProgram').value;
+          var programs = getSelectedSalePrograms();
+          var program = programs.join(', ');
           var service = document.getElementById('saleService').value;
           var auditType = document.getElementById('saleAuditType').value;
           var endDate = document.getElementById('saleEndDate').value;
           var isBillable = document.getElementById('saleIsBillable').value === 'true';
           var salesRefInput = (document.getElementById('saleSalesRefOptional').value || '').trim();
+          var category = document.getElementById('saleCategory').value;
           var sale = {
             account: document.getElementById('saleAccount').value,
             service: service,
+            category: category,
             program: program,
             auditType: auditType,
-            units: document.getElementById('saleUnits').value,
             salesRefOptional: salesRefInput,
             startDate: document.getElementById('saleStartDate').value,
             endDate: endDate,
@@ -1111,9 +1276,12 @@
             isBillable: isBillable,
             amount: isBillable ? (parseFloat(document.getElementById('saleAmount').value) || 0) : 0,
             currency: document.getElementById('saleCurrency').value,
-            saleReference: salesRefInput || generateSaleReference(program, service, auditType, endDate)
+            saleReference: salesRefInput || generateSaleReference(programs[0] || '', service, auditType, endDate)
           };
-          if (!sale.account || !sale.service || !sale.program || !sale.auditType || !sale.units || !sale.startDate || !sale.endDate || !document.getElementById('saleIsBillable').value) return;
+          if (!sale.account || !sale.service || !sale.category || !programs.length || !sale.auditType || !sale.startDate || !sale.endDate || !document.getElementById('saleIsBillable').value) {
+            if (!programs.length) alert('Please select at least one program.');
+            return;
+          }
           if (sale.startDate > sale.endDate) { alert('End date must be on or after start date.'); return; }
           if (isBillable && !sale.amount) { alert('Please enter an amount for billable sales.'); return; }
           if (saleEditIndex !== null) {
