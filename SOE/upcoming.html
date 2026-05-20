@@ -821,12 +821,6 @@
               </select>
             </div>
           </div>
-          <div class="sale-form-row sale-form-row--full">
-            <label for="saleSalesRefOptional" class="sale-form-label">Sales Reference :</label>
-            <div class="sale-form-control">
-              <input id="saleSalesRefOptional" type="text" class="sale-field-input" placeholder="Enter sales reference" />
-            </div>
-          </div>
           <div class="sale-form-row sale-form-row--full sale-form-row--top">
             <label class="sale-form-label">Program :</label>
             <div class="sale-form-control">
@@ -837,6 +831,14 @@
                 </button>
                 <div class="sale-program-checklist__body is-closed" id="saleProgramList"></div>
               </div>
+            </div>
+          </div>
+          <div class="sale-form-row sale-form-row--full">
+            <label for="saleSalesRefOptional" class="sale-form-label">Related sale reference :</label>
+            <div class="sale-form-control">
+              <select id="saleSalesRefOptional" name="relatedSaleReference" class="sale-field-input">
+                <option value="">Select related sale reference</option>
+              </select>
             </div>
           </div>
           <div class="sale-form-row">
@@ -976,12 +978,27 @@
         });
       }
 
+      function getRelatedSaleReferenceOptions() {
+        var refs = [];
+        salesPool.forEach(function (s, i) {
+          if (saleEditIndex !== null && i === saleEditIndex) return;
+          var ref = s.saleReference;
+          if (ref && refs.indexOf(ref) === -1) refs.push(ref);
+        });
+        return refs;
+      }
+
+      function populateRelatedSaleReferenceSelect() {
+        populateSaleSelect('saleSalesRefOptional', getRelatedSaleReferenceOptions());
+      }
+
       function initSaleFormOptions() {
         populateSaleSelect('saleAccount', saleFieldOptions.account);
         populateSaleSelect('saleService', saleFieldOptions.service);
         populateSaleSelect('saleCategory', saleFieldOptions.category);
         initSaleProgramChecklist();
         populateSaleSelect('saleAuditType', saleFieldOptions.auditType);
+        populateRelatedSaleReferenceSelect();
       }
 
       function updateSaleProgramToggleLabel() {
@@ -1109,8 +1126,7 @@
         setSaleSelectValue('saleCategory', sale.category);
         setSaleProgramsFromValue(sale.program);
         setSaleSelectValue('saleAuditType', sale.auditType);
-        var salesRefEl = document.getElementById('saleSalesRefOptional');
-        if (salesRefEl) salesRefEl.value = sale.salesRefOptional || sale.saleReference || '';
+        setSaleSelectValue('saleSalesRefOptional', sale.salesRefOptional || '');
         var startEl = document.getElementById('saleStartDate');
         var endEl = document.getElementById('saleEndDate');
         if (startEl) startEl.value = sale.startDate || '';
@@ -1169,6 +1185,7 @@
       function openAddSaleModal() {
         if (!addSaleModal) return;
         saleEditIndex = null;
+        populateRelatedSaleReferenceSelect();
         if (addSaleModalTitle) addSaleModalTitle.textContent = 'Add New Sale';
         addSaleModal.classList.remove('hidden');
         addSaleModal.classList.add('show');
@@ -1179,6 +1196,7 @@
         var sale = salesPool[index];
         if (!sale) return;
         saleEditIndex = index;
+        populateRelatedSaleReferenceSelect();
         if (addSaleModalTitle) addSaleModalTitle.textContent = 'Edit Sale';
         populateSaleFormFromRecord(sale);
         if (!addSaleModal) return;
@@ -1261,22 +1279,25 @@
           var auditType = document.getElementById('saleAuditType').value;
           var endDate = document.getElementById('saleEndDate').value;
           var isBillable = document.getElementById('saleIsBillable').value === 'true';
-          var salesRefInput = (document.getElementById('saleSalesRefOptional').value || '').trim();
+          var relatedSaleRef = (document.getElementById('saleSalesRefOptional').value || '').trim();
           var category = document.getElementById('saleCategory').value;
+          var saleReference = saleEditIndex !== null && salesPool[saleEditIndex]
+            ? salesPool[saleEditIndex].saleReference
+            : generateSaleReference(programs[0] || '', service, auditType, endDate);
           var sale = {
             account: document.getElementById('saleAccount').value,
             service: service,
             category: category,
             program: program,
             auditType: auditType,
-            salesRefOptional: salesRefInput,
+            salesRefOptional: relatedSaleRef,
             startDate: document.getElementById('saleStartDate').value,
             endDate: endDate,
             description: document.getElementById('saleDescription').value,
             isBillable: isBillable,
             amount: isBillable ? (parseFloat(document.getElementById('saleAmount').value) || 0) : 0,
             currency: document.getElementById('saleCurrency').value,
-            saleReference: salesRefInput || generateSaleReference(programs[0] || '', service, auditType, endDate)
+            saleReference: saleReference
           };
           if (!sale.account || !sale.service || !sale.category || !programs.length || !sale.auditType || !sale.startDate || !sale.endDate || !document.getElementById('saleIsBillable').value) {
             if (!programs.length) alert('Please select at least one program.');
