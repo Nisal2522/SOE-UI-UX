@@ -60,9 +60,39 @@
     .rec-card:hover { border-color: #93c5fd; box-shadow: 0 8px 24px rgba(59,130,246,.08); }
     @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     .fade-up { animation: fadeUp .35s ease forwards; }
-    .sales-pool-table-wrap { width: 100%; overflow-x: auto; }
+    .upcoming-page-main {
+      flex: 1;
+      min-height: 0;
+      overflow-y: auto;
+      background: #f1f5f9;
+    }
+    .upcoming-page-inner {
+      width: 100%;
+      max-width: 1500px;
+      margin-left: 0;
+      margin-right: auto;
+    }
+    #panel-sale {
+      display: flex;
+      flex-direction: column;
+      flex: 0 0 auto;
+      align-items: stretch;
+    }
+    .sales-pool-card {
+      width: 100%;
+      height: auto;
+      min-height: 0;
+      flex: 0 0 auto;
+    }
+    .sales-pool-table-wrap {
+      width: 100%;
+      overflow-x: auto;
+      overflow-y: auto;
+      max-height: calc(100vh - 13rem);
+    }
     .sales-pool-table {
       width: 100%;
+      height: auto;
       table-layout: fixed;
       border-collapse: separate;
       border-spacing: 0 0.5rem;
@@ -618,8 +648,8 @@
       </header>
 
       <!-- ==================== MAIN CONTENT ==================== -->
-      <main class="flex-1 overflow-y-auto bg-white p-5 lg:p-7">
-        <div class="max-w-[1500px] w-full ml-0 mr-auto">
+      <main class="upcoming-page-main p-5 lg:p-7">
+        <div class="upcoming-page-inner">
 
           <!-- Sale / Events tabs (same style as My Dashboard toggle on index.html) -->
           <div class="flex flex-wrap items-center gap-4 mb-5">
@@ -645,7 +675,7 @@
               </button>
             </div>
 
-            <div class="bg-white rounded-2xl border border-gray-200 p-5" style="box-shadow:0 2px 12px rgba(0,0,0,.04);">
+            <div class="sales-pool-card bg-white rounded-2xl border border-gray-200 p-5" style="box-shadow:0 2px 12px rgba(0,0,0,.04);">
               <div class="sales-pool-table-wrap">
                 <table class="sales-pool-table">
                   <thead>

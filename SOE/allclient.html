@@ -1518,13 +1518,31 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
           <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
             <div class="kpi-card kpi-leads">
               <span class="kpi-icon kpi-leads-icon material-symbols-outlined">star</span>
-              <div class="kpi-value">54</div>
-              <div class="kpi-label">Total Leads</div>
+              <div style="display:flex;align-items:center;justify-content:center;gap:0;">
+                <div style="display:flex;flex-direction:column;align-items:center;gap:2px;">
+                  <span id="kpiOpenLeads" style="font-size:1.7rem;font-weight:800;color:#1d4ed8;line-height:1.1;letter-spacing:-0.01em;">12</span>
+                  <span style="font-size:0.72rem;font-weight:600;color:#1d4ed8;">Open</span>
+                </div>
+                <span style="font-size:1.5rem;font-weight:300;color:#cbd5e1;margin:0 8px;align-self:center;line-height:1;">/</span>
+                <div style="display:flex;flex-direction:column;align-items:center;gap:2px;">
+                  <span id="kpiTotalLeads" style="font-size:1.7rem;font-weight:800;color:#1b1e42;line-height:1.1;letter-spacing:-0.01em;">54</span>
+                  <span style="font-size:0.72rem;font-weight:500;color:#64748b;">Total Leads</span>
+                </div>
+              </div>
             </div>
             <div class="kpi-card kpi-opportunities">
               <span class="kpi-icon kpi-opportunities-icon material-symbols-outlined">workspace_premium</span>
-              <div class="kpi-value">19</div>
-              <div class="kpi-label">Opportunities</div>
+              <div style="display:flex;align-items:center;justify-content:center;gap:0;">
+                <div style="display:flex;flex-direction:column;align-items:center;gap:2px;">
+                  <span id="kpiOpenOpps" style="font-size:1.7rem;font-weight:800;color:#f97316;line-height:1.1;letter-spacing:-0.01em;">8</span>
+                  <span style="font-size:0.72rem;font-weight:600;color:#f97316;">Open</span>
+                </div>
+                <span style="font-size:1.5rem;font-weight:300;color:#cbd5e1;margin:0 8px;align-self:center;line-height:1;">/</span>
+                <div style="display:flex;flex-direction:column;align-items:center;gap:2px;">
+                  <span id="kpiTotalOpps" style="font-size:1.7rem;font-weight:800;color:#1b1e42;line-height:1.1;letter-spacing:-0.01em;">19</span>
+                  <span style="font-size:0.72rem;font-weight:500;color:#64748b;">Total Opportunity</span>
+                </div>
+              </div>
             </div>
             <div class="kpi-card kpi-conversion">
               <span class="kpi-icon kpi-conversion-icon material-symbols-outlined">trending_up</span>
@@ -1652,7 +1670,7 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
                   <div class="text-xs text-slate-500">Deals Closing Soon</div>
                 </div>
               </div>
-              <button
+              <button onclick="switchCrmTab('opportunities')"
                 class="mt-auto px-4 py-2 bg-cu-light-blue text-white rounded-lg font-medium shadow hover:bg-cu-dark-blue transition">View
                 Details</button>
             </div>
@@ -1684,84 +1702,54 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
                   <div class="text-xs text-slate-500">Accounts to Review</div>
                 </div>
               </div>
-              <button
+              <button onclick="switchCrmTab('all-accounts')"
                 class="mt-auto px-4 py-2 bg-cu-light-blue text-white rounded-lg font-medium shadow hover:bg-cu-dark-blue transition">View
                 Details</button>
             </div>
-            <!-- Grow Relationships Card -->
+            <!-- All Accounts Card -->
             <div
               class="group bg-white rounded-2xl shadow-soft border border-slate-100 p-6 flex flex-col justify-between transition-transform hover:-translate-y-1 hover:shadow-lg focus-within:shadow-lg"
               tabindex="0">
-              <div class="flex items-center gap-3 mb-3">
-                <span class="material-symbols-outlined text-2xl text-emerald-500">diversity_3</span>
-                <span class="text-lg font-bold text-slate-800">Grow Relationships</span>
+              <div class="flex items-center gap-3 mb-1">
+                <span class="material-symbols-outlined text-2xl text-emerald-500">corporate_fare</span>
+                <span class="text-lg font-bold text-slate-800">All Accounts</span>
               </div>
-              <p class="text-slate-500 text-sm mb-4">Engage with clients and nurture long-term partnerships.</p>
+              <p class="text-slate-500 text-sm mb-4">Total registered client accounts and their activity status.</p>
               <div class="flex items-center justify-between mb-4 w-full">
                 <div class="flex items-center">
                   <canvas id="donutGrowRelationships" width="72" height="72" class="mr-4"></canvas>
                   <div class="flex flex-col gap-2 text-xs">
-                    <div class="flex items-center gap-2"><span
-                        style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#10b981"></span>
-                      <span class="bg-emerald-50 text-emerald-700 rounded px-2 py-0.5">1 Upcoming Activity</span>
+                    <div class="flex items-center gap-2">
+                      <span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#10b981;flex-shrink:0;"></span>
+                      <span class="bg-emerald-50 text-emerald-700 rounded px-2 py-0.5"><span id="acctActive">7</span> Active</span>
                     </div>
-                    <div class="flex items-center gap-2"><span
-                        style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#38bdf8"></span>
-                      <span class="bg-blue-50 text-blue-700 rounded px-2 py-0.5">2 Past Activity</span>
-                    </div>
-                    <div class="flex items-center gap-2"><span
-                        style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#fb5656"></span>
-                      <span class="bg-red-50 text-red-600 rounded px-2 py-0.5">1 No Activity</span>
+                    <div class="flex items-center gap-2">
+                      <span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#f97316;flex-shrink:0;"></span>
+                      <span class="bg-orange-50 text-orange-600 rounded px-2 py-0.5"><span id="acctInactive">3</span> Inactive</span>
                     </div>
                   </div>
                 </div>
                 <div class="flex flex-col items-center ml-2">
-                  <div class="text-2xl font-bold text-slate-800">4</div>
-                  <div class="text-xs text-slate-500">Contacts</div>
+                  <div class="text-2xl font-bold text-slate-800" id="acctTotal">10</div>
+                  <div class="text-xs text-slate-500">Total Accounts</div>
                 </div>
               </div>
-              <button
-                class="mt-auto px-4 py-2 bg-cu-light-blue text-white rounded-lg font-medium shadow hover:bg-cu-dark-blue transition">View
-                Details</button>
+              <button onclick="switchCrmTab('all-accounts')"
+                class="mt-auto px-4 py-2 bg-cu-light-blue text-white rounded-lg font-medium shadow hover:bg-cu-dark-blue transition w-full">
+                View All Accounts
+              </button>
             </div>
           </div>
 
-          <!-- Action & Insights Row -->
-          <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-            <!-- Action Required -->
-            <div>
-              <div class="flex items-center gap-2 mb-3">
-                <span class="material-symbols-outlined text-lg text-red-500">priority_high</span>
-                <span class="text-base font-semibold text-red-600">Action Required</span>
-              </div>
-              <ul class="space-y-4">
-                <li class="bg-white rounded-xl border border-red-100 shadow-soft p-4 flex items-center gap-4">
-                  <span class="material-symbols-outlined text-2xl text-red-500">warning</span>
-                  <div class="flex-1">
-                    <div class="font-semibold text-slate-800">3 Overdue Follow-ups</div>
-                    <div class="text-xs text-slate-500">Clients waiting for your response</div>
-                  </div>
-                  <button
-                    class="ml-auto px-3 py-1.5 bg-red-500 text-white rounded font-medium text-xs hover:bg-red-600 transition">View</button>
-                </li>
-                <li class="bg-white rounded-xl border border-yellow-100 shadow-soft p-4 flex items-center gap-4">
-                  <span class="material-symbols-outlined text-2xl text-yellow-500">event_busy</span>
-                  <div class="flex-1">
-                    <div class="font-semibold text-slate-800">2 High-Value Deals at Risk</div>
-                    <div class="text-xs text-slate-500">Immediate attention needed</div>
-                  </div>
-                  <button
-                    class="ml-auto px-3 py-1.5 bg-yellow-500 text-white rounded font-medium text-xs hover:bg-yellow-600 transition">View</button>
-                </li>
-              </ul>
-            </div>
+          <!-- Insights Row -->
+          <div class="grid grid-cols-1 gap-8 mb-8">
             <!-- Recent Insights -->
             <div>
               <div class="flex items-center gap-2 mb-3">
                 <span class="material-symbols-outlined text-lg" style="color:#1b1e42">insights</span>
                 <span class="text-base font-semibold text-cu-dark-blue">Recent Insights</span>
               </div>
-              <ul class="space-y-4">
+              <ul class="grid grid-cols-2 gap-4">
                 <li class="bg-white rounded-xl border border-slate-100 shadow-soft p-4 flex items-center gap-4">
                   <span class="material-symbols-outlined text-2xl" style="color:#1b1e42">trending_up</span>
                   <div>
@@ -1817,30 +1805,54 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
           <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
           <script>
             document.addEventListener('DOMContentLoaded', function () {
-              // Donut chart for Grow Relationships card (matching attachment)
-              const ctx = document.getElementById('donutGrowRelationships');
-              if (ctx) {
-                new Chart(ctx, {
-                  type: 'doughnut',
-                  data: {
-                    datasets: [{
-                      data: [1, 2, 1],
-                      backgroundColor: ['#10b981', '#38bdf8', '#fb5656'],
-                      borderWidth: 3,
-                      borderColor: '#fff',
-                    }],
-                  },
-                  options: {
-                    cutout: '78%',
-                    plugins: {
-                      legend: { display: false },
-                      tooltip: { enabled: false },
+              // Donut chart for All Accounts card — count from accounts table
+              function buildAccountsDonut() {
+                var acctTable = document.querySelector('#all-accounts table, #accounts table');
+                var active = 7, inactive = 3, newCount = 2;
+                if (acctTable) {
+                  var rows = Array.from(acctTable.querySelectorAll('tbody tr'));
+                  active = 0; inactive = 0; newCount = 0;
+                  var now = new Date();
+                  rows.forEach(function(tr) {
+                    var cells = tr.querySelectorAll('td');
+                    var rowText = tr.textContent || '';
+                    if (/inactive/i.test(rowText)) inactive++;
+                    else active++;
+                    // "New this month" — check date cell if present
+                    cells.forEach(function(td) {
+                      var d = new Date(td.textContent.trim());
+                      if (!isNaN(d) && d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear()) newCount++;
+                    });
+                  });
+                  var total = active + inactive;
+                  var el;
+                  el = document.getElementById('acctActive');   if (el) el.textContent = active;
+                  el = document.getElementById('acctInactive'); if (el) el.textContent = inactive;
+                  el = document.getElementById('acctNew');      if (el) el.textContent = newCount;
+                  el = document.getElementById('acctTotal');    if (el) el.textContent = total;
+                }
+                var ctx = document.getElementById('donutGrowRelationships');
+                if (ctx) {
+                  new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                      datasets: [{
+                        data: [active, inactive],
+                        backgroundColor: ['#10b981', '#f97316'],
+                        borderWidth: 3,
+                        borderColor: '#fff',
+                      }],
                     },
-                    responsive: false,
-                    maintainAspectRatio: false,
-                  },
-                });
+                    options: {
+                      cutout: '78%',
+                      plugins: { legend: { display: false }, tooltip: { enabled: false } },
+                      responsive: false,
+                      maintainAspectRatio: false,
+                    },
+                  });
+                }
               }
+              setTimeout(buildAccountsDonut, 600);
             });
           </script>
           <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
@@ -1898,7 +1910,7 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
               donutChart('donutCloseDeals', [5, 2], ['#fbbf24', '#60a5fa']);
               // My Accounts donut: 7 Active, 3 Inactive (no Pending)
               donutChart('donutPlanAccounts', [7, 3], ['#3eb2ed', '#a7f3d0']);
-              donutChart('donutGrowRelationships', [2, 2, 1], ['#10b981', '#3eb2ed', '#fbbf24']);
+              donutChart('donutGrowRelationships', [7, 3], ['#10b981', '#f97316']);
 
               // Donut: Clients by Status (with center label, legend, and percentages)
               // (Removed: Clients by Status donut chart. Guard code in case of future re-addition)
@@ -2074,7 +2086,10 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
                 if (tab === 'home') pageTitle.textContent = 'Home';
                 else if (tab === 'all-accounts') pageTitle.textContent = 'Accounts';
                 else pageTitle.textContent = tab.charAt(0).toUpperCase() + tab.slice(1);
+                history.replaceState(null, '', '#' + tab);
               }
+              // Global helper for card buttons
+              window.switchCrmTab = function(tab) { showPanel(tab); };
               tabButtons.forEach(btn => {
                 btn.addEventListener('click', () => {
                   showPanel(btn.dataset.tab);
@@ -4999,6 +5014,41 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
         if (ref) tr.insertBefore(emailTd, ref);
         else tr.appendChild(emailTd);
       });
+    });
+  </script>
+
+  <script>
+    /* Dynamically update KPI cards: Leads + Opportunities */
+    document.addEventListener('DOMContentLoaded', function () {
+      setTimeout(function () {
+        /* ── Leads ── */
+        var leadsTable = document.querySelector('#leads table');
+        if (leadsTable) {
+          var lRows = Array.from(leadsTable.querySelectorAll('tbody tr'));
+          var lTotal = lRows.length;
+          var lOpen  = lRows.filter(function(tr) {
+            var b = tr.querySelector('.lead-status, .lead-badge');
+            return b && (b.classList.contains('active') || (b.textContent||'').trim().toLowerCase() === 'active');
+          }).length;
+          var el = document.getElementById('kpiOpenLeads');  if (el) el.textContent = lOpen;
+          el = document.getElementById('kpiTotalLeads');     if (el) el.textContent = lTotal;
+        }
+
+        /* ── Opportunities ── */
+        var oppTable = document.querySelector('#opportunities table');
+        if (oppTable) {
+          var oRows  = Array.from(oppTable.querySelectorAll('tbody tr'));
+          var oTotal = oRows.length;
+          var oOpen  = oRows.filter(function(tr) {
+            var b = tr.querySelector('[class*="badge"], [class*="status"], td:nth-child(5)');
+            if (!b) return false;
+            var t = (b.textContent||'').trim().toLowerCase();
+            return t.includes('open') || t.includes('active') || t.includes('new') || t.includes('progress');
+          }).length;
+          el = document.getElementById('kpiOpenOpps');  if (el) el.textContent = oOpen || 8;
+          el = document.getElementById('kpiTotalOpps'); if (el) el.textContent = oTotal || 19;
+        }
+      }, 700);
     });
   </script>
 
