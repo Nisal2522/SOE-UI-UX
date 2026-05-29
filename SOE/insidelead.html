@@ -1352,7 +1352,7 @@
 												// helpers to render lists
 												function setList(id, items) {
 													var el = document.getElementById(id); if (!el) return; el.innerHTML = '';
-													items.forEach(function (i) { var li = document.createElement('div'); li.textContent = 'â€¢ ' + i; el.appendChild(li); });
+													items.forEach(function (i) { var li = document.createElement('div'); li.style.display='flex'; li.style.alignItems='flex-start'; li.style.gap='6px'; li.innerHTML = '<span style="color:#64748b;margin-top:2px;font-size:10px;">&#x25CF;</span><span>' + i + '</span>'; el.appendChild(li); });
 												}
 
 												// renderPanel: update the guidance panel content for a given index without changing stepper visuals
@@ -1387,10 +1387,10 @@
 													var modalExists = !!document.getElementById(modalId);
 													var sgNext = document.getElementById('sgNextActions'); if (sgNext) sgNext.innerHTML = '';
 													if (modalExists) {
-														(meta.recommended || []).forEach(function (a) { var div = document.createElement('div'); div.className = 'text-sm text-slate-700'; div.textContent = 'â€¢ ' + a; sgNext.appendChild(div); });
-													} else {
-														if ((meta.outcome || '').trim().length > 0) { var o = document.createElement('div'); o.className = 'text-sm text-slate-700 font-medium'; o.textContent = meta.outcome; sgNext.appendChild(o); }
-														(meta.recommended || []).forEach(function (a) { var div = document.createElement('div'); div.className = 'text-sm text-slate-700'; div.textContent = 'â€¢ ' + a; sgNext.appendChild(div); });
+(meta.recommended || []).forEach(function (a) { var div = document.createElement('div'); div.className = 'text-sm text-slate-700'; div.style.display='flex'; div.style.alignItems='flex-start'; div.style.gap='6px'; div.innerHTML = '<span style="color:#64748b;margin-top:3px;font-size:10px;">&#x25CF;</span><span>' + a + '</span>'; sgNext.appendChild(div); });
+                                    } else {
+                                       if ((meta.outcome || '').trim().length > 0) { var o = document.createElement('div'); o.className = 'text-sm text-slate-700 font-medium'; o.textContent = meta.outcome; sgNext.appendChild(o); }
+                                       (meta.recommended || []).forEach(function (a) { var div = document.createElement('div'); div.className = 'text-sm text-slate-700'; div.style.display='flex'; div.style.alignItems='flex-start'; div.style.gap='6px'; div.innerHTML = '<span style="color:#64748b;margin-top:3px;font-size:10px;">&#x25CF;</span><span>' + a + '</span>'; sgNext.appendChild(div); });
 														if (sgNext.children.length === 0 && (meta.expectation || '').trim().length > 0) { var e = document.createElement('div'); e.className = 'text-sm text-slate-700 font-medium'; e.textContent = meta.expectation; sgNext.appendChild(e); }
 													}
 												}
