@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -1341,28 +1341,33 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
                 // update the status column cell for this row
                 const tr = btn.closest('tr');
                 if (!tr) return;
-                const statusCell = tr.querySelectorAll('td')[6]; // 7th column is Contact Status
+                // Find status cell by header text (robust — not fragile column index)
+                const tds = Array.from(tr.querySelectorAll('td'));
+                const table = tr.closest('table');
+                let statusColIdx = 7; // fallback: Contact Status is 8th column (0-based 7)
+                if (table) {
+                  const headers = Array.from(table.querySelectorAll('thead th')).map(h => h.textContent.trim().toUpperCase());
+                  const found = headers.findIndex(h => h.includes('STATUS'));
+                  if (found !== -1) statusColIdx = found;
+                }
+                const statusCell = tds[statusColIdx];
                 if (!statusCell) return;
                 const statusEntries = Array.from(statusCell.querySelectorAll('.contact-entry'));
-                const statusEntry = statusEntries[idx];
+                const statusEntry = statusEntries[idx] || statusCell; // fallback to cell itself
                 if (!statusEntry) return;
                 const dot = statusEntry.querySelector('.status-dot');
                 const text = statusEntry.querySelector('.status-text');
                 if (!dot || !text) return;
 
                 if (isOn) {
-                  // turning off -> set to Inactive / muted
-                  dot.classList.remove('bg-emerald-500');
-                  dot.classList.add('inactive');
-                  text.classList.remove('green');
-                  text.classList.add('inactive');
+                  // turning OFF → Inactive
+                  dot.className = 'status-dot inactive';
+                  text.className = 'status-text inactive';
                   text.textContent = 'Inactive';
                 } else {
-                  // turning on -> set to Active
-                  dot.classList.remove('inactive');
-                  dot.classList.add('green');
-                  text.classList.remove('inactive');
-                  text.classList.add('green');
+                  // turning ON → Active
+                  dot.className = 'status-dot green';
+                  text.className = 'status-text green';
                   text.textContent = 'Active';
                 }
               }
@@ -3625,7 +3630,7 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
               <div class="flex items-center justify-between px-6 py-4" style="background:#1b2540;">
                 <h3 class="text-lg font-semibold text-white">Add Contact</h3>
                 <button id="closeAddContactModal"
-                  class="text-white p-2 text-xl bg-transparent hover:bg-white/10 rounded-full">âœ•</button>
+                  class="text-white p-2 bg-transparent hover:bg-white/10 rounded-full flex items-center justify-center"><span class="material-symbols-outlined text-xl">close</span></button>
               </div>
               <form class="p-8 pt-6">
                 <div class="space-y-6">
@@ -3665,10 +3670,9 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
                 <hr class="my-8" />
                 <div class="flex justify-end items-center gap-4">
                   <button type="button" id="cancelAddContact"
-                    class="w-10 h-10 flex items-center justify-center rounded-full border-2 border-[#3eb2ed] text-[#3eb2ed] bg-white hover:bg-[#e6f6fd] text-2xl"><span
-                      style="font-size:22px;">âœ•</span></button>
+                    class="w-10 h-10 flex items-center justify-center rounded-full border-2 border-[#3eb2ed] text-[#3eb2ed] bg-white hover:bg-[#e6f6fd]"><span class="material-symbols-outlined" style="font-size:20px;">close</span></button>
                   <button type="submit"
-                    class="w-10 h-10 flex items-center justify-center rounded-full bg-[#3eb2ed] text-white text-2xl hover:bg-[#2499d6]">âœ“</button>
+                    class="w-10 h-10 flex items-center justify-center rounded-full bg-[#3eb2ed] text-white hover:bg-[#2499d6]"><span class="material-symbols-outlined" style="font-size:20px;">check</span></button>
                 </div>
               </form>
             </div>
@@ -5088,3 +5092,4 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
 </script>
 
 </html>
+
