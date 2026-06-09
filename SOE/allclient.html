@@ -214,14 +214,20 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
 }
 [aria-label="CRM Portal tabs"] [role="tab"]:hover { color: #334155; background: rgba(241,245,249,0.8); }
 [aria-label="CRM Portal tabs"] [role="tab"][aria-selected="true"] {
-  color: #1e293b;
+  color: #1e293b !important;
   font-weight: 600;
-  border-bottom-color: #3eb2ed;
-  background: transparent;
+  border-bottom: 2px solid #3eb2ed !important;
+  background: transparent !important;
+  transform: none !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  border-top: none !important;
+  border-left: none !important;
+  border-right: none !important;
 }
 .crm-tab { border-radius: 0; border-bottom: 2px solid transparent; margin-bottom: -1px; color: #64748b; background: transparent; }
 .crm-tab:hover { color: #334155; background: rgba(241,245,249,0.8); }
-.crm-tab[aria-selected="true"] { color: #1e293b; font-weight: 600; border-bottom-color: #3eb2ed; }
+.crm-tab[aria-selected="true"] { color: #1e293b !important; font-weight: 600; border-bottom: 2px solid #3eb2ed !important; background: transparent !important; transform: none !important; box-shadow: none !important; border-radius: 0 !important; border-top: none !important; border-left: none !important; border-right: none !important; }
 /* From configuration.html: tabs and content card */
 .config-tabs-wrap { display: flex; align-items: center; gap: 0; background: #fff; border-bottom: 1px solid #e2e8f0; padding: 0; margin-bottom: 0; }
 .config-tab { padding: 0.75rem 1.25rem; font-size: 0.875rem; font-weight: 500; color: #64748b; background: transparent; border: none; border-bottom: 2px solid transparent; margin-bottom: -1px; cursor: pointer; transition: color 0.2s, border-color 0.2s; border-radius: 0; white-space: nowrap; }
