@@ -614,28 +614,36 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; line-height: 1.6; }
         <!-- Cards: 3x3 grid, 24px gap, 32px padding inside each card -->
         <div class="dashboard-cards">
           <a href="BusinessOverview.html#resources"
-            class="dashboard-card accent-orange no-underline hover:no-underline">
-            <div class="card-icon">
-              <span class="material-symbols-outlined text-white text-2xl">business_center</span>
+             class="dashboard-card accent-orange no-underline hover:no-underline aspect-[4/3] w-full flex flex-col justify-between p-5 rounded-2xl transition-all duration-300 hover:scale-[1.02] hover:shadow-lg">
+            <div class="card-icon w-fit p-2.5 rounded-xl bg-orange-500/10 mb-auto">
+              <span class="material-symbols-outlined text-white text-3xl block">business_center</span>
             </div>
-            <p class="card-title">Business Overview</p>
-            <p class="card-subtitle">Alltime</p>
+            <div class="card-text-group mt-2 mb-4">
+              <p class="card-title font-semibold text-lg leading-snug">Business Overview</p>
+              <p class="card-subtitle text-xs opacity-60 mt-0.5">Alltime</p>
+            </div>
           </a>
 
-          <a href="Performnaceinfo.html" class="dashboard-card accent-blue no-underline hover:no-underline">
-            <div class="card-icon">
-              <span class="material-symbols-outlined text-white text-2xl">trending_up</span>
+          <a href="Performnaceinfo.html"
+             class="dashboard-card accent-blue no-underline hover:no-underline aspect-[4/3] w-full flex flex-col justify-between p-5 rounded-2xl transition-all duration-300 hover:scale-[1.02] hover:shadow-lg">
+            <div class="card-icon w-fit p-2.5 rounded-xl bg-blue-500/10 mb-auto">
+              <span class="material-symbols-outlined text-white text-3xl block">trending_up</span>
             </div>
-            <p class="card-title">Performance</p>
-            <p class="card-subtitle">Current Month</p>
+            <div class="card-text-group mt-2 mb-4">
+              <p class="card-title font-semibold text-lg leading-snug">Performance</p>
+              <p class="card-subtitle text-xs opacity-60 mt-0.5">Current Month</p>
+            </div>
           </a>
 
-          <a href="feedback.html#feedback" class="dashboard-card accent-teal no-underline hover:no-underline">
-            <div class="card-icon">
-              <span class="material-symbols-outlined text-white text-2xl">feedback</span>
+          <a href="feedback.html#feedback"
+             class="dashboard-card accent-teal no-underline hover:no-underline aspect-[4/3] w-full flex flex-col justify-between p-5 rounded-2xl transition-all duration-300 hover:scale-[1.02] hover:shadow-lg">
+            <div class="card-icon w-fit p-2.5 rounded-xl bg-teal-500/10 mb-auto">
+              <span class="material-symbols-outlined text-white text-3xl block">feedback</span>
             </div>
-            <p class="card-title">Feedback &amp; Additional info</p>
-            <p class="card-subtitle">Total</p>
+            <div class="card-text-group mt-2 mb-4">
+              <p class="card-title font-semibold text-lg leading-snug">Feedback &amp; Additional info</p>
+              <p class="card-subtitle text-xs opacity-60 mt-0.5">Total</p>
+            </div>
           </a>
         </div>
       </main>
