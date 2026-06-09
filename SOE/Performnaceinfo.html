@@ -273,39 +273,37 @@
       padding: 0;
     }
     .country-info-card-wrapper .country-info-tabs-inner {
-      background: rgba(248, 250, 252, 0.8);
+      background: transparent;
       border-bottom: 1px solid #e2e8f0;
-      padding: 1.25rem 2rem 1rem;
+      padding: 1rem 2rem 0;
       margin-bottom: 0;
     }
     .country-info-card-wrapper .country-info-tabs-inner ul {
       display: flex;
       align-items: center;
-      gap: 0.75rem;
+      gap: 1.5rem;
       list-style: none;
       margin: 0;
       padding: 0;
     }
     .country-info-card-wrapper .country-info-tabs-inner button {
-      padding: 0.5rem 0.9rem;
+      padding-bottom: 0.75rem;
       font-size: 0.875rem;
       font-weight: 500;
-      border-radius: 12px;
+      border-radius: 0;
       border: none;
+      border-bottom: 2px solid transparent;
+      background: transparent;
+      color: #94a3b8;
       cursor: pointer;
-      transition: background 0.2s ease, box-shadow 0.2s ease, color 0.2s ease;
+      margin-bottom: -1px;
+      transition: color 0.2s ease, border-color 0.2s ease;
     }
     .country-info-card-wrapper .country-info-tabs-inner button[aria-selected="true"] {
-      background: #ffffff;
-      color: #1e293b;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-      border: 1px solid #e2e8f0;
-    }
-    .country-info-card-wrapper .country-info-tabs-inner button[aria-selected="false"] {
-      background: transparent;
-      color: #64748b;
+      color: #3eb2ed;
+      font-weight: 600;
+      border-bottom: 2px solid #3eb2ed;
       box-shadow: none;
-      border: none;
     }
     .country-info-card-wrapper .country-info-tabs-inner button[aria-selected="false"]:hover {
       color: #475569;
@@ -836,19 +834,15 @@
                             class="country-info-tabs-inner flex items-center justify-between pr-8 overflow-auto">
                             <ul role="tablist" class="flex items-center gap-3">
                                 <li role="presentation">
-                                    <button type="button" data-tab="country-info" role="tab" aria-selected="true"
-                                        class="px-3 py-2 text-sm font-medium rounded-lg transition-colors">Operation
-                                        Performance</button>
+                                    <button type="button" data-tab="country-info" role="tab" aria-selected="true">Operation Performance</button>
                                 </li>
                                 <li role="presentation">
-                                    <button type="button" data-tab="quality-perf" role="tab" aria-selected="false"
-                                        class="px-3 py-2 text-sm font-medium rounded-lg transition-colors">Quality
-                                        Performance</button>
+                                    <button type="button" data-tab="quality-perf" role="tab" aria-selected="false">Quality Performance</button>
                                 </li>
                             </ul>
                             <a href="COE-Dashboard.html"
-                                class="flex items-center gap-2 px-4 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 bg-white border border-slate-200 rounded-full shadow-soft transition-all hover:shadow-md no-underline">
-                                <span class="material-symbols-outlined text-lg">arrow_back</span>
+                                class="flex items-center gap-1 px-3 py-1 text-xs font-medium text-slate-600 hover:text-slate-900 bg-white border border-slate-200 rounded-full shadow-soft transition-all hover:shadow-md no-underline self-start mt-1">
+                                <span class="material-symbols-outlined" style="font-size:15px">arrow_back</span>
                                 Back
                             </a>
                         </nav>

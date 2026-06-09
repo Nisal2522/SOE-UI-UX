@@ -91,17 +91,15 @@
 .material-symbols-outlined.filled { font-variation-settings: "FILL" 1 }
 .active-link { background-color: rgba(62, 178, 237, 0.1); color: #3eb2ed; font-weight: 500 }
 .active-link .material-symbols-outlined { font-variation-settings: "FILL" 1, "wght" 400 }
-/* Tabs: same design as allclient.html#home */
+/* Tabs: underline style matching COEinside.html */
 button[role="tab"][aria-selected="true"] {
-  background: #ffffff !important;
-  color: var(--cu-dark-blue) !important;
-  transform: translateY(8px);
-  box-shadow: 0 8px 18px rgba(30, 41, 59, 0.06);
-  border-radius: 12px !important;
-  padding-left: 0.9rem !important;
-  padding-right: 0.9rem !important;
-  z-index: 40;
-  border: 1px solid rgba(15, 23, 42, 0.04);
+  color: var(--cu-light-blue) !important;
+  font-weight: 600 !important;
+  border-bottom: 2px solid var(--cu-light-blue) !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  transform: none !important;
 }
 button[role="tab"] {
   transition: transform 160ms ease, box-shadow 160ms ease, background-color 160ms ease;
@@ -976,38 +974,36 @@ main > section.business-overview-panel .panel-content,
 
           <div class="business-overview-card overflow-hidden">
             <nav aria-label="Business Overview tabs"
-              class="business-overview-tabs flex items-center justify-between pr-8 overflow-auto bg-slate-50/80 border-b border-slate-200 px-8 pt-5 pb-4">
-              <ul role="tablist" class="flex items-center gap-2 flex-wrap">
+              class="business-overview-tabs flex items-center justify-between pr-8 overflow-auto border-b border-slate-200 px-8 pt-4">
+              <ul role="tablist" class="flex items-center gap-6">
                 <li role="presentation">
                   <button data-tab="resources" role="tab" aria-selected="true"
-                    class="px-3 py-2 text-sm font-medium rounded-lg bg-cu-light-blue-20 text-cu-dark-blue shadow-soft transition-colors">Resources</button>
+                    class="pb-3 text-sm font-semibold text-cu-light-blue border-b-2 border-cu-light-blue -mb-px transition-colors">Resources</button>
                 </li>
                 <li role="presentation">
                   <button data-tab="client-portfolio" role="tab" aria-selected="false"
-                    class="px-3 py-2 text-sm font-medium rounded-lg text-slate-600 hover:bg-slate-100 transition-colors">Client
-                    Portfolio &amp; Market Share</button>
+                    class="pb-3 text-sm font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 -mb-px transition-colors">Client Portfolio &amp; Market Share</button>
                 </li>
                 <li role="presentation">
                   <button data-tab="service-tat" role="tab" aria-selected="false"
-                    class="px-3 py-2 text-sm font-medium rounded-lg text-slate-600 hover:bg-slate-100 transition-colors">Service
-                    TAT</button>
+                    class="pb-3 text-sm font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 -mb-px transition-colors">Service TAT</button>
                 </li>
                 <li role="presentation">
                   <button data-tab="costing" role="tab" aria-selected="false"
-                    class="px-3 py-2 text-sm font-medium rounded-lg text-slate-600 hover:bg-slate-100 transition-colors">Costing</button>
+                    class="pb-3 text-sm font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 -mb-px transition-colors">Costing</button>
                 </li>
                 <li role="presentation">
                   <button data-tab="strategy" role="tab" aria-selected="false"
-                    class="px-3 py-2 text-sm font-medium rounded-lg text-slate-600 hover:bg-slate-100 transition-colors">Strategy</button>
+                    class="pb-3 text-sm font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 -mb-px transition-colors">Strategy</button>
                 </li>
                 <li role="presentation">
                   <button data-tab="revenue" role="tab" aria-selected="false"
-                    class="px-3 py-2 text-sm font-medium rounded-lg text-slate-600 hover:bg-slate-100 transition-colors">Revenue</button>
+                    class="pb-3 text-sm font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 -mb-px transition-colors">Revenue</button>
                 </li>
               </ul>
               <a href="COE-Dashboard.html" id="businessOverviewBackLink" target="_self"
-                class="flex items-center gap-2 px-4 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 bg-white border border-slate-200 rounded-full shadow-soft transition-all hover:shadow-md no-underline cursor-pointer">
-                <span class="material-symbols-outlined text-lg">arrow_back</span>
+                class="flex items-center gap-1 px-3 py-1 text-xs font-medium text-slate-600 hover:text-slate-900 bg-white border border-slate-200 rounded-full shadow-soft transition-all hover:shadow-md no-underline cursor-pointer self-start mt-1">
+                <span class="material-symbols-outlined" style="font-size:15px">arrow_back</span>
                 Back
               </a>
             </nav>
@@ -1025,9 +1021,10 @@ main > section.business-overview-panel .panel-content,
                     </div>
                   </div>
                   <div class="resources-header-actions">
-                    <button type="button" class="btn-export">
-                      <span class="material-symbols-outlined filled" style="font-size:18px">download</span>
-                      Export
+                    <button id="bizExportPdfBtn" type="button"
+                        class="inline-flex items-center gap-1.5 rounded-lg bg-[#22c55e] px-3.5 py-1.5 text-[12px] font-semibold text-white shadow-sm hover:bg-[#16a34a] transition-all duration-200">
+                        <span class="material-symbols-outlined text-[16px] font-medium">download</span>
+                        <span>Export</span>
                     </button>
                     <div class="resources-search-wrap">
                       <span class="material-symbols-outlined">search</span>
@@ -2306,10 +2303,12 @@ main > section.business-overview-panel .panel-content,
         tabButtons.forEach(btn => {
           const isActive = btn.dataset.tab === tab;
           btn.setAttribute('aria-selected', isActive ? 'true' : 'false');
-          btn.classList.toggle('bg-cu-light-blue-20', isActive);
-          btn.classList.toggle('text-cu-dark-blue', isActive);
-          btn.classList.toggle('shadow-soft', isActive);
-          btn.classList.toggle('text-slate-600', !isActive);
+          btn.classList.toggle('font-semibold', isActive);
+          btn.classList.toggle('text-cu-light-blue', isActive);
+          btn.classList.toggle('border-cu-light-blue', isActive);
+          btn.classList.toggle('font-medium', !isActive);
+          btn.classList.toggle('text-slate-500', !isActive);
+          btn.classList.toggle('border-transparent', !isActive);
         });
       }
       tabButtons.forEach(btn => {
