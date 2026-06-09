@@ -238,13 +238,14 @@
     .segmented-toggle .nav-btn[aria-current="page"] { background: #1b1e42; color: #fff; }
     .kpi-tabbar {
       width: 100%;
-      background: #f1f5f9;
-      border: 1px solid #d8e1ec;
-      border-radius: 14px;
-      padding: 8px 12px;
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid #e2e8f0;
+      border-radius: 0;
+      padding: 0 4px;
       margin-bottom: 8px;
       display: flex;
-      align-items: center;
+      align-items: flex-end;
       justify-content: space-between;
       gap: 12px;
     }
@@ -260,24 +261,31 @@
     .kpi-tabs {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 0;
+      border-bottom: none;
     }
     .kpi-tab {
       border: 0;
-      border-radius: 10px;
-      padding: 8px 14px;
+      border-bottom: 2px solid transparent;
+      border-radius: 0;
+      padding: 0.75rem 1rem;
       font-size: 0.875rem;
       font-weight: 500;
-      color: #334155;
+      color: #64748b;
       background: transparent;
       text-decoration: none;
       line-height: 1.2;
+      margin-bottom: -1px;
+      cursor: pointer;
+      transition: color 0.15s ease, border-color 0.15s ease;
     }
-    .kpi-tab:hover { background: #e2e8f0; color: #0f172a; }
+    .kpi-tab:hover { background: rgba(241,245,249,0.8); color: #334155; }
     .kpi-tab.active {
-      background: #ffffff;
-      color: #0f172a;
-      box-shadow: 0 1px 2px rgba(15, 23, 42, 0.12);
+      background: transparent;
+      color: #1e293b;
+      border-bottom-color: #3eb2ed;
+      font-weight: 600;
+      box-shadow: none;
     }
     .op-chart-head {
       display: flex;
