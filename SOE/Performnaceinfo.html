@@ -1138,8 +1138,297 @@
                     if (label && !a.getAttribute('title')) a.setAttribute('title', label);
                 });
             }
+
+            // Operation Performance modal
+            const criteriaMap = {
+                'Certification': ['Total Certified Projects', 'Total Projects Under Audit / Evaluation', 'Total Certified Units', 'Total Units Under Audit / Evaluation'],
+                'TC': ['Total Approved TC', 'Total Pending TC'],
+                'Auditing': ['Total Audits Completed', 'Total Audits Pending', 'Total Audits Failed'],
+                'Inspection': ['Total Inspections Completed', 'Total Inspections Pending', 'Total Inspections Failed']
+            };
+
+            const opPerfModal = document.getElementById('opPerfModal');
+            const opBlocksContainer = document.getElementById('opBlocksContainer');
+
+            function createOpBlock() {
+                const block = document.createElement('div');
+                block.className = 'op-block border border-slate-200 rounded-xl p-3 flex flex-col gap-2 bg-slate-50';
+                block.innerHTML = `
+                    <div class="flex items-center gap-2">
+                        <select class="op-select flex-1 border border-slate-200 rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#3eb2ed]">
+                            <option value="">Select Operation</option>
+                            <option>Certification</option><option>TC</option><option>Auditing</option><option>Inspection</option>
+                        </select>
+                        <button type="button" class="remove-op-block text-slate-300 hover:text-red-400 transition-colors" title="Remove">
+                            <span class="material-symbols-outlined" style="font-size:20px">remove_circle</span>
+                        </button>
+                    </div>
+                    <div class="op-criteria-rows grid grid-cols-2 gap-x-4 gap-y-3 hidden"></div>`;
+
+                block.querySelector('.op-select').addEventListener('change', function() {
+                    const criteriaRows = block.querySelector('.op-criteria-rows');
+                    const list = criteriaMap[this.value] || [];
+                    criteriaRows.innerHTML = '';
+                    if (list.length) {
+                        list.forEach(c => {
+                            const row = document.createElement('div');
+                            row.className = 'flex flex-col gap-1';
+                            row.innerHTML = `<label class="text-xs font-semibold text-slate-600">${c} :</label>
+                              <input type="number" min="0" placeholder="Enter" data-criteria="${c}"
+                                class="border border-slate-200 rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#3eb2ed]" />`;
+                            criteriaRows.appendChild(row);
+                        });
+                        criteriaRows.classList.remove('hidden');
+                    } else {
+                        criteriaRows.classList.add('hidden');
+                    }
+                });
+
+                block.querySelector('.remove-op-block').addEventListener('click', () => {
+                    if (opBlocksContainer.children.length > 1) block.remove();
+                });
+
+                return block;
+            }
+
+            document.getElementById('openOpPerfModal').addEventListener('click', () => {
+                opBlocksContainer.innerHTML = '';
+                opBlocksContainer.appendChild(createOpBlock());
+                opPerfModal.classList.remove('hidden');
+            });
+            document.getElementById('closeOpPerfModal').addEventListener('click', () => opPerfModal.classList.add('hidden'));
+            opPerfModal.addEventListener('click', e => { if (e.target === opPerfModal) opPerfModal.classList.add('hidden'); });
+            document.getElementById('addOpBlockBtn').addEventListener('click', () => opBlocksContainer.appendChild(createOpBlock()));
+
+            document.getElementById('opPerfForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const year = document.getElementById('opYear').value;
+                const month = document.getElementById('opMonth').value;
+                const week = document.getElementById('opWeek').value;
+                if (!year || !month || !week) { alert('Please select a complete period.'); return; }
+                const period = `${year} - ${month} - ${week}`;
+                const program = document.getElementById('opProgram').value;
+                if (!program) { alert('Please select a program.'); return; }
+
+                // Collect valid operation blocks
+                const blocks = [];
+                opBlocksContainer.querySelectorAll('.op-block').forEach(block => {
+                    const operation = block.querySelector('.op-select').value;
+                    const inputs = block.querySelectorAll('input[data-criteria]');
+                    if (operation && inputs.length) blocks.push({ operation, inputs });
+                });
+                if (!blocks.length) { alert('Please select at least one operation.'); return; }
+
+                const totalRows = blocks.reduce((sum, b) => sum + b.inputs.length, 0);
+                const tbody = document.querySelector('#country-info .country-info-table tbody');
+                const deleteBtn = `<button class="p-2 text-slate-400 hover:text-red-500 transition-colors" title="Delete" onclick="this.closest('tr').remove()"><span class="material-symbols-outlined">delete</span></button>`;
+
+                let isFirstRow = true;
+                blocks.forEach(({ operation, inputs }) => {
+                    inputs.forEach((input, i) => {
+                        const tr = document.createElement('tr');
+                        let html = '';
+                        if (isFirstRow) {
+                            html += `<td rowspan="${totalRows}">${period}</td>
+                                     <td rowspan="${totalRows}">${program}</td>`;
+                        }
+                        if (i === 0) {
+                            html += `<td rowspan="${inputs.length}">${operation}</td>`;
+                        }
+                        html += `<td>${input.dataset.criteria}</td>
+                                 <td>${input.value || 0}</td>`;
+                        if (isFirstRow) {
+                            html += `<td rowspan="${totalRows}">${deleteBtn}</td>`;
+                        }
+                        tr.innerHTML = html;
+                        tbody.appendChild(tr);
+                        isFirstRow = false;
+                    });
+                });
+
+                this.reset();
+                opBlocksContainer.innerHTML = '';
+                opPerfModal.classList.add('hidden');
+            });
+
+            // Quality Performance modal
+            const qualPerfModal = document.getElementById('qualPerfModal');
+            document.getElementById('openQualPerfModal').addEventListener('click', () => qualPerfModal.classList.remove('hidden'));
+            document.getElementById('closeQualPerfModal').addEventListener('click', () => qualPerfModal.classList.add('hidden'));
+            qualPerfModal.addEventListener('click', e => { if (e.target === qualPerfModal) qualPerfModal.classList.add('hidden'); });
+            document.getElementById('qualPerfForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const year = document.getElementById('qYear').value;
+                const month = document.getElementById('qMonth').value;
+                if (!year || !month) { alert('Please select a complete period.'); return; }
+                const period = `${year} - ${month}`;
+                const tbody = document.querySelector('#quality-perf .quality-perf-table tbody');
+                const operation = document.getElementById('qOperation').value;
+                const approved = document.getElementById('qApproved').value;
+                const monitored = document.getElementById('qMonitored').value;
+                const critical = document.getElementById('qCritical').value;
+                const major = document.getElementById('qMajor').value;
+                const minor = document.getElementById('qMinor').value;
+                const source = document.getElementById('qSource').value;
+                const tr = document.createElement('tr');
+                tr.innerHTML = `<td>${period}</td><td>${operation}</td><td>${approved}</td><td>${monitored}</td>
+                  <td>${critical}</td><td>${major}</td><td>${minor}</td><td>${source}</td>
+                  <td><div class="flex items-center gap-2">
+                    <a href="#" class="action-link" title="View"><span class="material-symbols-outlined" style="font-size:20px">visibility</span></a>
+                    <a href="#" class="action-link" title="Edit"><span class="material-symbols-outlined" style="font-size:20px">edit</span></a>
+                  </div></td>`;
+                tbody.appendChild(tr);
+                this.reset();
+                qualPerfModal.classList.add('hidden');
+            });
         });
     </script>
+
+    <!-- Operation Performance Modal -->
+    <div id="opPerfModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-xl mx-4 max-h-[90vh] flex flex-col overflow-hidden">
+            <!-- Dark header -->
+            <div class="flex items-center justify-between px-6 py-4 bg-[#1b1e42] rounded-t-2xl flex-shrink-0">
+                <h3 class="text-base font-semibold text-white">Add Operation Performance</h3>
+                <button id="closeOpPerfModal" type="button" class="text-white/60 hover:text-white transition-colors">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+            <!-- Body -->
+            <form id="opPerfForm" class="flex flex-col gap-5 p-6 overflow-y-auto">
+                <!-- Period + Program -->
+                <div class="grid grid-cols-2 gap-5">
+                    <div class="flex flex-col gap-1.5">
+                        <label class="text-sm font-semibold text-slate-700">Period :</label>
+                        <div class="grid grid-cols-3 gap-1.5">
+                            <select id="opYear" required class="border border-slate-200 rounded-lg px-2 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#3eb2ed]">
+                                <option value="">Year</option>
+                                <option>2024</option><option>2025</option><option selected>2026</option><option>2027</option>
+                            </select>
+                            <select id="opMonth" required class="border border-slate-200 rounded-lg px-2 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#3eb2ed]">
+                                <option value="">Month</option>
+                                <option>Jan</option><option>Feb</option><option>Mar</option><option>Apr</option>
+                                <option>May</option><option>Jun</option><option>Jul</option><option>Aug</option>
+                                <option>Sep</option><option>Oct</option><option>Nov</option><option>Dec</option>
+                            </select>
+                            <select id="opWeek" required class="border border-slate-200 rounded-lg px-2 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#3eb2ed]">
+                                <option value="">Week</option>
+                                <option>Week 1</option><option>Week 2</option><option>Week 3</option><option>Week 4</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="flex flex-col gap-1.5">
+                        <label class="text-sm font-semibold text-slate-700">Program :</label>
+                        <select id="opProgram" required class="border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#3eb2ed]">
+                            <option value="">Select Program</option>
+                            <option>GOTS</option><option>GRS</option><option>OCS</option><option>RCS</option><option>RDS</option>
+                        </select>
+                    </div>
+                </div>
+                <!-- Operations inner card -->
+                <div class="border border-slate-200 rounded-xl p-4 flex flex-col gap-3">
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm font-semibold text-slate-700">Operations :</span>
+                        <button type="button" id="addOpBlockBtn" class="flex items-center gap-1 text-xs font-medium text-[#3eb2ed] hover:text-[#2ea2d6] transition-colors">
+                            <span class="material-symbols-outlined" style="font-size:16px">add_circle</span>
+                            Add Operation
+                        </button>
+                    </div>
+                    <div id="opBlocksContainer" class="flex flex-col gap-3"></div>
+                </div>
+                <!-- Circular action buttons -->
+                <div class="flex justify-end items-center gap-3">
+                    <button type="button" onclick="document.getElementById('opPerfModal').classList.add('hidden')"
+                        class="w-10 h-10 rounded-full border-2 border-[#3eb2ed] flex items-center justify-center text-[#3eb2ed] hover:bg-[#3eb2ed] hover:text-white transition-all">
+                        <span class="material-symbols-outlined" style="font-size:20px">close</span>
+                    </button>
+                    <button type="submit"
+                        class="w-10 h-10 rounded-full bg-[#3eb2ed] flex items-center justify-center text-white hover:bg-[#2ea2d6] transition-all shadow-md">
+                        <span class="material-symbols-outlined" style="font-size:20px">check</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Quality Performance Modal -->
+    <div id="qualPerfModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-xl mx-4 max-h-[90vh] flex flex-col overflow-hidden">
+            <!-- Dark header -->
+            <div class="flex items-center justify-between px-6 py-4 bg-[#1b1e42] rounded-t-2xl flex-shrink-0">
+                <h3 class="text-base font-semibold text-white">Add Quality Performance</h3>
+                <button id="closeQualPerfModal" type="button" class="text-white/60 hover:text-white transition-colors">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+            <!-- Body -->
+            <form id="qualPerfForm" class="flex flex-col gap-5 p-6 overflow-y-auto">
+                <!-- Period + Operation -->
+                <div class="grid grid-cols-2 gap-5">
+                    <div class="flex flex-col gap-1.5">
+                        <label class="text-sm font-semibold text-slate-700">Period :</label>
+                        <div class="grid grid-cols-2 gap-1.5">
+                            <select id="qYear" required class="border border-slate-200 rounded-lg px-2 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#3eb2ed]">
+                                <option value="">Year</option>
+                                <option>2024</option><option>2025</option><option selected>2026</option><option>2027</option>
+                            </select>
+                            <select id="qMonth" required class="border border-slate-200 rounded-lg px-2 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#3eb2ed]">
+                                <option value="">Month</option>
+                                <option>Jan</option><option>Feb</option><option>Mar</option><option>Apr</option>
+                                <option>May</option><option>Jun</option><option>Jul</option><option>Aug</option>
+                                <option>Sep</option><option>Oct</option><option>Nov</option><option>Dec</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="flex flex-col gap-1.5">
+                        <label class="text-sm font-semibold text-slate-700">Operation :</label>
+                        <select id="qOperation" required class="border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#3eb2ed]">
+                            <option value="">Select Operation</option>
+                            <option>TC</option><option>Certification</option><option>Auditing</option><option>Inspection</option>
+                        </select>
+                    </div>
+                </div>
+                <!-- Fields inner card -->
+                <div class="border border-slate-200 rounded-xl p-4 grid grid-cols-2 gap-x-5 gap-y-4">
+                    <div class="flex flex-col gap-1.5">
+                        <label class="text-sm font-semibold text-slate-700">Total Approved :</label>
+                        <input id="qApproved" type="number" required placeholder="Enter" class="border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#3eb2ed]" />
+                    </div>
+                    <div class="flex flex-col gap-1.5">
+                        <label class="text-sm font-semibold text-slate-700">Total Monitored :</label>
+                        <input id="qMonitored" type="number" required placeholder="Enter" class="border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#3eb2ed]" />
+                    </div>
+                    <div class="flex flex-col gap-1.5">
+                        <label class="text-sm font-semibold text-slate-700">Critical Errors :</label>
+                        <input id="qCritical" type="number" required placeholder="Enter" class="border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#3eb2ed]" />
+                    </div>
+                    <div class="flex flex-col gap-1.5">
+                        <label class="text-sm font-semibold text-slate-700">Major Errors :</label>
+                        <input id="qMajor" type="number" required placeholder="Enter" class="border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#3eb2ed]" />
+                    </div>
+                    <div class="flex flex-col gap-1.5">
+                        <label class="text-sm font-semibold text-slate-700">Minor Errors :</label>
+                        <input id="qMinor" type="number" required placeholder="Enter" class="border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#3eb2ed]" />
+                    </div>
+                    <div class="flex flex-col gap-1.5">
+                        <label class="text-sm font-semibold text-slate-700">Data Source :</label>
+                        <input id="qSource" type="text" required placeholder="Enter" class="border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#3eb2ed]" />
+                    </div>
+                </div>
+                <!-- Circular action buttons -->
+                <div class="flex justify-end items-center gap-3">
+                    <button type="button" onclick="document.getElementById('qualPerfModal').classList.add('hidden')"
+                        class="w-10 h-10 rounded-full border-2 border-[#3eb2ed] flex items-center justify-center text-[#3eb2ed] hover:bg-[#3eb2ed] hover:text-white transition-all">
+                        <span class="material-symbols-outlined" style="font-size:20px">close</span>
+                    </button>
+                    <button type="submit"
+                        class="w-10 h-10 rounded-full bg-[#3eb2ed] flex items-center justify-center text-white hover:bg-[#2ea2d6] transition-all shadow-md">
+                        <span class="material-symbols-outlined" style="font-size:20px">check</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
 </body>
 
 </html>
