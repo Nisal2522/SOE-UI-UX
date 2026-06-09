@@ -1778,12 +1778,13 @@
 														}
 
 														if (isInvalid && i === 1) {
-															// Verify step when invalid - red/dimmed
+															// Verify step when invalid - red
 															el.style.background = '#dc2626';
-															el.style.opacity = '0.7';
+															el.style.opacity = '0.9';
 															el.style.filter = '';
-														} else if (isInvalid && i > 1) {
-															// Future steps when invalid - locked gray
+															el.style.pointerEvents = 'none';
+														} else if (isInvalid && i !== 1) {
+															// All other steps when invalid - locked gray (New + future)
 															el.style.background = '#94a3b8';
 															el.style.opacity = '0.4';
 															el.style.filter = 'grayscale(1)';
@@ -1825,8 +1826,8 @@
 
 												function completeStep(index) {
 													if (index < 0 || index >= arrowSteps.length) return;
-													// If pipeline frozen, do not allow advancing beyond Verify
-													if (isInvalid && index > 1) return;
+													// If pipeline frozen, do not allow any step change
+													if (isInvalid) return;
 													const willAdvance = index >= current;
 													if (willAdvance) current = index + 1;
 													render();
@@ -1836,8 +1837,8 @@
 												// (side-panel 'Mark as Complete' still opens the confirmation flow and advances state)
 												arrowSteps.forEach((el, idx) => {
 													el.addEventListener('click', function (e) {
-														// If pipeline frozen, do not allow interacting beyond verify
-														if (isInvalid && idx > 1) return;
+														// If pipeline frozen, do not allow interacting with any step
+														if (isInvalid) return;
 
 														// remember this index as the last previewed step so side actions act on it
 														lastPreviewIndex = idx;
@@ -2055,6 +2056,14 @@
 												}
 
 												render();
+
+												// Expose pipeline state so other script blocks can access it
+												window.__leadPipeline = {
+													render: render,
+													setInvalid: function(v) { isInvalid = v; },
+													setCurrent: function(v) { current = v; },
+													setStage1Status: function(v) { stage1Status = v; }
+												};
 											});
 										</script>
 									</div>
@@ -3102,21 +3111,22 @@
 				console.log('Invalidate reason:', finalReason);
 				// apply invalidate: same as verifyInvalid
 				try {
-					// mark previous steps (before origin) as completed/green
 					var origin = (window.invalidateOriginIndex != null) ? window.invalidateOriginIndex : 1;
 					var steps = document.querySelectorAll('.arrow-step');
 					for (var i = 0; i < Math.min(origin, steps.length); i++) {
 						try { var s = steps[i]; if (s) { s.classList.remove('disqualified', 'active'); s.classList.add('completed'); } } catch (e) { }
 					}
-					// apply invalidate to the origin step (usually Verify)
-					stage1Status = 'invalid';
-					isInvalid = true;
-					current = origin;
 					var vStep = steps[origin];
 					if (vStep) { vStep.classList.remove('completed', 'active'); vStep.classList.add('disqualified'); var sp = vStep.querySelector('span'); if (sp) sp.textContent = 'Invalid'; }
+					// Update shared pipeline state so render() freezes subsequent steps
+					if (window.__leadPipeline) {
+						window.__leadPipeline.setStage1Status('invalid');
+						window.__leadPipeline.setInvalid(true);
+						window.__leadPipeline.setCurrent(origin);
+					}
 				} catch (e) { console.error(e); }
 				hideInvalidateModal();
-				render();
+				if (window.__leadPipeline && window.__leadPipeline.render) window.__leadPipeline.render();
 			});
 		});
 	</script>
