@@ -3244,6 +3244,33 @@
               </div>
             </section>
 
+            <!-- Operation performance by country -->
+            <section class="card-3d bg-white rounded-2xl p-6 border border-slate-200/80" style="border-left: 4px solid #0891b2; margin-top: 24px;">
+              <div class="op-chart-head">
+                <div class="op-chart-head-left">
+                  <div class="coe-category-icon flex-shrink-0" aria-hidden="true" style="background: linear-gradient(135deg, #0891b2 0%, #0e7490 100%);">
+                    <span class="material-symbols-outlined">public</span>
+                  </div>
+                  <div>
+                    <h3 class="text-slate-900 font-semibold text-base leading-tight m-0">Operation performance by country</h3>
+                    <p class="text-slate-500 text-sm mt-1 mb-0">Comparative operational metrics across key certification countries.</p>
+                  </div>
+                </div>
+                <div class="op-chart-legend" aria-label="Legend">
+                  <span class="op-chart-legend-item"><span class="op-chart-swatch" style="background:#3eb2ed"></span>Approved TC</span>
+                  <span class="op-chart-legend-item"><span class="op-chart-swatch" style="background:#65c1f1"></span>Pending TC</span>
+                  <span class="op-chart-legend-item"><span class="op-chart-swatch" style="background:#b2e0f8"></span>Projects in pipeline</span>
+                  <span class="op-chart-legend-item"><span class="op-chart-swatch" style="background:#1b1e42"></span>Certified Projects</span>
+                  <span class="op-chart-legend-item"><span class="op-chart-swatch" style="background:#494b68"></span>Certified Units</span>
+                  <span class="op-chart-legend-item"><span class="op-chart-swatch" style="background:#799495"></span>Units in pipeline</span>
+                </div>
+              </div>
+              <div class="op-chart-wrap">
+                <canvas id="operationCountryChart" aria-label="Operation by country grouped bar chart"></canvas>
+                <span class="op-axis-x-title">Country</span>
+              </div>
+            </section>
+
             <!-- Approved Certificates YoY % Change: full width above the two-column block -->
             <div class="op-single-row" style="margin-top: 24px;">
               <section class="op-yoy-card card-3d bg-white rounded-2xl p-6 border border-slate-200/80" style="border-left: 4px solid #14b8a6; max-width: 100%;">
@@ -6051,6 +6078,7 @@
       initPerformanceCharts();
       initYoYChart();
       initOperationProgramChart();
+      initOperationCountryChart();
       initOperationDistributionChart();
       initOperationQualitySunburst();
       initOperationMistakesChart();
@@ -6719,6 +6747,140 @@
           }
         },
         plugins: [opBarShadowPlugin, opValueLabelsPlugin]
+      });
+      ctx.dataset.initialized = 'true';
+    }
+
+    function initOperationCountryChart() {
+      const ctx = document.getElementById('operationCountryChart');
+      if (!ctx || typeof Chart === 'undefined' || ctx.dataset.initialized === 'true') return;
+
+      const labels = ['Australia', 'India', 'Indonesia', 'Myanmar', 'Sri Lanka'];
+      const datasets = [
+        { label: 'Approved TC',        data: [95,  130, 110, 75,  105], backgroundColor: '#3eb2ed' },
+        { label: 'Pending TC',         data: [110, 145, 125, 90,  120], backgroundColor: '#65c1f1' },
+        { label: 'Projects in pipeline', data: [80, 160, 95,  60,  100], backgroundColor: '#b2e0f8' },
+        { label: 'Certified Projects', data: [180, 210, 195, 140, 175], backgroundColor: '#1b1e42' },
+        { label: 'Certified Units',    data: [200, 245, 215, 155, 195], backgroundColor: '#494b68' },
+        { label: 'Units in pipeline',  data: [215, 255, 225, 165, 205], backgroundColor: '#799495' }
+      ];
+
+      const ctryBarShadowPlugin = {
+        id: 'ctryBarShadow',
+        beforeDatasetDraw(chart, args) {
+          if (!args.meta || args.meta.type !== 'bar') return;
+          const c = chart.ctx;
+          c.save();
+          c.shadowColor = 'rgba(15, 23, 42, 0.12)';
+          c.shadowBlur = 4;
+          c.shadowOffsetY = 2;
+        },
+        afterDatasetDraw(chart, args) {
+          if (!args.meta || args.meta.type !== 'bar') return;
+          chart.ctx.restore();
+        }
+      };
+
+      const ctryValueLabelsPlugin = {
+        id: 'ctryValueLabels',
+        afterDatasetsDraw(chart) {
+          const c = chart.ctx;
+          c.save();
+          chart.data.datasets.forEach(function(dataset, datasetIndex) {
+            const meta = chart.getDatasetMeta(datasetIndex);
+            if (!meta || meta.hidden) return;
+            meta.data.forEach(function(bar, index) {
+              const value = dataset.data[index];
+              const barHeight = bar.height;
+              if (barHeight > 25) {
+                c.fillStyle = '#ffffff';
+                c.font = '600 11px Inter, Segoe UI, sans-serif';
+                c.textAlign = 'center';
+                c.textBaseline = 'middle';
+                c.fillText(String(value), bar.x, bar.y - barHeight / 2);
+              } else {
+                c.fillStyle = '#1e293b';
+                c.font = '600 11px Inter, Segoe UI, sans-serif';
+                c.textAlign = 'center';
+                c.textBaseline = 'bottom';
+                c.fillText(String(value), bar.x, bar.y - 8);
+              }
+            });
+          });
+          c.restore();
+        }
+      };
+
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: labels,
+          datasets: datasets.map(function(d) {
+            return {
+              label: d.label,
+              data: d.data,
+              backgroundColor: d.backgroundColor,
+              borderColor: '#ffffff',
+              borderWidth: 2,
+              borderRadius: { topLeft: 6, topRight: 6, bottomLeft: 0, bottomRight: 0 },
+              borderSkipped: false,
+              barPercentage: 0.75,
+              categoryPercentage: 0.8
+            };
+          })
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          animation: false,
+          layout: { padding: { top: 24, right: 20, bottom: 16, left: 12 } },
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              backgroundColor: '#1e293b',
+              titleColor: '#fff',
+              bodyColor: '#fff',
+              padding: 12,
+              titleFont: { family: 'Inter, Segoe UI, sans-serif', size: 12, weight: '600' },
+              bodyFont: { family: 'Inter, Segoe UI, sans-serif', size: 11 },
+              displayColors: true,
+              boxPadding: 6,
+              cornerRadius: 8
+            }
+          },
+          scales: {
+            x: {
+              grid: { display: false, drawBorder: false },
+              ticks: {
+                color: '#475569',
+                font: { family: 'Inter, Segoe UI, sans-serif', size: 12, weight: '500' },
+                padding: 10
+              },
+              title: { display: false }
+            },
+            y: {
+              beginAtZero: true,
+              suggestedMax: 300,
+              grid: { color: 'rgba(148, 163, 184, 0.12)', drawBorder: false, lineWidth: 1 },
+              ticks: {
+                color: '#64748b',
+                font: { family: 'Inter, Segoe UI, sans-serif', size: 11, weight: '500' },
+                stepSize: 50,
+                padding: 8,
+                callback: function(value) { return value; }
+              },
+              title: {
+                display: true,
+                text: 'Count',
+                color: '#475569',
+                font: { family: 'Inter, Segoe UI, sans-serif', size: 12, weight: '600' },
+                padding: { top: 0, bottom: 8 }
+              },
+              border: { display: false }
+            }
+          }
+        },
+        plugins: [ctryBarShadowPlugin, ctryValueLabelsPlugin]
       });
       ctx.dataset.initialized = 'true';
     }
