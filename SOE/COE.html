@@ -3947,6 +3947,24 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
             #forecasts .action-btn .material-symbols-outlined {
               font-size: 18px;
             }
+            /* Stage chips — forecasts table */
+            .fc-stage-chip { display:inline-flex; align-items:center; justify-content:center; padding:4px 13px; border-radius:9999px; font-size:0.68rem; font-weight:700; letter-spacing:0.07em; text-transform:uppercase; white-space:nowrap; line-height:1.5; box-shadow:0 1px 4px rgba(0,0,0,0.12); }
+            .fc-stage-closed-won    { background:#16a34a; color:#fff; }
+            .fc-stage-closed-lost   { background:#C9A619; color:#fff; }
+            .fc-stage-prospecting   { background:#C9A619; color:#fff; }
+            .fc-stage-negotiation   { background:#C9A619; color:#fff; }
+            .fc-stage-qualification { background:#C9A619; color:#fff; }
+            .fc-stage-proposal      { background:#C9A619; color:#fff; }
+            .fc-stage-default       { background:#C9A619; color:#fff; }
+
+            .prob-cell { width:90px; display:flex; flex-direction:column; gap:0; }
+            .prob-top { display:flex; align-items:center; justify-content:flex-end; margin-bottom:5px; gap:8px; }
+            .prob-num { font-size:0.75rem; font-weight:700; letter-spacing:0; line-height:1; }
+            .prob-lbl { font-size:0.6rem; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; padding:3px 9px; border-radius:9999px; border:1.5px solid; line-height:1.5; background:transparent; }
+            .prob-bar-wrap { position:relative; padding:3px 0; }
+            .prob-bar-track { height:6px; background:#edf2f7; border-radius:9999px; overflow:hidden; }
+            .prob-bar-fill { height:100%; border-radius:9999px; }
+            .prob-bar-head { position:absolute; top:50%; transform:translateY(-50%); width:12px; height:12px; border-radius:50%; border:2.5px solid #fff; box-shadow:0 1px 5px rgba(0,0,0,0.22); pointer-events:none; }
           </style>
 
           <div class="flex items-center justify-between mb-6">
@@ -4063,6 +4081,15 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
                   <td>90%</td>
                   <td>Udaya Kumari</td>
                 </tr>
+                <tr>
+                  <td style="color:#334155;">BSCI</td>
+                  <td style="color:#334155;">Acme (Sample)</td>
+                  <td>Rs. 28,000.00</td>
+                  <td>20/2/2026</td>
+                  <td>Proposal</td>
+                  <td>65%</td>
+                  <td>Thilina Gunathilake</td>
+                </tr>
               </tbody>
             </table>
           </div>
@@ -4077,7 +4104,73 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
   </div>
   </div>
   <script>
+    function renderProbBars(root) {
+      var target = root || document;
+      var th = target.querySelector && target.querySelector('#forecasts table thead');
+      var probColIdx = -1;
+      if (th) {
+        Array.from(th.querySelectorAll('th')).forEach(function(cell, i) {
+          if (/probability/i.test(cell.textContent)) probColIdx = i;
+        });
+      }
+      if (probColIdx < 0) return;
+      var rows = target.querySelectorAll ? target.querySelectorAll('#forecasts table tbody tr') : [];
+      rows.forEach(function(row) {
+        var td = row.cells[probColIdx];
+        if (!td || td.querySelector('.prob-cell')) return;
+        var pct = parseFloat(td.textContent.trim().replace('%', ''));
+        if (isNaN(pct)) return;
+        var color, gradStart, label;
+        if (pct >= 90)      { color='#22c55e'; gradStart='#4ade80'; label='High'; }
+        else if (pct >= 50) { color='#f59e0b'; gradStart='#fbbf24'; label='Med';  }
+        else                { color='#ef4444'; gradStart='#f87171'; label='Low';  }
+        var headLeft = 'calc(' + pct + '% - 6px)';
+        td.innerHTML =
+          '<div class="prob-cell">' +
+            '<div class="prob-top">' +
+              '<span class="prob-num" style="color:' + color + ';">' + pct + '%</span>' +
+            '</div>' +
+            '<div class="prob-bar-wrap">' +
+              '<div class="prob-bar-track">' +
+                '<div class="prob-bar-fill" style="width:' + pct + '%;background:linear-gradient(90deg,' + gradStart + ',' + color + ');"></div>' +
+              '</div>' +
+              '<span class="prob-bar-head" style="left:' + headLeft + ';background:' + color + ';"></span>' +
+            '</div>' +
+          '</div>';
+      });
+    }
+
+    function renderStageChips(root) {
+      var target = root || document;
+      var th = target.querySelector && target.querySelector('#forecasts table thead');
+      var stageColIdx = -1;
+      if (th) {
+        Array.from(th.querySelectorAll('th')).forEach(function(cell, i) {
+          if (/^stage$/i.test(cell.textContent.trim())) stageColIdx = i;
+        });
+      }
+      if (stageColIdx < 0) return;
+      var rows = target.querySelectorAll ? target.querySelectorAll('#forecasts table tbody tr') : [];
+      rows.forEach(function(row) {
+        var td = row.cells[stageColIdx];
+        if (!td || td.querySelector('.fc-stage-chip')) return;
+        var raw = td.textContent.trim();
+        if (!raw) return;
+        var key = raw.toLowerCase().replace(/\s+/g, '-');
+        var cls = 'fc-stage-default';
+        if (key === 'closed-won')     cls = 'fc-stage-closed-won';
+        else if (key === 'closed-lost')   cls = 'fc-stage-closed-lost';
+        else if (key === 'prospecting')   cls = 'fc-stage-prospecting';
+        else if (key === 'negotiation')   cls = 'fc-stage-negotiation';
+        else if (key === 'qualification') cls = 'fc-stage-qualification';
+        else if (key === 'proposal')      cls = 'fc-stage-proposal';
+        td.innerHTML = '<span class="fc-stage-chip ' + cls + '">' + raw + '</span>';
+      });
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
+      renderProbBars();
+      renderStageChips();
       const tabs = Array.from(document.querySelectorAll('[data-tab]'));
       const panels = Array.from(document.querySelectorAll('main section[id]'));
       function activate(tabName, push = true) {
