@@ -1519,9 +1519,25 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
         <!-- Home Dashboard Panel (Redesigned) -->
         <section id="home"
           class="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm overflow-hidden">
-          <!-- Welcome Header -->
-          <div class="mb-8 flex flex-col md:flex-row md:items-center gap-4">
-            <div>
+          <!-- KPI Header + Currency Selector -->
+          <div class="mb-4 flex items-center justify-between">
+            <div class="text-sm font-semibold text-slate-500 tracking-wide uppercase">KPI Overview</div>
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-slate-400" style="font-size:18px;">currency_exchange</span>
+              <label for="kpiCurrencySelect" class="text-xs text-slate-500 font-medium">Display Currency</label>
+              <select id="kpiCurrencySelect" style="
+                border:1px solid #e2e8f0; border-radius:8px; padding:4px 28px 4px 10px;
+                font-size:0.78rem; font-weight:600; color:#1b1e42; background:#f8fafc;
+                cursor:pointer; outline:none; appearance:none;
+                background-image:url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22><path fill=%22%2364748b%22 d=%22M4 6l4 4 4-4%22 stroke=%22%2364748b%22 stroke-width=%221.5%22 fill=%22none%22/></svg>');
+                background-repeat:no-repeat; background-position:right 6px center; background-size:14px;">
+                <option value="LKR">LKR – Sri Lanka</option>
+                <option value="USD">USD – US Dollar</option>
+                <option value="BDT">BDT – Bangladesh</option>
+                <option value="CNY">CNY – China</option>
+                <option value="HKD">HKD – Hong Kong</option>
+                <option value="INR">INR – India</option>
+              </select>
             </div>
           </div>
 
@@ -1562,7 +1578,7 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
             </div>
             <div class="kpi-card kpi-revenue">
               <span class="kpi-icon kpi-revenue-icon material-symbols-outlined">payments</span>
-              <div class="kpi-value">$128,000</div>
+              <div class="kpi-value" id="kpiRevenueValue" data-base="LKR" data-raw="7778308371.50">LKR 7,778,308,371.50</div>
               <div class="kpi-label">Total Revenue</div>
             </div>
             <style>
@@ -5223,6 +5239,52 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
         }
       }, 700);
     });
+  </script>
+
+  <script>
+    /* KPI multi-currency revenue formatter.
+       data-raw stores the amount in data-base currency (LKR).
+       Exchange rates: 1 unit of each currency = X LKR.
+       To convert LKR → target: divide raw by rate[target]. */
+    (function () {
+      var RATES_TO_LKR = {
+        LKR: 1,
+        USD: 305.50,
+        BDT: 2.78,
+        CNY: 42.10,
+        HKD: 39.20,
+        INR: 3.66
+      };
+
+      function abbreviate(num) {
+        if (num >= 1e12) return (num / 1e12).toFixed(2).replace(/\.?0+$/, '') + 'T';
+        if (num >= 1e9)  return (num / 1e9 ).toFixed(2).replace(/\.?0+$/, '') + 'B';
+        if (num >= 1e6)  return (num / 1e6 ).toFixed(2).replace(/\.?0+$/, '') + 'M';
+        if (num >= 1e3)  return (num / 1e3 ).toFixed(2).replace(/\.?0+$/, '') + 'K';
+        return num.toLocaleString(undefined, { maximumFractionDigits: 2 });
+      }
+
+      function updateRevenue(currency) {
+        var el = document.getElementById('kpiRevenueValue');
+        if (!el) return;
+        var rawLKR = parseFloat(el.getAttribute('data-raw'));
+        if (isNaN(rawLKR)) return;
+        var rate = RATES_TO_LKR[currency] || 1;
+        var converted = rawLKR / rate;
+        var fullFormatted = currency + ' ' + converted.toLocaleString(undefined, { maximumFractionDigits: 2 });
+        el.title = fullFormatted;                    /* hover tooltip shows exact full value */
+        el.textContent = currency + ' ' + abbreviate(converted);
+      }
+
+      document.addEventListener('DOMContentLoaded', function () {
+        var sel = document.getElementById('kpiCurrencySelect');
+        if (!sel) return;
+        updateRevenue(sel.value);
+        sel.addEventListener('change', function () {
+          updateRevenue(this.value);
+        });
+      });
+    })();
   </script>
 
 </body>

@@ -449,6 +449,19 @@
     @media (max-width: 1280px) {
       .sales-pool-table { min-width: 1100px; }
     }
+    #toast-container {
+      position: fixed; bottom: 20px; right: 20px; z-index: 9999;
+      display: flex; flex-direction: column; gap: 10px;
+    }
+    .toast-item {
+      background: #1b1e42; color: #fff; padding: 12px 20px;
+      border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+      transform: translateY(40px); opacity: 0; transition: all 0.3s ease;
+      display: flex; align-items: center; gap: 10px; min-width: 240px;
+    }
+    .toast-item.show { transform: translateY(0); opacity: 1; }
+    .toast-item.success { border-left: 4px solid #10b981; }
+    .toast-item.error { border-left: 4px solid #ef4444; }
   </style>
 </head>
 
@@ -620,7 +633,7 @@
             <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full"></span>
           </button>
           <div class="flex items-center space-x-3">
-            <img alt="User avatar" class="w-10 h-10 rounded-full object-cover" src="https://i.pravatar.cc/200?u=soe-man" />
+            <img alt="User avatar" class="w-10 h-10 rounded-full object-cover" src="https://i.pravatar.cc/200?u=soe-man" onerror="handleImageError(event)" />
             <div>
               <div class="font-semibold text-sm text-white">Nisal Amarasekara</div>
               <div class="text-xs text-slate-400">Sri Lanka</div>
@@ -639,20 +652,8 @@
       <main class="upcoming-page-main p-5 lg:p-7">
         <div class="upcoming-page-inner">
 
-          <!-- Sale / Events tabs (same style as My Dashboard toggle on index.html) -->
-          <div class="flex flex-wrap items-center gap-4 mb-5">
-            <div class="flex items-center gap-2 bg-white p-1 rounded-xl shadow-sm border border-slate-200" id="upcomingViewTabs" role="tablist">
-              <button type="button" role="tab" aria-selected="true" data-upcoming-tab="sale" class="upcoming-tab-btn px-4 py-2 bg-cu-dark-blue text-white rounded-lg text-sm font-semibold flex items-center transition-colors">
-                <span class="material-symbols-outlined mr-2 text-base">sell</span>Sale
-              </button>
-              <button type="button" role="tab" aria-selected="false" data-upcoming-tab="events" class="upcoming-tab-btn px-4 py-2 bg-white text-[#1b1e42] rounded-lg text-sm font-semibold flex items-center hover:bg-slate-50 transition-colors">
-                <span class="material-symbols-outlined mr-2 text-base">event_upcoming</span>Events
-              </button>
-            </div>
-          </div>
-
-          <!-- Sale tab panel -->
-          <div id="panel-sale" class="upcoming-tab-panel" role="tabpanel">
+          <!-- Sale tab panel (Hidden by default) -->
+          <div id="panel-sale" class="upcoming-tab-panel hidden" role="tabpanel">
             <div class="flex flex-wrap items-start justify-between gap-4 mb-5">
               <h1 class="text-3xl font-extrabold text-slate-900 flex items-center gap-2">
                 <span class="material-symbols-outlined text-[#3eb2ed] text-4xl">sell</span>
@@ -686,8 +687,8 @@
             </div>
           </div>
 
-          <!-- Events tab panel -->
-          <div id="panel-events" class="upcoming-tab-panel hidden" role="tabpanel">
+          <!-- Events tab panel (Visible by default) -->
+          <div id="panel-events" class="upcoming-tab-panel" role="tabpanel">
           <!-- Page Header (aligned with Office Calendar) -->
           <div class="mb-5">
             <h1 class="text-3xl font-extrabold text-slate-900 flex items-center gap-2">
@@ -792,7 +793,7 @@
             <!-- Clients with Units (Left) -->
             <div class="lg:col-span-3 bg-white rounded-2xl border border-gray-200 overflow-hidden" style="box-shadow:0 2px 12px rgba(0,0,0,.04);">
               <div class="p-5 border-b border-gray-100">
-                <h2 class="text-base font-bold text-slate-900">Clients & Units</h2>
+                <h2 class="text-base font-bold text-slate-900">Accounts</h2>
                 <p class="text-sm text-slate-500 mt-0.5">Select a client to plan units</p>
               </div>
               <div class="divide-y divide-gray-100" id="clientList"></div>
@@ -835,7 +836,10 @@
     </div>
   </div>
 
-  <!-- Add New Sale modal -->
+  <!-- Toast Notification Container -->
+  <div id="toast-container"></div>
+
+  <!-- Add New Sale modal (Kept intact, hidden by default) -->
   <div id="addSaleModal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4 bg-black/40" role="dialog" aria-modal="true" aria-labelledby="addSaleModalTitle">
     <div class="absolute inset-0" id="addSaleModalBackdrop" aria-hidden="true"></div>
     <div class="sale-modal-card relative w-full bg-white shadow-2xl">
@@ -979,26 +983,7 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', function () {
-      function switchUpcomingTab(tab) {
-        var activeBtn = document.querySelector('[data-upcoming-tab="' + tab + '"]');
-        document.querySelectorAll('.upcoming-tab-panel').forEach(function (panel) {
-          panel.classList.add('hidden');
-        });
-        var activePanel = document.getElementById('panel-' + tab);
-        if (activePanel) activePanel.classList.remove('hidden');
-        document.querySelectorAll('[data-upcoming-tab]').forEach(function (b) {
-          var isActive = b === activeBtn;
-          b.setAttribute('aria-selected', isActive ? 'true' : 'false');
-          b.classList.toggle('bg-cu-dark-blue', isActive);
-          b.classList.toggle('text-white', isActive);
-          b.classList.toggle('bg-white', !isActive);
-          b.classList.toggle('text-[#1b1e42]', !isActive);
-          b.classList.toggle('hover:bg-slate-50', !isActive);
-        });
-      }
-
-      var initialUpcomingTab = (window.location.hash === '#events') ? 'events' : 'sale';
-      switchUpcomingTab(initialUpcomingTab);
+      // Tab toggle logic removed because tab bar was deleted. Showing Events directly.
 
       var upcomingNavLink = document.querySelector('#sidebar a[href="upcoming.html"]');
       if (upcomingNavLink) {
@@ -1011,11 +996,25 @@
         }
       }
 
-      document.querySelectorAll('[data-upcoming-tab]').forEach(function (btn) {
-        btn.addEventListener('click', function () {
-          switchUpcomingTab(btn.getAttribute('data-upcoming-tab'));
-        });
-      });
+      // ==================== INTERACTIVE TOAST NOTIFICATION ====================
+      function showToast(message, type = 'success') {
+        var container = document.getElementById('toast-container');
+        var toast = document.createElement('div');
+        var icon = type === 'success' ? 'check_circle' : 'error';
+        toast.className = 'toast-item ' + type;
+        toast.innerHTML = '<span class="material-symbols-outlined text-base">' + icon + '</span><span>' + message + '</span>';
+        container.appendChild(toast);
+        setTimeout(function() { toast.classList.add('show'); }, 10);
+        setTimeout(function() {
+          toast.classList.remove('show');
+          setTimeout(function() { toast.remove(); }, 300);
+        }, 3500);
+      }
+
+      function handleImageError(event) {
+        showToast('Cannot read "image.png" (this model does not support image input).', 'error');
+        if (event.target) event.target.style.display = 'none';
+      }
 
       // ==================== UPCOMING SALES POOL ====================
       var saleFieldOptions = {
@@ -1497,11 +1496,14 @@
         { name: 'Nisal Amarasekara', role: 'Senior Auditor', initials: 'NA', color: 'from-blue-600 to-blue-800', rating: 4.8, location: 'Galle, Sri Lanka', availability: 'Available', quals: ['ISO 9001','GOTS','Organic'], experience: '12 similar audits', distance: '0 km', matchScore: 95, reasons: ['Expert qualification match','Same city - no travel costs','High client satisfaction (4.9/5)','Available during requested dates'] },
         { name: 'David Kim', role: 'Lead Auditor', initials: 'DK', color: 'from-violet-600 to-violet-800', rating: 4.9, location: 'Kandy, Sri Lanka', availability: 'Available', quals: ['ISO 9001','ISO 14001','ISO 45001'], experience: '25 similar audits', distance: '115 km', matchScore: 88, reasons: ['Highest experience level','Top performer (4.9 rating)','Requires travel coordination','Premium auditor rate'] },
         { name: 'Lisa Anderson', role: 'Auditor', initials: 'LA', color: 'from-rose-500 to-rose-700', rating: 4.7, location: 'Colombo, Sri Lanka', availability: 'Available (after Jun 8)', quals: ['GOTS','ISO 9001','ISO 14001'], experience: '8 similar audits', distance: '130 km', matchScore: 82, reasons: ['Good qualification match','Cost-effective option','Local - no travel required','Limited availability window'] },
+        { name: 'James Wilson', role: 'Lead Auditor', initials: 'JW', color: 'from-emerald-600 to-emerald-800', rating: 4.6, location: 'Kandy, Sri Lanka', availability: 'Available', quals: ['ISO 9001','ISO 14001'], experience: '15 similar audits', distance: '115 km', matchScore: 85, reasons: ['Strong qualification match','Good experience level','Requires travel coordination'] },
+        { name: 'Sarah Chen', role: 'Senior Auditor', initials: 'SC', color: 'from-amber-600 to-amber-800', rating: 4.5, location: 'Colombo, Sri Lanka', availability: 'Available', quals: ['GOTS','ISO 9001'], experience: '10 similar audits', distance: '0 km', matchScore: 80, reasons: ['Good qualification match','Local - no travel costs','Cost-effective option'] }
       ];
 
       var selectedClient = null;
       var selectedUnit = null;
       var selectedUnitIds = [];
+      var selectedAuditorName = null;
 
       // ==================== RENDER CLIENTS ====================
       function renderClients() {
@@ -1523,20 +1525,41 @@
             invoiceBadgeText = 'Overdue';
           }
 
+          // Get unique audit types for this client to display multiple chips
+          var uniqueAuditTypes = [];
+          c.units.forEach(function(u) {
+              if (uniqueAuditTypes.indexOf(u.auditType) === -1) {
+                  uniqueAuditTypes.push(u.auditType);
+              }
+          });
+
           html += '<button type="button" data-client="' + c.id + '" class="audit-card w-full text-left p-4 hover:bg-slate-50 ' + (isSelected ? 'selected' : '') + '">';
           html += '<div class="flex items-start justify-between mb-1.5">';
           html += '<h3 class="font-semibold text-slate-900 text-base">' + c.name + '</h3>';
-          html += '<span class="px-2 py-0.5 text-xs font-bold rounded-full ' + (planned === total ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700') + '">' + planned + '/' + total + '</span>';
+          
+          // UPDATED: "Complete" badge when all units are assigned
+          if (planned === total) {
+            html += '<span class="px-2 py-0.5 text-xs font-bold rounded-full bg-emerald-100 text-emerald-700 flex items-center gap-1"><span class="material-symbols-outlined text-sm">check_circle</span> Complete</span>';
+          } else {
+            html += '<span class="px-2 py-0.5 text-xs font-bold rounded-full bg-amber-100 text-amber-700">' + planned + '/' + total + '</span>';
+          }
+
           html += '</div>';
           html += '<div class="space-y-1 text-sm text-slate-500">';
           html += '<div class="flex items-center gap-1.5"><span class="material-symbols-outlined text-base">location_on</span>' + c.location + '</div>';
           html += '<div class="flex items-center gap-1.5"><span class="material-symbols-outlined text-base">apartment</span>' + total + ' unit' + (total > 1 ? 's' : '') + '</div>';
           html += '<div class="flex items-center justify-between gap-1.5"><span class="inline-flex items-center gap-1.5"><span class="material-symbols-outlined text-base">receipt_long</span>Previous Invoice</span><span class="px-2 py-0.5 text-xs font-semibold rounded-full ' + invoiceBadgeCls + '">' + invoiceBadgeText + '</span></div>';
           html += '</div>';
-          html += '<div class="flex gap-1.5 mt-2">';
-          html += '<span class="px-2 py-0.5 bg-blue-100 text-blue-800 text-xs font-medium rounded-full">' + c.sector + '</span>';
+          
+          html += '<div class="flex flex-wrap gap-1.5 mt-2">';
+          // Loop through unique audit types to create multiple chips (e.g., ISO 9001 & ISO 14001)
+          uniqueAuditTypes.forEach(function(type) {
+              html += '<span class="px-2 py-0.5 bg-blue-100 text-blue-800 text-xs font-medium rounded-full">' + type + '</span>';
+          });
+          // Complexity chip
           html += '<span class="px-2 py-0.5 ' + complexCls + ' text-xs font-medium rounded-full">' + c.complexity + '</span>';
           html += '</div>';
+          
           html += '<div class="mt-2.5"><div class="w-full h-1.5 bg-gray-100 rounded-full overflow-hidden"><div class="h-full rounded-full transition-all ' + (planned === total ? 'bg-emerald-500' : 'bg-amber-400') + '" style="width:' + pct + '%"></div></div></div>';
           html += '</button>';
         });
@@ -1567,7 +1590,7 @@
         var c = selectedClient;
         var planned = c.units.filter(function (u) { return u.status === 'assigned'; }).length;
         var selectedCount = selectedUnitIds.length;
-        title.textContent = c.name + ' â€” Units';
+        title.textContent = c.name + ' — Units';
 
         var html = '';
         // Progress header
@@ -1614,6 +1637,16 @@
         });
         html += '</div>';
 
+        // UPDATED: Add Finalize button if all units are assigned
+        if (planned === c.units.length && c.units.length > 0) {
+          html += '<div class="px-5 py-4 border-t border-gray-100 bg-emerald-50/70 text-center">';
+          html += '<button id="unitPanelFinalizeBtn" class="w-full px-4 py-3 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-bold rounded-lg flex items-center justify-center gap-2 transition shadow-sm">';
+          html += '<span class="material-symbols-outlined text-base">checklist</span> Finalize Planning for ' + c.name;
+          html += '</button>';
+          html += '<p class="text-xs text-emerald-700 mt-2">All units assigned. Click to complete the planning phase.</p>';
+          html += '</div>';
+        }
+
         body.innerHTML = html;
 
         // Unit click handlers
@@ -1652,9 +1685,38 @@
         }
       }
 
+      // ==================== DELEGATED EVENT FOR FINALIZE BUTTON ====================
+      document.getElementById('unitPanel').addEventListener('click', function(e) {
+        var target = e.target.closest('#unitPanelFinalizeBtn');
+        if (target && selectedClient) {
+          target.disabled = true;
+          target.innerHTML = '<span class="material-symbols-outlined text-base animate-spin">progress_activity</span> Finalizing...';
+          setTimeout(function() {
+            showToast('Success! Planning for ' + selectedClient.name + ' has been finalized.', 'success');
+            var btn = document.getElementById('unitPanelFinalizeBtn');
+            if(btn) btn.remove();
+            // Optionally re-render to update UI state further
+            renderUnitPanel();
+          }, 1200);
+        }
+      });
+
       // ==================== RENDER RECOMMENDATIONS ====================
+      function getAssignedAuditorNames() {
+        var assigned = [];
+        clients.forEach(function (c) {
+          c.units.forEach(function (u) {
+            if (u.assignee && assigned.indexOf(u.assignee) === -1) assigned.push(u.assignee);
+          });
+        });
+        return assigned;
+      }
+
       function rankAuditorsForUnits(units) {
-        return auditors.map(function (a) {
+        var assignedAuditors = getAssignedAuditorNames();
+        return auditors
+          .filter(function (a) { return assignedAuditors.indexOf(a.name) === -1; })
+          .map(function (a) {
           var requiredTypes = [];
           units.forEach(function (u) {
             if (requiredTypes.indexOf(u.auditType) === -1) requiredTypes.push(u.auditType);
@@ -1691,8 +1753,8 @@
         if (isAssignAll) {
           recommendationUnits = selectedClient.units.filter(function (u) { return u.status === 'pending'; });
         } else if (selectedUnitIds.length > 0) {
-          recommendationUnits = selectedClient.units.filter(function (u) { return selectedUnitIds.indexOf(u.id) !== -1; });
-        } else if (selectedUnit) {
+          recommendationUnits = selectedClient.units.filter(function (u) { return selectedUnitIds.indexOf(u.id) !== -1 && u.status === 'pending'; });
+        } else if (selectedUnit && selectedUnit.status === 'pending') {
           recommendationUnits = [selectedUnit];
         }
 
@@ -1716,14 +1778,31 @@
 
         var rankedAuditors = rankAuditorsForUnits(recommendationUnits);
         var html = '';
+
+        if (rankedAuditors.length === 0) {
+          var unitsLabel = recommendationUnits.length > 1 ? 'Recommendations for ' + recommendationUnits.length + ' selected units' : (selectedUnit ? 'Recommendations for ' + selectedUnit.name + ' (' + selectedUnit.auditType + ')' : 'Recommendations');
+          recTitle.textContent = unitsLabel;
+          recEmpty.classList.remove('hidden');
+          recCards.classList.add('hidden');
+          recEmpty.innerHTML = '<span class="material-symbols-outlined text-5xl opacity-40">task_alt</span><p class="mt-3 text-base">All available auditors have been assigned to units. No more auditors are left for this unit.</p>';
+          return;
+        }
+
+        // Default selection: highest-ranked (top) auditor is preselected; a previous
+        // selection is kept only while it is still a valid recommendation.
+        var hasValidSelection = selectedAuditorName && rankedAuditors.some(function (e) { return e.auditor.name === selectedAuditorName; });
+        if (!hasValidSelection) selectedAuditorName = rankedAuditors[0].auditor.name;
+
         rankedAuditors.forEach(function (entry, idx) {
           var a = entry.auditor;
           var effectiveScore = entry.score;
+          var isSelected = a.name === selectedAuditorName;
           var scoreColor = effectiveScore >= 90 ? 'text-emerald-700 bg-emerald-50' : effectiveScore >= 80 ? 'text-blue-700 bg-blue-50' : 'text-amber-700 bg-amber-50';
-          html += '<div class="rec-card border border-gray-200 rounded-xl p-5">';
+          html += '<div class="rec-card border rounded-xl p-5 transition ' + (isSelected ? 'border-[#3eb2ed] ring-2 ring-[#3eb2ed]/20 bg-blue-50/30' : 'border-gray-200') + '" data-card-auditor="' + a.name + '">';
           html += '<div class="flex items-start justify-between mb-3">';
           html += '<div class="flex items-start gap-3 flex-1">';
-          html += '<div class="w-12 h-12 bg-gradient-to-br ' + a.color + ' rounded-full flex items-center justify-center flex-shrink-0"><span class="text-white font-semibold text-base">' + a.initials + '</span></div>';
+          html += '<div class="relative flex-shrink-0"><div class="w-12 h-12 bg-gradient-to-br ' + a.color + ' rounded-full flex items-center justify-center"><span class="text-white font-semibold text-base">' + a.initials + '</span></div>';
+          html += '<div class="absolute -bottom-1 -right-1 w-5 h-5 rounded-full border-2 ' + (isSelected ? 'bg-[#3eb2ed] border-white' : 'bg-white border-slate-300') + ' flex items-center justify-center"><span class="material-symbols-outlined ' + (isSelected ? 'text-white' : 'text-transparent') + '" style="font-size:13px">check</span></div></div>';
           html += '<div class="flex-1 min-w-0">';
           html += '<div class="flex items-center gap-2 mb-0.5"><h3 class="font-bold text-slate-900 text-base">' + a.name + '</h3><span class="text-sm text-slate-500">&bull; ' + a.role + '</span></div>';
           html += '<div class="flex flex-wrap items-center gap-3 text-sm text-slate-500 mb-2">';
@@ -1737,8 +1816,8 @@
           html += '</div></div></div>';
           html += '<span class="px-3 py-1.5 rounded-lg font-bold text-base ' + scoreColor + '">' + effectiveScore + '% Match</span>';
           html += '</div>';
-          if (recommendationUnits.length > 1 && idx === 0) {
-            html += '<div class="mb-3"><span class="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-semibold rounded-full bg-emerald-100 text-emerald-800"><span class="material-symbols-outlined text-sm">auto_awesome</span>Best for selected units</span></div>';
+          if (idx === 0) {
+            html += '<div class="mb-3"><span class="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-semibold rounded-full bg-emerald-100 text-emerald-800"><span class="material-symbols-outlined text-sm">auto_awesome</span>Best match &bull; selected by default</span></div>';
           }
           html += '<div class="grid grid-cols-2 gap-3 mb-3 text-sm">';
           html += '<div><span class="text-slate-400">Distance:</span><span class="ml-1 text-slate-800 font-medium">' + a.distance + '</span></div>';
@@ -1752,10 +1831,10 @@
           });
           html += '</ul></div>';
           html += '<div class="flex gap-2">';
-          if (isAssignAll) {
-            html += '<button class="assign-all-auditor flex-1 px-4 py-2.5 bg-[#1b1e42] hover:bg-[#2a2e55] text-white text-sm font-semibold rounded-lg transition flex items-center justify-center gap-1.5" data-auditor="' + a.name + '"><span class="material-symbols-outlined text-base">group_add</span>Assign to All Pending Units</button>';
+          if (isSelected) {
+            html += '<button class="assign-auditor flex-1 px-4 py-2.5 ' + (isAssignAll ? 'bg-[#1b1e42] hover:bg-[#2a2e55]' : 'bg-[#3eb2ed] hover:bg-[#2ea2d6]') + ' text-white text-sm font-semibold rounded-lg transition flex items-center justify-center gap-1.5" data-auditor="' + a.name + '" data-action="assign">' + (isAssignAll ? '<span class="material-symbols-outlined text-base">group_add</span>Assign to All Pending Units' : 'Assign Auditor') + '</button>';
           } else {
-            html += '<button class="assign-unit-auditor flex-1 px-4 py-2.5 bg-[#3eb2ed] hover:bg-[#2ea2d6] text-white text-sm font-semibold rounded-lg transition" data-auditor="' + a.name + '">Assign Auditor</button>';
+            html += '<button class="assign-auditor flex-1 px-4 py-2.5 border border-[#3eb2ed] text-[#3eb2ed] hover:bg-[#e0f2fe] text-sm font-semibold rounded-lg transition flex items-center justify-center gap-1.5" data-auditor="' + a.name + '" data-action="select"><span class="material-symbols-outlined text-base">check</span>Select</button>';
           }
           html += '<a href="myprofile.html" class="px-4 py-2.5 border border-gray-200 text-slate-700 text-sm font-medium rounded-lg hover:bg-slate-50 transition inline-flex items-center justify-center">View Profile</a>';
           html += '</div></div>';
@@ -1768,11 +1847,33 @@
         recCards.offsetHeight;
         recCards.style.animation = 'fadeUp .35s ease forwards';
 
-        // Assign to single unit
-        recCards.querySelectorAll('.assign-unit-auditor').forEach(function (btn) {
+        // Click a card to select its auditor
+        recCards.querySelectorAll('[data-card-auditor]').forEach(function (card) {
+          card.addEventListener('click', function (e) {
+            if (e.target.closest('button, a')) return;
+            var name = card.getAttribute('data-card-auditor');
+            if (name !== selectedAuditorName) {
+              selectedAuditorName = name;
+              renderRecommendations(isAssignAll);
+            }
+          });
+        });
+
+        // Select / assign auditor
+        recCards.querySelectorAll('.assign-auditor').forEach(function (btn) {
           btn.addEventListener('click', function () {
             var auditorName = btn.getAttribute('data-auditor');
-            if (selectedUnitIds.length > 0) {
+            if (btn.getAttribute('data-action') === 'select') {
+              selectedAuditorName = auditorName;
+              renderRecommendations(isAssignAll);
+              return;
+            }
+            if (isAssignAll) {
+              selectedClient.units.forEach(function (u) {
+                if (u.status === 'pending') { u.status = 'assigned'; u.assignee = auditorName; }
+              });
+              selectedUnit = null;
+            } else if (selectedUnitIds.length > 0) {
               // Multi-select flow: assign selected pending units
               selectedClient.units.forEach(function (u) {
                 if (selectedUnitIds.indexOf(u.id) !== -1 && u.status === 'pending') {
@@ -1786,20 +1887,7 @@
               selectedUnit.status = 'assigned';
               selectedUnit.assignee = auditorName;
             }
-            renderClients();
-            renderUnitPanel();
-            renderRecommendations();
-          });
-        });
-
-        // Assign to all pending units
-        recCards.querySelectorAll('.assign-all-auditor').forEach(function (btn) {
-          btn.addEventListener('click', function () {
-            var name = btn.getAttribute('data-auditor');
-            selectedClient.units.forEach(function (u) {
-              if (u.status === 'pending') { u.status = 'assigned'; u.assignee = name; }
-            });
-            selectedUnit = null;
+            selectedAuditorName = null;
             renderClients();
             renderUnitPanel();
             renderRecommendations();
@@ -1813,5 +1901,3 @@
   </script>
 </body>
 </html>
-
-

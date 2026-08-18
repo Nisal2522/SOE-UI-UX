@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>Employee Performance Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&amp;display=swap"
+    rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+    rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com?plugins=forms,typography,container-queries"></script>
+  <style type="text/tailwindcss">
+    :root {
+      --cu-light-blue: #3eb2ed;
+      --cu-dark-blue: #1b1e42;
+      --cu-light-grey: #799495;
+      --cu-dark-grey: #4f6566;
+      --cu-white: #ffffff;
+      --cu-light-blue-20: #d8f0fb;
+      --cu-light-blue-40: #b2e0f8;
+      --cu-light-blue-60: #8bd1f4;
+      --cu-light-blue-80: #65c1f1;
+      --cu-dark-blue-20: #d1d2d9;
+      --cu-dark-blue-40: #a4a5b3;
+      --cu-dark-blue-60: #76788e;
+      --cu-dark-blue-80: #494b68;
+      --brand-blue-deep: #032ea1;
+      --brand-red: #e00025;
+      --page-bg: #ffffff;
+      --page-bg-2: #f0f2f7;
+
+      --color-background: var(--page-bg);
+      --color-sidebar: var(--cu-dark-blue);
+      --color-text-primary: #0f172a;
+      --color-text-secondary: #64748b;
+      --color-text-inverted: var(--cu-white);
+      --color-border: #e2e8f0;
+      --bg-main: var(--page-bg);
+      --card-bg: #ffffff;
+      --card-border: #e2e8f0;
+
+      /* Text sitting directly on the page — same as --ink-* below now that cards are light again, kept as separate tokens so either can be retuned independently */
+      --page-ink-primary: #0f172a;
+      --page-ink-secondary: #64748b;
+
+      /* Performance status scale — reserved meaning, never reused for series identity. Exceptional reuses the brand's dark navy rather than a bright blue. */
+      --status-exceptional: #1b1e42;
+      --status-exceptional-bg: rgba(27,30,66,0.08);
+      --status-expected: #16a34a;
+      --status-expected-bg: rgba(22,163,74,0.1);
+      --status-medium: #FFCE1B;
+      --status-medium-bg: rgba(255,206,27,0.15);
+      --status-low: #dc2626;
+      --status-low-bg: rgba(220,38,38,0.1);
+
+      /* Categorical identity slots — fixed order, distinct from the status hues above */
+      --cat-1: #1b1e42;
+      --cat-2: #3eb2ed;
+      --cat-3: #7c3aed;
+      --cat-4: #0d9488;
+      --cat-5: #ea580c;
+      --cat-6: #f472b6;
+      --cat-7: #94a3b8;
+      --cat-8: #4f46e5;
+
+      --ink-primary: #0f172a;
+      --ink-secondary: #64748b;
+      --ink-muted: #94a3b8;
+      --grid-line: #eef1f6;
+    }
+  </style>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ["Poppins", "sans-serif"] },
+          colors: {
+            background: 'var(--color-background)',
+            sidebar: 'var(--color-sidebar)',
+            card: { DEFAULT: 'var(--card-bg)', border: 'var(--card-border)' },
+            border: 'var(--color-border)',
+            'cu-light-blue': 'var(--cu-light-blue)',
+            'cu-dark-blue': 'var(--cu-dark-blue)',
+            'cu-light-grey': 'var(--cu-light-grey)',
+            'cu-dark-grey': 'var(--cu-dark-grey)',
+            'bg-main': 'var(--bg-main)',
+            text: { primary: 'var(--color-text-primary)', secondary: 'var(--color-text-secondary)', inverted: 'var(--color-text-inverted)' }
+          },
+        },
+      },
+    };
+  </script>
+  <style>
+    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24; vertical-align: middle; }
+    .material-symbols-outlined.filled { font-variation-settings: 'FILL' 1, 'wght' 500, 'GRAD' 0, 'opsz' 24; }
+
+    body { background: var(--page-bg); }
+
+    .page-back-link { display: inline-flex; align-items: center; gap: 6px; font-size: 0.8125rem; font-weight: 500; color: var(--page-ink-secondary); text-decoration: none; transition: color .15s; }
+    .page-back-link:hover { color: var(--page-ink-primary); }
+    .page-back-link .material-symbols-outlined { font-size: 18px; }
+
+    /* ---- Compact profile header ---- */
+    .epd-header-row { display:flex; align-items:flex-start; justify-content:space-between; flex-wrap:wrap; gap:16px; padding-bottom:22px; margin-bottom:24px; border-bottom:1px solid var(--color-border); }
+    .epd-header-left { display:flex; align-items:center; gap:14px; }
+    .epd-avatar { width:52px; height:52px; border-radius:9999px; background:var(--cu-dark-blue); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:1rem; flex-shrink:0; letter-spacing:0.02em; }
+    .epd-header-name-row { display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+    .epd-header-name { font-size:1.375rem; font-weight:800; color:var(--page-ink-primary); letter-spacing:-0.01em; }
+    .epd-header-meta { display:flex; align-items:center; gap:8px; margin-top:5px; font-size:0.8125rem; color:var(--page-ink-secondary); flex-wrap:wrap; }
+    .epd-header-meta .meta-item { display:inline-flex; align-items:center; gap:4px; }
+    .epd-header-meta .material-symbols-outlined { font-size:16px; }
+    .epd-header-meta .meta-dot { color:var(--color-border); }
+    .epd-header-dept-select { border:none; background:transparent; font-size:0.8125rem; font-weight:500; color:var(--page-ink-secondary); cursor:pointer; padding:0 16px 0 0; appearance:none; -webkit-appearance:none;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat:no-repeat; background-position:right center; background-size:0.85rem; }
+    .epd-header-right { display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+    .epd-year-chip { display:inline-flex; align-items:center; gap:6px; font-size:0.8125rem; font-weight:600; color:var(--page-ink-secondary); }
+    .epd-year-chip .material-symbols-outlined { font-size:18px; }
+
+    .epd-control { position:relative; }
+    .epd-control-btn { display:inline-flex; align-items:center; gap:6px; border:1px solid var(--color-border); background:#fff; border-radius:9999px; padding:8px 14px; font-size:0.8125rem; font-weight:600; color:var(--ink-primary); cursor:pointer; transition:border-color .15s; }
+    .epd-control-btn:hover { border-color: var(--cu-light-blue); }
+    .epd-control-btn b { font-weight:700; }
+    .epd-control-btn .material-symbols-outlined { font-size:16px; color:var(--ink-secondary); }
+    .epd-period-panel { position:absolute; top:calc(100% + 8px); right:0; z-index:30; width:220px; background:#fff; border:1px solid var(--color-border); border-radius:14px; box-shadow:0 20px 40px -8px rgba(15,23,42,0.18); padding:8px; display:none; }
+    .epd-period-panel.open { display:block; }
+    .epd-period-row { display:flex; align-items:center; justify-content:space-between; padding:9px 12px; border-radius:8px; font-size:0.8125rem; color:var(--ink-primary); cursor:pointer; }
+    .epd-period-row:hover { background:#f8fafc; }
+    .epd-period-row.active { color: var(--cu-light-blue); font-weight:600; }
+    .epd-period-row .material-symbols-outlined { font-size:16px; visibility:hidden; }
+    .epd-period-row.active .material-symbols-outlined { visibility:visible; }
+    .epd-print-btn { display:inline-flex; align-items:center; gap:8px; background: var(--cu-dark-blue); color:#fff; border:none; border-radius:9999px; padding:10px 18px; font-size:0.8125rem; font-weight:700; cursor:pointer; box-shadow:0 8px 20px -6px rgba(27,30,66,0.4); transition:opacity .15s, transform .15s; }
+    .epd-print-btn:hover { opacity:0.92; transform:translateY(-1px); }
+    .epd-print-btn .material-symbols-outlined { font-size:18px; }
+
+    /* ---- Hero band (Final Performance Score) ---- */
+    .epd-hero-band { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:24px; background: linear-gradient(155deg, #12163f 0%, #1b2166 55%, #0c0f2c 100%); border-radius:20px; padding:28px 32px; margin-bottom:32px; box-shadow:0 20px 44px -20px rgba(11,15,42,0.55); }
+    .epd-hero-left { display:flex; align-items:center; gap:28px; }
+
+    /* ---- Hero insights: "what needs attention" + "what's working", not a raw restated number list ---- */
+    .epd-hero-insights { display:flex; align-items:stretch; gap:12px; }
+    .epd-hero-insight-card { display:flex; align-items:flex-start; gap:10px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1); border-radius:14px; padding:12px 16px; min-width:200px; }
+    .epd-hero-insight-card .material-symbols-outlined { font-size:22px; flex-shrink:0; margin-top:1px; }
+    .epd-hero-insight-card.attention { border-color:rgba(251,191,36,0.35); }
+    .epd-hero-insight-card.attention .material-symbols-outlined { color:#fbbf24; }
+    .epd-hero-insight-card.strength .material-symbols-outlined { color:#5b9dff; }
+    .epd-hero-insight-label { font-size:0.6875rem; font-weight:700; letter-spacing:0.05em; text-transform:uppercase; color:rgba(255,255,255,0.5); }
+    .epd-hero-insight-value { font-size:1rem; font-weight:800; color:#fff; margin-top:2px; letter-spacing:-0.01em; }
+    .epd-hero-insight-sub { font-size:0.75rem; color:rgba(255,255,255,0.55); margin-top:2px; }
+    .epd-hero-insight-action { display:inline-flex; align-items:center; gap:2px; font-size:0.75rem; font-weight:700; color:#93a0e6; margin-top:7px; text-decoration:none; cursor:pointer; background:none; border:none; padding:0; }
+    .epd-hero-insight-action .material-symbols-outlined { font-size:14px; margin:0; color:inherit; }
+    .epd-hero-insight-action:hover { color:#c2cdfa; }
+    @media (max-width:900px) { .epd-hero-insights { display:none; } }
+    .epd-hero-ring-wrap { position:relative; flex-shrink:0; }
+    .epd-hero-ring-wrap svg { transform:rotate(-90deg); display:block; }
+    .epd-hero-ring-center { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; color:#fff; font-size:1.375rem; font-weight:800; letter-spacing:-0.01em; }
+    .epd-hero-label { font-size:0.75rem; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:#93a0e6; }
+    .epd-hero-status-word { font-size:2rem; font-weight:800; color:#fff; letter-spacing:-0.01em; margin-top:2px; }
+    .epd-hero-sub { font-size:0.875rem; color:rgba(255,255,255,0.55); margin-top:6px; }
+
+    /* ---- Section heading ---- */
+    .epd-section-head { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; margin-bottom:14px; }
+    .epd-section-head-left { display:flex; align-items:center; gap:8px; }
+    .epd-section-head-left .material-symbols-outlined { font-size:20px; color:var(--page-ink-secondary); }
+    .epd-section-head-left .material-symbols-outlined.overview-icon { color:var(--cu-light-blue); }
+    .epd-section-head-left .material-symbols-outlined.contribution-icon { color:#7c3aed; }
+    .epd-section-head-left .material-symbols-outlined.trends-icon { color:#0d9488; }
+    .epd-section-title { font-size:1.0625rem; font-weight:700; color:var(--page-ink-primary); margin:0; }
+    .epd-section-sub { font-size:0.8125rem; color:var(--page-ink-secondary); margin-top:2px; }
+    .epd-section-head-divider { width:1px; height:18px; background:var(--color-border); margin:0 2px; }
+    .epd-section-head-tag { display:inline-flex; align-items:center; gap:5px; font-size:0.8125rem; font-weight:600; color:var(--page-ink-secondary); }
+    .epd-section-head-tag .material-symbols-outlined { font-size:17px; color:#16a34a; }
+
+    /* ---- Status legend (Performance Overview key) ---- */
+    .epd-status-legend { display:flex; align-items:center; gap:16px; flex-wrap:wrap; }
+    .epd-status-legend-item { display:flex; align-items:center; gap:6px; font-size:0.8125rem; }
+    .epd-status-legend-dot { width:8px; height:8px; border-radius:9999px; flex-shrink:0; }
+    .epd-status-legend-label { font-weight:500; color:var(--page-ink-secondary); }
+
+    /* ---- Status badge ---- */
+    .epd-status-badge { display:inline-flex; align-items:center; gap:5px; font-size:0.6875rem; font-weight:700; padding:3px 9px; border-radius:9999px; letter-spacing:0.01em; }
+    .epd-status-badge .material-symbols-outlined { font-size:14px; }
+
+    /* ---- KPI overview ---- */
+    .epd-kpi-grid { display:grid; grid-template-columns: repeat(5, 1fr); gap:18px; }
+    @media (max-width:1200px) { .epd-kpi-grid { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width:800px) { .epd-kpi-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width:520px) { .epd-kpi-grid { grid-template-columns: 1fr; } }
+    .epd-kpi-card { position:relative; background:#fff; border:1px solid var(--color-border); border-top:3px solid var(--accent); border-radius:14px; padding:24px 20px 26px; box-shadow:0 1px 3px rgba(15,23,42,0.04); transition:box-shadow .18s, transform .18s; }
+    .epd-kpi-card:hover { box-shadow:0 12px 28px -10px rgba(15,23,42,0.14); transform:translateY(-2px); }
+    .epd-kpi-top-row { display:flex; align-items:center; justify-content:space-between; gap:10px; }
+    .epd-kpi-icon-label { display:flex; align-items:center; gap:7px; font-size:0.75rem; font-weight:700; letter-spacing:0.04em; text-transform:uppercase; color:var(--ink-secondary); }
+    .epd-kpi-icon-label .material-symbols-outlined { font-size:18px; color:var(--accent); }
+    .epd-kpi-ring2-wrap { position:relative; flex-shrink:0; }
+    .epd-kpi-ring2-wrap svg { transform:rotate(-90deg); display:block; }
+    .epd-kpi-ring2-center { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:0.9375rem; font-weight:800; color:var(--ink-primary); letter-spacing:-0.02em; }
+    .epd-kpi-divider { border:none; border-top:1px solid var(--color-border); margin:20px 0 18px; }
+    .epd-kpi-bottom-row { display:flex; align-items:center; justify-content:space-between; gap:8px; }
+    .epd-kpi-delta { display:inline-flex; align-items:center; gap:3px; font-size:0.75rem; font-weight:700; font-variant-numeric: tabular-nums; }
+    .epd-kpi-delta .material-symbols-outlined { font-size:15px; }
+
+    /* ---- Contribution profile: analytics cards on white surfaces ---- */
+    .epd-contrib-sub { font-size:0.8125rem; color:var(--page-ink-secondary); margin:-10px 0 16px; }
+    .epd-contrib-grid { display:grid; grid-template-columns: repeat(3, 1fr); gap:16px; align-items:stretch; }
+    @media (max-width:1024px) { .epd-contrib-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width:640px) { .epd-contrib-grid { grid-template-columns: 1fr; } }
+    .epd-contrib-card { display:flex; flex-direction:column; background:#fff; border:1px solid var(--color-border); border-radius:16px; padding:18px; box-shadow:0 1px 3px rgba(15,23,42,0.04); transition:box-shadow .18s, transform .18s; }
+    .epd-contrib-card:hover { transform:translateY(-2px); box-shadow:0 12px 28px -10px rgba(15,23,42,0.12); }
+
+    /* Header — fixed, icon + title only, no aggregate number (moved to the footer stats) */
+    .epd-contrib-card-top { display:flex; align-items:center; gap:10px; margin-bottom:14px; flex-shrink:0; }
+    .epd-contrib-icon-tile { width:38px; height:38px; border-radius:11px; display:flex; align-items:center; justify-content:center; flex-shrink:0; box-shadow:0 6px 14px -4px rgba(0,0,0,0.25); }
+    .epd-contrib-icon-tile .material-symbols-outlined { color:#fff; font-size:20px; }
+    .epd-contrib-card-top-text h4 { font-size:0.9375rem; font-weight:700; color:var(--ink-primary); margin:0; }
+
+    /* Scrollable middle — fixed height so every card matches regardless of item count */
+    .epd-contrib-scroll-wrap { position:relative; height:216px; overflow-y:auto; scrollbar-width:thin; scrollbar-color:#cbd5e1 transparent; }
+    .epd-contrib-scroll-wrap::-webkit-scrollbar { width:6px; }
+    .epd-contrib-scroll-wrap::-webkit-scrollbar-track { background:transparent; }
+    .epd-contrib-scroll-wrap::-webkit-scrollbar-thumb { background:#cbd5e1; border-radius:9999px; }
+    .epd-contrib-scroll-wrap::-webkit-scrollbar-thumb:hover { background:#94a3b8; }
+    /* Fade hints, fixed to the viewport (not the scrolled content) via pseudo-elements on the wrapper itself */
+    .epd-contrib-card-body { position:relative; }
+    .epd-contrib-card-body::before, .epd-contrib-card-body::after { content:''; position:absolute; left:0; right:0; height:14px; pointer-events:none; z-index:2; }
+    .epd-contrib-card-body::before { top:0; background:linear-gradient(#fff, rgba(255,255,255,0)); }
+    .epd-contrib-card-body::after { bottom:0; background:linear-gradient(rgba(255,255,255,0), #fff); }
+
+    .epd-contrib-list { display:flex; flex-direction:column; gap:14px; padding:2px 2px 0; }
+    .epd-contrib-row { display:flex; flex-direction:column; gap:7px; padding:4px 6px; border-radius:8px; }
+    .epd-contrib-row-top { display:flex; align-items:center; gap:10px; }
+    .epd-contrib-row-bottom { display:flex; align-items:center; gap:10px; padding-left:32px; }
+    .epd-contrib-rank-badge { width:22px; height:22px; border-radius:9999px; background:#f1f5f9; color:var(--ink-secondary); font-size:0.6875rem; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .epd-contrib-medal-icon { width:22px; height:22px; border-radius:9999px; display:flex; align-items:center; justify-content:center; flex-shrink:0; background:linear-gradient(155deg, #fde68a, #d97706); }
+    .epd-contrib-medal-icon .material-symbols-outlined { font-size:14px; color:#fff; }
+    .epd-contrib-name { font-size:0.8125rem; font-weight:600; color:var(--ink-primary); flex:1; min-width:0; overflow-wrap:break-word; line-height:1.3; }
+    .epd-contrib-bar-track { flex:1; height:7px; border-radius:9999px; background:#f1f5f9; overflow:hidden; min-width:24px; }
+    .epd-contrib-bar-fill { height:100%; border-radius:9999px; transition:width .5s ease; }
+    .epd-contrib-pct { font-size:0.8125rem; font-weight:800; color:var(--ink-primary); font-variant-numeric: tabular-nums; flex-shrink:0; min-width:44px; text-align:right; }
+
+    /* Footer — fixed, compact stat chips (total contribution %, total item count) */
+    .epd-contrib-card-footer { display:flex; gap:8px; margin-top:14px; padding-top:14px; border-top:1px solid var(--color-border); flex-shrink:0; }
+    .epd-contrib-stat-chip { flex:1; min-width:0; background:var(--page-bg-2); border-radius:10px; padding:8px 10px; }
+    .epd-contrib-stat-label { font-size:0.625rem; font-weight:700; text-transform:uppercase; letter-spacing:0.03em; color:var(--ink-muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .epd-contrib-stat-value { font-size:0.9375rem; font-weight:800; color:var(--ink-primary); margin-top:2px; font-variant-numeric: tabular-nums; }
+
+    /* ---- Section panel (wraps each section's header + content in its own card) ---- */
+    .epd-panel { background:#fff; border:1px solid var(--color-border); border-radius:18px; padding:22px 24px 24px; box-shadow:0 1px 3px rgba(15,23,42,0.04); }
+    .epd-panel .epd-section-head { margin-bottom:18px; }
+
+    /* ---- Performance trends ---- */
+    .epd-trend-legend { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:10px; }
+    .epd-trend-legend button { display:inline-flex; align-items:center; gap:6px; font-size:0.75rem; font-weight:600; padding:5px 11px; border-radius:9999px; border:1px solid var(--color-border); background:#fff; cursor:pointer; transition:opacity .15s, background .15s; color:var(--ink-primary); }
+    .epd-trend-legend button:hover { background:#f8fafc; }
+    .epd-trend-legend button.muted { opacity:0.35; }
+    .epd-trend-legend .dot { width:8px; height:8px; border-radius:9999px; }
+    .epd-trend-chart-wrap { position:relative; }
+    .epd-tooltip { position:absolute; pointer-events:none; background:#0f172a; color:#fff; border-radius:10px; padding:10px 12px; font-size:0.75rem; box-shadow:0 12px 28px -6px rgba(15,23,42,0.35); opacity:0; transition:opacity .1s; z-index:20; min-width:150px; }
+    .epd-tooltip.show { opacity:1; }
+    .epd-tooltip .t-month { font-weight:700; margin-bottom:6px; font-size:0.8125rem; }
+    .epd-tooltip .t-row { display:flex; align-items:center; gap:6px; padding:2px 0; }
+    .epd-tooltip .t-row .dot { width:7px; height:7px; border-radius:9999px; flex-shrink:0; }
+    .epd-tooltip .t-row .lbl { flex:1; color:rgba(255,255,255,0.75); }
+    .epd-tooltip .t-row .val { font-weight:700; font-variant-numeric: tabular-nums; }
+
+    @media print {
+      aside, header, .epd-print-btn, .fixed { display:none !important; }
+      main { padding:0 !important; overflow:visible !important; }
+      body { background:#fff !important; }
+      .epd-hero-band { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+      .page-back-link { display:none !important; }
+    }
+  </style>
+</head>
+
+<body class="font-sans bg-background text-text-primary">
+  <div class="flex h-screen overflow-hidden">
+    <aside class="w-64 flex-shrink-0 bg-sidebar text-text-inverted flex flex-col">
+      <div class="h-16 flex items-center justify-between px-6 border-b border-cu-dark-blue-80 flex-shrink-0">
+        <div class="flex items-center gap-2">
+          <span class="text-2xl font-bold tracking-wider">SOE</span>
+          <div class="w-8 h-1 bg-gradient-to-r from-cu-light-blue to-cu-light-blue-60 rounded"></div>
+        </div>
+        <button class="p-1 rounded-full text-slate-400 hover:bg-cu-dark-blue-80 transition-colors">
+          <span class="material-symbols-outlined text-xl">keyboard_double_arrow_left</span>
+        </button>
+      </div>
+      <nav class="flex-1 overflow-y-auto p-4 space-y-1">
+        <div>
+          <a class="flex items-center justify-between p-3 rounded-lg bg-cu-dark-blue-80 text-white" href="index.html">
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined">dashboard</span>
+              <span class="font-medium text-sm">Dashboard</span>
+            </div>
+            <span class="material-symbols-outlined text-lg transform rotate-0 transition-transform">expand_more</span>
+          </a>
+          <ul class="pl-6 mt-2 space-y-1 text-sm hidden">
+            <li>
+              <a class="block p-2 rounded text-slate-400 hover:bg-cu-dark-blue-80 hover:text-slate-200" href="#">My
+                Dashboard</a>
+            </li>
+          </ul>
+        </div>
+        <div>
+          <a class="flex items-center justify-between p-3 rounded-lg text-slate-300 hover:bg-cu-dark-blue-80" href="#">
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined">task_alt</span>
+              <span class="font-medium text-sm">Task</span>
+            </div>
+            <span class="material-symbols-outlined text-lg">expand_more</span>
+          </a>
+          <ul class="pl-6 mt-2 space-y-1 text-sm hidden">
+            <li><a class="block p-2 rounded text-slate-400 hover:bg-cu-dark-blue-80 hover:text-slate-200" href="#">My
+                Tasks</a></li>
+            <li><a class="block p-2 rounded text-slate-400 hover:bg-cu-dark-blue-80 hover:text-slate-200" href="#">Team
+                Tasks</a></li>
+            <li><a class="block p-2 rounded text-slate-400 hover:bg-cu-dark-blue-80 hover:text-slate-200" href="#">All
+                Tasks</a></li>
+          </ul>
+        </div>
+        <div>
+          <button
+            class="menu-toggle flex items-center justify-between p-3 rounded-lg text-slate-200 hover:bg-white/10 w-full text-left">
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined">event_note</span>
+              <span class="font-medium text-sm">Planning</span>
+            </div>
+            <span class="material-symbols-outlined text-lg transform transition-transform">expand_more</span>
+          </button>
+          <div class="submenu hidden ml-6 mt-1 space-y-1">
+            <a href="upcoming.html"
+              class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-200/70 hover:bg-white/10 hover:text-white"
+              title="Upcoming Event">
+              <span class="material-symbols-outlined text-base">arrow_right</span>
+              <span>Upcoming Event</span>
+            </a>
+            <a href="calendar.html"
+              class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-200/70 hover:bg-white/10 hover:text-white"
+              title="Office Calendar">
+              <span class="material-symbols-outlined text-base">arrow_right</span>
+              <span>Office Calendar</span>
+            </a>
+          </div>
+        </div>
+        <div>
+          <a class="flex items-center justify-between p-3 rounded-lg text-slate-300 hover:bg-cu-dark-blue-80"
+            href="allclient.html#home">
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined">trending_up</span>
+              <span class="font-medium text-sm">CRM</span>
+            </div>
+            <span class="material-symbols-outlined text-lg">expand_more</span>
+          </a>
+          <ul class="pl-6 mt-2 space-y-1 text-sm hidden">
+            <li><a class="block p-2 rounded text-slate-400 hover:bg-cu-dark-blue-80 hover:text-slate-200"
+                href="allclient.html#home">Accounts</a></li>
+            <li><a class="block p-2 rounded text-slate-400 hover:bg-cu-dark-blue-80 hover:text-slate-200" href="#">Cer.
+                Sales Progress</a></li>
+            <li><a class="block p-2 rounded text-slate-400 hover:bg-cu-dark-blue-80 hover:text-slate-200" href="#">Sales
+                Report</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <button
+            class="menu-toggle flex items-center justify-between p-3 rounded-lg text-slate-300 hover:bg-cu-dark-blue-80 w-full text-left">
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined">public</span>
+              <span class="font-medium text-sm">Regional &amp; Global</span>
+            </div>
+            <span class="material-symbols-outlined text-lg transform transition-transform">chevron_right</span>
+          </button>
+          <div class="submenu hidden ml-6 mt-1 space-y-1">
+            <a href="COEdashboard.html"
+              class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-400 hover:bg-cu-dark-blue-80 hover:text-white">
+              <span class="material-symbols-outlined text-base">arrow_right</span>
+              <span>COEs</span>
+            </a>
+            <a href="#"
+              class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-400 hover:bg-cu-dark-blue-80 hover:text-white">
+              <span class="material-symbols-outlined text-base">arrow_right</span>
+              <span>Regional Team</span>
+            </a>
+            <a href="#"
+              class="flex items-center gap-3 p-2 rounded-lg text-sm text-slate-400 hover:bg-cu-dark-blue-80 hover:text-white">
+              <span class="material-symbols-outlined text-base">arrow_right</span>
+              <span>MarComs</span>
+            </a>
+          </div>
+        </div>
+
+        <div>
+          <a class="flex items-center justify-between p-3 rounded-lg text-slate-300 hover:bg-cu-dark-blue-80" href="#">
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined">groups</span>
+              <span class="font-medium text-sm">HR Manager</span>
+            </div>
+            <span class="material-symbols-outlined text-lg">expand_more</span>
+          </a>
+          <ul class="pl-6 mt-2 space-y-1 text-sm hidden">
+            <li><a class="block p-2 rounded text-slate-400 hover:bg-cu-dark-blue-80 hover:text-slate-200"
+                href="user.html">User</a></li>
+            <li><a class="block p-2 rounded text-slate-400 hover:bg-cu-dark-blue-80 hover:text-slate-200" href="#">Leave
+                Management</a></li>
+          </ul>
+        </div>
+        <a class="flex items-center gap-3 p-3 rounded-lg text-sm font-medium text-slate-300 hover:bg-cu-dark-blue-80"
+          href="#">
+          <span class="material-symbols-outlined">corporate_fare</span>Department Manager</a>
+        <div>
+          <a class="flex items-center justify-between p-3 rounded-lg text-slate-300 hover:bg-cu-dark-blue-80" href="#">
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined">manage_accounts</span>
+              <span class="font-medium text-sm">User Manager</span>
+            </div>
+            <span class="material-symbols-outlined text-lg">expand_more</span>
+          </a>
+          <ul class="pl-6 mt-2 space-y-1 text-sm hidden">
+            <li><a class="block p-2 rounded text-slate-400 hover:bg-cu-dark-blue-80 hover:text-slate-200" href="user.html">Add
+                User</a></li>
+            <li><a class="block p-2 rounded text-slate-400 hover:bg-cu-dark-blue-80 hover:text-slate-200"
+                href="user.html">Manage Users</a></li>
+          </ul>
+        </div>
+        <div>
+          <a class="flex items-center justify-between p-3 rounded-lg text-slate-300 hover:bg-cu-dark-blue-80" href="#">
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined">calendar_month</span>
+              <span class="font-medium text-sm">Working Days</span>
+            </div>
+            <span class="material-symbols-outlined text-lg">expand_more</span>
+          </a>
+          <ul class="pl-6 mt-2 space-y-1 text-sm hidden">
+            <li><a class="block p-2 rounded text-slate-400 hover:bg-cu-dark-blue-80 hover:text-slate-200"
+                href="#">Calendar</a></li>
+            <li><a class="block p-2 rounded text-slate-400 hover:bg-cu-dark-blue-80 hover:text-slate-200"
+                href="#">Holidays</a></li>
+          </ul>
+        </div>
+        <div>
+          <a class="flex items-center justify-between p-3 rounded-lg text-slate-300 hover:bg-cu-dark-blue-80" href="#">
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined">settings</span>
+              <span class="font-medium text-sm">Settings</span>
+            </div>
+            <span class="material-symbols-outlined text-lg">expand_more</span>
+          </a>
+          <ul class="pl-6 mt-2 space-y-1 text-sm hidden">
+            <li><a class="block p-2 rounded text-slate-400 hover:bg-cu-dark-blue-80 hover:text-slate-200" href="#">KPI
+                Manager</a></li>
+            <li><a class="block p-2 rounded text-slate-400 hover:bg-cu-dark-blue-80 hover:text-slate-200"
+                href="configuration.html">Configuration</a></li>
+          </ul>
+        </div>
+      </nav>
+    </aside>
+
+    <div class="flex-1 flex flex-col bg-bg-main">
+      <header class="flex-shrink-0 bg-[#1b1e42] h-16 flex items-center justify-end px-6 border-b border-slate-200">
+        <div class="flex items-center space-x-4">
+          <button class="p-2 rounded-full text-slate-300 hover:bg-cu-dark-blue-80 relative">
+            <span class="material-symbols-outlined text-yellow-500">notifications</span>
+            <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full"></span>
+          </button>
+          <div class="flex items-center space-x-3">
+            <img alt="User avatar" class="w-10 h-10 rounded-full object-cover" src="https://i.pravatar.cc/200?u=soe-man" />
+            <div>
+              <div class="font-semibold text-sm text-white">Nisal Amarasekara</div>
+              <div class="text-xs text-slate-400">Sri Lanka</div>
+            </div>
+          </div>
+          <button class="p-2 rounded-full text-slate-300 hover:bg-cu-dark-blue-80">
+            <span class="material-symbols-outlined">expand_more</span>
+          </button>
+        </div>
+      </header>
+
+      <main class="flex-1 p-6 lg:p-8 overflow-y-auto">
+        <a href="index.html" class="page-back-link mb-3">
+          <span class="material-symbols-outlined">arrow_back</span> Back to Dashboard
+        </a>
+
+        <div class="epd-header-row">
+          <div class="epd-header-left">
+            <div class="epd-avatar" id="epd-avatar">NA</div>
+            <div>
+              <div class="epd-header-name-row">
+                <span class="epd-header-name">Nisal Amarasekara</span>
+                <span class="epd-status-badge" id="epd-header-status-badge"></span>
+              </div>
+              <div class="epd-header-meta">
+                <span class="meta-item">
+                  <span class="material-symbols-outlined">corporate_fare</span>
+                  <span id="epd-dept-wrap"></span>
+                </span>
+                <span class="meta-dot">·</span>
+                <span class="meta-item">
+                  <span class="material-symbols-outlined">person</span> Software Engineer
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="epd-header-right">
+            <span class="epd-year-chip"><span class="material-symbols-outlined">calendar_month</span> 2026</span>
+            <div class="epd-control">
+              <button class="epd-control-btn" id="epd-period-trigger" type="button">
+                Period: <b id="epd-period-label">Jul</b>
+                <span class="material-symbols-outlined">expand_more</span>
+              </button>
+              <div class="epd-period-panel" id="epd-period-panel">
+                <div class="epd-period-row active" data-label="Jul"><span>July 2026 (current)</span><span class="material-symbols-outlined">check</span></div>
+                <div class="epd-period-row" data-label="May – Jul"><span>Last 3 months</span><span class="material-symbols-outlined">check</span></div>
+                <div class="epd-period-row" data-label="Feb – Jul"><span>Last 6 months</span><span class="material-symbols-outlined">check</span></div>
+                <div class="epd-period-row" data-label="Jan – Jul"><span>Year to date</span><span class="material-symbols-outlined">check</span></div>
+              </div>
+            </div>
+            <button class="epd-print-btn" id="epd-print-btn" type="button">
+              <span class="material-symbols-outlined">print</span> Print Journal
+            </button>
+          </div>
+        </div>
+
+        <div class="epd-hero-band" id="epd-hero-band"></div>
+
+        <section class="mb-8 epd-panel">
+          <div class="epd-section-head">
+            <div class="epd-section-head-left">
+              <span class="material-symbols-outlined overview-icon">bar_chart</span>
+              <h2 class="epd-section-title">Performance Overview</h2>
+            </div>
+            <div class="epd-status-legend" id="epd-status-legend"></div>
+          </div>
+          <div class="epd-kpi-grid" id="epd-kpi-grid"></div>
+        </section>
+
+        <section class="mb-8 epd-panel">
+          <div class="epd-section-head">
+            <div class="epd-section-head-left">
+              <span class="material-symbols-outlined contribution-icon">donut_large</span>
+              <h2 class="epd-section-title">Contribution Profile</h2>
+            </div>
+          </div>
+          <p class="epd-contrib-sub">Breakdown of contribution by department, task group, and project.</p>
+          <div class="epd-contrib-grid" id="epd-contrib-grid"></div>
+        </section>
+
+        <section class="mb-8 epd-panel">
+          <div class="epd-section-head">
+            <div class="epd-section-head-left">
+              <span class="material-symbols-outlined trends-icon">trending_up</span>
+              <h2 class="epd-section-title">Performance Trends</h2>
+              <span class="epd-section-head-divider"></span>
+              <span class="epd-section-head-tag"><span class="material-symbols-outlined">trending_up</span>Overall Trend</span>
+            </div>
+            <div class="epd-status-legend" id="epd-trend-legend"></div>
+          </div>
+          <div class="epd-trend-chart-wrap" id="epd-trend-wrap">
+            <div class="epd-tooltip" id="epd-tooltip"></div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      /* ---------------- sidebar behavior (shared with rest of app) ---------------- */
+      // Top-level "a > ul" style menus (Dashboard, Task, CRM)
+      document.querySelectorAll('aside nav > div > a').forEach(function (menu) {
+        var arrow = menu.querySelector('.material-symbols-outlined.text-lg');
+        if (arrow && arrow.textContent.trim() === 'expand_more') {
+          var submenu = menu.parentElement.querySelector('ul');
+          if (submenu && submenu.classList.contains('hidden')) {
+            arrow.style.transform = 'rotate(-90deg)';
+          }
+          menu.addEventListener('click', function (e) {
+            e.preventDefault();
+            if (submenu) {
+              submenu.classList.toggle('hidden');
+              arrow.style.transform = submenu.classList.contains('hidden') ? 'rotate(-90deg)' : 'rotate(0deg)';
+            }
+          });
+        }
+      });
+
+      // "button.menu-toggle > .submenu" style menus (Planning, Regional & Global)
+      document.querySelectorAll('.menu-toggle').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var submenu = this.nextElementSibling;
+          var arrow = this.querySelector('.material-symbols-outlined:last-child');
+          if (submenu && submenu.classList.contains('submenu')) {
+            submenu.classList.toggle('hidden');
+            if (arrow) arrow.style.transform = submenu.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(90deg)';
+          }
+        });
+      });
+
+      // Sidebar collapse / expand toggle
+      var collapseBtn = document.querySelector('aside .h-16 button');
+      var sidebar = document.querySelector('aside');
+      if (collapseBtn && sidebar) {
+        collapseBtn.addEventListener('click', function () {
+          var isCollapsed = sidebar.classList.contains('w-16');
+          if (isCollapsed) {
+            sidebar.classList.remove('w-16');
+            sidebar.classList.add('w-64');
+            sidebar.querySelectorAll('.menu-text, .menu-label').forEach(function (el) { el.classList.remove('hidden'); });
+          } else {
+            sidebar.classList.remove('w-64');
+            sidebar.classList.add('w-16');
+            sidebar.querySelectorAll('nav span:not(.material-symbols-outlined)').forEach(function (span) {
+              span.classList.add('menu-text', 'hidden');
+            });
+            sidebar.querySelectorAll('nav ul, nav .submenu').forEach(function (el) { el.classList.add('hidden'); });
+          }
+          var icon = collapseBtn.querySelector('.material-symbols-outlined');
+          icon.textContent = sidebar.classList.contains('w-16') ? 'keyboard_double_arrow_right' : 'keyboard_double_arrow_left';
+        });
+      }
+
+      /* ==================================================================
+         DATA — swap this block for a live feed; everything below renders
+         purely from these numbers.
+      ================================================================== */
+      var DATA = {
+        employee: {
+          departments: ['Merchandising', 'Quality Assurance', 'IT']
+        },
+        overview: [
+          { key: 'final', label: 'Final', icon: 'track_changes', value: 104, prev: 97, isFinal: true },
+          { key: 'timeliness', label: 'Timeliness', icon: 'schedule', value: 97, prev: 99 },
+          { key: 'workload', label: 'Workload', icon: 'layers', value: 100, prev: 95 },
+          { key: 'quality', label: 'Quality', icon: 'verified', value: 88, prev: 91 },
+          { key: 'integrity', label: 'Integrity', icon: 'shield', value: 112, prev: 108 }
+        ],
+        trend: {
+          months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+          series: [
+            { key: 'final', label: 'Final Score', color: 'var(--cat-1)', emphasis: true, values: [92, 95, 99, 101, 103, 100, 104] },
+            { key: 'timeliness', label: 'Timeliness', color: 'var(--cat-2)', values: [88, 90, 93, 95, 98, 96, 97] },
+            { key: 'workload', label: 'Workload', color: 'var(--cat-3)', values: [96, 94, 97, 99, 101, 98, 100] },
+            { key: 'quality', label: 'Quality', color: 'var(--cat-4)', values: [90, 89, 92, 90, 88, 90, 88] },
+            { key: 'integrity', label: 'Integrity', color: 'var(--cat-5)', values: [104, 106, 105, 109, 110, 107, 112] }
+          ]
+        },
+        contribution: {
+          department: [
+            { label: 'IT', value: 100 }
+          ],
+          taskGroup: [
+            { label: 'IT - TerraX Development', value: 25.03 },
+            { label: 'IT - CRM Development', value: 22.76 },
+            { label: 'IT - SustainScan Develop…', value: 18.49 },
+            { label: 'IT - Communication', value: 15.8 }
+          ],
+          project: [
+            { label: 'CU Sri Lanka - SOE V2', value: 34.46 },
+            { label: 'CU Sri Lanka - TerraX', value: 22.87 },
+            { label: 'CU Sri Lanka - SustainSc…', value: 21.9 },
+            { label: 'CU Sri Lanka - FAO Agric…', value: 15.08 }
+          ]
+        }
+      };
+
+      function getStatus(value) {
+        if (value > 100) return { key: 'exceptional', label: 'Exceptional', color: 'var(--status-exceptional)', bg: 'var(--status-exceptional-bg)', icon: 'trending_up' };
+        if (value === 100) return { key: 'expected', label: 'Expected', color: 'var(--status-expected)', bg: 'var(--status-expected-bg)', icon: 'check_circle' };
+        if (value >= 90) return { key: 'medium', label: 'Medium', color: 'var(--status-medium)', bg: 'var(--status-medium-bg)', icon: 'warning' };
+        return { key: 'low', label: 'Low', color: 'var(--status-low)', bg: 'var(--status-low-bg)', icon: 'error' };
+      }
+
+      /* ---------------- Status legend (Performance Overview key) ---------------- */
+      var STATUS_LEGEND = [
+        { label: 'Exceptional', color: 'var(--status-exceptional)' },
+        { label: 'Expected', color: 'var(--status-expected)' },
+        { label: 'Medium', color: 'var(--status-medium)' },
+        { label: 'Low', color: 'var(--status-low)' }
+      ];
+      document.getElementById('epd-status-legend').innerHTML = STATUS_LEGEND.map(function (s) {
+        return '<span class="epd-status-legend-item">' +
+          '<span class="epd-status-legend-dot" style="background:' + s.color + '"></span>' +
+          '<span class="epd-status-legend-label">' + s.label + '</span>' +
+          '</span>';
+      }).join('');
+
+      /* ---------------- Department dropdown (only if >1 department), inline in the header meta row ---------------- */
+      var deptWrap = document.getElementById('epd-dept-wrap');
+      if (DATA.employee.departments.length > 1) {
+        var sel = document.createElement('select');
+        sel.className = 'epd-header-dept-select';
+        sel.setAttribute('aria-label', 'Department');
+        DATA.employee.departments.forEach(function (d) {
+          var opt = document.createElement('option');
+          opt.value = d; opt.textContent = d;
+          sel.appendChild(opt);
+        });
+        sel.value = 'IT';
+        deptWrap.appendChild(sel);
+      } else {
+        deptWrap.textContent = DATA.employee.departments[0];
+      }
+
+      /* ---------------- Header status badge + Hero band (Final Performance Score) ---------------- */
+      var finalMetric = DATA.overview.filter(function (m) { return m.isFinal; })[0];
+      var finalStatus = getStatus(finalMetric.value);
+      var headerBadge = document.getElementById('epd-header-status-badge');
+      headerBadge.style.background = finalStatus.bg;
+      headerBadge.style.color = finalStatus.color;
+      headerBadge.innerHTML = '<span class="material-symbols-outlined filled">' + finalStatus.icon + '</span>' + finalStatus.label;
+
+      (function renderHero() {
+        var size = 116, stroke = 10;
+        var r = (size / 2) - stroke;
+        var c = 2 * Math.PI * r;
+        var pct = Math.max(0, Math.min(100, finalMetric.value)) / 100;
+        var offset = c * (1 - pct);
+        var ring = '<div class="epd-hero-ring-wrap" style="width:' + size + 'px;height:' + size + 'px">' +
+          '<svg width="' + size + '" height="' + size + '" viewBox="0 0 ' + size + ' ' + size + '">' +
+          '<circle cx="' + (size / 2) + '" cy="' + (size / 2) + '" r="' + r + '" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="' + stroke + '"/>' +
+          '<circle cx="' + (size / 2) + '" cy="' + (size / 2) + '" r="' + r + '" fill="none" stroke="#fff" stroke-width="' + stroke +
+          '" stroke-linecap="round" stroke-dasharray="' + c + '" stroke-dashoffset="' + offset + '"/>' +
+          '</svg><div class="epd-hero-ring-center">' + finalMetric.value + '%</div></div>';
+        // Insight, not restatement: surface the one pillar that needs attention and the one that's
+        // carrying the score, instead of just re-listing all four numbers already shown below.
+        var STATUS_RANK = { low: 0, medium: 1, expected: 2, exceptional: 3 };
+        var pillarMetrics = DATA.overview.filter(function (m) { return !m.isFinal; });
+        var byWorst = pillarMetrics.slice().sort(function (a, b) {
+          var ra = STATUS_RANK[getStatus(a.value).key], rb = STATUS_RANK[getStatus(b.value).key];
+          return ra !== rb ? ra - rb : a.value - b.value;
+        });
+        var attentionMetric = byWorst[0];
+        var strengthMetric = byWorst[byWorst.length - 1];
+
+        function insightCard(type, icon, label, m) {
+          var delta = m.value - m.prev;
+          var deltaUp = delta >= 0;
+          var deltaWord = deltaUp ? 'above' : 'below';
+          var action = type === 'attention'
+            ? '<button type="button" class="epd-hero-insight-action" data-scroll-to="epd-kpi-grid">Review ' + m.label + '<span class="material-symbols-outlined">arrow_forward</span></button>'
+            : '';
+          return '<div class="epd-hero-insight-card ' + type + '">' +
+            '<span class="material-symbols-outlined filled">' + icon + '</span>' +
+            '<div>' +
+            '<div class="epd-hero-insight-label">' + label + '</div>' +
+            '<div class="epd-hero-insight-value">' + m.label + ' · ' + m.value + '%</div>' +
+            '<div class="epd-hero-insight-sub">' + Math.abs(delta) + '% ' + deltaWord + ' last month</div>' +
+            action +
+            '</div></div>';
+        }
+
+        var insights = insightCard('attention', 'warning', 'Needs Attention', attentionMetric) +
+          insightCard('strength', 'military_tech', 'Top Strength', strengthMetric);
+
+        document.getElementById('epd-hero-band').innerHTML =
+          '<div class="epd-hero-left">' + ring +
+          '<div>' +
+          '<div class="epd-hero-label">Final Performance Score</div>' +
+          '<div class="epd-hero-status-word">' + finalStatus.label + '</div>' +
+          '<div class="epd-hero-sub">July 2026 · ' + DATA.employee.departments[DATA.employee.departments.length - 1] + '</div>' +
+          '</div></div>' +
+          '<div class="epd-hero-insights">' + insights + '</div>';
+
+        document.querySelectorAll('[data-scroll-to]').forEach(function (btn) {
+          btn.addEventListener('click', function () {
+            var target = document.getElementById(btn.getAttribute('data-scroll-to'));
+            if (target) target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          });
+        });
+      })();
+
+      /* ---------------- Period selector popover ---------------- */
+      var periodTrigger = document.getElementById('epd-period-trigger');
+      var periodPanel = document.getElementById('epd-period-panel');
+      var periodLabel = document.getElementById('epd-period-label');
+      periodTrigger.addEventListener('click', function (e) {
+        e.stopPropagation();
+        periodPanel.classList.toggle('open');
+      });
+      periodPanel.querySelectorAll('.epd-period-row').forEach(function (row) {
+        row.addEventListener('click', function () {
+          periodPanel.querySelectorAll('.epd-period-row').forEach(function (r) { r.classList.remove('active'); });
+          row.classList.add('active');
+          periodLabel.textContent = row.getAttribute('data-label');
+          periodPanel.classList.remove('open');
+        });
+      });
+      document.addEventListener('click', function () { periodPanel.classList.remove('open'); });
+
+      /* ---------------- Print Journal ---------------- */
+      document.getElementById('epd-print-btn').addEventListener('click', function () { window.print(); });
+
+      /* ---------------- KPI ring helper ---------------- */
+      function miniRing(value, color, size, stroke) {
+        var r = (size / 2) - stroke;
+        var c = 2 * Math.PI * r;
+        var pct = Math.max(0, Math.min(100, value)) / 100;
+        var offset = c * (1 - pct);
+        return '<div class="epd-kpi-ring2-wrap" style="width:' + size + 'px;height:' + size + 'px">' +
+          '<svg width="' + size + '" height="' + size + '" viewBox="0 0 ' + size + ' ' + size + '">' +
+          '<circle cx="' + (size / 2) + '" cy="' + (size / 2) + '" r="' + r + '" fill="none" stroke="#eef1f6" stroke-width="' + stroke + '"/>' +
+          '<circle cx="' + (size / 2) + '" cy="' + (size / 2) + '" r="' + r + '" fill="none" stroke="' + color + '" stroke-width="' + stroke +
+          '" stroke-linecap="round" stroke-dasharray="' + c + '" stroke-dashoffset="' + offset + '"/>' +
+          '</svg><div class="epd-kpi-ring2-center">' + value + '%</div></div>';
+      }
+
+      /* ---------------- Render KPI overview ---------------- */
+      var kpiGrid = document.getElementById('epd-kpi-grid');
+      DATA.overview.forEach(function (m) {
+        var status = getStatus(m.value);
+        var delta = m.value - m.prev;
+        var deltaUp = delta >= 0;
+        var deltaColor = deltaUp ? '#16a34a' : '#dc2626';
+        var card = document.createElement('div');
+        card.className = 'epd-kpi-card';
+        card.style.setProperty('--accent', status.color);
+        card.innerHTML =
+          '<div class="epd-kpi-top-row">' +
+          '<span class="epd-kpi-icon-label"><span class="material-symbols-outlined">' + m.icon + '</span>' + m.label + '</span>' +
+          miniRing(m.value, status.color, 62, 6) +
+          '</div>' +
+          '<hr class="epd-kpi-divider" />' +
+          '<div class="epd-kpi-bottom-row">' +
+          '<span class="epd-status-badge" style="background:' + status.bg + ';color:' + status.color + '">' +
+          '<span class="material-symbols-outlined filled">' + status.icon + '</span>' + status.label + '</span>' +
+          '<span class="epd-kpi-delta" style="color:' + deltaColor + '">' +
+          '<span class="material-symbols-outlined">' + (deltaUp ? 'arrow_upward' : 'arrow_downward') + '</span>' +
+          Math.abs(delta) + '%</span>' +
+          '</div>';
+        kpiGrid.appendChild(card);
+      });
+
+      /* ---------------- Render Contribution Profile (analytics cards) ---------------- */
+      var contribGrid = document.getElementById('epd-contrib-grid');
+      var contribSections = [
+        {
+          title: 'Department Contribution', noun: 'Department', icon: 'apartment', data: DATA.contribution.department,
+          shades: ['#e11d48', '#f43f5e', '#fb7185', '#fda4af'], tileBg: 'linear-gradient(155deg,#fb7185,#e11d48)'
+        },
+        {
+          title: 'Task Group Contribution', noun: 'Group', icon: 'groups', data: DATA.contribution.taskGroup,
+          shades: ['#6d28d9', '#7c3aed', '#8b5cf6', '#a78bfa'], tileBg: 'linear-gradient(155deg,#a78bfa,#6d28d9)'
+        },
+        {
+          title: 'Project Contribution', noun: 'Project', icon: 'folder_open', data: DATA.contribution.project,
+          shades: ['#0f766e', '#0d9488', '#14b8a6', '#5eead4'], tileBg: 'linear-gradient(155deg,#5eead4,#0f766e)'
+        }
+      ];
+
+      contribSections.forEach(function (sec) {
+        var card = document.createElement('div');
+        card.className = 'epd-contrib-card';
+        var sorted = sec.data.slice().sort(function (a, b) { return b.value - a.value; });
+        var count = sorted.length;
+        var topN = Math.min(3, count);
+        var topShare = sorted.slice(0, topN).reduce(function (sum, d) { return sum + d.value; }, 0);
+        var topShareDisplay = Math.round(topShare * 100) / 100;
+
+        var rows = sorted.map(function (d, i) {
+          var shade = sec.shades[i % sec.shades.length];
+          var rankMarker = i === 0
+            ? '<span class="epd-contrib-medal-icon"><span class="material-symbols-outlined filled">military_tech</span></span>'
+            : '<span class="epd-contrib-rank-badge">' + (i + 1) + '</span>';
+          return '<div class="epd-contrib-row">' +
+            '<div class="epd-contrib-row-top">' + rankMarker +
+            '<span class="epd-contrib-name" title="' + d.label + '">' + d.label + '</span>' +
+            '</div>' +
+            '<div class="epd-contrib-row-bottom">' +
+            '<div class="epd-contrib-bar-track"><div class="epd-contrib-bar-fill" style="width:' + d.value + '%;background:linear-gradient(90deg,' + sec.shades[0] + ',' + shade + ')"></div></div>' +
+            '<span class="epd-contrib-pct">' + d.value + '%</span>' +
+            '</div></div>';
+        }).join('');
+
+        card.innerHTML =
+          '<div class="epd-contrib-card-top">' +
+          '<div class="epd-contrib-icon-tile" style="background:' + sec.tileBg + '"><span class="material-symbols-outlined">' + sec.icon + '</span></div>' +
+          '<div class="epd-contrib-card-top-text"><h4>' + sec.title + '</h4></div>' +
+          '</div>' +
+          '<div class="epd-contrib-card-body">' +
+          '<div class="epd-contrib-scroll-wrap"><div class="epd-contrib-list">' + rows + '</div></div>' +
+          '</div>' +
+          '<div class="epd-contrib-card-footer">' +
+          '<div class="epd-contrib-stat-chip"><div class="epd-contrib-stat-label">Total Contribution</div><div class="epd-contrib-stat-value" style="color:' + sec.shades[0] + '">' + topShareDisplay + '%</div></div>' +
+          '<div class="epd-contrib-stat-chip"><div class="epd-contrib-stat-label">Total ' + sec.noun + (count === 1 ? '' : 's') + '</div><div class="epd-contrib-stat-value">' + count + '</div></div>' +
+          '</div>';
+        contribGrid.appendChild(card);
+      });
+
+      /* ---------------- Render Performance Trends (status-colored monthly bars) ---------------- */
+      var trendWrap = document.getElementById('epd-trend-wrap');
+      var tooltip = document.getElementById('epd-tooltip');
+      var legendWrap = document.getElementById('epd-trend-legend');
+      var months = DATA.trend.months;
+      var finalSeries = DATA.trend.series.filter(function (s) { return s.key === 'final'; })[0];
+      var values = finalSeries.values;
+
+      // Reuse the same status key so bar color always means the same thing everywhere on this page.
+      legendWrap.innerHTML = STATUS_LEGEND.map(function (s) {
+        return '<span class="epd-status-legend-item">' +
+          '<span class="epd-status-legend-dot" style="background:' + s.color + '"></span>' +
+          '<span class="epd-status-legend-label">' + s.label + '</span>' +
+          '</span>';
+      }).join('');
+
+      var vbW = 720, vbH = 300;
+      var padL = 40, padR = 20, padT = 56, padB = 32;
+      var plotW = vbW - padL - padR, plotH = vbH - padT - padB;
+      var yMax = 125, yMin = 0;
+      var yTicks = [0, 25, 50, 75, 100, 125];
+      var band = plotW / months.length;
+
+      function xCenter(i) { return padL + band * i + band / 2; }
+      function yAt(v) { return padT + plotH - ((v - yMin) / (yMax - yMin)) * plotH; }
+
+      // Catmull-Rom -> cubic-bezier smoothing so the line reads as one continuous trend, not straight joins.
+      function smoothPath(pts) {
+        var d = 'M' + pts[0][0].toFixed(1) + ',' + pts[0][1].toFixed(1);
+        for (var i = 0; i < pts.length - 1; i++) {
+          var p0 = pts[i - 1] || pts[i];
+          var p1 = pts[i];
+          var p2 = pts[i + 1];
+          var p3 = pts[i + 2] || p2;
+          var c1x = p1[0] + (p2[0] - p0[0]) / 6, c1y = p1[1] + (p2[1] - p0[1]) / 6;
+          var c2x = p2[0] - (p3[0] - p1[0]) / 6, c2y = p2[1] - (p3[1] - p1[1]) / 6;
+          d += ' C' + c1x.toFixed(1) + ',' + c1y.toFixed(1) + ' ' + c2x.toFixed(1) + ',' + c2y.toFixed(1) + ' ' + p2[0].toFixed(1) + ',' + p2[1].toFixed(1);
+        }
+        return d;
+      }
+
+      var points = values.map(function (v, i) { return [xCenter(i), yAt(v)]; });
+      var linePath = smoothPath(points);
+      var baseline = padT + plotH;
+      var areaPath = linePath + ' L' + points[points.length - 1][0].toFixed(1) + ',' + baseline +
+        ' L' + points[0][0].toFixed(1) + ',' + baseline + ' Z';
+
+      var svgParts = [];
+      svgParts.push(
+        '<defs><linearGradient id="epdTrendAreaGrad" x1="0" y1="0" x2="0" y2="1">' +
+        '<stop offset="0%" stop-color="var(--cu-dark-blue)" stop-opacity="0.10"/>' +
+        '<stop offset="100%" stop-color="var(--cu-dark-blue)" stop-opacity="0"/>' +
+        '</linearGradient></defs>'
+      );
+      yTicks.forEach(function (t) {
+        var y = yAt(t);
+        svgParts.push('<line x1="' + padL + '" y1="' + y + '" x2="' + (vbW - padR) + '" y2="' + y + '" stroke="var(--grid-line)" stroke-width="1"/>');
+        svgParts.push('<text x="' + (padL - 10) + '" y="' + (y + 4) + '" text-anchor="end" font-size="11" fill="var(--ink-muted)">' + t + '</text>');
+      });
+      svgParts.push('<line x1="' + padL + '" y1="' + yAt(100) + '" x2="' + (vbW - padR) + '" y2="' + yAt(100) + '" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="4,4"/>');
+      // Pinned above the topmost month label (not right on the dashed line) so it can never
+      // collide with whichever point happens to sit closest to the 100% target.
+      var topMostLabelY = Math.min.apply(null, points.map(function (p) { return p[1]; })) - 14;
+      svgParts.push('<text x="' + (vbW - padR) + '" y="' + (topMostLabelY - 12) + '" text-anchor="end" font-size="10" font-weight="600" letter-spacing="0.04em" fill="var(--ink-muted)">TARGET 100%</text>');
+      months.forEach(function (mo, i) {
+        svgParts.push('<text x="' + xCenter(i) + '" y="' + (vbH - 8) + '" text-anchor="middle" font-size="11" fill="var(--ink-muted)">' + mo + '</text>');
+      });
+
+      // One restrained accent line + soft wash — status meaning lives in the ring markers
+      // and the legend, not in oversized colored bars.
+      svgParts.push('<path d="' + areaPath + '" fill="url(#epdTrendAreaGrad)" stroke="none"/>');
+      svgParts.push('<path d="' + linePath + '" fill="none" stroke="var(--cu-dark-blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>');
+      values.forEach(function (v, i) {
+        var status = getStatus(v);
+        var cx = points[i][0], cy = points[i][1];
+        svgParts.push('<text x="' + cx + '" y="' + (cy - 14) + '" text-anchor="middle" font-size="11" font-weight="700" fill="var(--page-ink-primary)">' + v + '%</text>');
+        svgParts.push('<circle cx="' + cx.toFixed(1) + '" cy="' + cy.toFixed(1) + '" r="5.5" fill="' + status.color + '" stroke="#fff" stroke-width="2.5"/>');
+        // Wide, invisible hit target — the visible marker stays small and tidy.
+        svgParts.push('<circle class="epd-trend-hit" data-i="' + i + '" cx="' + cx.toFixed(1) + '" cy="' + cy.toFixed(1) + '" r="16" fill="transparent"/>');
+      });
+
+      trendWrap.insertAdjacentHTML('afterbegin',
+        '<svg id="epd-trend-svg" viewBox="0 0 ' + vbW + ' ' + vbH + '" style="width:100%;height:auto;display:block" role="img" aria-label="Monthly Final Performance Score, colored by status">' +
+        svgParts.join('') + '</svg>');
+
+      var svgEl = document.getElementById('epd-trend-svg');
+      var rect = svgEl.getBoundingClientRect();
+      var pxRatio = rect.width / vbW;
+
+      document.querySelectorAll('.epd-trend-hit').forEach(function (hit) {
+        hit.addEventListener('mouseenter', function () {
+          var i = Number(hit.getAttribute('data-i'));
+          var status = getStatus(values[i]);
+          tooltip.innerHTML = '<div class="t-month">' + months[i] + ' 2026</div>' +
+            '<div class="t-row"><span class="dot" style="background:' + status.color + '"></span>' +
+            '<span class="lbl">Final Score</span><span class="val">' + values[i] + '%</span></div>' +
+            '<div class="t-row"><span class="lbl">' + status.label + '</span></div>';
+          tooltip.classList.add('show');
+
+          var left = xCenter(i) * pxRatio - 75;
+          left = Math.max(4, Math.min(rect.width - 154, left));
+          tooltip.style.left = left + 'px';
+          tooltip.style.top = '6px';
+        });
+        hit.addEventListener('mouseleave', function () {
+          tooltip.classList.remove('show');
+        });
+      });
+    });
+  </script>
+</body>
+
+</html>
