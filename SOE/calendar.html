@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-  <title>Office Calendar</title>
+  <title>Department Calendar</title>
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
@@ -207,9 +207,9 @@
               <span class="material-symbols-outlined text-base">arrow_right</span>
               <span>Upcoming Event</span>
             </a>
-            <a href="calendar.html" class="flex items-center gap-3 p-2 rounded-lg text-sm text-white bg-white/10" title="Office Calendar">
+            <a href="calendar.html" class="flex items-center gap-3 p-2 rounded-lg text-sm text-white bg-white/10" title="Department Calendar">
               <span class="material-symbols-outlined text-base">arrow_right</span>
-              <span>Office Calendar</span>
+              <span>Department Calendar</span>
             </a>
           </div>
         </div>
@@ -345,7 +345,7 @@
             <div>
               <h1 class="text-3xl font-extrabold text-slate-900 flex items-center gap-2">
                 <span class="material-symbols-outlined text-[#3eb2ed] text-4xl">calendar_month</span>
-                Office Calendar
+                Calendar
               </h1>
             </div>
             <div class="flex items-center gap-2">
@@ -469,8 +469,31 @@
                     <span class="material-symbols-outlined text-base">person</span>My Calendar
                   </button>
                   <button data-scope="all" class="cal-scope-btn flex items-center gap-1.5 px-3 py-2 rounded-md text-sm font-semibold transition">
-                    <span class="material-symbols-outlined text-base">groups</span>Office Calendars
+                    <span class="material-symbols-outlined text-base">groups</span>Department Calendar
                   </button>
+                </div>
+                <!-- Department multi-select filter -->
+                <div class="relative" id="deptFilterWrap">
+                  <button type="button" id="deptFilterToggle" class="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-semibold text-slate-600 bg-white border border-gray-200 hover:bg-slate-50 transition">
+                    <span class="material-symbols-outlined text-base">apartment</span>
+                    <span id="deptFilterLabel">All Departments</span>
+                    <span class="material-symbols-outlined text-base">expand_more</span>
+                  </button>
+                  <div id="deptFilterMenu" class="hidden absolute right-0 top-full mt-1.5 w-56 bg-white border border-gray-200 rounded-xl shadow-lg z-30 py-1.5">
+                    <label class="flex items-center gap-2 px-3 py-1.5 text-sm cursor-pointer hover:bg-slate-50">
+                      <input type="checkbox" id="deptAll" class="rounded border-slate-300 text-[#1b1e42] focus:ring-[#3eb2ed]" checked />
+                      <span class="font-semibold text-slate-800">All Departments</span>
+                    </label>
+                    <div class="mx-3 my-1 border-t border-gray-100"></div>
+                    <label class="flex items-center gap-2 px-3 py-1.5 text-sm cursor-pointer hover:bg-slate-50">
+                      <input type="checkbox" value="Textile" class="dept-check rounded border-slate-300 text-[#1b1e42] focus:ring-[#3eb2ed]" />
+                      <span class="text-slate-700">Textile</span>
+                    </label>
+                    <label class="flex items-center gap-2 px-3 py-1.5 text-sm cursor-pointer hover:bg-slate-50">
+                      <input type="checkbox" value="ISO" class="dept-check rounded border-slate-300 text-[#1b1e42] focus:ring-[#3eb2ed]" />
+                      <span class="text-slate-700">ISO</span>
+                    </label>
+                  </div>
                 </div>
                 <div class="w-px h-6 bg-gray-200"></div>
                 <div class="flex items-center border-b border-gray-200">
@@ -904,19 +927,92 @@
       var currentScope = 'my';
       var scopeBtns = document.querySelectorAll('.cal-scope-btn');
 
+      // ==================== DEPARTMENT FILTER ====================
+      function getEmployeeDepartment(name) {
+        var emp = employees.find(function (e) { return e.name === name; });
+        return emp ? emp.dept : '';
+      }
+
+      function getSelectedDepartments() {
+        var allCheck = document.getElementById('deptAll');
+        if (allCheck && allCheck.checked) return [];
+        var sel = [];
+        document.querySelectorAll('.dept-check:checked').forEach(function (cb) { sel.push(cb.value); });
+        return sel;
+      }
+
+      function updateDeptFilterLabel() {
+        var label = document.getElementById('deptFilterLabel');
+        if (!label) return;
+        var sel = getSelectedDepartments();
+        if (sel.length === 0) label.textContent = 'All Departments';
+        else if (sel.length === 1) label.textContent = sel[0];
+        else label.textContent = sel.join(', ');
+      }
+
+      function isEventVisibleForDept(assignee) {
+        if (assignee === 'All Team') return true;
+        var sel = getSelectedDepartments();
+        if (sel.length === 0) return true;
+        var dept = getEmployeeDepartment(assignee);
+        return dept && sel.indexOf(dept) !== -1;
+      }
+
+      function applyDeptFilter() {
+        renderCalendar();
+        updateViews();
+        applyWeeklyFilter();
+      }
+
+      var deptFilterWrap = document.getElementById('deptFilterWrap');
+      var deptFilterToggle = document.getElementById('deptFilterToggle');
+      var deptFilterMenu = document.getElementById('deptFilterMenu');
+      var deptAllCheck = document.getElementById('deptAll');
+
+      if (deptFilterToggle && deptFilterMenu && deptFilterWrap) {
+        deptFilterToggle.addEventListener('click', function (e) {
+          e.stopPropagation();
+          deptFilterMenu.classList.toggle('hidden');
+        });
+        document.addEventListener('click', function (e) {
+          if (!deptFilterMenu.classList.contains('hidden') && !deptFilterWrap.contains(e.target)) {
+            deptFilterMenu.classList.add('hidden');
+          }
+        });
+        if (deptAllCheck) {
+          deptAllCheck.addEventListener('change', function () {
+            if (deptAllCheck.checked) {
+              document.querySelectorAll('.dept-check').forEach(function (cb) { cb.checked = false; });
+            }
+            updateDeptFilterLabel();
+            applyDeptFilter();
+          });
+        }
+        document.querySelectorAll('.dept-check').forEach(function (cb) {
+          cb.addEventListener('change', function () {
+            var anyChecked = Array.prototype.some.call(document.querySelectorAll('.dept-check'), function (c) { return c.checked; });
+            if (deptAllCheck) deptAllCheck.checked = !anyChecked;
+            updateDeptFilterLabel();
+            applyDeptFilter();
+          });
+        });
+      }
+
       function getFilteredEvents() {
-        if (currentScope === 'my') return calEvents.filter(function (e) { return e.assignee === currentUser || e.assignee === 'All Team'; });
-        return calEvents;
+        var byDept = calEvents.filter(function (e) { return isEventVisibleForDept(e.assignee); });
+        if (currentScope === 'my') return byDept.filter(function (e) { return e.assignee === currentUser || e.assignee === 'All Team'; });
+        return byDept;
       }
 
       function applyWeeklyFilter() {
         var rows = document.querySelectorAll('#weeklyView [data-employee]');
         rows.forEach(function (row) {
           var emp = row.getAttribute('data-employee');
+          var deptVisible = isEventVisibleForDept(emp);
           if (currentScope === 'my') {
-            row.style.display = emp === currentUser ? '' : 'none';
+            row.style.display = (emp === currentUser && deptVisible) ? '' : 'none';
           } else {
-            row.style.display = '';
+            row.style.display = deptVisible ? '' : 'none';
           }
         });
       }
@@ -1435,11 +1531,11 @@
 
       // Employee info for planner rows
       var employees = [
-        { name: 'Nisal Amarasekara', short: 'Sarah J.', role: 'Sr. Auditor', initials: 'SJ', color: 'bg-blue-600' },
-        { name: 'David Kim', short: 'David K.', role: 'Lead Auditor', initials: 'DK', color: 'bg-violet-600' },
-        { name: 'Lisa Anderson', short: 'Lisa A.', role: 'Auditor', initials: 'LA', color: 'bg-rose-500' },
-        { name: 'Mike Chen', short: 'Mike C.', role: 'Auditor', initials: 'MC', color: 'bg-emerald-600' },
-        { name: 'Emma Davis', short: 'Emma D.', role: 'Jr. Auditor', initials: 'ED', color: 'bg-amber-500' },
+        { name: 'Nisal Amarasekara', short: 'Sarah J.', role: 'Sr. Auditor', initials: 'SJ', color: 'bg-blue-600', dept: 'Textile' },
+        { name: 'David Kim', short: 'David K.', role: 'Lead Auditor', initials: 'DK', color: 'bg-violet-600', dept: 'ISO' },
+        { name: 'Lisa Anderson', short: 'Lisa A.', role: 'Auditor', initials: 'LA', color: 'bg-rose-500', dept: 'Textile' },
+        { name: 'Mike Chen', short: 'Mike C.', role: 'Auditor', initials: 'MC', color: 'bg-emerald-600', dept: 'ISO' },
+        { name: 'Emma Davis', short: 'Emma D.', role: 'Jr. Auditor', initials: 'ED', color: 'bg-amber-500', dept: 'Textile' },
       ];
 
       var dayNames = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
@@ -1497,7 +1593,11 @@
         html += '</div>';
 
         // Employee rows
-        employees.forEach(function (emp) {
+        var visibleEmployees = employees.filter(function (emp) {
+          var sel = getSelectedDepartments();
+          return sel.length === 0 || sel.indexOf(emp.dept) !== -1;
+        });
+        visibleEmployees.forEach(function (emp) {
           var empEvents = calEvents.filter(function (e) { return e.assignee === emp.name || e.assignee === 'All Team'; });
 
           html += '<div style="display:grid; grid-template-columns:' + gridCols + ';" class="border-b border-gray-100">';
