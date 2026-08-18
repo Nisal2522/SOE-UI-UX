@@ -43,8 +43,24 @@
       --color-sidebar: var(--cu-dark-blue);
     }
     #sidebar.collapsed { width: 72px !important; }
+    #sidebar.collapsed .sidebar-header { justify-content: center; padding-left: 0; padding-right: 0; }
+    #sidebar.collapsed .sidebar-brand { display: none; }
     #sidebar.collapsed nav span.font-medium { display: none; }
+    #sidebar.collapsed nav a>span:last-child { display: none; }
+    #sidebar.collapsed nav .menu-toggle>.material-symbols-outlined:last-child { display: none; }
     #sidebar.collapsed .submenu { display: none !important; }
+    #sidebar.collapsed nav .menu-toggle,
+    #sidebar.collapsed nav > a { justify-content: center; padding-left: 0; padding-right: 0; }
+    #sidebar.collapsed a[title],
+    #sidebar.collapsed .menu-toggle[title] { position: relative; }
+    #sidebar.collapsed a[title]:hover::after,
+    #sidebar.collapsed .menu-toggle[title]:hover::after {
+      content: attr(title);
+      position: absolute; left: calc(100% + 8px); top: 50%; transform: translateY(-50%);
+      background: #111827; color: #fff; padding: 6px 10px; border-radius: 6px;
+      white-space: nowrap; font-size: 12px; box-shadow: 0 6px 18px rgba(2,6,23,.12);
+      z-index: 50;
+    }
 
     .event-contracting   { --ev: #3b82f6; }
     .event-planning      { --ev: #8b5cf6; }
@@ -141,8 +157,8 @@
 <body class="font-display bg-white text-dark-text">
   <div class="flex h-screen overflow-hidden relative">
     <aside id="sidebar" class="w-64 flex-shrink-0 bg-sidebar text-white flex flex-col transition-all duration-300">
-      <div class="h-16 flex items-center justify-between px-6 border-b border-white/10 flex-shrink-0">
-        <div class="flex items-center gap-2">
+      <div class="sidebar-header h-16 flex items-center justify-between px-6 border-b border-white/10 flex-shrink-0">
+        <div class="sidebar-brand flex items-center gap-2">
           <span class="text-2xl font-bold tracking-wider">SOE</span>
           <div class="w-8 h-1 bg-gradient-to-r from-cu-light-blue to-cu-light-blue-60 rounded"></div>
         </div>
@@ -250,7 +266,7 @@
         </div>
 
         <a class="flex items-center gap-3 p-3 rounded-lg text-sm font-medium text-slate-200 hover:bg-white/10" href="#">
-          <span class="material-symbols-outlined">corporate_fare</span>Department Manager
+          <span class="material-symbols-outlined">corporate_fare</span><span class="font-medium text-sm">Department Manager</span>
         </a>
 
         <div>
@@ -752,15 +768,43 @@
         });
       });
 
+      // Keep the active page's submenu open so the selected item stays visible
+      var activeNavLink = document.querySelector('#sidebar a[href="calendar.html"], #sidebar a[href="upcoming.html"]');
+      if (activeNavLink) {
+        var activeSubmenu = activeNavLink.closest('.submenu');
+        if (activeSubmenu) {
+          activeSubmenu.classList.remove('hidden');
+          var activeToggle = activeSubmenu.previousElementSibling;
+          var activeArrow = activeToggle && activeToggle.querySelector('.material-symbols-outlined:last-child');
+          if (activeArrow) activeArrow.style.transform = 'rotate(180deg)';
+        }
+      }
+
+      // ==================== SIDEBAR COLLAPSE / EXPAND ====================
       var sidebar = document.getElementById('sidebar');
       var collapseBtn = document.getElementById('sidebarCollapseBtn');
       var collapseIcon = collapseBtn ? collapseBtn.querySelector('.material-symbols-outlined') : null;
+      var SIDEBAR_STORAGE_KEY = 'soe.sidebarCollapsed';
+
+      // Auto-tooltip titles for icon-only mode
+      document.querySelectorAll('#sidebar .menu-toggle, #sidebar nav > a').forEach(function (el) {
+        var label = el.querySelector('span.font-medium');
+        if (label && !el.getAttribute('title')) el.setAttribute('title', label.textContent.trim());
+      });
+
+      function setSidebarCollapsed(collapsed) {
+        sidebar.classList.toggle('collapsed', collapsed);
+        if (collapseIcon) collapseIcon.textContent = collapsed ? 'keyboard_double_arrow_right' : 'keyboard_double_arrow_left';
+        if (collapsed) document.querySelectorAll('#sidebar .submenu').forEach(function (s) { s.classList.add('hidden'); });
+        try { localStorage.setItem(SIDEBAR_STORAGE_KEY, collapsed ? '1' : '0'); } catch (e) {}
+      }
+
       if (collapseBtn && sidebar) {
+        var savedCollapsed = null;
+        try { savedCollapsed = localStorage.getItem(SIDEBAR_STORAGE_KEY); } catch (e) {}
+        if (savedCollapsed !== null) setSidebarCollapsed(savedCollapsed === '1');
         collapseBtn.addEventListener('click', function () {
-          var collapsed = !sidebar.classList.contains('collapsed');
-          sidebar.classList.toggle('collapsed', collapsed);
-          if (collapseIcon) collapseIcon.textContent = collapsed ? 'keyboard_double_arrow_right' : 'keyboard_double_arrow_left';
-          if (collapsed) document.querySelectorAll('#sidebar .submenu').forEach(function (s) { s.classList.add('hidden'); });
+          setSidebarCollapsed(!sidebar.classList.contains('collapsed'));
         });
       }
 

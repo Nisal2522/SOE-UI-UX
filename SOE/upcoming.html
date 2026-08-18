@@ -44,14 +44,23 @@
       --color-sidebar: var(--cu-dark-blue);
     }
     #sidebar.collapsed { width: 72px !important; }
+    #sidebar.collapsed .sidebar-header { justify-content: center; padding-left: 0; padding-right: 0; }
+    #sidebar.collapsed .sidebar-brand { display: none; }
+    #sidebar.collapsed nav span.font-medium { display: none; }
     #sidebar.collapsed nav a>span:last-child { display: none; }
+    #sidebar.collapsed nav .menu-toggle>.material-symbols-outlined:last-child { display: none; }
     #sidebar.collapsed .submenu { display: none !important; }
-    #sidebar.collapsed a[title] { position: relative; }
-    #sidebar.collapsed a[title]:hover::after {
+    #sidebar.collapsed nav .menu-toggle,
+    #sidebar.collapsed nav > a { justify-content: center; padding-left: 0; padding-right: 0; }
+    #sidebar.collapsed a[title],
+    #sidebar.collapsed .menu-toggle[title] { position: relative; }
+    #sidebar.collapsed a[title]:hover::after,
+    #sidebar.collapsed .menu-toggle[title]:hover::after {
       content: attr(title);
-      position: absolute; left: 72px; top: 50%; transform: translateY(-50%);
+      position: absolute; left: calc(100% + 8px); top: 50%; transform: translateY(-50%);
       background: #111827; color: #fff; padding: 6px 10px; border-radius: 6px;
       white-space: nowrap; font-size: 12px; box-shadow: 0 6px 18px rgba(2,6,23,.12);
+      z-index: 50;
     }
     .audit-card { transition: all .25s cubic-bezier(.4,0,.2,1); }
     .audit-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,.07); }
@@ -468,8 +477,8 @@
 <body class="font-display bg-white text-dark-text">
   <div class="flex h-screen overflow-hidden relative">
     <aside id="sidebar" class="w-64 flex-shrink-0 bg-sidebar text-white flex flex-col transition-all duration-300">
-      <div class="h-16 flex items-center justify-between px-6 border-b border-white/10 flex-shrink-0">
-        <div class="flex items-center gap-2">
+      <div class="sidebar-header h-16 flex items-center justify-between px-6 border-b border-white/10 flex-shrink-0">
+        <div class="sidebar-brand flex items-center gap-2">
           <span class="text-2xl font-bold tracking-wider">SOE</span>
           <div class="w-8 h-1 bg-gradient-to-r from-cu-light-blue to-cu-light-blue-60 rounded"></div>
         </div>
@@ -578,7 +587,7 @@
         </div>
 
         <a class="flex items-center gap-3 p-3 rounded-lg text-sm font-medium text-slate-200 hover:bg-white/10" href="#">
-          <span class="material-symbols-outlined">corporate_fare</span>Department Manager
+          <span class="material-symbols-outlined">corporate_fare</span><span class="font-medium text-sm">Department Manager</span>
         </a>
 
         <div>
@@ -1451,16 +1460,31 @@
         });
       });
 
+      // ==================== SIDEBAR COLLAPSE / EXPAND ====================
       var sidebar = document.getElementById('sidebar');
       var collapseBtn = document.getElementById('sidebarCollapseBtn');
       var collapseIcon = collapseBtn ? collapseBtn.querySelector('.material-symbols-outlined') : null;
+      var SIDEBAR_STORAGE_KEY = 'soe.sidebarCollapsed';
+
+      // Auto-tooltip titles for icon-only mode
+      document.querySelectorAll('#sidebar .menu-toggle, #sidebar nav > a').forEach(function (el) {
+        var label = el.querySelector('span.font-medium');
+        if (label && !el.getAttribute('title')) el.setAttribute('title', label.textContent.trim());
+      });
+
+      function setSidebarCollapsed(collapsed) {
+        sidebar.classList.toggle('collapsed', collapsed);
+        if (collapseIcon) collapseIcon.textContent = collapsed ? 'keyboard_double_arrow_right' : 'keyboard_double_arrow_left';
+        if (collapsed) document.querySelectorAll('#sidebar .submenu').forEach(function (s) { s.classList.add('hidden'); });
+        try { localStorage.setItem(SIDEBAR_STORAGE_KEY, collapsed ? '1' : '0'); } catch (e) {}
+      }
 
       if (collapseBtn && sidebar) {
+        var savedCollapsed = null;
+        try { savedCollapsed = localStorage.getItem(SIDEBAR_STORAGE_KEY); } catch (e) {}
+        if (savedCollapsed !== null) setSidebarCollapsed(savedCollapsed === '1');
         collapseBtn.addEventListener('click', function () {
-          var collapsed = !sidebar.classList.contains('collapsed');
-          sidebar.classList.toggle('collapsed', collapsed);
-          if (collapseIcon) collapseIcon.textContent = collapsed ? 'keyboard_double_arrow_right' : 'keyboard_double_arrow_left';
-          if (collapsed) document.querySelectorAll('#sidebar .submenu').forEach(function (s) { s.classList.add('hidden'); });
+          setSidebarCollapsed(!sidebar.classList.contains('collapsed'));
         });
       }
 
@@ -1504,6 +1528,7 @@
       var selectedUnit = null;
       var selectedUnitIds = [];
       var selectedAuditorName = null;
+      var completedPlannings = [];
 
       // ==================== RENDER CLIENTS ====================
       function renderClients() {
@@ -1563,6 +1588,24 @@
           html += '<div class="mt-2.5"><div class="w-full h-1.5 bg-gray-100 rounded-full overflow-hidden"><div class="h-full rounded-full transition-all ' + (planned === total ? 'bg-emerald-500' : 'bg-amber-400') + '" style="width:' + pct + '%"></div></div></div>';
           html += '</button>';
         });
+
+        // Completed planning records section
+        if (completedPlannings.length > 0) {
+          html += '<div class="px-4 py-2.5 bg-slate-50/90 border-t border-gray-200 flex items-center gap-1.5">';
+          html += '<span class="material-symbols-outlined text-sm text-emerald-500">checklist</span>';
+          html += '<span class="text-xs font-bold text-slate-500 uppercase tracking-wide">Completed Planning</span>';
+          html += '</div>';
+          completedPlannings.forEach(function (rec) {
+            html += '<div class="px-4 py-3 flex items-start justify-between gap-2 bg-white/60">';
+            html += '<div class="min-w-0">';
+            html += '<h4 class="font-semibold text-slate-800 text-sm truncate">' + rec.name + '</h4>';
+            html += '<p class="text-xs text-slate-500 mt-0.5">' + rec.assigned + ' of ' + rec.total + ' units assigned &bull; ' + rec.completedAt + '</p>';
+            html += '</div>';
+            html += '<span class="px-2 py-0.5 text-[11px] font-bold rounded-full bg-emerald-100 text-emerald-700 flex items-center gap-1 flex-shrink-0"><span class="material-symbols-outlined text-xs">check_circle</span>Completed</span>';
+            html += '</div>';
+          });
+        }
+
         list.innerHTML = html;
 
         list.querySelectorAll('[data-client]').forEach(function (btn) {
@@ -1637,13 +1680,20 @@
         });
         html += '</div>';
 
-        // UPDATED: Add Finalize button if all units are assigned
-        if (planned === c.units.length && c.units.length > 0) {
-          html += '<div class="px-5 py-4 border-t border-gray-100 bg-emerald-50/70 text-center">';
-          html += '<button id="unitPanelFinalizeBtn" class="w-full px-4 py-3 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-bold rounded-lg flex items-center justify-center gap-2 transition shadow-sm">';
-          html += '<span class="material-symbols-outlined text-base">checklist</span> Finalize Planning for ' + c.name;
+        // Complete Planning button: always available so planning can be completed
+        // even when some units are still pending (they stay unassigned for later).
+        if (c.units.length > 0) {
+          var allAssigned = planned === c.units.length;
+          var pendingCount = c.units.length - planned;
+          html += '<div class="px-5 py-4 border-t border-gray-100 text-center">';
+          html += '<button id="unitPanelCompleteBtn" class="w-full px-4 py-3 text-white text-sm font-bold rounded-lg flex items-center justify-center gap-2 transition shadow-sm ' + (allAssigned ? 'bg-emerald-600 hover:bg-emerald-700' : 'bg-[#1b1e42] hover:bg-[#2a2e55]') + '">';
+          html += '<span class="material-symbols-outlined text-base">checklist</span> Complete Planning for ' + c.name;
           html += '</button>';
-          html += '<p class="text-xs text-emerald-700 mt-2">All units assigned. Click to complete the planning phase.</p>';
+          if (allAssigned) {
+            html += '<p class="text-xs text-emerald-700 mt-2">All units assigned. Click to complete the planning phase.</p>';
+          } else {
+            html += '<p class="text-xs text-slate-500 mt-2">' + pendingCount + ' unit' + (pendingCount > 1 ? 's' : '') + ' still pending. You can complete planning now and manage them later.</p>';
+          }
           html += '</div>';
         }
 
@@ -1680,25 +1730,39 @@
         if (assignAllBtn) {
           assignAllBtn.addEventListener('click', function () {
             selectedUnit = null;
+            selectedUnitIds = [];
             renderRecommendations(true);
           });
         }
       }
 
-      // ==================== DELEGATED EVENT FOR FINALIZE BUTTON ====================
+      // ==================== DELEGATED EVENT FOR COMPLETE PLANNING BUTTON ====================
       document.getElementById('unitPanel').addEventListener('click', function(e) {
-        var target = e.target.closest('#unitPanelFinalizeBtn');
-        if (target && selectedClient) {
-          target.disabled = true;
-          target.innerHTML = '<span class="material-symbols-outlined text-base animate-spin">progress_activity</span> Finalizing...';
-          setTimeout(function() {
-            showToast('Success! Planning for ' + selectedClient.name + ' has been finalized.', 'success');
-            var btn = document.getElementById('unitPanelFinalizeBtn');
-            if(btn) btn.remove();
-            // Optionally re-render to update UI state further
-            renderUnitPanel();
-          }, 1200);
-        }
+        var target = e.target.closest('#unitPanelCompleteBtn');
+        if (!target || !selectedClient) return;
+        var client = selectedClient;
+        target.disabled = true;
+        target.innerHTML = '<span class="material-symbols-outlined text-base animate-spin">progress_activity</span> Completing...';
+        setTimeout(function() {
+          var assignedCount = client.units.filter(function (u) { return u.status === 'assigned'; }).length;
+          completedPlannings.push({
+            id: client.id,
+            name: client.name,
+            assigned: assignedCount,
+            total: client.units.length,
+            completedAt: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+          });
+          var idx = clients.findIndex(function (c) { return c.id === client.id; });
+          if (idx !== -1) clients.splice(idx, 1);
+          selectedClient = null;
+          selectedUnit = null;
+          selectedUnitIds = [];
+          selectedAuditorName = null;
+          showToast('Planning for ' + client.name + ' completed. ' + assignedCount + ' of ' + client.units.length + ' units assigned.', 'success');
+          renderClients();
+          renderUnitPanel();
+          renderRecommendations();
+        }, 1200);
       });
 
       // ==================== RENDER RECOMMENDATIONS ====================
@@ -1772,15 +1836,15 @@
           recTitle.textContent = 'Assign auditor to all pending units of ' + selectedClient.name;
         } else if (recommendationUnits.length > 1) {
           recTitle.textContent = 'Recommendations for ' + recommendationUnits.length + ' selected units';
-        } else {
-          recTitle.textContent = 'Recommendations for ' + selectedUnit.name + ' (' + selectedUnit.auditType + ')';
+        } else if (recommendationUnits.length === 1) {
+          recTitle.textContent = 'Recommendations for ' + recommendationUnits[0].name + ' (' + recommendationUnits[0].auditType + ')';
         }
 
         var rankedAuditors = rankAuditorsForUnits(recommendationUnits);
         var html = '';
 
         if (rankedAuditors.length === 0) {
-          var unitsLabel = recommendationUnits.length > 1 ? 'Recommendations for ' + recommendationUnits.length + ' selected units' : (selectedUnit ? 'Recommendations for ' + selectedUnit.name + ' (' + selectedUnit.auditType + ')' : 'Recommendations');
+          var unitsLabel = recommendationUnits.length > 1 ? 'Recommendations for ' + recommendationUnits.length + ' selected units' : (recommendationUnits[0] ? 'Recommendations for ' + recommendationUnits[0].name + ' (' + recommendationUnits[0].auditType + ')' : 'Recommendations');
           recTitle.textContent = unitsLabel;
           recEmpty.classList.remove('hidden');
           recCards.classList.add('hidden');
@@ -1881,11 +1945,14 @@
                   u.assignee = auditorName;
                 }
               });
+              selectedUnitIds = [];
+              selectedUnit = null;
             } else {
               // Fallback: assign currently selected single unit
               if (!selectedUnit) return;
               selectedUnit.status = 'assigned';
               selectedUnit.assignee = auditorName;
+              selectedUnit = null;
             }
             selectedAuditorName = null;
             renderClients();
