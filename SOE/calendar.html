@@ -139,6 +139,18 @@
     .planner-cell.today-col { background: #eff6ff; }
     .planner-emp { position: sticky; left: 0; z-index: 5; background: #fff; min-width: 158px; width: 158px; border-right: 2px solid #e2e8f0; }
     .planner-head-emp { position: sticky; left: 0; z-index: 6; background: #f8fafc; min-width: 158px; width: 158px; border-right: 2px solid #e2e8f0; }
+    .planner-emp.me { background: linear-gradient(90deg, #eff6ff 0%, #ffffff 65%); box-shadow: inset 3px 0 0 #3eb2ed; }
+
+    /* 8-hour capacity bar */
+    .cap-bar { height: 5px; border-radius: 9999px; background: #eef2f7; overflow: hidden; margin-top: 3px; }
+    .cap-bar .cap-fill { height: 100%; border-radius: 9999px; transition: width .3s ease; }
+    .cap-fill.light { background: #10b981; }
+    .cap-fill.full { background: #f59e0b; }
+    .cap-fill.over { background: #ef4444; }
+    .cap-label { font-size: 10px; font-weight: 700; color: #94a3b8; }
+    .cap-label.light { color: #059669; }
+    .cap-label.full { color: #d97706; }
+    .cap-label.over { color: #dc2626; }
 
     /* Daily time-slot view */
     .daily-scroll { max-height: 78vh; overflow-y: auto; border-radius: 14px; border: 1px solid #e5e7eb; background: #fff; box-shadow: 0 2px 12px rgba(0,0,0,.04); }
@@ -472,8 +484,8 @@
                     <span class="material-symbols-outlined text-base">groups</span>Department Calendar
                   </button>
                 </div>
-                <!-- Department multi-select filter -->
-                <div class="relative" id="deptFilterWrap">
+                <!-- Department multi-select filter (Department Calendars scope only) -->
+                <div class="relative hidden" id="deptFilterWrap">
                   <button type="button" id="deptFilterToggle" class="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-semibold text-slate-600 bg-white border border-gray-200 hover:bg-slate-50 transition">
                     <span class="material-symbols-outlined text-base">apartment</span>
                     <span id="deptFilterLabel">All Departments</span>
@@ -639,10 +651,13 @@
               </div>
 
               <!-- Availability Legend -->
-              <div class="px-5 py-3 border-t border-gray-100 flex items-center gap-5 text-sm text-slate-500">
-                <span class="inline-flex items-center gap-1.5"><span class="w-4 h-3 rounded slot-free inline-block border border-green-200"></span>Free</span>
-                <span class="inline-flex items-center gap-1.5"><span class="w-4 h-3 rounded slot-busy inline-block border border-red-200"></span>Overloaded</span>
+              <div class="px-5 py-3 border-t border-gray-100 flex items-center gap-5 text-sm text-slate-500 flex-wrap">
+                <span class="inline-flex items-center gap-1.5"><span class="w-4 h-3 rounded border border-slate-200 bg-slate-50 inline-block"></span>Free</span>
+                <span class="inline-flex items-center gap-1.5"><span class="w-4 h-3 rounded bg-emerald-500 inline-block"></span>Light (&lt; 6h)</span>
+                <span class="inline-flex items-center gap-1.5"><span class="w-4 h-3 rounded bg-amber-500 inline-block"></span>Full (6 - 8h)</span>
+                <span class="inline-flex items-center gap-1.5"><span class="w-4 h-3 rounded bg-red-500 inline-block"></span>Overloaded (&gt; 8h)</span>
                 <span class="inline-flex items-center gap-1.5"><span class="material-symbols-outlined text-amber-500 text-base">warning</span>Conflict</span>
+                <span class="text-xs text-slate-400 ml-auto">Capacity per 8h workday</span>
               </div>
             </div>
           </div>
@@ -964,6 +979,11 @@
         applyWeeklyFilter();
       }
 
+      // Department filter is a Department Calendars (scope "all") control only.
+      function syncDeptFilterVisibility() {
+        if (deptFilterWrap) deptFilterWrap.classList.toggle('hidden', currentScope !== 'all');
+      }
+
       var deptFilterWrap = document.getElementById('deptFilterWrap');
       var deptFilterToggle = document.getElementById('deptFilterToggle');
       var deptFilterMenu = document.getElementById('deptFilterMenu');
@@ -998,8 +1018,10 @@
         });
       }
 
+      syncDeptFilterVisibility();
+
       function getFilteredEvents() {
-        var byDept = calEvents.filter(function (e) { return isEventVisibleForDept(e.assignee); });
+        var byDept = currentScope === 'all' ? calEvents.filter(function (e) { return isEventVisibleForDept(e.assignee); }) : calEvents;
         if (currentScope === 'my') return byDept.filter(function (e) { return e.assignee === currentUser || e.assignee === 'All Team'; });
         return byDept;
       }
@@ -1008,7 +1030,7 @@
         var rows = document.querySelectorAll('#weeklyView [data-employee]');
         rows.forEach(function (row) {
           var emp = row.getAttribute('data-employee');
-          var deptVisible = isEventVisibleForDept(emp);
+          var deptVisible = currentScope === 'all' ? isEventVisibleForDept(emp) : true;
           if (currentScope === 'my') {
             row.style.display = (emp === currentUser && deptVisible) ? '' : 'none';
           } else {
@@ -1022,6 +1044,7 @@
           scopeBtns.forEach(function (b) { b.classList.remove('active'); });
           btn.classList.add('active');
           currentScope = btn.getAttribute('data-scope');
+          syncDeptFilterVisibility();
           renderCalendar();
           updateViews();
           applyWeeklyFilter();
@@ -1543,6 +1566,98 @@
       var plannerPage = 0;
       var PAGE_SIZE = 10;
 
+      // ==================== 8-HOUR CAPACITY SCHEDULE (dummy data) ====================
+      function seededRand(seed) {
+        var x = Math.sin(seed * 12.9898) * 43758.5453;
+        return x - Math.floor(x);
+      }
+      function seededPick(arr, seed) {
+        return arr[Math.floor(seededRand(seed) * arr.length) % arr.length];
+      }
+
+      var capacityCache = {};
+      function getCapacityEvents() {
+        var key = currentMonth + '-' + currentYear;
+        if (capacityCache[key]) return capacityCache[key];
+        var daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+        var locations = [
+          { label: 'Work from Home', loc: 'Home Office' },
+          { label: 'Colombo Office', loc: 'Colombo Office' },
+          { label: 'Laboratory', loc: 'Certification Lab - Colombo' }
+        ];
+        var leaves = [
+          { label: 'Sick Leave', desc: 'Approved sick leave with medical certificate.' },
+          { label: 'Casual Leave', desc: 'Approved casual leave.' },
+          { label: 'Annual Leave', desc: 'Approved annual leave.' }
+        ];
+        var activities = [
+          { label: 'ISO 9001 Audit', type: 'auditing', loc: 'Client Site - Colombo' },
+          { label: 'GOTS On-site Audit', type: 'auditing', loc: 'Client Site - Katunayake' },
+          { label: 'Organic Audit', type: 'auditing', loc: 'Client Site - Galle' },
+          { label: 'Contract Review', type: 'contracting', loc: 'Colombo Office' },
+          { label: 'Contract Drafting', type: 'contracting', loc: 'Colombo Office' },
+          { label: 'Audit Planning', type: 'planning', loc: 'Colombo Office' },
+          { label: 'GOTS Planning', type: 'planning', loc: 'Colombo Office' },
+          { label: 'Certification Review', type: 'certification', loc: 'Colombo Office' },
+          { label: 'Cert Decision Prep', type: 'certification', loc: 'Colombo Office' }
+        ];
+        var clients = ['EcoTextiles Ltd.', 'TechCorp Industries', 'Pacific Fabrics', 'Green Valley Farms', 'Global Foods', 'Ceylon Spices'];
+        var events = [];
+        var nextId = 100000;
+
+        employees.forEach(function (emp, ei) {
+          function mkEv(day, label, type, time, location, client, desc) {
+            events.push({ id: nextId++, day: day, label: label, type: type, time: time, assignee: emp.name, location: location, client: client, desc: desc });
+          }
+          for (var d = 1; d <= daysInMonth; d++) {
+            var dow = new Date(currentYear, currentMonth, d).getDay();
+            if (dow === 0 || dow === 6) continue;
+            var seed = (ei + 1) * 1000 + d;
+            var r = seededRand(seed);
+            if (r < 0.10) {
+              var lv = seededPick(leaves, seed * 7);
+              mkEv(d, lv.label, 'leaves', 'Full Day', '-', '', lv.desc);
+            } else if (r < 0.40) {
+              var wl = seededPick(locations, seed * 3);
+              mkEv(d, wl.label, 'work-location', '09:00 - 17:00', wl.loc, '', 'Full workday at ' + wl.label + '.');
+            } else if (r < 0.70) {
+              var wl2 = seededPick(locations, seed * 3);
+              mkEv(d, wl2.label, 'work-location', '09:00 - 13:00', wl2.loc, '', 'Morning at ' + wl2.label + '.');
+              var act = seededPick(activities, seed * 5);
+              mkEv(d, act.label, act.type, '14:00 - 17:00', act.loc, seededPick(clients, seed * 11), 'Scheduled ' + act.type + ' activity.');
+            } else if (r < 0.92) {
+              var a1 = seededPick(activities, seed * 5);
+              var a2 = seededPick(activities, seed * 13);
+              mkEv(d, a1.label, a1.type, '09:00 - 12:00', a1.loc, seededPick(clients, seed * 11), 'Scheduled ' + a1.type + ' activity.');
+              mkEv(d, a2.label, a2.type, '13:00 - 15:00', a2.loc, seededPick(clients, seed * 17), 'Scheduled ' + a2.type + ' activity.');
+            } else {
+              var wl3 = seededPick(locations, seed * 3);
+              mkEv(d, wl3.label, 'work-location', '09:00 - 13:00', wl3.loc, '', 'Morning at ' + wl3.label + '.');
+              var a3 = seededPick(activities, seed * 5);
+              var a4 = seededPick(activities, seed * 19);
+              mkEv(d, a3.label, a3.type, '13:00 - 17:00', a3.loc, seededPick(clients, seed * 11), 'Scheduled ' + a3.type + ' activity.');
+              mkEv(d, a4.label, a4.type, '17:30 - 19:00', a4.loc, seededPick(clients, seed * 23), 'Overtime - urgent ' + a4.type + ' follow-up.');
+            }
+          }
+        });
+        capacityCache[key] = events;
+        return events;
+      }
+
+      function capacityHours(dayEvs) {
+        var totalMin = 0;
+        dayEvs.forEach(function (ev) {
+          var t = parseTime(ev.time);
+          totalMin += t ? Math.max(0, t.end - t.start) : 480;
+        });
+        return totalMin / 60;
+      }
+
+      function formatHours(h) {
+        var rounded = Math.round(h * 10) / 10;
+        return (rounded % 1 === 0 ? rounded : rounded.toFixed(1)) + 'h';
+      }
+
       function renderMonthlyPlanner() {
         var container = document.getElementById('monthlyPlannerContent');
         var daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
@@ -1592,18 +1707,44 @@
         }
         html += '</div>';
 
-        // Employee rows
+        // Employee rows (capacity planner)
+        var capEvents = getCapacityEvents();
         var visibleEmployees = employees.filter(function (emp) {
           var sel = getSelectedDepartments();
           return sel.length === 0 || sel.indexOf(emp.dept) !== -1;
         });
         visibleEmployees.forEach(function (emp) {
-          var empEvents = calEvents.filter(function (e) { return e.assignee === emp.name || e.assignee === 'All Team'; });
+          var isMe = emp.name === currentUser;
+          var empEvents = capEvents.filter(function (e) { return e.assignee === emp.name; });
+
+          // Average load across the visible page
+          var totalH = 0, cntDays = 0;
+          for (var x = startDay; x <= endDay; x++) {
+            var xd = new Date(currentYear, currentMonth, x).getDay();
+            if (xd === 0 || xd === 6) continue;
+            cntDays++;
+            totalH += capacityHours(empEvents.filter(function (e) { return e.day === x; }));
+          }
+          var avgPct = cntDays ? Math.round(totalH / (cntDays * 8) * 100) : 0;
+          var avgCls = avgPct >= 90 ? 'text-red-500' : avgPct >= 70 ? 'text-amber-600' : 'text-emerald-600';
+          var deptChipCls = emp.dept === 'Textile' ? 'bg-rose-50 text-rose-600' : 'bg-violet-50 text-violet-600';
 
           html += '<div style="display:grid; grid-template-columns:' + gridCols + ';" class="border-b border-gray-100">';
-          html += '<div class="planner-emp p-3 flex items-center gap-2">';
+          html += '<div class="planner-emp p-3' + (isMe ? ' me' : '') + '">';
+          html += '<div class="flex items-center gap-2">';
           html += '<div class="w-8 h-8 rounded-full ' + emp.color + ' flex items-center justify-center flex-shrink-0"><span class="text-white text-xs font-bold">' + emp.initials + '</span></div>';
-          html += '<div><p class="text-sm font-semibold text-slate-900 leading-tight">' + emp.short + '</p><p class="text-sm text-slate-400 leading-tight">' + emp.role + '</p></div>';
+          html += '<div class="min-w-0">';
+          html += '<div class="flex items-center gap-1.5">';
+          html += '<p class="text-sm font-semibold text-slate-900 leading-tight truncate">' + emp.short + '</p>';
+          if (isMe) html += '<span class="inline-flex items-center px-1.5 py-px rounded-full bg-[#3eb2ed] text-white text-[10px] font-bold">You</span>';
+          html += '</div>';
+          html += '<p class="text-sm text-slate-400 leading-tight truncate">' + emp.role + '</p>';
+          html += '</div>';
+          html += '</div>';
+          html += '<div class="mt-2 flex items-center gap-2">';
+          html += '<span class="inline-flex items-center px-1.5 py-px rounded-md text-[10px] font-bold ' + deptChipCls + '">' + emp.dept + '</span>';
+          html += '<span class="inline-flex items-center gap-0.5 text-[10px] font-bold ' + avgCls + '"><span class="material-symbols-outlined text-[12px]">speed</span>Avg ' + avgPct + '%</span>';
+          html += '</div>';
           html += '</div>';
 
           for (var d = startDay; d <= endDay; d++) {
@@ -1615,13 +1756,22 @@
             else if (isWe) cls += ' weekend';
 
             var dayEvs = empEvents.filter(function (e) { return e.day === d; });
+            var hours = capacityHours(dayEvs);
+            var pct = Math.min(100, Math.round(hours / 8 * 100));
+            var band = hours === 0 ? 'free' : hours < 6 ? 'light' : hours <= 8 ? 'full' : 'over';
+            var bandLabel = hours === 0 ? (isWe ? 'Off' : 'Free') : formatHours(hours) + ' / 8h';
+
             html += '<div class="' + cls + '" data-daily-day="' + d + '">';
-            if (dayEvs.length > 0) {
-              dayEvs.forEach(function (ev) {
-                var hasConflict = getConflicts(ev, empEvents).length > 0;
-                var cIcon = hasConflict ? '<span class="material-symbols-outlined text-white text-xs" style="vertical-align:middle">warning</span> ' : '';
-                html += '<div class="ev-bar event-' + ev.type + ' mb-0.5" data-evid="' + ev.id + '" title="' + ev.label + ' (' + ev.time + ')">' + cIcon + ev.label + '</div>';
-              });
+            dayEvs.forEach(function (ev) {
+              var hasConflict = getConflicts(ev, empEvents).length > 0;
+              var cIcon = hasConflict ? '<span class="material-symbols-outlined text-white text-xs" style="vertical-align:middle">warning</span> ' : '';
+              html += '<div class="ev-bar event-' + ev.type + ' mb-0.5" data-evid="' + ev.id + '" title="' + ev.label + ' (' + ev.time + ')">' + cIcon + ev.label + '</div>';
+            });
+            if (hours === 0) {
+              html += '<div class="pt-1"><span class="cap-label">' + bandLabel + '</span></div>';
+            } else {
+              html += '<div class="flex items-center justify-between pt-1"><span class="cap-label ' + band + '">' + bandLabel + '</span></div>';
+              html += '<div class="cap-bar"><div class="cap-fill ' + band + '" style="width:' + pct + '%"></div></div>';
             }
             html += '</div>';
           }
@@ -1642,7 +1792,7 @@
           bar.addEventListener('click', function (e) {
             e.stopPropagation();
             var evId = parseInt(bar.getAttribute('data-evid'));
-            var ev = calEvents.find(function (x) { return x.id === evId; });
+            var ev = calEvents.find(function (x) { return x.id === evId; }) || getCapacityEvents().find(function (x) { return x.id === evId; });
             if (ev) showEventPopup(ev, bar.getBoundingClientRect());
           });
         });
