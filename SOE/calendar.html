@@ -128,6 +128,11 @@
     .view-tab.active { color: #1e293b; font-weight: 600; }
     .view-tab.active::after { content:''; position:absolute; bottom:0; left:8px; right:8px; height:2.5px; border-radius:2px; background:linear-gradient(90deg,#3eb2ed,#38bdf8); }
 
+    .view-opt { display: flex; align-items: center; gap: 8px; width: 100%; padding: 7px 12px; font-size: 0.875rem; font-weight: 600; color: #475569; background: none; border: none; cursor: pointer; border-radius: 8px; text-align: left; }
+    .view-opt:hover { background: #f1f5f9; }
+    .view-opt.active { color: #1b1e42; background: #e0f2fe; }
+    .view-opt .material-symbols-outlined { font-size: 16px; }
+
     .cal-scope-btn { color: #64748b; background: transparent; cursor: pointer; border: none; }
     .cal-scope-btn.active { color: #fff; background: #1b1e42; box-shadow: 0 1px 4px rgba(27,30,66,.2); }
 
@@ -152,6 +157,23 @@
     .cap-label.full { color: #d97706; }
     .cap-label.over { color: #dc2626; }
 
+    /* Spacious rounded team-grid cells (employee rows x day columns) */
+    .tg-row { display: grid; gap: 8px; padding: 0 10px 8px; }
+    .tg-head { background: #fff; border: 1px solid #eef2f7; border-radius: 12px; padding: 5px 4px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; min-height: 48px; cursor: pointer; transition: border-color .15s, background .15s; }
+    .tg-head:hover { border-color: #c7d7f5; }
+    .tg-head.weekend { background: #f8fafc; }
+    .tg-head.today-col { background: #e0f2fe; border-color: #7dd3fc; }
+    .tg-date { display: inline-flex; align-items: center; justify-content: center; min-width: 27px; height: 27px; border-radius: 9999px; font-size: 13px; font-weight: 800; color: #475569; }
+    .tg-date.today { background: linear-gradient(135deg, #3eb2ed, #2563eb); color: #fff; box-shadow: 0 2px 8px rgba(37,99,235,.35); }
+    .tg-cell { background: #fff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 7px 8px; min-height: 92px; display: flex; flex-direction: column; gap: 4px; transition: border-color .15s, box-shadow .15s; }
+    .tg-cell:hover { border-color: #c7d7f5; box-shadow: 0 4px 14px rgba(62,178,237,.10); }
+    .tg-cell.weekend { background: #f8fafc; border-color: #eef2f7; }
+    .tg-cell.today-col { background: #f0f7ff; border-color: #bfdbfe; }
+    .tg-empty { flex: 1; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 800; letter-spacing: .05em; color: #cbd5e1; }
+    .ev-chip { display: inline-flex; align-items: center; gap: 3px; background: var(--ev); color: #fff; border-radius: 9999px; padding: 3px 9px; font-size: 10px; font-weight: 700; line-height: 1.35; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; cursor: pointer; box-shadow: 0 1px 2px rgba(15,23,42,.12); transition: transform .12s, box-shadow .12s, filter .12s; }
+    .ev-chip:hover { transform: translateY(-1px); box-shadow: 0 3px 8px rgba(15,23,42,.18); filter: brightness(1.05); }
+    .ev-chip .material-symbols-outlined { font-size: 11px; }
+
     /* Daily time-slot view */
     .daily-scroll { max-height: 78vh; overflow-y: auto; border-radius: 14px; border: 1px solid #e5e7eb; background: #fff; box-shadow: 0 2px 12px rgba(0,0,0,.04); }
     .daily-schedule { display: flex; min-width: 900px; }
@@ -163,6 +185,19 @@
     .daily-event:hover { filter: brightness(1.06); transform: translateY(-1px); }
     .daily-event-title { font-weight: 900; color: #0f172a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
     .daily-event-time { margin-top: 2px; font-weight: 700; color: rgba(15, 23, 42, 0.65); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+    /* Multi-day time grid (Day / Work Week / Week) */
+    .time-grid-scroll { max-height: 78vh; overflow-x: auto; overflow-y: auto; border-radius: 14px; border: 1px solid #e5e7eb; background: #fff; box-shadow: 0 2px 12px rgba(0,0,0,.04); }
+    .time-grid { display: flex; position: relative; min-width: 640px; }
+    .time-gutter { width: 62px; flex-shrink: 0; background: #f8fafc; border-right: 1px solid #e5e7eb; position: relative; }
+    .time-gutter-header { height: 50px; position: sticky; top: 0; z-index: 3; background: #f8fafc; border-bottom: 1px solid #eef2f7; }
+    .time-cols { display: flex; flex: 1; }
+    .time-col { flex: 1; min-width: 110px; position: relative; border-left: 1px solid #f1f5f9; background-image: repeating-linear-gradient(to bottom, rgba(148,163,184,.25) 0px, rgba(148,163,184,.25) 1px, transparent 1px, transparent var(--slot-h, 44px)); }
+    .time-col-header { position: sticky; top: 0; z-index: 3; background: #fff; border-bottom: 1px solid #eef2f7; height: 50px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; }
+    .time-col-header.weekend { background: #fafbfc; }
+    .time-col-header.today { background: #eff6ff; }
+    .time-now-line { position: absolute; left: 0; right: 0; height: 2px; background: #ef4444; border-radius: 2px; z-index: 2; }
+    .time-now-line::before { content: ''; position: absolute; left: -4px; top: -3px; width: 8px; height: 8px; border-radius: 9999px; background: #ef4444; }
   </style>
 </head>
 
@@ -508,9 +543,19 @@
                   </div>
                 </div>
                 <div class="w-px h-6 bg-gray-200"></div>
-                <div class="flex items-center border-b border-gray-200">
-                  <button class="view-tab active" data-view="monthly">Monthly</button>
-                  <button class="view-tab" data-view="weekly">Weekly</button>
+                <!-- View switcher dropdown: Day / Work Week / Week / Month -->
+                <div class="relative" id="viewSwitcher">
+                  <button type="button" id="viewToggle" class="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-semibold text-slate-600 bg-white border border-gray-200 hover:bg-slate-50 transition">
+                    <span class="material-symbols-outlined text-base">calendar_view_month</span>
+                    <span id="viewToggleLabel">Month</span>
+                    <span class="material-symbols-outlined text-base">expand_more</span>
+                  </button>
+                  <div id="viewMenu" class="hidden absolute right-0 top-full mt-1.5 w-48 bg-white border border-gray-200 rounded-xl shadow-lg z-30 py-1.5">
+                    <button type="button" class="view-opt" data-view="day"><span class="material-symbols-outlined">calendar_view_day</span>Day</button>
+                    <button type="button" class="view-opt" data-view="workweek"><span class="material-symbols-outlined">view_week</span>Work Week</button>
+                    <button type="button" class="view-opt" data-view="week"><span class="material-symbols-outlined">calendar_view_week</span>Week</button>
+                    <button type="button" class="view-opt" data-view="month"><span class="material-symbols-outlined">calendar_view_month</span>Month</button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -534,122 +579,6 @@
               <div class="overflow-x-auto">
                 <div id="monthlyPlannerContent"></div>
               </div>
-            </div>
-
-            <!-- Daily Time-Slot View -->
-            <div id="dailyView" class="hidden">
-              <div class="bg-white rounded-2xl border border-gray-200 overflow-hidden" style="box-shadow:0 2px 12px rgba(0,0,0,.04);">
-                <div class="flex items-center justify-between px-5 py-3 border-b border-gray-100">
-                  <div class="flex items-center gap-2">
-                    <button id="dailyBackBtn" class="p-1.5 rounded-lg hover:bg-slate-100 transition" type="button">
-                      <span class="material-symbols-outlined text-xl text-slate-600">chevron_left</span>
-                    </button>
-                    <h3 id="dailyDateLabel" class="text-lg font-bold text-slate-900 min-w-[200px]"></h3>
-                  </div>
-                  <div class="text-sm text-slate-500 font-semibold">
-                    Time slots: 06:00 - 22:00
-                  </div>
-                </div>
-                <div class="p-4">
-                  <div id="dailyScheduleWrap" class="daily-scroll">
-                    <div id="dailySchedule" class="daily-schedule">
-                      <div class="daily-time-col" id="dailyTimeLabels"></div>
-                      <div class="daily-body-col">
-                        <div id="dailyTimeline" class="daily-timeline"></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Weekly View -->
-            <div id="weeklyView" class="hidden">
-              <div class="overflow-x-auto">
-                <div class="min-w-[1000px]">
-                  <div class="grid grid-cols-8 bg-slate-50 border-b border-gray-200">
-                    <div class="px-3 py-2.5 text-sm font-semibold text-slate-500 uppercase">Employee</div>
-                    <div class="px-3 py-2.5 text-sm font-semibold text-slate-500 uppercase text-center">Mon 10</div>
-                    <div class="px-3 py-2.5 text-sm font-semibold text-slate-500 uppercase text-center">Tue 11</div>
-                    <div class="px-3 py-2.5 text-sm font-semibold text-slate-500 uppercase text-center">Wed 12</div>
-                    <div class="px-3 py-2.5 text-sm font-semibold text-slate-500 uppercase text-center">Thu 13</div>
-                    <div class="px-3 py-2.5 text-sm font-semibold text-slate-500 uppercase text-center">Fri 14</div>
-                    <div class="px-3 py-2.5 text-sm font-semibold text-slate-500 uppercase text-center">Sat 15</div>
-                    <div class="px-3 py-2.5 text-sm font-semibold text-slate-500 uppercase text-center">Sun 16</div>
-                  </div>
-                  <!-- Nisal Amarasekara row -->
-                  <div class="grid grid-cols-8 border-b border-gray-100" data-employee="Nisal Amarasekara">
-                    <div class="p-3 flex items-center gap-2">
-                      <div class="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center"><span class="text-white text-xs font-bold">SJ</span></div>
-                      <div><p class="text-sm font-semibold text-slate-900">Sarah J.</p><p class="text-sm text-slate-400">Sr. Auditor</p></div>
-                    </div>
-                    <div class="p-1.5 border-l border-gray-100"><div class="ev-bar event-auditing" title="ISO 9001 Audit - TechCorp">ISO 9001</div></div>
-                    <div class="p-1.5 border-l border-gray-100"><div class="ev-bar event-auditing" title="ISO 9001 Audit - TechCorp">ISO 9001</div><div class="ev-bar event-planning mt-0.5" title="GOTS Review prep"><span class="material-symbols-outlined text-white text-xs mr-0.5">warning</span>GOTS</div></div>
-                    <div class="p-1.5 border-l border-gray-100"><div class="ev-bar event-planning" title="GOTS Review">GOTS Review</div></div>
-                    <div class="p-1.5 border-l border-gray-100"><div class="ev-bar event-meetings" title="Team Planning">Team Mtg</div></div>
-                    <div class="p-1.5 border-l border-gray-100 slot-free"></div>
-                    <div class="p-1.5 border-l border-gray-100 slot-free"></div>
-                    <div class="p-1.5 border-l border-gray-100 slot-free"></div>
-                  </div>
-                  <!-- David Kim row -->
-                  <div class="grid grid-cols-8 border-b border-gray-100" data-employee="David Kim">
-                    <div class="p-3 flex items-center gap-2">
-                      <div class="w-8 h-8 rounded-full bg-violet-600 flex items-center justify-center"><span class="text-white text-xs font-bold">DK</span></div>
-                      <div><p class="text-sm font-semibold text-slate-900">David K.</p><p class="text-sm text-slate-400">Lead Auditor</p></div>
-                    </div>
-                    <div class="p-1.5 border-l border-gray-100"><div class="ev-bar event-trainings" title="ISO 45001 Training">ISO 45001</div></div>
-                    <div class="p-1.5 border-l border-gray-100"><div class="ev-bar event-trainings" title="ISO 45001 Training">ISO 45001</div></div>
-                    <div class="p-1.5 border-l border-gray-100"><div class="ev-bar event-auditing" title="Organic Audit">Organic</div></div>
-                    <div class="p-1.5 border-l border-gray-100"><div class="ev-bar event-auditing" title="Organic Audit">Organic</div></div>
-                    <div class="p-1.5 border-l border-gray-100"><div class="ev-bar event-client-visits" title="Client Visit - Pacific">Pacific Visit</div></div>
-                    <div class="p-1.5 border-l border-gray-100 slot-busy"></div>
-                    <div class="p-1.5 border-l border-gray-100 slot-free"></div>
-                  </div>
-                  <!-- Lisa Anderson row -->
-                  <div class="grid grid-cols-8 border-b border-gray-100" data-employee="Lisa Anderson">
-                    <div class="p-3 flex items-center gap-2">
-                      <div class="w-8 h-8 rounded-full bg-rose-500 flex items-center justify-center"><span class="text-white text-xs font-bold">LA</span></div>
-                      <div><p class="text-sm font-semibold text-slate-900">Lisa A.</p><p class="text-sm text-slate-400">Auditor</p></div>
-                    </div>
-                    <div class="p-1.5 border-l border-gray-100"><div class="ev-bar event-contracting" title="Contract Review">Contract</div></div>
-                    <div class="p-1.5 border-l border-gray-100 slot-free"></div>
-                    <div class="p-1.5 border-l border-gray-100"><div class="ev-bar event-certification" title="Certification Review">Cert Review</div></div>
-                    <div class="p-1.5 border-l border-gray-100"><div class="ev-bar event-supportive" title="Report Writing">Report</div></div>
-                    <div class="p-1.5 border-l border-gray-100 slot-free"></div>
-                    <div class="p-1.5 border-l border-gray-100 slot-free"></div>
-                    <div class="p-1.5 border-l border-gray-100 slot-free"></div>
-                  </div>
-                  <!-- Mike Chen row -->
-                  <div class="grid grid-cols-8 border-b border-gray-100" data-employee="Mike Chen">
-                    <div class="p-3 flex items-center gap-2">
-                      <div class="w-8 h-8 rounded-full bg-emerald-600 flex items-center justify-center"><span class="text-white text-xs font-bold">MC</span></div>
-                      <div><p class="text-sm font-semibold text-slate-900">Mike C.</p><p class="text-sm text-slate-400">Auditor</p></div>
-                    </div>
-                    <div class="p-1.5 border-l border-gray-100"><div class="ev-bar event-leaves" title="Annual Leave">Leave</div></div>
-                    <div class="p-1.5 border-l border-gray-100"><div class="ev-bar event-leaves" title="Annual Leave">Leave</div></div>
-                    <div class="p-1.5 border-l border-gray-100"><div class="ev-bar event-leaves" title="Annual Leave">Leave</div></div>
-                    <div class="p-1.5 border-l border-gray-100 slot-free"></div>
-                    <div class="p-1.5 border-l border-gray-100"><div class="ev-bar event-work-location" title="Remote Work">Remote</div></div>
-                    <div class="p-1.5 border-l border-gray-100 slot-free"></div>
-                    <div class="p-1.5 border-l border-gray-100 slot-free"></div>
-                  </div>
-                  <!-- Emma Davis row -->
-                  <div class="grid grid-cols-8" data-employee="Emma Davis">
-                    <div class="p-3 flex items-center gap-2">
-                      <div class="w-8 h-8 rounded-full bg-amber-500 flex items-center justify-center"><span class="text-white text-xs font-bold">ED</span></div>
-                      <div><p class="text-sm font-semibold text-slate-900">Emma D.</p><p class="text-sm text-slate-400">Jr. Auditor</p></div>
-                    </div>
-                    <div class="p-1.5 border-l border-gray-100"><div class="ev-bar event-events" title="Industry Conference">Conference</div></div>
-                    <div class="p-1.5 border-l border-gray-100"><div class="ev-bar event-events" title="Industry Conference">Conference</div></div>
-                    <div class="p-1.5 border-l border-gray-100 slot-free"></div>
-                    <div class="p-1.5 border-l border-gray-100"><div class="ev-bar event-cert-other" title="Cert Renewal Prep">Cert Renew</div></div>
-                    <div class="p-1.5 border-l border-gray-100"><div class="ev-bar event-soe-workload" title="SOE Admin">SOE Admin</div></div>
-                    <div class="p-1.5 border-l border-gray-100 slot-free"></div>
-                    <div class="p-1.5 border-l border-gray-100 slot-free"></div>
-                  </div>
-                </div>
-              </div>
-
               <!-- Availability Legend -->
               <div class="px-5 py-3 border-t border-gray-100 flex items-center gap-5 text-sm text-slate-500 flex-wrap">
                 <span class="inline-flex items-center gap-1.5"><span class="w-4 h-3 rounded border border-slate-200 bg-slate-50 inline-block"></span>Free</span>
@@ -658,6 +587,22 @@
                 <span class="inline-flex items-center gap-1.5"><span class="w-4 h-3 rounded bg-red-500 inline-block"></span>Overloaded (&gt; 8h)</span>
                 <span class="inline-flex items-center gap-1.5"><span class="material-symbols-outlined text-amber-500 text-base">warning</span>Conflict</span>
                 <span class="text-xs text-slate-400 ml-auto">Capacity per 8h workday</span>
+              </div>
+            </div>
+
+            <!-- Time Grid View (Day / Work Week / Week) -->
+            <div id="timeGridView" class="hidden">
+              <div class="p-4">
+                <div class="time-grid-scroll">
+                  <div class="time-grid">
+                    <div class="time-gutter" id="timeGutter"></div>
+                    <div class="time-cols" id="timeCols"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="px-5 py-3 border-t border-gray-100 flex items-center gap-5 text-sm text-slate-500 flex-wrap">
+                <span class="inline-flex items-center gap-1.5"><span class="w-4 h-3 rounded bg-red-500 inline-block"></span>Now</span>
+                <span class="text-xs text-slate-400 ml-auto">Drag on the timeline to plan a new event</span>
               </div>
             </div>
           </div>
@@ -846,60 +791,112 @@
         });
       }
 
-      // View Tabs (Monthly / Weekly)
-      var currentView = 'monthly';
-      var viewTabs = document.querySelectorAll('.view-tab');
+      // View switcher: Day / Work Week / Week / Month (default Month)
+      var viewMode = 'month';
+      var VIEW_LABELS = { day: 'Day', workweek: 'Work Week', week: 'Week', month: 'Month' };
       var monthlyView = document.getElementById('monthlyView');
       var monthlyPlannerView = document.getElementById('monthlyPlannerView');
-      var weeklyView = document.getElementById('weeklyView');
-      var dailyView = document.getElementById('dailyView');
-      var dailyBackBtn = document.getElementById('dailyBackBtn');
+      var timeGridView = document.getElementById('timeGridView');
       var selectedDay = null;
 
-      if (dailyBackBtn) {
-        dailyBackBtn.addEventListener('click', function () {
-          currentView = 'monthly';
-          viewTabs.forEach(function (t) { t.classList.remove('active'); });
-          var monthlyTab = document.querySelector('.view-tab[data-view="monthly"]');
-          if (monthlyTab) monthlyTab.classList.add('active');
-          updateViews();
-        });
+      var viewSwitcher = document.getElementById('viewSwitcher');
+      var viewToggle = document.getElementById('viewToggle');
+      var viewMenu = document.getElementById('viewMenu');
+      var viewToggleLabel = document.getElementById('viewToggleLabel');
+      var viewOpts = document.querySelectorAll('.view-opt');
+
+      function setViewMode(mode) {
+        viewMode = mode;
+        viewOpts.forEach(function (o) { o.classList.toggle('active', o.getAttribute('data-view') === mode); });
+        if (viewToggleLabel) viewToggleLabel.textContent = VIEW_LABELS[mode];
+        var icon = viewToggle ? viewToggle.querySelector('.material-symbols-outlined') : null;
+        if (icon) {
+          icon.textContent = { day: 'calendar_view_day', workweek: 'view_week', week: 'calendar_view_week', month: 'calendar_view_month' }[mode];
+        }
+        updateToolbarLabel();
+      }
+
+      function normalizeSelectedDay() {
+        if (!selectedDay) {
+          var now = new Date();
+          selectedDay = (now.getMonth() === currentMonth && now.getFullYear() === currentYear) ? now.getDate() : 1;
+        }
+        var daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+        if (selectedDay < 1) selectedDay = 1;
+        if (selectedDay > daysInMonth) selectedDay = daysInMonth;
+      }
+
+      function getWeekDates(anchorDay, workOnly) {
+        normalizeSelectedDay();
+        var d = new Date(currentYear, currentMonth, anchorDay);
+        var dow = d.getDay();
+        var offset = workOnly ? (dow === 0 ? -6 : 1 - dow) : -dow;
+        var first = new Date(currentYear, currentMonth, anchorDay + offset);
+        var dates = [];
+        for (var i = 0; i < (workOnly ? 5 : 7); i++) {
+          dates.push(new Date(first.getFullYear(), first.getMonth(), first.getDate() + i));
+        }
+        return dates;
+      }
+
+      function updateToolbarLabel() {
+        var labelEl = document.getElementById('calMonthLabel');
+        if (!labelEl) return;
+        var months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+        var days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+        if (viewMode === 'month') {
+          labelEl.textContent = months[currentMonth] + ' ' + currentYear;
+        } else if (viewMode === 'day') {
+          normalizeSelectedDay();
+          var d1 = new Date(currentYear, currentMonth, selectedDay);
+          labelEl.textContent = days[d1.getDay()] + ', ' + months[d1.getMonth()] + ' ' + d1.getDate() + ', ' + d1.getFullYear();
+        } else {
+          var dates = getWeekDates(selectedDay, viewMode === 'workweek');
+          var a = dates[0], b = dates[dates.length - 1];
+          var sameYear = a.getFullYear() === b.getFullYear();
+          var sameMonth = sameYear && a.getMonth() === b.getMonth();
+          var label = (sameYear ? months[a.getMonth()] + ' ' + a.getDate() : months[a.getMonth()] + ' ' + a.getDate() + ', ' + a.getFullYear()) +
+            ' - ' + (sameMonth ? b.getDate() : months[b.getMonth()] + ' ' + b.getDate()) + (sameYear ? '' : ', ' + b.getFullYear());
+          labelEl.textContent = label;
+        }
       }
 
       function updateViews() {
         monthlyView.classList.add('hidden');
         monthlyPlannerView.classList.add('hidden');
-        weeklyView.classList.add('hidden');
-        if (dailyView) dailyView.classList.add('hidden');
-        if (currentView === 'monthly') {
-          if (currentScope === 'all') {
-            monthlyPlannerView.classList.remove('hidden');
-            renderMonthlyPlanner();
-          } else {
-            monthlyView.classList.remove('hidden');
-            renderCalendar();
-          }
+        if (timeGridView) timeGridView.classList.add('hidden');
+        if (currentScope === 'all') {
+          // Department scope: employee rows x day columns for every view
+          monthlyPlannerView.classList.remove('hidden');
+          if (viewMode === 'month') renderMonthlyPlanner();
+          else renderTeamGridForCurrentView();
+        } else if (viewMode === 'month') {
+          monthlyView.classList.remove('hidden');
+          renderCalendar();
         } else {
-          if (currentView === 'weekly') {
-            weeklyView.classList.remove('hidden');
-          } else if (currentView === 'daily') {
-            if (dailyView) dailyView.classList.remove('hidden');
-            renderDaily(selectedDay);
-          } else {
-            weeklyView.classList.remove('hidden');
-          }
+          if (timeGridView) timeGridView.classList.remove('hidden');
+          renderTimeGrid();
         }
       }
 
-      viewTabs.forEach(function (tab) {
-        tab.addEventListener('click', function () {
-          viewTabs.forEach(function (t) { t.classList.remove('active'); });
-          tab.classList.add('active');
-          currentView = tab.getAttribute('data-view');
-          updateViews();
-          if (currentView === 'weekly') applyWeeklyFilter();
+      if (viewToggle && viewMenu) {
+        viewToggle.addEventListener('click', function (e) {
+          e.stopPropagation();
+          viewMenu.classList.toggle('hidden');
         });
-      });
+        document.addEventListener('click', function (e) {
+          if (!viewMenu.classList.contains('hidden') && !viewSwitcher.contains(e.target)) {
+            viewMenu.classList.add('hidden');
+          }
+        });
+        viewOpts.forEach(function (opt) {
+          opt.addEventListener('click', function () {
+            viewMenu.classList.add('hidden');
+            setViewMode(opt.getAttribute('data-view'));
+            updateViews();
+          });
+        });
+      }
 
       // Event type display names
       var typeLabels = {
@@ -976,7 +973,6 @@
       function applyDeptFilter() {
         renderCalendar();
         updateViews();
-        applyWeeklyFilter();
       }
 
       // Department filter is a Department Calendars (scope "all") control only.
@@ -1026,19 +1022,6 @@
         return byDept;
       }
 
-      function applyWeeklyFilter() {
-        var rows = document.querySelectorAll('#weeklyView [data-employee]');
-        rows.forEach(function (row) {
-          var emp = row.getAttribute('data-employee');
-          var deptVisible = currentScope === 'all' ? isEventVisibleForDept(emp) : true;
-          if (currentScope === 'my') {
-            row.style.display = (emp === currentUser && deptVisible) ? '' : 'none';
-          } else {
-            row.style.display = deptVisible ? '' : 'none';
-          }
-        });
-      }
-
       scopeBtns.forEach(function (btn) {
         btn.addEventListener('click', function () {
           scopeBtns.forEach(function (b) { b.classList.remove('active'); });
@@ -1047,7 +1030,6 @@
           syncDeptFilterVisibility();
           renderCalendar();
           updateViews();
-          applyWeeklyFilter();
         });
       });
 
@@ -1544,7 +1526,6 @@
           closeNewEventModal();
           renderCalendar();
           updateViews();
-          applyWeeklyFilter();
         });
       }
       syncTypeUI();
@@ -1658,57 +1639,50 @@
         return (rounded % 1 === 0 ? rounded : rounded.toFixed(1)) + 'h';
       }
 
-      function renderMonthlyPlanner() {
+      // Team grid: employee rows x day columns (used for all views in Department scope)
+      function renderTeamGrid(dates, showPagination) {
         var container = document.getElementById('monthlyPlannerContent');
-        var daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
-        var months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-        document.getElementById('calMonthLabel').textContent = months[currentMonth] + ' ' + currentYear;
-
-        var totalPages = Math.ceil(daysInMonth / PAGE_SIZE);
-        if (plannerPage >= totalPages) plannerPage = totalPages - 1;
-        if (plannerPage < 0) plannerPage = 0;
-
-        var startDay = plannerPage * PAGE_SIZE + 1;
-        var endDay = Math.min(startDay + PAGE_SIZE - 1, daysInMonth);
-        var visibleDays = endDay - startDay + 1;
-
         var today = new Date();
-        var todayDay = (today.getMonth() === currentMonth && today.getFullYear() === currentYear) ? today.getDate() : -1;
-
-        var colW = '1fr';
-        var gridCols = '150px repeat(' + visibleDays + ', ' + colW + ')';
-
+        var daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+        var gridCols = '150px repeat(' + dates.length + ', 1fr)';
         var html = '';
 
-        // Pagination controls
-        html += '<div class="flex items-center justify-between px-4 py-2.5 bg-slate-50/80 border-b border-gray-200">';
-        html += '<button id="plannerPrev" class="flex items-center gap-1 px-3 py-1.5 text-sm font-medium text-slate-600 border border-gray-200 rounded-lg hover:bg-white transition ' + (plannerPage === 0 ? 'opacity-40 pointer-events-none' : '') + '"><span class="material-symbols-outlined text-base">chevron_left</span>Previous</button>';
-        html += '<span class="text-sm font-semibold text-slate-700">Days ' + startDay + ' - ' + endDay + ' of ' + daysInMonth + '</span>';
-        html += '<button id="plannerNext" class="flex items-center gap-1 px-3 py-1.5 text-sm font-medium text-slate-600 border border-gray-200 rounded-lg hover:bg-white transition ' + (plannerPage >= totalPages - 1 ? 'opacity-40 pointer-events-none' : '') + '">Next<span class="material-symbols-outlined text-base">chevron_right</span></button>';
-        html += '</div>';
+        if (showPagination) {
+          var totalPages = Math.ceil(daysInMonth / PAGE_SIZE);
+          if (plannerPage >= totalPages) plannerPage = totalPages - 1;
+          if (plannerPage < 0) plannerPage = 0;
+          var startDay = plannerPage * PAGE_SIZE + 1;
+          var endDay = Math.min(startDay + PAGE_SIZE - 1, daysInMonth);
+          html += '<div class="flex items-center justify-between px-4 py-2.5 bg-slate-50/80 border-b border-gray-200">';
+          html += '<button id="plannerPrev" class="flex items-center gap-1 px-3 py-1.5 text-sm font-medium text-slate-600 border border-gray-200 rounded-lg hover:bg-white transition ' + (plannerPage === 0 ? 'opacity-40 pointer-events-none' : '') + '"><span class="material-symbols-outlined text-base">chevron_left</span>Previous</button>';
+          html += '<span class="text-sm font-semibold text-slate-700">Days ' + startDay + ' - ' + endDay + ' of ' + daysInMonth + '</span>';
+          html += '<button id="plannerNext" class="flex items-center gap-1 px-3 py-1.5 text-sm font-medium text-slate-600 border border-gray-200 rounded-lg hover:bg-white transition ' + (plannerPage >= totalPages - 1 ? 'opacity-40 pointer-events-none' : '') + '">Next<span class="material-symbols-outlined text-base">chevron_right</span></button>';
+          html += '</div>';
+        }
 
         // Grid
         html += '<div>';
 
-        // Header row
-        html += '<div style="display:grid; grid-template-columns:' + gridCols + ';" class="bg-slate-50 border-b border-gray-200 sticky top-0 z-10">';
-        html += '<div class="planner-head-emp px-3 py-2.5 text-sm font-semibold text-slate-500 uppercase">Employee</div>';
-        for (var d = startDay; d <= endDay; d++) {
-          var dow = new Date(currentYear, currentMonth, d).getDay();
+        // Header row (spacious rounded cells)
+        html += '<div style="grid-template-columns:' + gridCols + ';" class="tg-row pt-2.5">';
+        html += '<div class="planner-head-emp px-3 py-2.5 text-sm font-semibold text-slate-500 uppercase" style="margin-left:-10px;">Employee</div>';
+        dates.forEach(function (dt) {
+          var dow = dt.getDay();
           var isWe = (dow === 0 || dow === 6);
-          var isToday = (d === todayDay);
-          var cls = 'px-1 py-2.5 text-center border-l border-gray-100 cursor-pointer hover:bg-slate-100/70';
+          var isToday = dt.getFullYear() === today.getFullYear() && dt.getMonth() === today.getMonth() && dt.getDate() === today.getDate();
+          var cls = 'tg-head';
           if (isToday) cls += ' today-col';
           else if (isWe) cls += ' weekend';
-          html += '<div class="' + cls + '" data-daily-day="' + d + '">';
-          html += '<div class="text-xs font-semibold text-slate-400 uppercase">' + dayNames[dow] + '</div>';
-          html += '<div class="text-sm font-bold ' + (isToday ? 'text-blue-600' : 'text-slate-700') + '">' + d + '</div>';
+          html += '<div class="' + cls + '" data-day-y="' + dt.getFullYear() + '" data-day-m="' + dt.getMonth() + '" data-day-d="' + dt.getDate() + '">';
+          html += '<div class="text-[10px] font-bold uppercase tracking-wider text-slate-400">' + dayNames[dow] + '</div>';
+          html += '<div class="tg-date' + (isToday ? ' today' : '') + '">' + dt.getDate() + '</div>';
           html += '</div>';
-        }
+        });
         html += '</div>';
 
         // Employee rows (capacity planner)
         var capEvents = getCapacityEvents();
+        var teamEvents = calEvents.filter(function (e) { return e.assignee === 'All Team' && isEventVisibleForDept(e.assignee); });
         var visibleEmployees = employees.filter(function (emp) {
           var sel = getSelectedDepartments();
           return sel.length === 0 || sel.indexOf(emp.dept) !== -1;
@@ -1717,20 +1691,21 @@
           var isMe = emp.name === currentUser;
           var empEvents = capEvents.filter(function (e) { return e.assignee === emp.name; });
 
-          // Average load across the visible page
+          // Average load across the visible days (weekdays in the current month)
           var totalH = 0, cntDays = 0;
-          for (var x = startDay; x <= endDay; x++) {
-            var xd = new Date(currentYear, currentMonth, x).getDay();
-            if (xd === 0 || xd === 6) continue;
+          dates.forEach(function (dt) {
+            var xd = dt.getDay();
+            if (xd === 0 || xd === 6) return;
+            if (dt.getFullYear() !== currentYear || dt.getMonth() !== currentMonth) return;
             cntDays++;
-            totalH += capacityHours(empEvents.filter(function (e) { return e.day === x; }));
-          }
+            totalH += capacityHours(empEvents.filter(function (e) { return e.day === dt.getDate(); }));
+          });
           var avgPct = cntDays ? Math.round(totalH / (cntDays * 8) * 100) : 0;
           var avgCls = avgPct >= 90 ? 'text-red-500' : avgPct >= 70 ? 'text-amber-600' : 'text-emerald-600';
           var deptChipCls = emp.dept === 'Textile' ? 'bg-rose-50 text-rose-600' : 'bg-violet-50 text-violet-600';
 
-          html += '<div style="display:grid; grid-template-columns:' + gridCols + ';" class="border-b border-gray-100">';
-          html += '<div class="planner-emp p-3' + (isMe ? ' me' : '') + '">';
+          html += '<div style="grid-template-columns:' + gridCols + ';" class="tg-row">';
+          html += '<div class="planner-emp p-3' + (isMe ? ' me' : '') + '" style="margin-left:-10px;">';
           html += '<div class="flex items-center gap-2">';
           html += '<div class="w-8 h-8 rounded-full ' + emp.color + ' flex items-center justify-center flex-shrink-0"><span class="text-white text-xs font-bold">' + emp.initials + '</span></div>';
           html += '<div class="min-w-0">';
@@ -1747,34 +1722,38 @@
           html += '</div>';
           html += '</div>';
 
-          for (var d = startDay; d <= endDay; d++) {
-            var dow = new Date(currentYear, currentMonth, d).getDay();
+          dates.forEach(function (dt) {
+            var dow = dt.getDay();
             var isWe = (dow === 0 || dow === 6);
-            var isToday = (d === todayDay);
-            var cls = 'planner-cell';
+            var isToday = dt.getFullYear() === today.getFullYear() && dt.getMonth() === today.getMonth() && dt.getDate() === today.getDate();
+            var cls = 'tg-cell';
             if (isToday) cls += ' today-col';
             else if (isWe) cls += ' weekend';
 
-            var dayEvs = empEvents.filter(function (e) { return e.day === d; });
+            var inMonth = dt.getFullYear() === currentYear && dt.getMonth() === currentMonth;
+            var dayEvs = inMonth ? empEvents.filter(function (e) { return e.day === dt.getDate(); }).concat(teamEvents.filter(function (e) { return e.day === dt.getDate(); })) : [];
             var hours = capacityHours(dayEvs);
             var pct = Math.min(100, Math.round(hours / 8 * 100));
             var band = hours === 0 ? 'free' : hours < 6 ? 'light' : hours <= 8 ? 'full' : 'over';
-            var bandLabel = hours === 0 ? (isWe ? 'Off' : 'Free') : formatHours(hours) + ' / 8h';
 
-            html += '<div class="' + cls + '" data-daily-day="' + d + '">';
-            dayEvs.forEach(function (ev) {
-              var hasConflict = getConflicts(ev, empEvents).length > 0;
-              var cIcon = hasConflict ? '<span class="material-symbols-outlined text-white text-xs" style="vertical-align:middle">warning</span> ' : '';
-              html += '<div class="ev-bar event-' + ev.type + ' mb-0.5" data-evid="' + ev.id + '" title="' + ev.label + ' (' + ev.time + ')">' + cIcon + ev.label + '</div>';
-            });
-            if (hours === 0) {
-              html += '<div class="pt-1"><span class="cap-label">' + bandLabel + '</span></div>';
+            html += '<div class="' + cls + '" data-day-y="' + dt.getFullYear() + '" data-day-m="' + dt.getMonth() + '" data-day-d="' + dt.getDate() + '">';
+            if (dayEvs.length > 0) {
+              dayEvs.forEach(function (ev) {
+                var hasConflict = getConflicts(ev, empEvents).length > 0;
+                var cIcon = hasConflict ? '<span class="material-symbols-outlined" style="vertical-align:middle">warning</span> ' : '';
+                html += '<div class="ev-chip event-' + ev.type + '" data-evid="' + ev.id + '" title="' + ev.label + ' (' + ev.time + ')">' + cIcon + ev.label + '</div>';
+              });
             } else {
-              html += '<div class="flex items-center justify-between pt-1"><span class="cap-label ' + band + '">' + bandLabel + '</span></div>';
+              html += '<div class="tg-empty">' + (isWe ? 'OFF' : 'FREE') + '</div>';
+            }
+            if (hours > 0) {
+              html += '<div class="mt-auto pt-1">';
+              html += '<div class="flex items-center justify-between"><span class="cap-label ' + band + '">' + formatHours(hours) + ' / 8h</span></div>';
               html += '<div class="cap-bar"><div class="cap-fill ' + band + '" style="width:' + pct + '%"></div></div>';
+              html += '</div>';
             }
             html += '</div>';
-          }
+          });
           html += '</div>';
         });
 
@@ -1787,8 +1766,8 @@
         if (prevBtn) prevBtn.addEventListener('click', function () { if (plannerPage > 0) { plannerPage--; renderMonthlyPlanner(); } });
         if (nextBtn) nextBtn.addEventListener('click', function () { if (plannerPage < totalPages - 1) { plannerPage++; renderMonthlyPlanner(); } });
 
-        // Attach click handlers to ev-bars
-        container.querySelectorAll('.ev-bar[data-evid]').forEach(function (bar) {
+        // Attach click handlers to event chips
+        container.querySelectorAll('.ev-chip[data-evid]').forEach(function (bar) {
           bar.addEventListener('click', function (e) {
             e.stopPropagation();
             var evId = parseInt(bar.getAttribute('data-evid'));
@@ -1797,17 +1776,43 @@
           });
         });
 
-        // Click any day cell/header in planner to open daily slot view.
-        container.querySelectorAll('[data-daily-day]').forEach(function (el) {
+        // Click any day cell/header in the grid to open Day view.
+        container.querySelectorAll('[data-day-d]').forEach(function (el) {
           el.addEventListener('click', function (e) {
-            if (e.target && e.target.closest('.ev-bar[data-evid]')) return;
-            var dayNum = parseInt(el.getAttribute('data-daily-day'), 10);
-            if (!dayNum) return;
-            selectedDay = dayNum;
-            currentView = 'daily';
+            if (e.target && e.target.closest('.ev-chip[data-evid]')) return;
+            var y = parseInt(el.getAttribute('data-day-y'), 10);
+            var m = parseInt(el.getAttribute('data-day-m'), 10);
+            var d = parseInt(el.getAttribute('data-day-d'), 10);
+            if (isNaN(y) || isNaN(m) || isNaN(d)) return;
+            currentYear = y;
+            currentMonth = m;
+            selectedDay = d;
+            setViewMode('day');
             updateViews();
           });
         });
+      }
+
+      function renderMonthlyPlanner() {
+        var daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+        var totalPages = Math.ceil(daysInMonth / PAGE_SIZE);
+        if (plannerPage >= totalPages) plannerPage = totalPages - 1;
+        if (plannerPage < 0) plannerPage = 0;
+        var startDay = plannerPage * PAGE_SIZE + 1;
+        var endDay = Math.min(startDay + PAGE_SIZE - 1, daysInMonth);
+        var dates = [];
+        for (var d = startDay; d <= endDay; d++) dates.push(new Date(currentYear, currentMonth, d));
+        renderTeamGrid(dates, true);
+        updateToolbarLabel();
+      }
+
+      function renderTeamGridForCurrentView() {
+        normalizeSelectedDay();
+        var dates;
+        if (viewMode === 'day') dates = [new Date(currentYear, currentMonth, selectedDay)];
+        else dates = getWeekDates(selectedDay, viewMode === 'workweek');
+        renderTeamGrid(dates, false);
+        updateToolbarLabel();
       }
 
       function renderCalendar() {
@@ -1840,7 +1845,7 @@
           (function (dayNum) {
             cell.addEventListener('click', function () {
               selectedDay = dayNum;
-              currentView = 'daily';
+              setViewMode('day');
               updateViews();
             });
           })(d);
@@ -1896,171 +1901,215 @@
 
       function pad2(n) { return String(n).padStart(2, '0'); }
 
-      function renderDaily(dayNum) {
-        var timelineEl = document.getElementById('dailyTimeline');
-        var timeLabelsEl = document.getElementById('dailyTimeLabels');
-        var scheduleEl = document.getElementById('dailySchedule');
-        var dateLabelEl = document.getElementById('dailyDateLabel');
-        if (!timelineEl || !timeLabelsEl || !scheduleEl) return;
+      // Events shown in the time grid (planned events + capacity schedule)
+      function getTimeGridEvents() {
+        var cal = getFilteredEvents();
+        var cap = currentScope === 'all' ? getCapacityEvents().filter(function (e) { return isEventVisibleForDept(e.assignee); }) : [];
+        return cal.concat(cap);
+      }
+
+      function renderTimeGrid() {
+        var gutterEl = document.getElementById('timeGutter');
+        var colsEl = document.getElementById('timeCols');
+        var gridEl = document.querySelector('.time-grid');
+        if (!gutterEl || !colsEl || !gridEl) return;
 
         var rangeStartMin = 6 * 60;
         var rangeEndMin = 22 * 60;
         var slotMinutes = 30;
         var slotHeightPx = 44;
-
-        if (!dayNum) {
-          var now = new Date();
-          dayNum = (now.getMonth() === currentMonth && now.getFullYear() === currentYear) ? now.getDate() : 1;
-        }
-
-        var months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-        var dateObj = new Date(currentYear, currentMonth, dayNum);
-        if (dateLabelEl) dateLabelEl.textContent = months[currentMonth] + ' ' + dayNum + ', ' + currentYear;
-
-        var totalMinutes = rangeEndMin - rangeStartMin;
-        var totalSlots = totalMinutes / slotMinutes;
+        var totalSlots = (rangeEndMin - rangeStartMin) / slotMinutes;
         var timelineH = totalSlots * slotHeightPx;
+        gridEl.style.setProperty('--slot-h', slotHeightPx + 'px');
+        gridEl.style.setProperty('--timeline-h', timelineH + 'px');
 
-        scheduleEl.style.setProperty('--slot-h', slotHeightPx + 'px');
-        scheduleEl.style.setProperty('--timeline-h', timelineH + 'px');
+        normalizeSelectedDay();
+        var dates;
+        if (viewMode === 'day') dates = [new Date(currentYear, currentMonth, selectedDay)];
+        else dates = getWeekDates(selectedDay, viewMode === 'workweek');
+
+        var dayNames = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+        var allEvents = getTimeGridEvents();
+        var today = new Date();
 
         // Time labels (hourly)
-        timeLabelsEl.innerHTML = '';
+        gutterEl.innerHTML = '';
+        var gutterHead = document.createElement('div');
+        gutterHead.className = 'time-gutter-header';
+        gutterEl.appendChild(gutterHead);
+        var gutterBody = document.createElement('div');
+        gutterBody.className = 'time-gutter-body';
+        gutterBody.style.position = 'relative';
+        gutterBody.style.height = timelineH + 'px';
         for (var h = 6; h <= 22; h++) {
           var y = ((h * 60 - rangeStartMin) / slotMinutes) * slotHeightPx;
-          var label = document.createElement('div');
-          label.className = 'daily-time-label';
-          label.style.top = y + 'px';
-          label.textContent = pad2(h) + ':00';
-          timeLabelsEl.appendChild(label);
+          var lbl = document.createElement('div');
+          lbl.className = 'daily-time-label';
+          lbl.style.top = y + 'px';
+          lbl.textContent = pad2(h) + ':00';
+          gutterBody.appendChild(lbl);
         }
+        gutterEl.appendChild(gutterBody);
 
-        // Events
-        timelineEl.innerHTML = '';
-        var filtered = getFilteredEvents();
-        var dayEvents = filtered.filter(function (e) { return e.day === dayNum; });
+        colsEl.innerHTML = '';
+        dates.forEach(function (dateObj) {
+          var col = document.createElement('div');
+          col.className = 'time-col';
+          var inMonth = dateObj.getMonth() === currentMonth && dateObj.getFullYear() === currentYear;
+          var dow = dateObj.getDay();
+          var isWe = dow === 0 || dow === 6;
+          var isToday = dateObj.getFullYear() === today.getFullYear() && dateObj.getMonth() === today.getMonth() && dateObj.getDate() === today.getDate();
 
-        var normalized = dayEvents.map(function (ev) {
-          var tr = parseTime(ev.time);
-          if (!tr) tr = { start: rangeStartMin, end: rangeEndMin };
-          var start = Math.max(rangeStartMin, tr.start);
-          var end = Math.min(rangeEndMin, tr.end);
-          if (end <= start) return null;
-          return Object.assign({}, ev, { __start: start, __end: end });
-        }).filter(Boolean).sort(function (a, b) { return a.__start - b.__start; });
+          // Sticky day header
+          var head = document.createElement('div');
+          head.className = 'time-col-header' + (isWe ? ' weekend' : '') + (isToday ? ' today' : '');
+          head.innerHTML = '<div class="text-[10px] font-bold uppercase tracking-wide ' + (isToday ? 'text-blue-600' : 'text-slate-400') + '">' + dayNames[dow] + '</div>' +
+            '<div class="text-sm font-bold ' + (isToday ? 'text-blue-600' : 'text-slate-700') + '">' + dateObj.getDate() + '</div>';
+          col.appendChild(head);
 
-        // Overlap layout:
-        // 1) Greedy column assignment so overlapping events never share a column.
-        // 2) For each event, compute max concurrency within its own time range,
-        //    then set width = 100/maxConcurrency so overlap blocks look consistent.
-        var colEnds = [];
-        normalized.forEach(function (ev) {
-          var assigned = 0;
-          for (var c = 0; c < colEnds.length; c++) {
-            if (colEnds[c] <= ev.__start) { assigned = c; break; }
-            assigned = c + 1;
+          var colBody = document.createElement('div');
+          colBody.className = 'time-col-body';
+          colBody.style.position = 'relative';
+          colBody.style.height = timelineH + 'px';
+
+          // Day's events (only within the current demo month)
+          var dayEvents = inMonth ? allEvents.filter(function (e) { return e.day === dateObj.getDate(); }) : [];
+          var normalized = dayEvents.map(function (ev) {
+            var tr = parseTime(ev.time);
+            if (!tr) tr = { start: rangeStartMin, end: rangeEndMin };
+            var start = Math.max(rangeStartMin, tr.start);
+            var end = Math.min(rangeEndMin, tr.end);
+            if (end <= start) return null;
+            return Object.assign({}, ev, { __start: start, __end: end });
+          }).filter(Boolean).sort(function (a, b) { return a.__start - b.__start; });
+
+          // Overlap layout: greedy column assignment + max concurrency sweep
+          var colEnds = [];
+          normalized.forEach(function (ev) {
+            var assigned = 0;
+            for (var c = 0; c < colEnds.length; c++) {
+              if (colEnds[c] <= ev.__start) { assigned = c; break; }
+              assigned = c + 1;
+            }
+            if (colEnds.length === 0) assigned = 0;
+            colEnds[assigned] = ev.__end;
+            ev.__col = assigned;
+          });
+
+          normalized.forEach(function (ev) {
+            var overlaps = normalized.filter(function (o) {
+              return o.id !== ev.id && o.__start < ev.__end && o.__end > ev.__start;
+            });
+            overlaps.push(ev);
+            var points = [];
+            overlaps.forEach(function (o) {
+              points.push({ t: Math.max(ev.__start, o.__start), k: 's' });
+              points.push({ t: Math.min(ev.__end, o.__end), k: 'e' });
+            });
+            points.sort(function (a, b) {
+              if (a.t !== b.t) return a.t - b.t;
+              if (a.k === b.k) return 0;
+              return a.k === 'e' ? -1 : 1;
+            });
+            var count = 0;
+            var maxCount = 1;
+            points.forEach(function (p) {
+              if (p.k === 's') count++;
+              if (p.k === 'e') count--;
+              if (count > maxCount) maxCount = count;
+            });
+            ev.__maxConcurrent = Math.max(1, maxCount);
+          });
+
+          normalized.forEach(function (ev) {
+            var color = getEvColor(ev.type);
+            var topPx = ((ev.__start - rangeStartMin) / slotMinutes) * slotHeightPx;
+            var heightPx = Math.max(28, ((ev.__end - ev.__start) / slotMinutes) * slotHeightPx);
+            var widthPct = 100 / (ev.__maxConcurrent || 1);
+            var leftPct = (ev.__col || 0) * widthPct;
+            var timeShort = (ev.time === 'Full Day' || !ev.time) ? 'All day' : ev.time;
+
+            var block = document.createElement('div');
+            block.className = 'daily-event';
+            block.setAttribute('data-evid', ev.id);
+            block.style.top = topPx + 'px';
+            block.style.height = heightPx + 'px';
+            block.style.left = leftPct + '%';
+            block.style.width = widthPct + '%';
+            block.style.border = '1px solid rgba(15, 23, 42, 0.08)';
+            block.style.borderLeft = '4px solid ' + color;
+            block.style.background = 'linear-gradient(180deg, ' + color + '26 0%, rgba(255,255,255,0) 100%)';
+            block.setAttribute('title', ev.label + ' (' + timeShort + ')');
+
+            block.innerHTML = '<div class="daily-event-title">' + ev.label + '</div>' +
+              '<div class="daily-event-time">' + timeShort + '</div>';
+
+            block.addEventListener('click', function (e) {
+              e.stopPropagation();
+              var evId = parseInt(this.getAttribute('data-evid'), 10);
+              var matched = calEvents.find(function (x) { return x.id === evId; }) || getCapacityEvents().find(function (x) { return x.id === evId; });
+              if (matched) showEventPopup(matched, this.getBoundingClientRect());
+            });
+
+            colBody.appendChild(block);
+          });
+
+          // Current-time indicator
+          if (isToday) {
+            var nowMin = today.getHours() * 60 + today.getMinutes();
+            var nowY = ((nowMin - rangeStartMin) / slotMinutes) * slotHeightPx;
+            if (nowY >= 0 && nowY <= timelineH) {
+              var line = document.createElement('div');
+              line.className = 'time-now-line';
+              line.style.top = nowY + 'px';
+              colBody.appendChild(line);
+            }
           }
-          if (colEnds.length === 0) assigned = 0;
-          colEnds[assigned] = ev.__end;
-          ev.__col = assigned;
+
+          col.appendChild(colBody);
+          colsEl.appendChild(col);
         });
 
-        normalized.forEach(function (ev) {
-          // Collect events overlapping this event interval
-          var overlaps = normalized.filter(function (o) {
-            return o.id !== ev.id && o.__start < ev.__end && o.__end > ev.__start;
-          });
-          overlaps.push(ev);
-
-          // Sweep line for maximum concurrency inside [ev.__start, ev.__end]
-          var points = [];
-          overlaps.forEach(function (o) {
-            points.push({ t: Math.max(ev.__start, o.__start), k: 's' });
-            points.push({ t: Math.min(ev.__end, o.__end), k: 'e' });
-          });
-          points.sort(function (a, b) {
-            if (a.t !== b.t) return a.t - b.t;
-            // end before start at same time for half-open interval correctness
-            if (a.k === b.k) return 0;
-            return a.k === 'e' ? -1 : 1;
-          });
-
-          var count = 0;
-          var maxCount = 1;
-          points.forEach(function (p) {
-            if (p.k === 's') count++;
-            if (p.k === 'e') count--;
-            if (count > maxCount) maxCount = count;
-          });
-          ev.__maxConcurrent = Math.max(1, maxCount);
-        });
-
-        normalized.forEach(function (ev) {
-          var color = getEvColor(ev.type);
-          var topPx = ((ev.__start - rangeStartMin) / slotMinutes) * slotHeightPx;
-          var heightPx = ((ev.__end - ev.__start) / slotMinutes) * slotHeightPx;
-          heightPx = Math.max(28, heightPx);
-          var widthPct = 100 / (ev.__maxConcurrent || 1);
-          var leftPct = (ev.__col || 0) * widthPct;
-
-          var timeShort = (ev.time === 'Full Day' || !ev.time) ? 'All day' : ev.time;
-
-          var block = document.createElement('div');
-          block.className = 'daily-event';
-          block.setAttribute('data-evid', ev.id);
-          block.style.top = topPx + 'px';
-          block.style.height = heightPx + 'px';
-          block.style.left = leftPct + '%';
-          block.style.width = widthPct + '%';
-          block.style.border = '1px solid rgba(15, 23, 42, 0.08)';
-          block.style.borderLeft = '4px solid ' + color;
-          block.style.background = 'linear-gradient(180deg, ' + color + '26 0%, rgba(255,255,255,0) 100%)';
-          block.setAttribute('title', ev.label + ' (' + timeShort + ')');
-
-          block.innerHTML = '<div class="daily-event-title">' + ev.label + '</div>' +
-            '<div class="daily-event-time">' + timeShort + '</div>';
-
-          block.addEventListener('click', function (e) {
-            e.stopPropagation();
-            var evId = parseInt(this.getAttribute('data-evid'), 10);
-            var matched = calEvents.find(function (x) { return x.id === evId; });
-            if (matched) showEventPopup(matched, this.getBoundingClientRect());
-          });
-
-          timelineEl.appendChild(block);
-        });
+        updateToolbarLabel();
       }
 
-      document.getElementById('prevMonth').addEventListener('click', function () {
-        currentMonth--;
-        if (currentMonth < 0) { currentMonth = 11; currentYear--; }
-        plannerPage = 0; renderCalendar(); updateViews();
-      });
-      document.getElementById('nextMonth').addEventListener('click', function () {
-        currentMonth++;
-        if (currentMonth > 11) { currentMonth = 0; currentYear++; }
-        plannerPage = 0; renderCalendar(); updateViews();
-      });
+      // View-aware navigation (prev / next / today)
+      function shiftCalendar(dir) {
+        if (viewMode === 'day' || viewMode === 'workweek' || viewMode === 'week') {
+          var step = viewMode === 'day' ? dir : dir * 7;
+          var d = new Date(currentYear, currentMonth, selectedDay + step);
+          currentMonth = d.getMonth();
+          currentYear = d.getFullYear();
+          selectedDay = d.getDate();
+        } else {
+          currentMonth += dir;
+          if (currentMonth < 0) { currentMonth = 11; currentYear--; }
+          if (currentMonth > 11) { currentMonth = 0; currentYear++; }
+          plannerPage = 0;
+        }
+        renderCalendar();
+        updateViews();
+      }
+
+      document.getElementById('prevMonth').addEventListener('click', function () { shiftCalendar(-1); });
+      document.getElementById('nextMonth').addEventListener('click', function () { shiftCalendar(1); });
       document.getElementById('todayBtn').addEventListener('click', function () {
         var now = new Date();
         currentMonth = now.getMonth();
         currentYear = now.getFullYear();
-        plannerPage = 0; renderCalendar(); updateViews();
+        selectedDay = now.getDate();
+        plannerPage = 0;
+        renderCalendar();
+        updateViews();
       });
 
+      // Init: default to Month view
+      var todayNow = new Date();
+      if (currentMonth === todayNow.getMonth() && currentYear === todayNow.getFullYear()) selectedDay = todayNow.getDate();
+      else selectedDay = 1;
+      setViewMode('month');
       renderCalendar();
       updateViews();
-      applyWeeklyFilter();
-
-      // Also make weekly view ev-bars clickable
-      document.querySelectorAll('#weeklyView .ev-bar').forEach(function (bar) {
-        bar.addEventListener('click', function (e) {
-          e.stopPropagation();
-          var title = bar.getAttribute('title') || bar.textContent.trim();
-          var matched = calEvents.find(function (ev) { return title.indexOf(ev.label) !== -1 || ev.label.indexOf(bar.textContent.replace(/[^\w\s]/g,'').trim()) !== -1; });
-          if (matched) showEventPopup(matched, bar.getBoundingClientRect());
-        });
-      });
     });
   </script>
 </body>
