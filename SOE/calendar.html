@@ -156,6 +156,8 @@
     .cap-label.light { color: #059669; }
     .cap-label.full { color: #d97706; }
     .cap-label.over { color: #dc2626; }
+    .cap-label.avail { color: #10b981; }
+    .cap-label.leave { color: #64748b; }
 
     /* Spacious rounded team-grid cells (employee rows x day columns) */
     .tg-row { display: grid; gap: 8px; padding: 0 10px 8px; }
@@ -582,6 +584,8 @@
               <!-- Availability Legend -->
               <div class="px-5 py-3 border-t border-gray-100 flex items-center gap-5 text-sm text-slate-500 flex-wrap">
                 <span class="inline-flex items-center gap-1.5"><span class="w-4 h-3 rounded border border-slate-200 bg-slate-50 inline-block"></span>Free</span>
+                <span class="inline-flex items-center gap-1.5"><span class="w-4 h-3 rounded border border-emerald-200 bg-emerald-50 inline-block"></span>Available (clocked in)</span>
+                <span class="inline-flex items-center gap-1.5"><span class="w-4 h-3 rounded border border-slate-300 bg-slate-200 inline-block"></span>On Leave</span>
                 <span class="inline-flex items-center gap-1.5"><span class="w-4 h-3 rounded bg-emerald-500 inline-block"></span>Light (&lt; 6h)</span>
                 <span class="inline-flex items-center gap-1.5"><span class="w-4 h-3 rounded bg-amber-500 inline-block"></span>Full (6 - 8h)</span>
                 <span class="inline-flex items-center gap-1.5"><span class="w-4 h-3 rounded bg-red-500 inline-block"></span>Overloaded (&gt; 8h)</span>
@@ -1634,6 +1638,13 @@
         return totalMin / 60;
       }
 
+      // Only assigned workload consumes capacity. Clocking in at a work location
+      // without assigned tasks does not fill capacity - availability is unknown
+      // until tasks are assigned, so those days render as Available.
+      function workloadHours(dayEvs) {
+        return capacityHours(dayEvs.filter(function (e) { return e.type !== 'work-location' && e.type !== 'leaves'; }));
+      }
+
       function formatHours(h) {
         var rounded = Math.round(h * 10) / 10;
         return (rounded % 1 === 0 ? rounded : rounded.toFixed(1)) + 'h';
@@ -1698,7 +1709,7 @@
             if (xd === 0 || xd === 6) return;
             if (dt.getFullYear() !== currentYear || dt.getMonth() !== currentMonth) return;
             cntDays++;
-            totalH += capacityHours(empEvents.filter(function (e) { return e.day === dt.getDate(); }));
+            totalH += workloadHours(empEvents.filter(function (e) { return e.day === dt.getDate(); }));
           });
           var avgPct = cntDays ? Math.round(totalH / (cntDays * 8) * 100) : 0;
           var avgCls = avgPct >= 90 ? 'text-red-500' : avgPct >= 70 ? 'text-amber-600' : 'text-emerald-600';
@@ -1732,7 +1743,9 @@
 
             var inMonth = dt.getFullYear() === currentYear && dt.getMonth() === currentMonth;
             var dayEvs = inMonth ? empEvents.filter(function (e) { return e.day === dt.getDate(); }).concat(teamEvents.filter(function (e) { return e.day === dt.getDate(); })) : [];
-            var hours = capacityHours(dayEvs);
+            var hours = workloadHours(dayEvs);
+            var hasLeave = dayEvs.some(function (e) { return e.type === 'leaves'; });
+            var hasLocOnly = !hasLeave && dayEvs.length > 0 && dayEvs.every(function (e) { return e.type === 'work-location'; });
             var pct = Math.min(100, Math.round(hours / 8 * 100));
             var band = hours === 0 ? 'free' : hours < 6 ? 'light' : hours <= 8 ? 'full' : 'over';
 
@@ -1751,6 +1764,10 @@
               html += '<div class="flex items-center justify-between"><span class="cap-label ' + band + '">' + formatHours(hours) + ' / 8h</span></div>';
               html += '<div class="cap-bar"><div class="cap-fill ' + band + '" style="width:' + pct + '%"></div></div>';
               html += '</div>';
+            } else if (hasLeave) {
+              html += '<div class="mt-auto pt-1"><span class="cap-label leave">On Leave</span></div>';
+            } else if (hasLocOnly) {
+              html += '<div class="mt-auto pt-1"><span class="cap-label avail">AVAILABLE</span></div>';
             }
             html += '</div>';
           });
