@@ -175,6 +175,8 @@
     .ev-chip { display: inline-flex; align-items: center; gap: 3px; background: var(--ev); color: #fff; border-radius: 9999px; padding: 3px 9px; font-size: 10px; font-weight: 700; line-height: 1.35; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; cursor: pointer; box-shadow: 0 1px 2px rgba(15,23,42,.12); transition: transform .12s, box-shadow .12s, filter .12s; }
     .ev-chip:hover { transform: translateY(-1px); box-shadow: 0 3px 8px rgba(15,23,42,.18); filter: brightness(1.05); }
     .ev-chip .material-symbols-outlined { font-size: 11px; }
+    .ev-chip.pending { background: rgba(255,255,255,0.65); border: 1.5px dashed var(--ev); color: var(--ev); box-shadow: none; }
+    .ev-chip.pending:hover { background: rgba(255,255,255,0.85); box-shadow: none; }
 
     /* Daily time-slot view */
     .daily-scroll { max-height: 78vh; overflow-y: auto; border-radius: 14px; border: 1px solid #e5e7eb; background: #fff; box-shadow: 0 2px 12px rgba(0,0,0,.04); }
@@ -590,6 +592,7 @@
                 <span class="inline-flex items-center gap-1.5"><span class="w-4 h-3 rounded bg-amber-500 inline-block"></span>Full (6 - 8h)</span>
                 <span class="inline-flex items-center gap-1.5"><span class="w-4 h-3 rounded bg-red-500 inline-block"></span>Overloaded (&gt; 8h)</span>
                 <span class="inline-flex items-center gap-1.5"><span class="material-symbols-outlined text-amber-500 text-base">warning</span>Conflict</span>
+                <span class="inline-flex items-center gap-1.5"><span class="material-symbols-outlined text-amber-500 text-base">hourglass_empty</span>Pending approval (dashed)</span>
                 <span class="text-xs text-slate-400 ml-auto">Capacity per 8h workday</span>
               </div>
             </div>
@@ -834,7 +837,7 @@
         normalizeSelectedDay();
         var d = new Date(currentYear, currentMonth, anchorDay);
         var dow = d.getDay();
-        var offset = workOnly ? (dow === 0 ? -6 : 1 - dow) : -dow;
+        var offset = workOnly ? (dow === 0 ? -6 : 1 - dow) : -((dow + 6) % 7);
         var first = new Date(currentYear, currentMonth, anchorDay + offset);
         var dates = [];
         for (var i = 0; i < (workOnly ? 5 : 7); i++) {
@@ -1591,8 +1594,12 @@
         var nextId = 100000;
 
         employees.forEach(function (emp, ei) {
-          function mkEv(day, label, type, time, location, client, desc) {
-            events.push({ id: nextId++, day: day, label: label, type: type, time: time, assignee: emp.name, location: location, client: client, desc: desc });
+          function mkEv(day, label, type, time, location, client, desc, status) {
+            events.push({ id: nextId++, day: day, label: label, type: type, time: time, assignee: emp.name, location: location, client: client, desc: desc, status: status });
+          }
+          // Leave / WFH requests start pending until approved (dummy data).
+          function wfhStatus(label, s) {
+            return label === 'Work from Home' ? (seededRand(s) < 0.35 ? 'pending' : 'approved') : undefined;
           }
           for (var d = 1; d <= daysInMonth; d++) {
             var dow = new Date(currentYear, currentMonth, d).getDay();
@@ -1601,13 +1608,14 @@
             var r = seededRand(seed);
             if (r < 0.10) {
               var lv = seededPick(leaves, seed * 7);
-              mkEv(d, lv.label, 'leaves', 'Full Day', '-', '', lv.desc);
+              var lvStatus = seededRand(seed * 31) < 0.35 ? 'pending' : 'approved';
+              mkEv(d, lv.label, 'leaves', 'Full Day', '-', '', lv.desc, lvStatus);
             } else if (r < 0.40) {
               var wl = seededPick(locations, seed * 3);
-              mkEv(d, wl.label, 'work-location', '09:00 - 17:00', wl.loc, '', 'Full workday at ' + wl.label + '.');
+              mkEv(d, wl.label, 'work-location', '09:00 - 17:00', wl.loc, '', 'Full workday at ' + wl.label + '.', wfhStatus(wl.label, seed * 37));
             } else if (r < 0.70) {
               var wl2 = seededPick(locations, seed * 3);
-              mkEv(d, wl2.label, 'work-location', '09:00 - 13:00', wl2.loc, '', 'Morning at ' + wl2.label + '.');
+              mkEv(d, wl2.label, 'work-location', '09:00 - 13:00', wl2.loc, '', 'Morning at ' + wl2.label + '.', wfhStatus(wl2.label, seed * 37));
               var act = seededPick(activities, seed * 5);
               mkEv(d, act.label, act.type, '14:00 - 17:00', act.loc, seededPick(clients, seed * 11), 'Scheduled ' + act.type + ' activity.');
             } else if (r < 0.92) {
@@ -1617,7 +1625,7 @@
               mkEv(d, a2.label, a2.type, '13:00 - 15:00', a2.loc, seededPick(clients, seed * 17), 'Scheduled ' + a2.type + ' activity.');
             } else {
               var wl3 = seededPick(locations, seed * 3);
-              mkEv(d, wl3.label, 'work-location', '09:00 - 13:00', wl3.loc, '', 'Morning at ' + wl3.label + '.');
+              mkEv(d, wl3.label, 'work-location', '09:00 - 13:00', wl3.loc, '', 'Morning at ' + wl3.label + '.', wfhStatus(wl3.label, seed * 37));
               var a3 = seededPick(activities, seed * 5);
               var a4 = seededPick(activities, seed * 19);
               mkEv(d, a3.label, a3.type, '13:00 - 17:00', a3.loc, seededPick(clients, seed * 11), 'Scheduled ' + a3.type + ' activity.');
@@ -1754,7 +1762,8 @@
               dayEvs.forEach(function (ev) {
                 var hasConflict = getConflicts(ev, empEvents).length > 0;
                 var cIcon = hasConflict ? '<span class="material-symbols-outlined" style="vertical-align:middle">warning</span> ' : '';
-                html += '<div class="ev-chip event-' + ev.type + '" data-evid="' + ev.id + '" title="' + ev.label + ' (' + ev.time + ')">' + cIcon + ev.label + '</div>';
+                var isPending = ev.status === 'pending';
+                html += '<div class="ev-chip event-' + ev.type + (isPending ? ' pending' : '') + '" data-evid="' + ev.id + '" title="' + ev.label + ' (' + ev.time + ')' + (isPending ? ' - Pending Approval' : '') + '">' + cIcon + ev.label + (isPending ? '<span class="material-symbols-outlined" style="font-size:11px">hourglass_empty</span>' : '') + '</div>';
               });
             } else {
               html += '<div class="tg-empty">' + (isWe ? 'OFF' : 'FREE') + '</div>';
@@ -2057,6 +2066,12 @@
             block.style.borderLeft = '4px solid ' + color;
             block.style.background = 'linear-gradient(180deg, ' + color + '26 0%, rgba(255,255,255,0) 100%)';
             block.setAttribute('title', ev.label + ' (' + timeShort + ')');
+            if (ev.status === 'pending') {
+              block.style.border = '1.5px dashed ' + color;
+              block.style.borderLeft = '4px dashed ' + color;
+              block.style.background = 'rgba(255,255,255,0.72)';
+              block.setAttribute('title', ev.label + ' (' + timeShort + ') - Pending Approval');
+            }
 
             block.innerHTML = '<div class="daily-event-title">' + ev.label + '</div>' +
               '<div class="daily-event-time">' + timeShort + '</div>';
