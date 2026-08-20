@@ -2,10 +2,23 @@
 <html lang="en">
 
 <head>
+<link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="preconnect" href="https://flagcdn.com" crossorigin>
+<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://unpkg.com" crossorigin>
+
   <meta charset="utf-8" />
   <meta content="width=device-width, initial-scale=1.0" name="viewport" />
   <title>All Contacts</title>
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <style>
+    @view-transition {
+      navigation: auto;
+    }
+  </style>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&amp;display=swap" rel="stylesheet" />
   <link
     href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
@@ -1404,7 +1417,7 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
             <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full"></span>
           </button>
           <div class="flex items-center space-x-3">
-            <img alt="User avatar" class="w-10 h-10 rounded-full object-cover shrink-0" src="https://i.pravatar.cc/200?u=soe-man" />
+            <img loading="lazy" decoding="async" alt="User avatar" class="w-10 h-10 rounded-full object-cover shrink-0" src="https://i.pravatar.cc/200?u=soe-man" />
             <div>
               <div class="font-semibold text-sm text-white">Nisal Amarasekara</div>
               <div class="text-xs text-slate-400">Sri Lanka</div>
@@ -2299,7 +2312,7 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
               <tbody class="bg-white divide-y">
                 <tr class="hover:bg-slate-50">
                   <td class="px-4 py-3">
-                    <div class="flex items-center"><img src="https://flagcdn.com/w20/hk.png" alt="Hong Kong"
+                    <div class="flex items-center"><img loading="lazy" decoding="async" src="https://flagcdn.com/w20/hk.png" alt="Hong Kong"
                         class="inline-block w-5 h-3 mr-3 object-contain rounded-sm border border-slate-200 shadow-sm">
                       <span>Hong Kong</span>
                     </div>
@@ -2324,7 +2337,7 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
 
                 <tr class="hover:bg-slate-50">
                   <td class="px-4 py-3">
-                    <div class="flex items-center"><img src="https://flagcdn.com/w20/lk.png" alt="Sri Lanka"
+                    <div class="flex items-center"><img loading="lazy" decoding="async" src="https://flagcdn.com/w20/lk.png" alt="Sri Lanka"
                         class="inline-block w-5 h-3 mr-3 object-contain rounded-sm border border-slate-200 shadow-sm">
                       <span>Sri Lanka</span>
                     </div>
@@ -2348,7 +2361,7 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
 
                 <tr class="hover:bg-slate-50">
                   <td class="px-4 py-3">
-                    <div class="flex items-center"><img src="https://flagcdn.com/w20/bd.png" alt="Bangladesh"
+                    <div class="flex items-center"><img loading="lazy" decoding="async" src="https://flagcdn.com/w20/bd.png" alt="Bangladesh"
                         class="inline-block w-5 h-3 mr-3 object-contain rounded-sm border border-slate-200 shadow-sm">
                       <span>Bangladesh</span>
                     </div>
@@ -2372,7 +2385,7 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
 
                 <tr class="hover:bg-slate-50">
                   <td class="px-4 py-3">
-                    <div class="flex items-center"><img src="https://flagcdn.com/w20/lk.png" alt="Sri Lanka"
+                    <div class="flex items-center"><img loading="lazy" decoding="async" src="https://flagcdn.com/w20/lk.png" alt="Sri Lanka"
                         class="inline-block w-5 h-3 mr-3 object-contain rounded-sm border border-slate-200 shadow-sm">
                       <span>Sri Lanka</span>
                     </div>
@@ -2396,7 +2409,7 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
 
                 <tr class="hover:bg-slate-50">
                   <td class="px-4 py-3">
-                    <div class="flex items-center"><img src="https://flagcdn.com/w20/lk.png" alt="Sri Lanka"
+                    <div class="flex items-center"><img loading="lazy" decoding="async" src="https://flagcdn.com/w20/lk.png" alt="Sri Lanka"
                         class="inline-block w-5 h-3 mr-3 object-contain rounded-sm border border-slate-200 shadow-sm">
                       <span>Sri Lanka</span>
                     </div>
@@ -2420,7 +2433,7 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
 
                 <tr class="hover:bg-slate-50">
                   <td class="px-4 py-3">
-                    <div class="flex items-center"><img src="https://flagcdn.com/w20/lk.png" alt="Sri Lanka"
+                    <div class="flex items-center"><img loading="lazy" decoding="async" src="https://flagcdn.com/w20/lk.png" alt="Sri Lanka"
                         class="inline-block w-5 h-3 mr-3 object-contain rounded-sm border border-slate-200 shadow-sm">
                       <span>Sri Lanka</span>
                     </div>
@@ -2444,7 +2457,7 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
 
                 <tr class="hover:bg-slate-50">
                   <td class="px-4 py-3">
-                    <div class="flex items-center"><img src="https://flagcdn.com/w20/lk.png" alt="Sri Lanka"
+                    <div class="flex items-center"><img loading="lazy" decoding="async" src="https://flagcdn.com/w20/lk.png" alt="Sri Lanka"
                         class="inline-block w-5 h-3 mr-3 object-contain rounded-sm border border-slate-200 shadow-sm">
                       <span>Sri Lanka</span>
                     </div>
@@ -2468,7 +2481,7 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
 
                 <tr class="hover:bg-slate-50">
                   <td class="px-4 py-3">
-                    <div class="flex items-center"><img src="https://flagcdn.com/w20/kh.png" alt="Cambodia"
+                    <div class="flex items-center"><img loading="lazy" decoding="async" src="https://flagcdn.com/w20/kh.png" alt="Cambodia"
                         class="inline-block w-6 h-4 mr-3 object-contain"> <span>Cambodia</span></div>
                   </td>
                   <td class="px-4 py-3">LONSO (CAMBODIA)GARMENT CO.,LTD</td>
@@ -2490,7 +2503,7 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
 
                 <tr class="hover:bg-slate-50">
                   <td class="px-4 py-3">
-                    <div class="flex items-center"><img src="https://flagcdn.com/w20/pg.png" alt="Papua New Guinea"
+                    <div class="flex items-center"><img loading="lazy" decoding="async" src="https://flagcdn.com/w20/pg.png" alt="Papua New Guinea"
                         class="inline-block w-6 h-4 mr-3 object-contain"> <span>Papua New Guinea</span></div>
                   </td>
                   <td class="px-4 py-3">Outspan PNG Ltd - Morobe Province</td>
@@ -2512,7 +2525,7 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
 
                 <tr class="hover:bg-slate-50">
                   <td class="px-4 py-3">
-                    <div class="flex items-center"><img src="https://flagcdn.com/w20/bg.png" alt="Bulgaria"
+                    <div class="flex items-center"><img loading="lazy" decoding="async" src="https://flagcdn.com/w20/bg.png" alt="Bulgaria"
                         class="inline-block w-6 h-4 mr-3 object-contain"> <span>Bulgaria</span></div>
                   </td>
                   <td class="px-4 py-3">AS Rita</td>
@@ -2534,7 +2547,7 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
 
                 <tr class="hover:bg-slate-50">
                   <td class="px-4 py-3">
-                    <div class="flex items-center"><img src="https://flagcdn.com/w20/bg.png" alt="Bulgaria"
+                    <div class="flex items-center"><img loading="lazy" decoding="async" src="https://flagcdn.com/w20/bg.png" alt="Bulgaria"
                         class="inline-block w-6 h-4 mr-3 object-contain"> <span>Bulgaria</span></div>
                   </td>
                   <td class="px-4 py-3">G.S. Textil Ltd.</td>
@@ -2556,7 +2569,7 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
 
                 <tr class="hover:bg-slate-50">
                   <td class="px-4 py-3">
-                    <div class="flex items-center"><img src="https://flagcdn.com/w20/kh.png" alt="Cambodia"
+                    <div class="flex items-center"><img loading="lazy" decoding="async" src="https://flagcdn.com/w20/kh.png" alt="Cambodia"
                         class="inline-block w-5 h-3 mr-3 object-contain rounded-sm border border-slate-200 shadow-sm"> <span>Cambodia</span></div>
                   </td>
                   <td class="px-4 py-3">Sammaki Phumtuol Agriculture Cooperative (S.P.A.C)</td>
@@ -2578,7 +2591,7 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
 
                 <tr class="hover:bg-slate-50">
                   <td class="px-4 py-3">
-                    <div class="flex items-center"><img src="https://flagcdn.com/w20/cn.png" alt="China"
+                    <div class="flex items-center"><img loading="lazy" decoding="async" src="https://flagcdn.com/w20/cn.png" alt="China"
                         class="inline-block w-5 h-3 mr-3 object-contain rounded-sm border border-slate-200 shadow-sm"> <span>China</span></div>
                   </td>
                   <td class="px-4 py-3">Hunan Jianduoduo Traditional Chinese Medicine Industry Co., Ltd</td>
@@ -2600,7 +2613,7 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
 
                 <tr class="hover:bg-slate-50">
                   <td class="px-4 py-3">
-                    <div class="flex items-center"><img src="https://flagcdn.com/w20/jp.png" alt="Japan"
+                    <div class="flex items-center"><img loading="lazy" decoding="async" src="https://flagcdn.com/w20/jp.png" alt="Japan"
                         class="inline-block w-5 h-3 mr-3 object-contain rounded-sm border border-slate-200 shadow-sm"> <span>Japan</span></div>
                   </td>
                   <td class="px-4 py-3">HAGIHARA INDUSTRIES INC</td>
@@ -2622,7 +2635,7 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
 
                 <tr class="hover:bg-slate-50">
                   <td class="px-4 py-3">
-                    <div class="flex items-center"><img src="https://flagcdn.com/w20/lk.png" alt="Sri Lanka"
+                    <div class="flex items-center"><img loading="lazy" decoding="async" src="https://flagcdn.com/w20/lk.png" alt="Sri Lanka"
                         class="inline-block w-6 h-4 mr-3 object-contain"> <span>Sri Lanka</span></div>
                   </td>
                   <td class="px-4 py-3">Save a Life</td>
@@ -3264,7 +3277,7 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
               <tbody>
                 <tr>
                   <td class="px-5 py-4">
-                    <div class="flex items-center gap-3"><img src="https://flagcdn.com/w20/hk.png" alt="Hong Kong"
+                    <div class="flex items-center gap-3"><img loading="lazy" decoding="async" src="https://flagcdn.com/w20/hk.png" alt="Hong Kong"
                         class="w-6 h-4 object-cover rounded shadow-sm border border-slate-200"> <span
                         class="font-medium text-slate-700">Hong Kong</span></div>
                   </td>
@@ -3285,7 +3298,7 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
 
                 <tr>
                   <td class="px-5 py-4">
-                    <div class="flex items-center gap-3"><img src="https://flagcdn.com/w20/lk.png" alt="Sri Lanka"
+                    <div class="flex items-center gap-3"><img loading="lazy" decoding="async" src="https://flagcdn.com/w20/lk.png" alt="Sri Lanka"
                         class="w-6 h-4 object-cover rounded shadow-sm border border-slate-200"> <span
                         class="font-medium text-slate-700">Sri Lanka</span></div>
                   </td>
@@ -3305,7 +3318,7 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
 
                 <tr>
                   <td class="px-5 py-4">
-                    <div class="flex items-center gap-3"><img src="https://flagcdn.com/w20/bd.png" alt="Bangladesh"
+                    <div class="flex items-center gap-3"><img loading="lazy" decoding="async" src="https://flagcdn.com/w20/bd.png" alt="Bangladesh"
                         class="w-6 h-4 object-cover rounded shadow-sm border border-slate-200"> <span
                         class="font-medium text-slate-700">Bangladesh</span></div>
                   </td>
@@ -3325,7 +3338,7 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
 
                 <tr>
                   <td class="px-5 py-4">
-                    <div class="flex items-center gap-3"><img src="https://flagcdn.com/w20/lk.png" alt="Sri Lanka"
+                    <div class="flex items-center gap-3"><img loading="lazy" decoding="async" src="https://flagcdn.com/w20/lk.png" alt="Sri Lanka"
                         class="w-6 h-4 object-cover rounded shadow-sm border border-slate-200"> <span
                         class="font-medium text-slate-700">Sri Lanka</span></div>
                   </td>
@@ -3345,7 +3358,7 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
 
                 <tr>
                   <td class="px-5 py-4">
-                    <div class="flex items-center gap-3"><img src="https://flagcdn.com/w20/lk.png" alt="Sri Lanka"
+                    <div class="flex items-center gap-3"><img loading="lazy" decoding="async" src="https://flagcdn.com/w20/lk.png" alt="Sri Lanka"
                         class="w-6 h-4 object-cover rounded shadow-sm border border-slate-200"> <span
                         class="font-medium text-slate-700">Sri Lanka</span></div>
                   </td>
@@ -3365,7 +3378,7 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
 
                 <tr>
                   <td class="px-5 py-4">
-                    <div class="flex items-center gap-3"><img src="https://flagcdn.com/w20/jp.png" alt="Japan"
+                    <div class="flex items-center gap-3"><img loading="lazy" decoding="async" src="https://flagcdn.com/w20/jp.png" alt="Japan"
                         class="w-6 h-4 object-cover rounded shadow-sm border border-slate-200"> <span
                         class="font-medium text-slate-700">Japan</span></div>
                   </td>
@@ -3717,7 +3730,7 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
               </thead>
               <tbody>
                 <!-- <tr class="hover:bg-slate-50 contacts-row">
-                <td class="px-4 py-3"><div class="flex items-center"><img src="https://flagcdn.com/w20/hk.png" alt="Hong Kong" class="inline-block w-5 h-3 mr-3 object-contain rounded-sm border border-slate-200 shadow-sm"> <span>Hong Kong</span></div></td>
+                <td class="px-4 py-3"><div class="flex items-center"><img loading="lazy" decoding="async" src="https://flagcdn.com/w20/hk.png" alt="Hong Kong" class="inline-block w-5 h-3 mr-3 object-contain rounded-sm border border-slate-200 shadow-sm"> <span>Hong Kong</span></div></td>
                 <td class="px-4 py-3"><a href="inside.html?company=MERIDIAN%20INDUSTRIES%20LIMITED" class="text-[#3eb2ed]">MERIDIAN INDUSTRIES LIMITED</a></td>
                 <td class="px-4 py-3">
                   <div class="contact-list">
@@ -3796,7 +3809,7 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
 
                 <tr class="hover:bg-slate-50">
                   <td class="px-4 py-3">
-                    <div class="flex items-center"><img src="https://flagcdn.com/w20/lk.png" alt="Sri Lanka"
+                    <div class="flex items-center"><img loading="lazy" decoding="async" src="https://flagcdn.com/w20/lk.png" alt="Sri Lanka"
                         class="inline-block w-5 h-3 mr-3 object-contain rounded-sm border border-slate-200 shadow-sm">
                       <span>Sri Lanka</span>
                     </div>
@@ -3816,7 +3829,7 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
 
                 <tr class="hover:bg-slate-50">
                   <td class="px-4 py-3">
-                    <div class="flex items-center"><img src="https://flagcdn.com/w20/bd.png" alt="Bangladesh"
+                    <div class="flex items-center"><img loading="lazy" decoding="async" src="https://flagcdn.com/w20/bd.png" alt="Bangladesh"
                         class="inline-block w-5 h-3 mr-3 object-contain rounded-sm border border-slate-200 shadow-sm">
                       <span>Bangladesh</span>
                     </div>
@@ -3836,7 +3849,7 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
 
                 <tr class="hover:bg-slate-50">
                   <td class="px-4 py-3">
-                    <div class="flex items-center"><img src="https://flagcdn.com/w20/lk.png" alt="Sri Lanka"
+                    <div class="flex items-center"><img loading="lazy" decoding="async" src="https://flagcdn.com/w20/lk.png" alt="Sri Lanka"
                         class="inline-block w-5 h-3 mr-3 object-contain rounded-sm border border-slate-200 shadow-sm">
                       <span>Sri Lanka</span>
                     </div>
@@ -3856,7 +3869,7 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
 
                 <tr class="hover:bg-slate-50">
                   <td class="px-4 py-3">
-                    <div class="flex items-center"><img src="https://flagcdn.com/w20/lk.png" alt="Sri Lanka"
+                    <div class="flex items-center"><img loading="lazy" decoding="async" src="https://flagcdn.com/w20/lk.png" alt="Sri Lanka"
                         class="inline-block w-5 h-3 mr-3 object-contain rounded-sm border border-slate-200 shadow-sm">
                       <span>Sri Lanka</span>
                     </div>
@@ -3876,7 +3889,7 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
 
                 <tr class="hover:bg-slate-50">
                   <td class="px-4 py-3">
-                    <div class="flex items-center"><img src="https://flagcdn.com/w20/lk.png" alt="Sri Lanka"
+                    <div class="flex items-center"><img loading="lazy" decoding="async" src="https://flagcdn.com/w20/lk.png" alt="Sri Lanka"
                         class="inline-block w-5 h-3 mr-3 object-contain rounded-sm border border-slate-200 shadow-sm">
                       <span>Sri Lanka</span>
                     </div>
@@ -3896,7 +3909,7 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
 
                 <tr class="hover:bg-slate-50">
                   <td class="px-4 py-3">
-                    <div class="flex items-center"><img src="https://flagcdn.com/w20/lk.png" alt="Sri Lanka"
+                    <div class="flex items-center"><img loading="lazy" decoding="async" src="https://flagcdn.com/w20/lk.png" alt="Sri Lanka"
                         class="inline-block w-5 h-3 mr-3 object-contain rounded-sm border border-slate-200 shadow-sm">
                       <span>Sri Lanka</span>
                     </div>
@@ -3916,7 +3929,7 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
 
                 <tr class="hover:bg-slate-50">
                   <td class="px-4 py-3">
-                    <div class="flex items-center"><img src="https://flagcdn.com/w20/kh.png" alt="Cambodia"
+                    <div class="flex items-center"><img loading="lazy" decoding="async" src="https://flagcdn.com/w20/kh.png" alt="Cambodia"
                         class="inline-block w-6 h-4 mr-3 object-contain"> <span>Cambodia</span></div>
                   </td>
                   <td class="px-4 py-3">LONSO (CAMBODIA)GARMENT CO.,LTD</td>
@@ -3934,7 +3947,7 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
 
                 <tr class="hover:bg-slate-50">
                   <td class="px-4 py-3">
-                    <div class="flex items-center"><img src="https://flagcdn.com/w20/pg.png" alt="Papua New Guinea"
+                    <div class="flex items-center"><img loading="lazy" decoding="async" src="https://flagcdn.com/w20/pg.png" alt="Papua New Guinea"
                         class="inline-block w-6 h-4 mr-3 object-contain"> <span>Papua New Guinea</span></div>
                   </td>
                   <td class="px-4 py-3">Outspan PNG Ltd - Morobe Province</td>
@@ -3952,7 +3965,7 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
 
                 <tr class="hover:bg-slate-50">
                   <td class="px-4 py-3">
-                    <div class="flex items-center"><img src="https://flagcdn.com/w20/bg.png" alt="Bulgaria"
+                    <div class="flex items-center"><img loading="lazy" decoding="async" src="https://flagcdn.com/w20/bg.png" alt="Bulgaria"
                         class="inline-block w-6 h-4 mr-3 object-contain"> <span>Bulgaria</span></div>
                   </td>
                   <td class="px-4 py-3">AS Rita</td>
@@ -3970,7 +3983,7 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
 
                 <tr class="hover:bg-slate-50">
                   <td class="px-4 py-3">
-                    <div class="flex items-center"><img src="https://flagcdn.com/w20/bg.png" alt="Bulgaria"
+                    <div class="flex items-center"><img loading="lazy" decoding="async" src="https://flagcdn.com/w20/bg.png" alt="Bulgaria"
                         class="inline-block w-6 h-4 mr-3 object-contain"> <span>Bulgaria</span></div>
                   </td>
                   <td class="px-4 py-3">G.S. Textil Ltd.</td>
@@ -3988,7 +4001,7 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
 
                 <tr class="hover:bg-slate-50">
                   <td class="px-4 py-3">
-                    <div class="flex items-center"><img src="https://flagcdn.com/w20/kh.png" alt="Cambodia"
+                    <div class="flex items-center"><img loading="lazy" decoding="async" src="https://flagcdn.com/w20/kh.png" alt="Cambodia"
                         class="inline-block w-5 h-3 mr-3 object-contain rounded-sm border border-slate-200 shadow-sm"> <span>Cambodia</span></div>
                   </td>
                   <td class="px-4 py-3">Sammaki Phumtuol Agriculture Cooperative (S.P.A.C)</td>
@@ -4006,7 +4019,7 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
 
                 <tr class="hover:bg-slate-50">
                   <td class="px-4 py-3">
-                    <div class="flex items-center"><img src="https://flagcdn.com/w20/cn.png" alt="China"
+                    <div class="flex items-center"><img loading="lazy" decoding="async" src="https://flagcdn.com/w20/cn.png" alt="China"
                         class="inline-block w-5 h-3 mr-3 object-contain rounded-sm border border-slate-200 shadow-sm"> <span>China</span></div>
                   </td>
                   <td class="px-4 py-3">Hunan Jianduoduo Traditional Chinese Medicine Industry Co., Ltd</td>
@@ -4024,7 +4037,7 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
 
                 <tr class="hover:bg-slate-50">
                   <td class="px-4 py-3">
-                    <div class="flex items-center"><img src="https://flagcdn.com/w20/jp.png" alt="Japan"
+                    <div class="flex items-center"><img loading="lazy" decoding="async" src="https://flagcdn.com/w20/jp.png" alt="Japan"
                         class="inline-block w-5 h-3 mr-3 object-contain rounded-sm border border-slate-200 shadow-sm"> <span>Japan</span></div>
                   </td>
                   <td class="px-4 py-3">HAGIHARA INDUSTRIES INC</td>
@@ -4042,7 +4055,7 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
 
                 <tr class="hover:bg-slate-50">
                   <td class="px-4 py-3">
-                    <div class="flex items-center"><img src="https://flagcdn.com/w20/lk.png" alt="Sri Lanka"
+                    <div class="flex items-center"><img loading="lazy" decoding="async" src="https://flagcdn.com/w20/lk.png" alt="Sri Lanka"
                         class="inline-block w-6 h-4 mr-3 object-contain"> <span>Sri Lanka</span></div>
                   </td>
                   <td class="px-4 py-3">Save a Life</td>
@@ -4413,7 +4426,7 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
                 <!-- Sample rows copied from Leads; filter or replace with opportunities data as needed -->
                 <tr>
                   <td class="px-5 py-4">
-                    <div class="flex items-center gap-3"><img src="https://flagcdn.com/w20/hk.png" alt="Hong Kong"
+                    <div class="flex items-center gap-3"><img loading="lazy" decoding="async" src="https://flagcdn.com/w20/hk.png" alt="Hong Kong"
                         class="w-6 h-4 object-cover rounded shadow-sm border border-slate-200"> <span
                         class="font-medium text-slate-700">Hong Kong</span></div>
                   </td>
@@ -4432,7 +4445,7 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
 
                 <tr>
                   <td class="px-5 py-4">
-                    <div class="flex items-center gap-3"><img src="https://flagcdn.com/w20/hk.png" alt="Hong Kong"
+                    <div class="flex items-center gap-3"><img loading="lazy" decoding="async" src="https://flagcdn.com/w20/hk.png" alt="Hong Kong"
                         class="w-6 h-4 object-cover rounded shadow-sm border border-slate-200"> <span
                         class="font-medium text-slate-700">Hong Kong</span></div>
                   </td>
@@ -4450,7 +4463,7 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
 
                 <tr>
                   <td class="px-5 py-4">
-                    <div class="flex items-center gap-3"><img src="https://flagcdn.com/w20/lk.png" alt="Sri Lanka"
+                    <div class="flex items-center gap-3"><img loading="lazy" decoding="async" src="https://flagcdn.com/w20/lk.png" alt="Sri Lanka"
                         class="w-6 h-4 object-cover rounded shadow-sm border border-slate-200"> <span
                         class="font-medium text-slate-700">Sri Lanka</span></div>
                   </td>
@@ -4468,7 +4481,7 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
 
                 <tr>
                   <td class="px-5 py-4">
-                    <div class="flex items-center gap-3"><img src="https://flagcdn.com/w20/lk.png" alt="Sri Lanka"
+                    <div class="flex items-center gap-3"><img loading="lazy" decoding="async" src="https://flagcdn.com/w20/lk.png" alt="Sri Lanka"
                         class="w-6 h-4 object-cover rounded shadow-sm border border-slate-200"> <span
                         class="font-medium text-slate-700">Sri Lanka</span></div>
                   </td>
@@ -4933,7 +4946,7 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
           // Remove the prefix text for display
           const opportunityName = `${s.oppProgram || s.programs}`;
           row.innerHTML = `
-          <td class="px-4 py-3"><div class="flex items-center"><img src="${s.flag}" alt="${s.country}" class="inline-block w-5 h-3 mr-3 object-contain rounded-sm border border-slate-200 shadow-sm"> <span>${s.country}</span></div></td>
+          <td class="px-4 py-3"><div class="flex items-center"><img loading="lazy" decoding="async" src="${s.flag}" alt="${s.country}" class="inline-block w-5 h-3 mr-3 object-contain rounded-sm border border-slate-200 shadow-sm"> <span>${s.country}</span></div></td>
           ${companyCell}
           <td class="px-4 py-3">${s.date}</td>
           <td class="px-4 py-3">${s.category}</td>

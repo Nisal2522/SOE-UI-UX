@@ -2,6 +2,14 @@
 <html lang="en">
 
 <head>
+<link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="preconnect" href="https://flagcdn.com" crossorigin>
+<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://unpkg.com" crossorigin>
+
   <meta charset="utf-8" />
   <meta content="width=device-width, initial-scale=1.0" name="viewport" />
   <title>My Dashboard (Navbar Color Update)</title>
@@ -11,6 +19,11 @@
     href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
     rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com?plugins=forms,typography,container-queries"></script>
+  <style>
+    @view-transition {
+      navigation: auto;
+    }
+  </style>
   <style type="text/tailwindcss">
     :root {
       --cu-light-blue: #3eb2ed;
@@ -477,7 +490,7 @@
             <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full"></span>
           </button>
           <div class="flex items-center space-x-3">
-            <img alt="User avatar" class="w-10 h-10 rounded-full object-cover"
+            <img loading="lazy" decoding="async" alt="User avatar" class="w-10 h-10 rounded-full object-cover"
               src="https://i.pravatar.cc/200?u=soe-man" />
             <div>
               <div class="font-semibold text-sm text-white">Nisal Amarasekara</div>
@@ -674,7 +687,7 @@
                 <div class="flex transition-transform duration-500 ease-in-out">
                   <div class="w-full flex-shrink-0 grid grid-cols-1 md:grid-cols-6 gap-6 items-center">
                     <div class="md:col-span-3 relative">
-                      <img alt="Portrait of the new head of department"
+                      <img loading="lazy" decoding="async" alt="Portrait of the new head of department"
                         class="w-full h-full object-cover rounded-lg aspect-[4/3] md:aspect-auto"
                         src="https://lh3.googleusercontent.com/aida-public/AB6AXuCtYLrOBz0I_fVvX5exUYY7LHzENlkIkxZLJFhy9ZFc07Y_bwSMRGIOxGjroCGY8yOm7RayqRG_wuf1OIHvvDR13lZ0bT9MuGsj-W0aBDrxMkr3cAE3P9Y_ZcCaBFB69PlZ1SIAKXMm_oOJ_pxtIDWXYS960PnsisAFtiEcMb_riLoGfrsczUDvt-ArAbdYyWahNmCcZEiE5MmAZi4bm03Rh1yAO-nbkTy8YJVz_FsTwmUdpjOEqWBYB07pd3MxGTLHstbvJE6j" />
                       <div class="absolute inset-0 bg-black/40 rounded-lg flex flex-col justify-end p-6 text-white">
@@ -750,7 +763,7 @@
     </button>
     <button
       class="w-14 h-14 bg-slate-500 rounded-full shadow-lg flex items-center justify-center border-2 border-white">
-      <img alt="Waving user avatar" class="w-12 h-12 rounded-full"
+      <img loading="lazy" decoding="async" alt="Waving user avatar" class="w-12 h-12 rounded-full"
         src="https://lh3.googleusercontent.com/aida-public/AB6AXuCMZECqcRhv9vHyWo7ZMFtwl5eS7WNSUHLINbX5KuNCs6d9XJjYEdKKzqu88qUHF3EoEpNepSMEeoFJ4uWkzvaT5IE6Gonk6uSN1NUTsMzx1gcs9fK8pUXl8c4bg92NLb_XWciWWp2OnNKY3r5o0ypy0R2-m4dV99ysyzp-VOmq9KuszbjrxvWhdu-Tcy3E-wHzksx8NiWluAcXZz8sqnqx21Tvqyol8njieuN1XsWPhHRAmkMhsuSnDiGjpET67z7KG9KPoh_r" />
     </button>
   </div>

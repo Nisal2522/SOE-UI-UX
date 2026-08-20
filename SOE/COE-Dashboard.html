@@ -2,10 +2,23 @@
 <html lang="en">
 
 <head>
+<link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="preconnect" href="https://flagcdn.com" crossorigin>
+<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://unpkg.com" crossorigin>
+
   <meta charset="utf-8" />
   <meta content="width=device-width, initial-scale=1.0" name="viewport" />
   <title>COE Dashboard</title>
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <style>
+    @view-transition {
+      navigation: auto;
+    }
+  </style>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap"
     rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&amp;display=swap" rel="stylesheet" />
@@ -544,7 +557,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; line-height: 1.6; }
             <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full"></span>
           </button>
           <div class="flex items-center space-x-3">
-            <img alt="User avatar" class="w-10 h-10 rounded-full object-cover"
+            <img loading="lazy" decoding="async" alt="User avatar" class="w-10 h-10 rounded-full object-cover"
               src="https://i.pravatar.cc/200?u=soe-man" />
             <div>
               <div class="font-semibold text-sm text-white">Nisal Amarasekara</div>

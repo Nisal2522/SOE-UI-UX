@@ -2,10 +2,23 @@
 <html lang="en">
 
 <head>
+<link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="preconnect" href="https://flagcdn.com" crossorigin>
+<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://unpkg.com" crossorigin>
+
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<title>Control Union Inspections (Pvt) Ltd</title>
 	<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+	<style>
+	  @view-transition {
+	    navigation: auto;
+	  }
+	</style>
 	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&amp;display=swap" rel="stylesheet" />
 	<link
 		href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
@@ -1042,7 +1055,7 @@
 						<span class="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full"></span>
 					</button>
 					<div class="flex items-center space-x-3">
-						<img alt="User avatar" class="w-10 h-10 rounded-full object-cover shrink-0" src="https://i.pravatar.cc/200?u=soe-man" />
+						<img loading="lazy" decoding="async" alt="User avatar" class="w-10 h-10 rounded-full object-cover shrink-0" src="https://i.pravatar.cc/200?u=soe-man" />
 						<div>
 							<div class="font-semibold text-sm text-white">Nisal Amarasekara</div>
 							<div class="text-xs text-slate-400">Sri Lanka</div>
@@ -1084,7 +1097,7 @@
 								<div class="flex flex-col items-center lg:flex-row lg:items-center gap-4">
 									<div
 										class="w-20 h-20 rounded-md overflow-hidden bg-white border flex items-center justify-center shadow-sm">
-										<img id="companyLogo" alt="Company logo" class="w-full h-full object-cover"
+										<img loading="lazy" decoding="async" id="companyLogo" alt="Company logo" class="w-full h-full object-cover"
 											src="https://lh3.googleusercontent.com/aida-public/AB6AXuBR8s_sRkD2uqrpzMyUfuQswvEJ6g6HmJbNWRFuxVQrSEUTQBKUCb8FrE4u1rNmdesirGmB0fSnXH0MsEurf7hmlhlkPED1n-AkkdeAQMAWAgU5wxVJTfUU6Pwf-Y8nQ1wskiHsPmWaCNPcrpBsa-iA4HqrI_cLqR3nfa1DafNqND7EBfLy1X75EULCpsRWFVLpztjMjkn6ufe2il3wB9_JOZuva2njUcWM0nJhERkc8yDkGPPP0eoFr5pSCqKx45WY1mn5_zVR" />
 									</div>
 									<div class="flex flex-col items-center lg:items-start text-center lg:text-left">
@@ -1102,7 +1115,7 @@
 													<div class="font-medium text-slate-800 flex items-center gap-2">
 														<div
 															class="relative w-8 h-5 overflow-hidden rounded shadow-sm border border-slate-200">
-															<img id="countryFlag" src="https://flagcdn.com/w40/my.png"
+															<img loading="lazy" decoding="async" id="countryFlag" src="https://flagcdn.com/w40/my.png"
 																alt="Malaysia flag"
 																class="absolute inset-0 w-full h-full object-cover" />
 														</div>
@@ -9754,6 +9767,6 @@
 			<div class="hidden">
 			</div>
 		</div>
-		</body>
+</body>
 
 </html>

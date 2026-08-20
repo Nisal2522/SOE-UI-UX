@@ -2,10 +2,23 @@
 <html lang="en">
 
 <head>
+<link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="preconnect" href="https://flagcdn.com" crossorigin>
+<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://unpkg.com" crossorigin>
+
   <meta charset="utf-8" />
   <meta content="width=device-width, initial-scale=1.0" name="viewport" />
   <title>Country Information</title>
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <style>
+    @view-transition {
+      navigation: auto;
+    }
+  </style>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet" />
   <link
     href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
@@ -1023,7 +1036,7 @@
             <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full"></span>
           </button>
           <div class="flex items-center space-x-3">
-            <img alt="User avatar" class="w-10 h-10 rounded-full object-cover"
+            <img loading="lazy" decoding="async" alt="User avatar" class="w-10 h-10 rounded-full object-cover"
               src="https://i.pravatar.cc/200?u=soe-man" />
             <div>
               <div class="font-semibold text-sm text-white">Nisal Amarasekara</div>
@@ -1130,7 +1143,7 @@
                       </thead>
                       <tbody>
                         <tr>
-                          <td><span class="country-cell"><img class="country-flag" src="https://flagcdn.com/w20/au.png" alt="Australia flag"><span>Australia</span></span></td>
+                          <td><span class="country-cell"><img loading="lazy" decoding="async" class="country-flag" src="https://flagcdn.com/w20/au.png" alt="Australia flag"><span>Australia</span></span></td>
                           <td>MD</td>
                           <td>James Mitchell</td>
                           <td>james.mitchell@soe.com.au</td>
@@ -1143,7 +1156,7 @@
                           </td>
                         </tr>
                         <tr>
-                          <td><span class="country-cell"><img class="country-flag" src="https://flagcdn.com/w20/bd.png" alt="Bangladesh flag"><span>Bangladesh</span></span></td>
+                          <td><span class="country-cell"><img loading="lazy" decoding="async" class="country-flag" src="https://flagcdn.com/w20/bd.png" alt="Bangladesh flag"><span>Bangladesh</span></span></td>
                           <td>Main Contact Person for COE</td>
                           <td>James Mitchell</td>
                           <td>james.mitchell@soe.com.au</td>
@@ -1156,7 +1169,7 @@
                           </td>
                         </tr>
                         <tr>
-                          <td><span class="country-cell"><img class="country-flag" src="https://flagcdn.com/w20/kh.png" alt="Cambodia flag"><span>Cambodia</span></span></td>
+                          <td><span class="country-cell"><img loading="lazy" decoding="async" class="country-flag" src="https://flagcdn.com/w20/kh.png" alt="Cambodia flag"><span>Cambodia</span></span></td>
                           <td>Technical Lead</td>
                           <td>Sarah Chen</td>
                           <td>sarah.chen@soe.com.au</td>
@@ -1169,7 +1182,7 @@
                           </td>
                         </tr>
                         <tr>
-                          <td><span class="country-cell"><img class="country-flag" src="https://flagcdn.com/w20/cn.png" alt="China flag"><span>China</span></span></td>
+                          <td><span class="country-cell"><img loading="lazy" decoding="async" class="country-flag" src="https://flagcdn.com/w20/cn.png" alt="China flag"><span>China</span></span></td>
                           <td>Marketing Lead</td>
                           <td>Emma Wilson</td>
                           <td>emma.wilson@soe.com.au</td>
@@ -1182,7 +1195,7 @@
                           </td>
                         </tr>
                         <tr>
-                          <td><span class="country-cell"><img class="country-flag" src="https://flagcdn.com/w20/hk.png" alt="Hong Kong flag"><span>Hong Kong</span></span></td>
+                          <td><span class="country-cell"><img loading="lazy" decoding="async" class="country-flag" src="https://flagcdn.com/w20/hk.png" alt="Hong Kong flag"><span>Hong Kong</span></span></td>
                           <td>QAO for Textile</td>
                           <td>David Park</td>
                           <td>david.park@soe.com.au</td>
@@ -1195,7 +1208,7 @@
                           </td>
                         </tr>
                         <tr>
-                          <td><span class="country-cell"><img class="country-flag" src="https://flagcdn.com/w20/in.png" alt="India flag"><span>India</span></span></td>
+                          <td><span class="country-cell"><img loading="lazy" decoding="async" class="country-flag" src="https://flagcdn.com/w20/in.png" alt="India flag"><span>India</span></span></td>
                           <td>Regional Director</td>
                           <td>Arjun Mehta</td>
                           <td>arjun.mehta@soe.in</td>
@@ -1208,7 +1221,7 @@
                           </td>
                         </tr>
                         <tr>
-                          <td><span class="country-cell"><img class="country-flag" src="https://flagcdn.com/w20/id.png" alt="Indonesia flag"><span>Indonesia</span></span></td>
+                          <td><span class="country-cell"><img loading="lazy" decoding="async" class="country-flag" src="https://flagcdn.com/w20/id.png" alt="Indonesia flag"><span>Indonesia</span></span></td>
                           <td>Country Coordinator</td>
                           <td>Nadia Putri</td>
                           <td>nadia.putri@soe.id</td>
@@ -1221,7 +1234,7 @@
                           </td>
                         </tr>
                         <tr>
-                          <td><span class="country-cell"><img class="country-flag" src="https://flagcdn.com/w20/jp.png" alt="Japan flag"><span>Japan</span></span></td>
+                          <td><span class="country-cell"><img loading="lazy" decoding="async" class="country-flag" src="https://flagcdn.com/w20/jp.png" alt="Japan flag"><span>Japan</span></span></td>
                           <td>Technical Manager</td>
                           <td>Kenji Sato</td>
                           <td>kenji.sato@soe.jp</td>
@@ -1234,7 +1247,7 @@
                           </td>
                         </tr>
                         <tr>
-                          <td><span class="country-cell"><img class="country-flag" src="https://flagcdn.com/w20/kr.png" alt="South Korea flag"><span>South Korea</span></span></td>
+                          <td><span class="country-cell"><img loading="lazy" decoding="async" class="country-flag" src="https://flagcdn.com/w20/kr.png" alt="South Korea flag"><span>South Korea</span></span></td>
                           <td>Quality Lead</td>
                           <td>Min Seo Kim</td>
                           <td>minseo.kim@soe.kr</td>
@@ -1247,7 +1260,7 @@
                           </td>
                         </tr>
                         <tr>
-                          <td><span class="country-cell"><img class="country-flag" src="https://flagcdn.com/w20/my.png" alt="Malaysia flag"><span>Malaysia</span></span></td>
+                          <td><span class="country-cell"><img loading="lazy" decoding="async" class="country-flag" src="https://flagcdn.com/w20/my.png" alt="Malaysia flag"><span>Malaysia</span></span></td>
                           <td>Operations Lead</td>
                           <td>Aisyah Rahman</td>
                           <td>aisyah.rahman@soe.my</td>
@@ -1260,7 +1273,7 @@
                           </td>
                         </tr>
                         <tr>
-                          <td><span class="country-cell"><img class="country-flag" src="https://flagcdn.com/w20/mm.png" alt="Myanmar flag"><span>Myanmar</span></span></td>
+                          <td><span class="country-cell"><img loading="lazy" decoding="async" class="country-flag" src="https://flagcdn.com/w20/mm.png" alt="Myanmar flag"><span>Myanmar</span></span></td>
                           <td>Certification Officer</td>
                           <td>Thura Aung</td>
                           <td>thura.aung@soe.mm</td>
@@ -1273,7 +1286,7 @@
                           </td>
                         </tr>
                         <tr>
-                          <td><span class="country-cell"><img class="country-flag" src="https://flagcdn.com/w20/pk.png" alt="Pakistan flag"><span>Pakistan</span></span></td>
+                          <td><span class="country-cell"><img loading="lazy" decoding="async" class="country-flag" src="https://flagcdn.com/w20/pk.png" alt="Pakistan flag"><span>Pakistan</span></span></td>
                           <td>Business Development Lead</td>
                           <td>Hassan Ali</td>
                           <td>hassan.ali@soe.pk</td>
@@ -1286,7 +1299,7 @@
                           </td>
                         </tr>
                         <tr>
-                          <td><span class="country-cell"><img class="country-flag" src="https://flagcdn.com/w20/ph.png" alt="Philippines flag"><span>Philippines</span></span></td>
+                          <td><span class="country-cell"><img loading="lazy" decoding="async" class="country-flag" src="https://flagcdn.com/w20/ph.png" alt="Philippines flag"><span>Philippines</span></span></td>
                           <td>Client Success Manager</td>
                           <td>Maria Santos</td>
                           <td>maria.santos@soe.ph</td>
@@ -1299,7 +1312,7 @@
                           </td>
                         </tr>
                         <tr>
-                          <td><span class="country-cell"><img class="country-flag" src="https://flagcdn.com/w20/sg.png" alt="Singapore flag"><span>Singapore</span></span></td>
+                          <td><span class="country-cell"><img loading="lazy" decoding="async" class="country-flag" src="https://flagcdn.com/w20/sg.png" alt="Singapore flag"><span>Singapore</span></span></td>
                           <td>Regional Key Account Manager</td>
                           <td>Rachel Tan</td>
                           <td>rachel.tan@soe.sg</td>
@@ -1312,7 +1325,7 @@
                           </td>
                         </tr>
                         <tr>
-                          <td><span class="country-cell"><img class="country-flag" src="https://flagcdn.com/w20/lk.png" alt="Sri Lanka flag"><span>Sri Lanka</span></span></td>
+                          <td><span class="country-cell"><img loading="lazy" decoding="async" class="country-flag" src="https://flagcdn.com/w20/lk.png" alt="Sri Lanka flag"><span>Sri Lanka</span></span></td>
                           <td>Country Head</td>
                           <td>Nuwan Perera</td>
                           <td>nuwan.perera@soe.lk</td>
@@ -1325,7 +1338,7 @@
                           </td>
                         </tr>
                         <tr>
-                          <td><span class="country-cell"><img class="country-flag" src="https://flagcdn.com/w20/tw.png" alt="Taiwan flag"><span>Taiwan</span></span></td>
+                          <td><span class="country-cell"><img loading="lazy" decoding="async" class="country-flag" src="https://flagcdn.com/w20/tw.png" alt="Taiwan flag"><span>Taiwan</span></span></td>
                           <td>Compliance Specialist</td>
                           <td>Wei Lin</td>
                           <td>wei.lin@soe.tw</td>
@@ -1338,7 +1351,7 @@
                           </td>
                         </tr>
                         <tr>
-                          <td><span class="country-cell"><img class="country-flag" src="https://flagcdn.com/w20/th.png" alt="Thailand flag"><span>Thailand</span></span></td>
+                          <td><span class="country-cell"><img loading="lazy" decoding="async" class="country-flag" src="https://flagcdn.com/w20/th.png" alt="Thailand flag"><span>Thailand</span></span></td>
                           <td>Audit Planning Lead</td>
                           <td>Chaiwat Somchai</td>
                           <td>chaiwat.somchai@soe.th</td>
@@ -1351,7 +1364,7 @@
                           </td>
                         </tr>
                         <tr>
-                          <td><span class="country-cell"><img class="country-flag" src="https://flagcdn.com/w20/vn.png" alt="Vietnam flag"><span>Vietnam</span></span></td>
+                          <td><span class="country-cell"><img loading="lazy" decoding="async" class="country-flag" src="https://flagcdn.com/w20/vn.png" alt="Vietnam flag"><span>Vietnam</span></span></td>
                           <td>Senior Auditor</td>
                           <td>Nguyen Anh</td>
                           <td>nguyen.anh@soe.vn</td>

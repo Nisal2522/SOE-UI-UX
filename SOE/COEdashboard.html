@@ -2,11 +2,24 @@
 <html lang="en">
 
 <head>
+<link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="preconnect" href="https://flagcdn.com" crossorigin>
+<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://unpkg.com" crossorigin>
+
   <meta charset="utf-8" />
   <meta content="width=device-width, initial-scale=1.0" name="viewport" />
   <!-- Internal links and assets use relative paths (e.g. href="page2.html", src="images/profile.png", src="https://flagcdn.com/w40/au.png"). -->
   <title>My Dashboard</title>
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <style>
+    @view-transition {
+      navigation: auto;
+    }
+  </style>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet" />
@@ -2942,7 +2955,7 @@
             <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full"></span>
           </button>
           <div class="flex items-center space-x-3">
-            <img alt="User avatar" class="w-10 h-10 rounded-full object-cover shrink-0" src="https://i.pravatar.cc/200?u=soe-man" />
+            <img loading="lazy" decoding="async" alt="User avatar" class="w-10 h-10 rounded-full object-cover shrink-0" src="https://i.pravatar.cc/200?u=soe-man" />
             <div>
               <div class="font-semibold text-sm text-white">Nisal Amarasekara</div>
               <div class="text-xs text-slate-400">Sri Lanka</div>
@@ -3563,7 +3576,7 @@
                     <tr class="border-b border-slate-200">
                       <td class="px-4 py-3">
                         <div class="flex items-center gap-2">
-                          <img class="w-[18px] h-[12px] rounded-[2px] border border-slate-300" src="https://flagcdn.com/w40/au.png" alt="Australia flag" />
+                          <img loading="lazy" decoding="async" class="w-[18px] h-[12px] rounded-[2px] border border-slate-300" src="https://flagcdn.com/w40/au.png" alt="Australia flag" />
                           <span>Australia</span>
                         </div>
                       </td>
@@ -3596,7 +3609,7 @@
                     <tr class="border-b border-slate-200">
                       <td class="px-4 py-3">
                         <div class="flex items-center gap-2">
-                          <img class="w-[18px] h-[12px] rounded-[2px] border border-slate-300" src="https://flagcdn.com/w40/bd.png" alt="Bangladesh flag" />
+                          <img loading="lazy" decoding="async" class="w-[18px] h-[12px] rounded-[2px] border border-slate-300" src="https://flagcdn.com/w40/bd.png" alt="Bangladesh flag" />
                           <span>Bangladesh</span>
                         </div>
                       </td>
@@ -3629,7 +3642,7 @@
                     <tr class="border-b border-slate-200">
                       <td class="px-4 py-3">
                         <div class="flex items-center gap-2">
-                          <img class="w-[18px] h-[12px] rounded-[2px] border border-slate-300" src="https://flagcdn.com/w40/kh.png" alt="Cambodia flag" />
+                          <img loading="lazy" decoding="async" class="w-[18px] h-[12px] rounded-[2px] border border-slate-300" src="https://flagcdn.com/w40/kh.png" alt="Cambodia flag" />
                           <span>Cambodia</span>
                         </div>
                       </td>
@@ -3662,7 +3675,7 @@
                     <tr class="border-b border-slate-200">
                       <td class="px-4 py-3">
                         <div class="flex items-center gap-2">
-                          <img class="w-[18px] h-[12px] rounded-[2px] border border-slate-300" src="https://flagcdn.com/w40/cn.png" alt="China flag" />
+                          <img loading="lazy" decoding="async" class="w-[18px] h-[12px] rounded-[2px] border border-slate-300" src="https://flagcdn.com/w40/cn.png" alt="China flag" />
                           <span>China</span>
                         </div>
                       </td>
@@ -3695,7 +3708,7 @@
                     <tr class="border-b border-slate-200">
                       <td class="px-4 py-3">
                         <div class="flex items-center gap-2">
-                          <img class="w-[18px] h-[12px] rounded-[2px] border border-slate-300" src="https://flagcdn.com/w40/hk.png" alt="Hong Kong flag" />
+                          <img loading="lazy" decoding="async" class="w-[18px] h-[12px] rounded-[2px] border border-slate-300" src="https://flagcdn.com/w40/hk.png" alt="Hong Kong flag" />
                           <span>Hong Kong</span>
                         </div>
                       </td>
@@ -3728,7 +3741,7 @@
                     <tr class="border-b border-slate-200">
                       <td class="px-4 py-3">
                         <div class="flex items-center gap-2">
-                          <img class="w-[18px] h-[12px] rounded-[2px] border border-slate-300" src="https://flagcdn.com/w40/in.png" alt="India flag" />
+                          <img loading="lazy" decoding="async" class="w-[18px] h-[12px] rounded-[2px] border border-slate-300" src="https://flagcdn.com/w40/in.png" alt="India flag" />
                           <span>India</span>
                         </div>
                       </td>
@@ -3761,7 +3774,7 @@
                     <tr class="border-b border-slate-200">
                       <td class="px-4 py-3">
                         <div class="flex items-center gap-2">
-                          <img class="w-[18px] h-[12px] rounded-[2px] border border-slate-300" src="https://flagcdn.com/w40/id.png" alt="Indonesia flag" />
+                          <img loading="lazy" decoding="async" class="w-[18px] h-[12px] rounded-[2px] border border-slate-300" src="https://flagcdn.com/w40/id.png" alt="Indonesia flag" />
                           <span>Indonesia</span>
                         </div>
                       </td>
@@ -3794,7 +3807,7 @@
                     <tr class="border-b border-slate-200">
                       <td class="px-4 py-3">
                         <div class="flex items-center gap-2">
-                          <img class="w-[18px] h-[12px] rounded-[2px] border border-slate-300" src="https://flagcdn.com/w40/jp.png" alt="Japan flag" />
+                          <img loading="lazy" decoding="async" class="w-[18px] h-[12px] rounded-[2px] border border-slate-300" src="https://flagcdn.com/w40/jp.png" alt="Japan flag" />
                           <span>Japan</span>
                         </div>
                       </td>
@@ -3827,7 +3840,7 @@
                     <tr class="border-b border-slate-200">
                       <td class="px-4 py-3">
                         <div class="flex items-center gap-2">
-                          <img class="w-[18px] h-[12px] rounded-[2px] border border-slate-300" src="https://flagcdn.com/w40/kr.png" alt="South Korea flag" />
+                          <img loading="lazy" decoding="async" class="w-[18px] h-[12px] rounded-[2px] border border-slate-300" src="https://flagcdn.com/w40/kr.png" alt="South Korea flag" />
                           <span>South Korea</span>
                         </div>
                       </td>
@@ -3860,7 +3873,7 @@
                     <tr class="border-b border-slate-200">
                       <td class="px-4 py-3">
                         <div class="flex items-center gap-2">
-                          <img class="w-[18px] h-[12px] rounded-[2px] border border-slate-300" src="https://flagcdn.com/w40/my.png" alt="Malaysia flag" />
+                          <img loading="lazy" decoding="async" class="w-[18px] h-[12px] rounded-[2px] border border-slate-300" src="https://flagcdn.com/w40/my.png" alt="Malaysia flag" />
                           <span>Malaysia</span>
                         </div>
                       </td>
@@ -3893,7 +3906,7 @@
                     <tr class="border-b border-slate-200">
                       <td class="px-4 py-3">
                         <div class="flex items-center gap-2">
-                          <img class="w-[18px] h-[12px] rounded-[2px] border border-slate-300" src="https://flagcdn.com/w40/mm.png" alt="Myanmar flag" />
+                          <img loading="lazy" decoding="async" class="w-[18px] h-[12px] rounded-[2px] border border-slate-300" src="https://flagcdn.com/w40/mm.png" alt="Myanmar flag" />
                           <span>Myanmar</span>
                         </div>
                       </td>
@@ -3926,7 +3939,7 @@
                     <tr class="border-b border-slate-200">
                       <td class="px-4 py-3">
                         <div class="flex items-center gap-2">
-                          <img class="w-[18px] h-[12px] rounded-[2px] border border-slate-300" src="https://flagcdn.com/w40/pk.png" alt="Pakistan flag" />
+                          <img loading="lazy" decoding="async" class="w-[18px] h-[12px] rounded-[2px] border border-slate-300" src="https://flagcdn.com/w40/pk.png" alt="Pakistan flag" />
                           <span>Pakistan</span>
                         </div>
                       </td>
@@ -3959,7 +3972,7 @@
                     <tr class="border-b border-slate-200">
                       <td class="px-4 py-3">
                         <div class="flex items-center gap-2">
-                          <img class="w-[18px] h-[12px] rounded-[2px] border border-slate-300" src="https://flagcdn.com/w40/ph.png" alt="Philippines flag" />
+                          <img loading="lazy" decoding="async" class="w-[18px] h-[12px] rounded-[2px] border border-slate-300" src="https://flagcdn.com/w40/ph.png" alt="Philippines flag" />
                           <span>Philippines</span>
                         </div>
                       </td>
@@ -3992,7 +4005,7 @@
                     <tr class="border-b border-slate-200">
                       <td class="px-4 py-3">
                         <div class="flex items-center gap-2">
-                          <img class="w-[18px] h-[12px] rounded-[2px] border border-slate-300" src="https://flagcdn.com/w40/sg.png" alt="Singapore flag" />
+                          <img loading="lazy" decoding="async" class="w-[18px] h-[12px] rounded-[2px] border border-slate-300" src="https://flagcdn.com/w40/sg.png" alt="Singapore flag" />
                           <span>Singapore</span>
                         </div>
                       </td>
@@ -4025,7 +4038,7 @@
                     <tr class="border-b border-slate-200">
                       <td class="px-4 py-3">
                         <div class="flex items-center gap-2">
-                          <img class="w-[18px] h-[12px] rounded-[2px] border border-slate-300" src="https://flagcdn.com/w40/lk.png" alt="Sri Lanka flag" />
+                          <img loading="lazy" decoding="async" class="w-[18px] h-[12px] rounded-[2px] border border-slate-300" src="https://flagcdn.com/w40/lk.png" alt="Sri Lanka flag" />
                           <span>Sri Lanka</span>
                         </div>
                       </td>
@@ -4058,7 +4071,7 @@
                     <tr class="border-b border-slate-200">
                       <td class="px-4 py-3">
                         <div class="flex items-center gap-2">
-                          <img class="w-[18px] h-[12px] rounded-[2px] border border-slate-300" src="https://flagcdn.com/w40/tw.png" alt="Taiwan flag" />
+                          <img loading="lazy" decoding="async" class="w-[18px] h-[12px] rounded-[2px] border border-slate-300" src="https://flagcdn.com/w40/tw.png" alt="Taiwan flag" />
                           <span>Taiwan</span>
                         </div>
                       </td>
@@ -4091,7 +4104,7 @@
                     <tr class="border-b border-slate-200">
                       <td class="px-4 py-3">
                         <div class="flex items-center gap-2">
-                          <img class="w-[18px] h-[12px] rounded-[2px] border border-slate-300" src="https://flagcdn.com/w40/th.png" alt="Thailand flag" />
+                          <img loading="lazy" decoding="async" class="w-[18px] h-[12px] rounded-[2px] border border-slate-300" src="https://flagcdn.com/w40/th.png" alt="Thailand flag" />
                           <span>Thailand</span>
                         </div>
                       </td>
@@ -4124,7 +4137,7 @@
                     <tr>
                       <td class="px-4 py-3">
                         <div class="flex items-center gap-2">
-                          <img class="w-[18px] h-[12px] rounded-[2px] border border-slate-300" src="https://flagcdn.com/w40/vn.png" alt="Vietnam flag" />
+                          <img loading="lazy" decoding="async" class="w-[18px] h-[12px] rounded-[2px] border border-slate-300" src="https://flagcdn.com/w40/vn.png" alt="Vietnam flag" />
                           <span>Vietnam</span>
                         </div>
                       </td>
@@ -4860,7 +4873,7 @@
           if (!country) return '';
           return [
             '<span class="selected-country-chip">',
-            '<img class="chip-flag" src="https://flagcdn.com/w40/' + country.code + '.png" alt="' + country.name + ' flag" />',
+            '<img loading="lazy" decoding="async" class="chip-flag" src="https://flagcdn.com/w40/' + country.code + '.png" alt="' + country.name + ' flag" />',
             '<span>' + country.name + '</span>',
             '<button type="button" class="chip-remove" data-remove-country="' + country.code + '" aria-label="Remove ' + country.name + '">',
             '<span class="material-symbols-outlined">close</span>',
