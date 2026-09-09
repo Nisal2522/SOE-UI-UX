@@ -1692,9 +1692,10 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
             #home .cp-compare-filter-btn.is-disabled { opacity: 0.45; pointer-events: none; }
             #home .cp-compare-popup {
               position: absolute; top: calc(100% + 10px); right: 0; z-index: 40;
-              width: 280px; background: #fff; border: 1px solid #e2e8f0; border-radius: 1rem;
+              width: 320px; background: #fff; border: 1px solid #e2e8f0; border-radius: 1rem;
               box-shadow: 0 16px 40px rgba(15,23,42,0.14); overflow: visible;
             }
+            #home #cpSectorFilterPopup { width: 340px; }
             #home .cp-compare-popup-head { border-radius: 1rem 1rem 0 0; overflow: hidden; }
             #home .cp-compare-popup[hidden] { display: none; }
             #home .cp-compare-popup-head {
@@ -1727,7 +1728,9 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
               display: flex; align-items: center; gap: 10px; width: 100%;
               padding: 9px 10px; border-radius: 0.5rem; cursor: pointer;
               font-size: 0.82rem; font-weight: 600; color: #334155; transition: background 0.12s;
+              white-space: nowrap; overflow: visible;
             }
+            #home .cp-dropdown-option span:last-child { white-space: nowrap; overflow: visible; text-overflow: clip; }
             #home .cp-dropdown-option:hover { background: #f8fafc; }
             #home .cp-dropdown-option input[type="checkbox"] {
               width: 16px; height: 16px; accent-color: #1b1e42; cursor: pointer; flex-shrink: 0;
@@ -1735,6 +1738,8 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
             #home .cp-dropdown-option.is-checked { background: #eff8fe; color: #0f4c68; }
             #home .cp-dropdown-option.is-checked:hover { background: #e0f2fe; }
             #home .cp-dropdown-btn.is-disabled { opacity: 0.45; pointer-events: none; }
+            /* Sector filter direct list inside popup */
+            #home .cp-sector-options-list { display: flex; flex-direction: column; gap: 6px; max-height: 220px; overflow-y: auto; padding-right: 2px; }
 
             /* Trend hero stat (big number + delta chip above the Monthly Revenue Trend chart) */
             #home .cp-trend-hero { display: flex; align-items: baseline; gap: 0.6rem; margin: 0.2rem 0 0.1rem; }
@@ -1951,7 +1956,6 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
                     <span class="cp-card-sub" id="cpTrendSub">by calendar month</span>
                   </div>
                   <div class="cp-compare-wrap" id="cpCompareYearsWrap">
-                    <span class="cp-compare-label">COMPARE YEARS</span>
                     <button type="button" id="cpCompareFilterBtn" class="cp-compare-filter-btn" aria-haspopup="dialog" aria-expanded="false" aria-controls="cpComparePopup" title="Filter compare years">
                       <span class="material-symbols-outlined">tune</span>
                     </button>
@@ -1990,19 +1994,35 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
             <div class="cp-row cols-1-1">
               <div class="cp-card">
                 <div class="cp-card-head">
-                  <h3>Monthly Revenue by Sector</h3>
-                  <span class="cp-card-sub">total per month — hover a bar for the top sectors, click a chip below to filter</span>
+                  <div>
+                    <h3>Monthly Revenue by Sector</h3>
+                  </div>
+                  <div class="cp-compare-wrap" id="cpSectorFilterWrap">
+                    <button type="button" id="cpSectorFilterBtn" class="cp-compare-filter-btn" aria-haspopup="dialog" aria-expanded="false" aria-controls="cpSectorFilterPopup" title="Filter sectors">
+                      <span class="material-symbols-outlined">tune</span>
+                    </button>
+                    <div id="cpSectorFilterPopup" class="cp-compare-popup" hidden role="dialog" aria-modal="true" aria-label="Filter sectors">
+                      <div class="cp-compare-popup-head">
+                        <span>Filter sectors</span>
+                        <button type="button" id="cpSectorFilterPopupClose" class="cp-compare-popup-close" aria-label="Close">
+                          <span class="material-symbols-outlined">close</span>
+                        </button>
+                      </div>
+                      <div class="cp-compare-popup-body" aria-label="Filter sectors">
+                        <div id="cpSectorOptions" class="cp-sector-options-list"></div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
                 <div class="cp-chartbox" id="cpBoxSectorStack">
                   <canvas id="cpSectorStack"></canvas>
                   <div class="cp-empty"><span class="material-symbols-outlined">bar_chart_off</span>No data for the selected filters</div>
                 </div>
-                <div class="cp-sector-legend" id="cpSectorLegend" role="group" aria-label="Filter by sector"></div>
+                <div class="cp-sector-legend" id="cpSectorLegend" role="group" aria-label="Filter by sector" hidden style="display:none !important;"></div>
               </div>
               <div class="cp-card">
                 <div class="cp-card-head">
                   <h3>Lead &amp; Opportunity Trend</h3>
-                  <span class="cp-card-sub">leads → opportunities → sales, month by month</span>
                 </div>
                 <div class="cp-chartbox tall" id="cpBoxPipelineTrend">
                   <canvas id="cpPipelineTrend"></canvas>
@@ -2015,7 +2035,7 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
             <div class="cp-row cols-1-1">
               <div class="cp-card">
                 <div class="cp-card-head">
-                  <h3>Revenue by Sector</h3>
+                  <h3>Yearly Revenue by Sector</h3>
                   <span class="cp-card-sub" id="cpSectorRevSub">click a bar to filter the dashboard</span>
                 </div>
                 <div class="cp-chartbox" id="cpBoxSectorRev">
@@ -2204,6 +2224,8 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
                 elComparePopupClose = $('cpComparePopupClose'), elCompareWrapOuter = $('cpCompareYearsWrap'),
                 elCompareDropdownBtn = $('cpCompareDropdownBtn'), elCompareDropdownLabel = $('cpCompareDropdownLabel'),
                 elCompareDropdownMenu = $('cpCompareDropdownMenu'), elCompareDropdownWrap = $('cpCompareDropdownWrap'),
+                elSectorFilterBtn = $('cpSectorFilterBtn'), elSectorFilterPopup = $('cpSectorFilterPopup'),
+                elSectorFilterPopupClose = $('cpSectorFilterPopupClose'), elSectorOptions = $('cpSectorOptions'),
                 elFilterOpenBtn = $('cpFilterOpenBtn'), elFilterOverlay = $('cpFilterOverlay'),
                 elFilterCloseBtn = $('cpFilterCloseBtn'), elFilterApplyBtn = $('cpFilterApply'),
                 elFilterSummary = $('cpFilterSummary'), elFilterBadge = $('cpFilterBadge');
@@ -2336,6 +2358,116 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
                     if (elCompareDropdownBtn) elCompareDropdownBtn.setAttribute('aria-expanded', 'false');
                   } else if (elComparePopup && !elComparePopup.hidden) closeComparePopup();
                 }
+              });
+            })();
+
+            /* ---------- Sector filter (Monthly Revenue by Sector) — filter-icon popup, multi-select ----- */
+            var sectorFilter = new Set();
+            function refreshSectorChartOnly() {
+              var f = getFilters();
+              var stackRows = filterDeals(f, { ignoreSector: true });
+              var monthlyTotalBySector = MONTHS.map(function (_, i) {
+                var map = {};
+                stackRows.filter(function (r) { return r.month === i + 1; }).forEach(function (r) { map[r.sector] = (map[r.sector] || 0) + r.revenue; });
+                return map;
+              });
+              var sectorLineDatasets = SECTORS.map(function (sector) {
+                var color = SECTOR_COLORS[sector] || '#64748b';
+                var isActiveByGlobal = f.sector === 'all' || f.sector === sector;
+                var isActiveByLocal = sectorFilter.size === 0 ? isActiveByGlobal : sectorFilter.has(sector);
+                var isActive = isActiveByLocal;
+                return {
+                  label: sector,
+                  data: monthlyTotalBySector.map(function (map) { return map[sector] || 0; }),
+                  borderColor: isActive ? color : hexToRgba(color, 0.22),
+                  backgroundColor: 'transparent',
+                  fill: false,
+                  tension: 0.35,
+                  borderWidth: isActive ? 2.8 : 1.5,
+                  pointRadius: isActive ? 4 : 0,
+                  pointHoverRadius: 6,
+                  pointBackgroundColor: color,
+                  pointBorderColor: '#fff',
+                  pointBorderWidth: 2,
+                  hidden: !isActive && sectorFilter.size > 0
+                };
+              });
+              var stackHasData = sectorLineDatasets.some(function (ds) { return ds.data.some(function (v) { return v > 0; }); });
+              render('cpSectorStack', 'cpBoxSectorStack', stackHasData, {
+                type: 'line',
+                data: { labels: MONTHS, datasets: sectorLineDatasets },
+                options: {
+                  responsive: true, maintainAspectRatio: false,
+                  interaction: { mode: 'index', intersect: false },
+                  animation: { duration: 400, easing: 'easeOutQuart' },
+                  plugins: {
+                    legend: { position: 'bottom', align: 'center', labels: { boxWidth: 10, boxHeight: 10, usePointStyle: true, padding: 8, color: '#64748b', font: { size: 10, weight: '600' } } },
+                    tooltip: Object.assign({}, TIP, { position: 'nearest', padding: 12, cornerRadius: 10, caretPadding: 8, displayColors: true, callbacks: {
+                      label: function (ctx) { return ctx.dataset.label + ': ' + money(ctx.parsed.y, getFilters().currency, { full: true }); }
+                    } })
+                  },
+                  layout: { padding: { top: 6, right: 6, bottom: 2, left: 2 } },
+                  scales: {
+                    x: { grid: { display: false }, border: { display: false }, ticks: { color: '#64748b', maxRotation: 0, autoSkip: false } },
+                    y: { beginAtZero: true, grid: { color: GRID }, border: { display: false }, ticks: { callback: function(v){ return money(v, getFilters().currency); }, maxTicksLimit: 6, color: '#64748b' } }
+                  }
+                }
+              });
+            }
+            (function buildSectorOptions() {
+              if (!elSectorOptions) return;
+              elSectorOptions.innerHTML = '';
+              SECTORS.forEach(function (s) {
+                var row = document.createElement('label');
+                row.className = 'cp-dropdown-option';
+                row.setAttribute('role', 'option');
+                var cb = document.createElement('input');
+                cb.type = 'checkbox';
+                cb.value = s;
+                cb.checked = sectorFilter.has(s);
+                var dot = document.createElement('span');
+                dot.style.width = '10px'; dot.style.height = '10px'; dot.style.borderRadius = '50%'; dot.style.flexShrink = '0';
+                dot.style.background = SECTOR_COLORS[s] || '#64748b';
+                var txt = document.createElement('span');
+                txt.textContent = s;
+                txt.style.flex = '1';
+                row.appendChild(cb);
+                row.appendChild(dot);
+                row.appendChild(txt);
+                if (cb.checked) row.classList.add('is-checked');
+                function toggleSector() {
+                  if (cb.checked) sectorFilter.add(s); else sectorFilter.delete(s);
+                  row.classList.toggle('is-checked', cb.checked);
+                  refreshSectorChartOnly();
+                }
+                cb.addEventListener('change', toggleSector);
+                row.addEventListener('click', function (e) {
+                  if (e.target !== cb) { e.preventDefault(); cb.checked = !cb.checked; toggleSector(); }
+                });
+                elSectorOptions.appendChild(row);
+              });
+            })();
+            (function bindSectorPopup() {
+              if (!elSectorFilterBtn || !elSectorFilterPopup) return;
+              function openSectorPopup() {
+                elSectorFilterPopup.hidden = false;
+                elSectorFilterBtn.setAttribute('aria-expanded', 'true');
+              }
+              function closeSectorPopup() {
+                elSectorFilterPopup.hidden = true;
+                elSectorFilterBtn.setAttribute('aria-expanded', 'false');
+              }
+              elSectorFilterBtn.addEventListener('click', function (e) {
+                e.stopPropagation();
+                if (elSectorFilterPopup.hidden) openSectorPopup(); else closeSectorPopup();
+              });
+              if (elSectorFilterPopupClose) elSectorFilterPopupClose.addEventListener('click', function (e) { e.stopPropagation(); closeSectorPopup(); });
+              elSectorFilterPopup.addEventListener('click', function (e) { e.stopPropagation(); });
+              document.addEventListener('click', function () {
+                if (elSectorFilterPopup && !elSectorFilterPopup.hidden) closeSectorPopup();
+              });
+              document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape' && elSectorFilterPopup && !elSectorFilterPopup.hidden) closeSectorPopup();
               });
             })();
 
@@ -2740,50 +2872,52 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
                 }
               });
 
-              /* ----- Monthly revenue by sector: clean total-per-month bars + clickable sector breakdown ----- */
-              /* A single accent-gradient bar per month keeps the chart trivially readable; the sector split
-                 lives in the hover tooltip (top contributors) and the chip row below (click to cross-filter). */
+              /* ----- Monthly revenue by sector: sector-wise linear (one line per sector) ----- */
               var stackRows = filterDeals(f, { ignoreSector: true });
               var monthlyTotalBySector = MONTHS.map(function (_, i) {
                 var map = {};
                 stackRows.filter(function (r) { return r.month === i + 1; }).forEach(function (r) { map[r.sector] = (map[r.sector] || 0) + r.revenue; });
                 return map;
               });
-              var monthlyTotals = monthlyTotalBySector.map(function (map) {
-                return Object.keys(map).reduce(function (s, k) { return s + map[k]; }, 0);
+              var sectorLineDatasets = SECTORS.map(function (sector) {
+                var color = SECTOR_COLORS[sector] || '#64748b';
+                var isActiveByGlobal = f.sector === 'all' || f.sector === sector;
+                var isActiveByLocal = sectorFilter.size === 0 ? isActiveByGlobal : sectorFilter.has(sector);
+                var isActive = isActiveByLocal;
+                return {
+                  label: sector,
+                  data: monthlyTotalBySector.map(function (map) { return map[sector] || 0; }),
+                  borderColor: isActive ? color : hexToRgba(color, 0.22),
+                  backgroundColor: 'transparent',
+                  fill: false,
+                  tension: 0.35,
+                  borderWidth: isActive ? 2.8 : 1.5,
+                  pointRadius: isActive ? 4 : 0,
+                  pointHoverRadius: 6,
+                  pointBackgroundColor: color,
+                  pointBorderColor: '#fff',
+                  pointBorderWidth: 2,
+                  hidden: !isActive && sectorFilter.size > 0
+                };
               });
-              var stackHasData = monthlyTotals.some(function (v) { return v > 0; });
+              var stackHasData = sectorLineDatasets.some(function (ds) { return ds.data.some(function (v) { return v > 0; }); });
               render('cpSectorStack', 'cpBoxSectorStack', stackHasData, {
-                type: 'bar',
-                data: { labels: MONTHS, datasets: [{
-                  label: 'Total Revenue', data: monthlyTotals,
-                  backgroundColor: function (context) {
-                    var area = context.chart.chartArea;
-                    if (!area) return '#3eb2ed';
-                    return verticalGradient(context.chart.ctx, area, '#3eb2ed', '#1b1e42');
-                  },
-                  borderRadius: 8, maxBarThickness: 34, hoverBackgroundColor: '#1b1e42'
-                }] },
+                type: 'line',
+                data: { labels: MONTHS, datasets: sectorLineDatasets },
                 options: {
                   responsive: true, maintainAspectRatio: false,
+                  interaction: { mode: 'index', intersect: false },
                   animation: { duration: 500, easing: 'easeOutQuart' },
                   plugins: {
-                    legend: { display: false },
-                    tooltip: Object.assign({}, TIP, { padding: 12, cornerRadius: 10, callbacks: {
-                      title: function (items) { return items[0].label; },
-                      label: function (ctx) { return 'Total: ' + money(ctx.parsed.y, cur, { full: true }); },
-                      afterBody: function (items) {
-                        var map = monthlyTotalBySector[items[0].dataIndex];
-                        var top = SECTORS.slice().sort(function (a, b) { return (map[b] || 0) - (map[a] || 0); })
-                          .filter(function (s) { return (map[s] || 0) > 0; }).slice(0, 3);
-                        if (!top.length) return '';
-                        return [''].concat(top.map(function (s) { return s + ': ' + money(map[s], cur, { full: true }); }));
-                      }
+                    legend: { position: 'bottom', align: 'center', labels: { boxWidth: 10, boxHeight: 10, usePointStyle: true, padding: 8, color: '#64748b', font: { size: 10, weight: '600' } } },
+                    tooltip: Object.assign({}, TIP, { position: 'nearest', padding: 12, cornerRadius: 10, caretPadding: 8, displayColors: true, callbacks: {
+                      label: function (ctx) { return ctx.dataset.label + ': ' + money(ctx.parsed.y, cur, { full: true }); }
                     } })
                   },
+                  layout: { padding: { top: 6, right: 6, bottom: 2, left: 2 } },
                   scales: {
-                    x: { grid: { display: false }, border: { display: false } },
-                    y: { beginAtZero: true, grid: { color: GRID }, border: { display: false }, ticks: { callback: moneyTick, maxTicksLimit: 6 } }
+                    x: { grid: { display: false }, border: { display: false }, ticks: { color: '#64748b', maxRotation: 0, autoSkip: false } },
+                    y: { beginAtZero: true, grid: { color: GRID }, border: { display: false }, ticks: { callback: moneyTick, maxTicksLimit: 6, color: '#64748b' } }
                   }
                 }
               });
@@ -2816,21 +2950,25 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
               var monthlyCount = function (rows) {
                 return MONTHS.map(function (_, i) { return rows.filter(function (r) { return r.month === i + 1; }).length; });
               };
+              /* grouped bars like reference — 3 shades, y 0-70, grid like image */
               var pipelineDatasets = [
-                { label: 'Leads Generated', data: monthlyCount(fl), borderColor: '#3eb2ed', backgroundColor: 'transparent', fill: false, tension: 0.35, borderWidth: 2.5, pointRadius: 2.5, pointHoverRadius: 5 },
-                { label: 'Opportunities Created', data: monthlyCount(fo), borderColor: '#f97316', backgroundColor: 'transparent', fill: false, tension: 0.35, borderWidth: 2.5, pointRadius: 2.5, pointHoverRadius: 5 },
-                { label: 'Sales Completed', data: monthlyCount(fd), borderColor: '#10b981', backgroundColor: 'transparent', fill: false, tension: 0.35, borderWidth: 2.5, pointRadius: 2.5, pointHoverRadius: 5 }
+                { label: 'Leads Created', data: monthlyCount(fl), backgroundColor: '#8B3A3A', borderColor: '#8B3A3A', borderWidth: 1, borderRadius: 0, borderSkipped: false, barPercentage: 0.85, categoryPercentage: 0.72 },
+                { label: 'Opportunities Created', data: monthlyCount(fo), backgroundColor: '#C86B6B', borderColor: '#C86B6B', borderWidth: 1, borderRadius: 0, borderSkipped: false, barPercentage: 0.85, categoryPercentage: 0.72 },
+                { label: 'Sales Created', data: monthlyCount(fd), backgroundColor: '#E0B8B8', borderColor: '#E0B8B8', borderWidth: 1, borderRadius: 0, borderSkipped: false, barPercentage: 0.85, categoryPercentage: 0.72 }
               ];
               var pipelineHasData = pipelineDatasets.some(function (ds) { return ds.data.some(function (v) { return v > 0; }); });
               render('cpPipelineTrend', 'cpBoxPipelineTrend', pipelineHasData, {
-                type: 'line', data: { labels: MONTHS, datasets: pipelineDatasets },
+                type: 'bar', data: { labels: MONTHS, datasets: pipelineDatasets },
                 options: {
                   responsive: true, maintainAspectRatio: false, interaction: { mode: 'index', intersect: false },
                   plugins: {
-                    legend: { position: 'bottom', labels: { boxWidth: 10, boxHeight: 10, usePointStyle: true } },
+                    legend: { position: 'bottom', align: 'center', labels: { boxWidth: 10, boxHeight: 10, usePointStyle: true, padding: 14, color: '#64748b', font: { size: 11, weight: '600' } } },
                     tooltip: Object.assign({}, TIP, { callbacks: { label: function (ctx) { return ctx.dataset.label + ': ' + ctx.parsed.y.toLocaleString(); } } })
                   },
-                  scales: { x: { grid: { display: false } }, y: { beginAtZero: true, grid: { color: GRID }, ticks: { precision: 0 } } }
+                  scales: {
+                    x: { grid: { display: false }, border: { display: false }, ticks: { color: '#64748b' } },
+                    y: { beginAtZero: true, max: 70, grid: { color: '#e5e7eb' }, border: { display: false }, ticks: { precision: 0, stepSize: 10, color: '#64748b' } }
+                  }
                 }
               });
 
