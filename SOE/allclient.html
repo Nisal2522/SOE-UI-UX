@@ -1529,571 +1529,1527 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
           </nav>
         </div>
 
-        <!-- Home Dashboard Panel (Redesigned) -->
+        <!-- Home Dashboard Panel — Commercial Performance (filter-driven) -->
         <section id="home"
           class="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm overflow-hidden">
-          <!-- KPI Header + Currency Selector -->
-          <div class="mb-4 flex items-center justify-between">
-            <div class="text-sm font-semibold text-slate-500 tracking-wide uppercase">KPI Overview</div>
-            <div class="flex items-center gap-2">
-              <span class="material-symbols-outlined text-slate-400" style="font-size:18px;">currency_exchange</span>
-              <label for="kpiCurrencySelect" class="text-xs text-slate-500 font-medium">Display Currency</label>
-              <select id="kpiCurrencySelect" style="
-                border:1px solid #e2e8f0; border-radius:8px; padding:4px 28px 4px 10px;
-                font-size:0.78rem; font-weight:600; color:#1b1e42; background:#f8fafc;
-                cursor:pointer; outline:none; appearance:none;
-                background-image:url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22><path fill=%22%2364748b%22 d=%22M4 6l4 4 4-4%22 stroke=%22%2364748b%22 stroke-width=%221.5%22 fill=%22none%22/></svg>');
-                background-repeat:no-repeat; background-position:right 6px center; background-size:14px;">
-                <option value="LKR">LKR – Sri Lanka</option>
-                <option value="USD">USD – US Dollar</option>
-                <option value="BDT">BDT – Bangladesh</option>
-                <option value="CNY">CNY – China</option>
-                <option value="HKD">HKD – Hong Kong</option>
-                <option value="INR">INR – India</option>
-              </select>
-            </div>
-          </div>
+          <style>
+            #home .cp-wrap { display: flex; flex-direction: column; gap: 1.5rem; }
 
-          <!-- KPI Summary Strip -->
-          <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-            <div class="kpi-card kpi-leads">
-              <span class="kpi-icon kpi-leads-icon material-symbols-outlined">star</span>
-              <div style="display:flex;align-items:center;justify-content:center;gap:0;">
-                <div style="display:flex;flex-direction:column;align-items:center;gap:2px;">
-                  <span id="kpiOpenLeads" style="font-size:1.7rem;font-weight:800;color:#1d4ed8;line-height:1.1;letter-spacing:-0.01em;">12</span>
-                  <span style="font-size:0.72rem;font-weight:600;color:#1d4ed8;">Open</span>
-                </div>
-                <span style="font-size:1.5rem;font-weight:300;color:#cbd5e1;margin:0 8px;align-self:center;line-height:1;">/</span>
-                <div style="display:flex;flex-direction:column;align-items:center;gap:2px;">
-                  <span id="kpiTotalLeads" style="font-size:1.7rem;font-weight:800;color:#1b1e42;line-height:1.1;letter-spacing:-0.01em;">54</span>
-                  <span style="font-size:0.72rem;font-weight:500;color:#64748b;">Total Leads</span>
-                </div>
+            /* Filter toolbar: applied chips + Filters icon button */
+            #home .cp-filter-toolbar { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+            #home .cp-filter-summary { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; flex: 1 1 auto; min-height: 34px; }
+            #home .cp-filter-summary-empty { font-size: 0.82rem; color: #94a3b8; }
+            #home .cp-applied-chip {
+              display: inline-flex; align-items: center; gap: 4px; padding: 5px 6px 5px 12px; border-radius: 9999px;
+              background: #eff8fe; border: 1px solid #cfeafd; color: #0f4c68; font-size: 0.78rem; font-weight: 700;
+            }
+            #home .cp-applied-chip-x {
+              display: inline-flex; align-items: center; justify-content: center; width: 18px; height: 18px;
+              border: none; border-radius: 50%; background: rgba(15,76,104,0.1); color: #0f4c68; cursor: pointer;
+            }
+            #home .cp-applied-chip-x:hover { background: rgba(15,76,104,0.22); }
+            #home .cp-applied-chip-x .material-symbols-outlined { font-size: 13px; }
+            #home .cp-filter-btn {
+              flex-shrink: 0; position: relative; display: inline-flex; align-items: center; gap: 7px; height: 38px;
+              padding: 0 1rem; border-radius: 9999px; border: 1px solid #e2e8f0; background: #fff; color: #1b1e42;
+              font-size: 0.82rem; font-weight: 700; cursor: pointer; transition: all 0.15s ease;
+            }
+            #home .cp-filter-btn:hover { border-color: #3eb2ed; box-shadow: 0 1px 4px rgba(15,23,42,0.08); }
+            #home .cp-filter-btn .material-symbols-outlined { font-size: 19px; color: #3eb2ed; }
+            #home .cp-filter-badge {
+              display: inline-flex; align-items: center; justify-content: center; min-width: 18px; height: 18px;
+              padding: 0 4px; border-radius: 9999px; background: #3eb2ed; color: #fff; font-size: 0.68rem; font-weight: 800;
+            }
+            #home .cp-filter-badge[hidden] { display: none; }
+
+            /* Filters popup — unscoped: this element is moved to a direct child of <body> on init
+               so it always overlays the full viewport regardless of #home's own stacking/overflow. */
+            .cp-filter-modal-overlay {
+              position: fixed; inset: 0; z-index: 200; background: rgba(15,23,42,0.45);
+              display: flex; align-items: center; justify-content: center; padding: 1.5rem;
+            }
+            .cp-filter-modal-overlay[hidden] { display: none; }
+            .cp-filter-modal {
+              width: 100%; max-width: 680px; max-height: 88vh; overflow-y: auto; background: #fff;
+              border-radius: 1.1rem; box-shadow: 0 24px 60px rgba(15,23,42,0.25); display: flex; flex-direction: column;
+            }
+            /* Note: the rules below (and the two above) are intentionally unscoped, not "#home .x" — the
+               popup they style is moved to a direct child of <body> at init, outside #home's DOM subtree. */
+            .cp-filter-modal-head {
+              display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+              padding: 1.1rem 1.4rem; border-bottom: 1px solid #eef2f6;
+            }
+            .cp-filter-modal-head h3 {
+              margin: 0; font-size: 1rem; font-weight: 800; color: #1b1e42; display: flex; align-items: center; gap: 8px;
+            }
+            .cp-filter-modal-head h3 .material-symbols-outlined { color: #3eb2ed; font-size: 20px; }
+            .cp-filter-modal-close {
+              display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px;
+              border: none; border-radius: 50%; background: transparent; color: #64748b; cursor: pointer; transition: background 0.15s;
+            }
+            .cp-filter-modal-close:hover { background: #f1f5f9; color: #1b1e42; }
+            .cp-filter-modal-body {
+              display: flex; flex-wrap: wrap; gap: 1rem 1.25rem; padding: 1.4rem;
+            }
+            .cp-filter-modal-body .cp-field { min-width: 200px; flex: 1 1 200px; }
+            .cp-filter-modal-foot {
+              display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+              padding: 1rem 1.4rem; border-top: 1px solid #eef2f6;
+            }
+            .cp-filter-apply {
+              height: 40px; padding: 0 1.5rem; border-radius: 0.6rem; border: none; background: #1b1e42; color: #fff;
+              font-size: 0.85rem; font-weight: 700; cursor: pointer; transition: background 0.15s;
+            }
+            .cp-filter-apply:hover { background: #3eb2ed; }
+            /* #home .cp-select is also used by the Sector Performance "View by" picker, which stays inside #home,
+               so .cp-field / .cp-select / .cp-reset are kept unscoped to serve both locations. */
+            .cp-field { display: flex; flex-direction: column; gap: 4px; min-width: 132px; flex: 1 1 132px; }
+            .cp-field label { font-size: 0.66rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b; }
+            .cp-select {
+              appearance: none; -webkit-appearance: none;
+              border: 1px solid #e2e8f0; border-radius: 0.6rem; background: #fff; color: #1b1e42;
+              font-size: 0.8rem; font-weight: 600; padding: 0.5rem 2rem 0.5rem 0.75rem; cursor: pointer; outline: none;
+              background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='%2364748b' stroke-width='1.5' d='M4 6l4 4 4-4'/%3E%3C/svg%3E");
+              background-repeat: no-repeat; background-position: right 8px center; background-size: 14px;
+              transition: border-color 0.15s, box-shadow 0.15s;
+            }
+            .cp-select:focus { border-color: #3eb2ed; box-shadow: 0 0 0 3px rgba(62,178,237,0.15); }
+            .cp-reset {
+              display: inline-flex; align-items: center; gap: 6px; height: 38px; padding: 0 1rem;
+              border-radius: 0.6rem; border: 1px solid #cbd5e1; background: #fff; color: #475569;
+              font-size: 0.8rem; font-weight: 600; cursor: pointer; transition: all 0.15s; white-space: nowrap;
+            }
+            .cp-reset:hover { background: #1b1e42; border-color: #1b1e42; color: #fff; }
+
+            /* KPI tiles */
+            #home .cp-kpigrid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1rem; }
+            @media (max-width: 1180px) { #home .cp-kpigrid { grid-template-columns: repeat(3, 1fr); } }
+            @media (max-width: 720px)  { #home .cp-kpigrid { grid-template-columns: repeat(2, 1fr); } }
+            #home .cp-kpi {
+              background: #fff; border: 1px solid #f1f5f9; border-left: 5px solid #3eb2ed;
+              border-radius: 1rem; box-shadow: 0 4px 20px rgba(15,23,42,0.06); padding: 1.1rem 1.15rem;
+              display: flex; flex-direction: column; gap: 4px;
+            }
+            #home .cp-kpi.k-rev  { border-left-color: #06b6d4; }
+            #home .cp-kpi.k-lead { border-left-color: #1b1e42; }
+            #home .cp-kpi.k-opp  { border-left-color: #f97316; }
+            #home .cp-kpi.k-win  { border-left-color: #10b981; }
+            #home .cp-kpi.k-conv { border-left-color: #8b5cf6; }
+            #home .cp-kpi .cp-kpi-top { display: flex; align-items: center; gap: 8px; }
+            #home .cp-kpi .cp-kpi-ico {
+              width: 32px; height: 32px; border-radius: 9px; display: flex; align-items: center; justify-content: center;
+              color: #fff; font-size: 18px; flex-shrink: 0;
+            }
+            #home .cp-kpi.k-rev  .cp-kpi-ico { background: #06b6d4; }
+            #home .cp-kpi.k-lead .cp-kpi-ico { background: #1b1e42; }
+            #home .cp-kpi.k-opp  .cp-kpi-ico { background: #f97316; }
+            #home .cp-kpi.k-win  .cp-kpi-ico { background: #10b981; }
+            #home .cp-kpi.k-conv .cp-kpi-ico { background: #8b5cf6; }
+            #home .cp-kpi .cp-kpi-label { font-size: 0.72rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.03em; }
+            #home .cp-kpi .cp-kpi-value { font-size: 1.5rem; font-weight: 800; color: #1b1e42; line-height: 1.15; letter-spacing: -0.01em; }
+            #home .cp-kpi .cp-kpi-sub { font-size: 0.72rem; color: #94a3b8; font-weight: 500; }
+            #home .cp-kpi .cp-kpi-sub .up { color: #10b981; font-weight: 700; }
+            #home .cp-kpi .cp-kpi-sub .down { color: #ef4444; font-weight: 700; }
+
+            /* Chart cards */
+            #home .cp-row { display: grid; gap: 1.25rem; }
+            #home .cp-row.cols-full { grid-template-columns: 1fr; }
+            #home .cp-row.cols-1-1 { grid-template-columns: 1fr 1fr; }
+            #home .cp-row.cols-1-1-1 { grid-template-columns: 1fr 1fr 1fr; }
+            @media (max-width: 1100px) { #home .cp-row.cols-1-1-1 { grid-template-columns: 1fr 1fr; } }
+            @media (max-width: 900px) { #home .cp-row.cols-1-1, #home .cp-row.cols-1-1-1 { grid-template-columns: 1fr; } }
+            #home .cp-card {
+              background: #fff; border: 1px solid #e2e8f0; border-radius: 1rem;
+              box-shadow: 0 4px 20px rgba(15,23,42,0.06); padding: 1.25rem 1.25rem 1rem; display: flex; flex-direction: column;
+            }
+            #home .cp-card-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 0.35rem; flex-wrap: wrap; }
+            #home .cp-card h3 { font-size: 0.95rem; font-weight: 700; color: #1b1e42; margin: 0; }
+            #home .cp-card .cp-card-sub { font-size: 0.72rem; color: #94a3b8; }
+            #home .cp-chartbox { position: relative; height: 288px; margin-top: 0.5rem; }
+            #home .cp-chartbox.tall { height: 340px; }
+            #home .cp-chartbox.xl { height: 440px; }
+            #home .cp-chartbox canvas { display: block; }
+
+            /* Compare-years chips (Monthly Revenue Trend) — now inside filter popup */
+            #home .cp-compare { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+            #home .cp-compare-label { font-size: 0.7rem; font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.03em; margin-right: 2px; }
+            #home .cp-yearchip {
+              border: 1px solid #e2e8f0; background: #fff; color: #475569; font-size: 0.75rem; font-weight: 700;
+              padding: 4px 12px; border-radius: 9999px; cursor: pointer; transition: all 0.15s ease;
+            }
+            #home .cp-yearchip:hover { border-color: #3eb2ed; color: #1b1e42; }
+            #home .cp-yearchip.is-active { background: #1b1e42; border-color: #1b1e42; color: #fff; }
+            #home .cp-compare.is-disabled { opacity: 0.45; pointer-events: none; }
+            /* Compare-years filter icon + popup (replaces inline chips on the chart header) */
+            #home .cp-compare-wrap { position: relative; display: flex; align-items: center; gap: 8px; }
+            #home .cp-compare-filter-btn {
+              display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px;
+              border-radius: 9999px; border: 1px solid #e2e8f0; background: #fff; cursor: pointer;
+              transition: all 0.15s ease; flex-shrink: 0;
+            }
+            #home .cp-compare-filter-btn:hover { border-color: #3eb2ed; box-shadow: 0 1px 6px rgba(15,23,42,0.08); }
+            #home .cp-compare-filter-btn .material-symbols-outlined { font-size: 19px; color: #3eb2ed; }
+            #home .cp-compare-filter-btn.is-disabled { opacity: 0.45; pointer-events: none; }
+            #home .cp-compare-popup {
+              position: absolute; top: calc(100% + 10px); right: 0; z-index: 40;
+              width: 280px; background: #fff; border: 1px solid #e2e8f0; border-radius: 1rem;
+              box-shadow: 0 16px 40px rgba(15,23,42,0.14); overflow: visible;
+            }
+            #home .cp-compare-popup-head { border-radius: 1rem 1rem 0 0; overflow: hidden; }
+            #home .cp-compare-popup[hidden] { display: none; }
+            #home .cp-compare-popup-head {
+              display: flex; align-items: center; justify-content: space-between;
+              padding: 0.65rem 0.85rem; border-bottom: 1px solid #eef2f6;
+              font-size: 0.84rem; font-weight: 800; color: #1b1e42;
+            }
+            #home .cp-compare-popup-close {
+              display: inline-flex; align-items: center; justify-content: center;
+              width: 28px; height: 28px; border: none; border-radius: 50%;
+              background: transparent; color: #64748b; cursor: pointer;
+            }
+            #home .cp-compare-popup-close:hover { background: #f1f5f9; color: #1b1e42; }
+            #home .cp-compare-popup-body { display: flex; flex-direction: column; gap: 6px; padding: 0.6rem 0.85rem 0.65rem; }
+            #home .cp-compare-popup-body .cp-field { gap: 3px; }
+            #home .cp-compare-popup-hint { font-size: 0.72rem; color: #94a3b8; line-height: 1.3; margin: 0; }
+            /* Dropdown inside compare popup */
+            #home .cp-dropdown { position: relative; width: 100%; }
+            #home .cp-dropdown-btn {
+              width: 100%; text-align: left; display: flex; align-items: center; justify-content: space-between;
+              gap: 8px;
+            }
+            #home .cp-dropdown-menu {
+              position: absolute; top: calc(100% + 6px); left: 0; right: 0; z-index: 5;
+              background: #fff; border: 1px solid #e2e8f0; border-radius: 0.7rem;
+              box-shadow: 0 12px 28px rgba(15,23,42,0.13); padding: 6px; max-height: 220px; overflow-y: auto;
+            }
+            #home .cp-dropdown-menu[hidden] { display: none; }
+            #home .cp-dropdown-option {
+              display: flex; align-items: center; gap: 10px; width: 100%;
+              padding: 9px 10px; border-radius: 0.5rem; cursor: pointer;
+              font-size: 0.82rem; font-weight: 600; color: #334155; transition: background 0.12s;
+            }
+            #home .cp-dropdown-option:hover { background: #f8fafc; }
+            #home .cp-dropdown-option input[type="checkbox"] {
+              width: 16px; height: 16px; accent-color: #1b1e42; cursor: pointer; flex-shrink: 0;
+            }
+            #home .cp-dropdown-option.is-checked { background: #eff8fe; color: #0f4c68; }
+            #home .cp-dropdown-option.is-checked:hover { background: #e0f2fe; }
+            #home .cp-dropdown-btn.is-disabled { opacity: 0.45; pointer-events: none; }
+
+            /* Trend hero stat (big number + delta chip above the Monthly Revenue Trend chart) */
+            #home .cp-trend-hero { display: flex; align-items: baseline; gap: 0.6rem; margin: 0.2rem 0 0.1rem; }
+            #home .cp-trend-hero[hidden] { display: none; }
+            #home .cp-trend-hero-value { font-size: 2rem; font-weight: 800; color: #1b1e42; letter-spacing: -0.01em; line-height: 1; }
+            #home .cp-trend-hero-delta { font-size: 0.8rem; font-weight: 700; padding: 3px 9px; border-radius: 9999px; }
+            #home .cp-trend-hero-delta[hidden] { display: none; }
+            #home .cp-trend-hero-delta .up { color: #10b981; }
+            #home .cp-trend-hero-delta .down { color: #ef4444; }
+            #home .cp-trend-hero-delta.pill-up { background: #dcfce7; }
+            #home .cp-trend-hero-delta.pill-down { background: #fee2e2; }
+
+            /* Sector contribution chips (Monthly Revenue by Sector) */
+            #home .cp-sector-legend { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem; }
+            #home .cp-sector-chip {
+              display: inline-flex; align-items: center; gap: 6px; padding: 5px 10px 5px 8px; border-radius: 9999px;
+              border: 1px solid #e2e8f0; background: #fff; font-size: 0.75rem; font-weight: 600; color: #334155;
+              cursor: pointer; transition: all 0.15s ease;
+            }
+            #home .cp-sector-chip:hover { border-color: #94a3b8; box-shadow: 0 1px 4px rgba(15,23,42,0.08); }
+            #home .cp-sector-chip .cp-sector-chip-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+            #home .cp-sector-chip .cp-sector-chip-pct { color: #94a3b8; font-weight: 700; }
+            #home .cp-sector-chip.is-active { background: #1b1e42; border-color: #1b1e42; color: #fff; }
+            #home .cp-sector-chip.is-active .cp-sector-chip-pct { color: #cbd5e1; }
+            #home .cp-sector-chip.is-dim { opacity: 0.45; }
+            #home .cp-empty {
+              position: absolute; inset: 0; display: none; align-items: center; justify-content: center;
+              flex-direction: column; gap: 6px; color: #94a3b8; font-size: 0.82rem; text-align: center;
+            }
+            #home .cp-chartbox.is-empty .cp-empty { display: flex; }
+            #home .cp-chartbox.is-empty canvas { opacity: 0; }
+
+            /* Management Insights */
+            #home .cp-insights { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 0.5rem; }
+            @media (max-width: 1100px) { #home .cp-insights { grid-template-columns: repeat(2, 1fr); } }
+            @media (max-width: 700px)  { #home .cp-insights { grid-template-columns: 1fr; } }
+            #home .cp-insight-card {
+              display: flex; gap: 0.75rem; align-items: flex-start; background: #f8fafc; border: 1px solid #eef2f6;
+              border-radius: 0.85rem; padding: 0.9rem 1rem;
+            }
+            #home .cp-insight-ico {
+              width: 34px; height: 34px; border-radius: 9px; flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+              background: #1b1e42; color: #fff; font-size: 18px;
+            }
+            #home .cp-insight-title { font-size: 0.82rem; font-weight: 700; color: #1b1e42; line-height: 1.3; }
+            #home .cp-insight-text { font-size: 0.76rem; color: #64748b; margin-top: 2px; line-height: 1.4; }
+            #home .cp-insight-text b { color: #334155; }
+            #home .cp-insights-none { color: #94a3b8; font-size: 0.85rem; padding: 0.75rem 0.25rem; }
+
+            /* Service / Activity Performance: drill-down table */
+            #home .cp-drill-wrap { position: relative; margin-top: 0.5rem; }
+            #home .cp-drill-scroll { overflow-x: auto; border: 1px solid #e2e8f0; border-radius: 0.85rem; }
+            #home .cp-drill-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; min-width: 620px; }
+            #home .cp-drill-table thead th {
+              background: #1b1e42; color: #fff; text-align: left; font-size: 0.68rem; font-weight: 700;
+              text-transform: uppercase; letter-spacing: 0.04em; padding: 0.7rem 1rem;
+            }
+            #home .cp-drill-table thead th:not(:first-child) { text-align: right; }
+            #home .cp-drill-table tbody td { padding: 0.55rem 1rem; border-bottom: 1px solid #f1f5f9; color: #334155; }
+            #home .cp-drill-table tbody td:not(:first-child) { text-align: right; font-variant-numeric: tabular-nums; }
+            #home .cp-drill-table tbody tr:last-child td { border-bottom: none; }
+            #home .cp-drill-row.level-1 { background: #fff; font-weight: 700; cursor: pointer; }
+            #home .cp-drill-row.level-1:hover { background: #f8fafc; }
+            #home .cp-drill-row.level-2 { background: #f8fafc; font-weight: 600; cursor: pointer; }
+            #home .cp-drill-row.level-2:hover { background: #f1f5f9; }
+            #home .cp-drill-row.level-3 { background: #fbfcfd; color: #64748b; font-weight: 400; }
+            #home .cp-drill-row[hidden] { display: none; }
+            #home .cp-drill-chevron {
+              display: inline-flex; align-items: center; justify-content: center; width: 18px; height: 18px;
+              margin-right: 6px; font-size: 16px; color: #94a3b8; transition: transform 0.15s ease; vertical-align: -4px;
+            }
+            #home .cp-drill-row.is-expanded > td .cp-drill-chevron { transform: rotate(90deg); }
+            #home .cp-drill-label-cell { display: flex; align-items: center; }
+            #home .cp-drill-indent-2 { padding-left: 1.5rem; }
+            #home .cp-drill-indent-3 { padding-left: 3rem; }
+            #home .cp-table-empty {
+              display: none; align-items: center; justify-content: center; flex-direction: column; gap: 6px;
+              color: #94a3b8; font-size: 0.82rem; padding: 2.5rem 0;
+            }
+            #home .cp-drill-wrap.is-empty .cp-drill-scroll { display: none; }
+            #home .cp-drill-wrap.is-empty .cp-table-empty { display: flex; }
+          </style>
+
+          <div class="cp-wrap">
+            <!-- Currency defaults to LKR; kept as a plain field (no visible control) for the money() formatting below -->
+            <select id="cpCurrency" style="display:none" aria-hidden="true" tabindex="-1">
+              <option value="LKR">LKR</option>
+              <option value="USD">USD</option>
+              <option value="BDT">BDT</option>
+              <option value="CNY">CNY</option>
+              <option value="HKD">HKD</option>
+              <option value="INR">INR</option>
+            </select>
+
+            <!-- Filter toolbar removed per request (was: applied-filter chips + Filters button) -->
+            <div class="cp-filter-toolbar" hidden style="display:none !important;">
+              <div class="cp-filter-summary" id="cpFilterSummary">
+                <span class="cp-filter-summary-empty">Showing all data</span>
               </div>
-            </div>
-            <div class="kpi-card kpi-opportunities">
-              <span class="kpi-icon kpi-opportunities-icon material-symbols-outlined">workspace_premium</span>
-              <div style="display:flex;align-items:center;justify-content:center;gap:0;">
-                <div style="display:flex;flex-direction:column;align-items:center;gap:2px;">
-                  <span id="kpiOpenOpps" style="font-size:1.7rem;font-weight:800;color:#f97316;line-height:1.1;letter-spacing:-0.01em;">8</span>
-                  <span style="font-size:0.72rem;font-weight:600;color:#f97316;">Open</span>
-                </div>
-                <span style="font-size:1.5rem;font-weight:300;color:#cbd5e1;margin:0 8px;align-self:center;line-height:1;">/</span>
-                <div style="display:flex;flex-direction:column;align-items:center;gap:2px;">
-                  <span id="kpiTotalOpps" style="font-size:1.7rem;font-weight:800;color:#1b1e42;line-height:1.1;letter-spacing:-0.01em;">19</span>
-                  <span style="font-size:0.72rem;font-weight:500;color:#64748b;">Total Opportunity</span>
-                </div>
-              </div>
-            </div>
-            <div class="kpi-card kpi-conversion">
-              <span class="kpi-icon kpi-conversion-icon material-symbols-outlined">trending_up</span>
-              <div class="kpi-value">38%</div>
-              <div class="kpi-label">Conversion Rate</div>
-            </div>
-            <div class="kpi-card kpi-revenue">
-              <span class="kpi-icon kpi-revenue-icon material-symbols-outlined">payments</span>
-              <div class="kpi-value" id="kpiRevenueValue" data-base="LKR" data-raw="7778308371.50">LKR 7,778,308,371.50</div>
-              <div class="kpi-label">Total Revenue</div>
-            </div>
-            <style>
-              .kpi-card {
-                background: #fff;
-                border-radius: 1.25rem;
-                box-shadow: 0 4px 24px 0 rgba(30, 41, 59, 0.08);
-                border-left: 6px solid #e5e7eb;
-                border-top: 1px solid #f1f5f9;
-                border-right: 1px solid #f1f5f9;
-                border-bottom: 1px solid #f1f5f9;
-                padding: 1.5rem 1rem 1.1rem 1rem;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                position: relative;
-                transition: box-shadow 0.18s, transform 0.18s;
-                min-height: 130px;
-                min-width: 0;
-              }
-
-              .kpi-card:hover {
-                box-shadow: 0 8px 32px 0 rgba(30, 41, 59, 0.16);
-                transform: translateY(-2px) scale(1.025);
-              }
-
-              .kpi-icon {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                width: 44px;
-                height: 44px;
-                border-radius: 50%;
-                margin-bottom: 0.7rem;
-                font-size: 2rem;
-                box-shadow: 0 2px 8px rgba(62, 178, 237, 0.10);
-                color: #fff;
-              }
-
-              .kpi-leads-icon {
-                background: #1b1e42;
-              }
-
-              .kpi-opportunities-icon {
-                background: #f97316;
-              }
-
-              .kpi-conversion-icon {
-                background: #10b981;
-              }
-
-              .kpi-revenue-icon {
-                background: #06b6d4;
-              }
-
-              .kpi-value {
-                font-size: 1.7rem;
-                font-weight: 800;
-                color: #1b1e42;
-                margin-bottom: 0.2rem;
-                letter-spacing: -0.01em;
-              }
-
-              .kpi-label {
-                font-size: 0.92rem;
-                color: #64748b;
-                font-weight: 500;
-                letter-spacing: 0.01em;
-              }
-
-              .kpi-leads {
-                border-left-color: #1b1e42;
-              }
-
-              .kpi-opportunities {
-                border-left-color: #f97316;
-              }
-
-              .kpi-conversion {
-                border-left-color: #10b981;
-              }
-
-              .kpi-revenue {
-                border-left-color: #06b6d4;
-              }
-            </style>
-          </div>
-
-          <!-- Performance Overview Cards -->
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <!-- Close Deals Card -->
-            <div
-              class="group bg-white rounded-2xl shadow-soft border border-slate-100 p-6 flex flex-col justify-between transition-transform hover:-translate-y-1 hover:shadow-lg focus-within:shadow-lg"
-              tabindex="0">
-              <div class="flex items-center gap-3 mb-3">
-                <span class="material-symbols-outlined text-2xl text-orange-500">check_circle</span>
-                <span class="text-lg font-bold text-slate-800">Close Deals</span>
-              </div>
-              <p class="text-slate-500 text-sm mb-4">Monitor and close your hottest opportunities efficiently.</p>
-              <div class="flex items-center justify-between mb-4 w-full">
-                <div class="flex items-center">
-                  <canvas id="donutCloseDeals" width="72" height="72" class="mr-4"></canvas>
-                  <div class="flex flex-col gap-2 text-xs">
-                    <div class="flex items-center gap-2"><span
-                        style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#fbbf24"></span>
-                      <span class="bg-yellow-50 text-yellow-700 rounded px-2 py-0.5">5 Lost</span>
-                    </div>
-                    <div class="flex items-center gap-2"><span
-                        style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#60a5fa"></span>
-                      <span class="bg-blue-50 text-blue-700 rounded px-2 py-0.5">2 Won</span>
-                    </div>
-                  </div>
-                </div>
-                <div class="flex flex-col items-center ml-2">
-                  <div class="text-2xl font-bold text-slate-800">7</div>
-                  <div class="text-xs text-slate-500">Deals Closing Soon</div>
-                </div>
-              </div>
-              <button onclick="switchCrmTab('opportunities')"
-                class="mt-auto px-4 py-2 bg-cu-light-blue text-white rounded-lg font-medium shadow hover:bg-cu-dark-blue transition">View
-                Details</button>
-            </div>
-            <!-- Plan My Accounts Card -->
-            <div
-              class="group bg-white rounded-2xl shadow-soft border border-slate-100 p-6 flex flex-col justify-between transition-transform hover:-translate-y-1 hover:shadow-lg focus-within:shadow-lg"
-              tabindex="0">
-              <div class="flex items-center gap-3 mb-3">
-                <span class="material-symbols-outlined text-2xl" style="color:#1b1e42">account_balance</span>
-                <span class="text-lg font-bold text-slate-800">My Accounts</span>
-              </div>
-              <p class="text-slate-500 text-sm mb-4">Strategize and prioritize your key accounts for growth.</p>
-              <div class="flex items-center justify-between mb-4 w-full">
-                <div class="flex items-center">
-                  <canvas id="donutPlanAccounts" width="72" height="72" class="mr-4"></canvas>
-                  <div class="flex flex-col gap-2 text-xs">
-                    <div class="flex items-center gap-2"><span
-                        style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#3eb2ed"></span>
-                      <span class="bg-blue-50 text-blue-700 rounded px-2 py-0.5">7 Active</span>
-                    </div>
-                    <div class="flex items-center gap-2"><span
-                        style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#a7f3d0"></span>
-                      <span class="bg-emerald-50 text-emerald-700 rounded px-2 py-0.5">3 Inactive</span>
-                    </div>
-                  </div>
-                </div>
-                <div class="flex flex-col items-center ml-2">
-                  <div class="text-2xl font-bold text-slate-800">10</div>
-                  <div class="text-xs text-slate-500">Accounts to Review</div>
-                </div>
-              </div>
-              <button onclick="switchCrmTab('all-accounts')"
-                class="mt-auto px-4 py-2 bg-cu-light-blue text-white rounded-lg font-medium shadow hover:bg-cu-dark-blue transition">View
-                Details</button>
-            </div>
-            <!-- All Accounts Card -->
-            <div
-              class="group bg-white rounded-2xl shadow-soft border border-slate-100 p-6 flex flex-col justify-between transition-transform hover:-translate-y-1 hover:shadow-lg focus-within:shadow-lg"
-              tabindex="0">
-              <div class="flex items-center gap-3 mb-1">
-                <span class="material-symbols-outlined text-2xl text-emerald-500">corporate_fare</span>
-                <span class="text-lg font-bold text-slate-800">All Accounts</span>
-              </div>
-              <p class="text-slate-500 text-sm mb-4">Total registered client accounts</p>
-              <div class="flex items-center justify-between mb-4 w-full">
-                <div class="flex items-center">
-                  <canvas id="donutGrowRelationships" width="72" height="72" class="mr-4"></canvas>
-                  <div class="flex flex-col gap-2 text-xs">
-                    <div class="flex items-center gap-2">
-                      <span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#10b981;flex-shrink:0;"></span>
-                      <span class="bg-emerald-50 text-emerald-700 rounded px-2 py-0.5"><span id="acctActive">7</span> Active</span>
-                    </div>
-                    <div class="flex items-center gap-2">
-                      <span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#f97316;flex-shrink:0;"></span>
-                      <span class="bg-orange-50 text-orange-600 rounded px-2 py-0.5"><span id="acctInactive">3</span> Inactive</span>
-                    </div>
-                  </div>
-                </div>
-                <div class="flex flex-col items-center ml-2">
-                  <div class="text-2xl font-bold text-slate-800" id="acctTotal">10</div>
-                  <div class="text-xs text-slate-500">Total Accounts</div>
-                </div>
-              </div>
-              <button onclick="switchCrmTab('all-accounts')"
-                class="mt-auto px-4 py-2 bg-cu-light-blue text-white rounded-lg font-medium shadow hover:bg-cu-dark-blue transition w-full">
-                View All Accounts
+              <button type="button" class="cp-filter-btn" id="cpFilterOpenBtn" aria-haspopup="dialog" aria-expanded="false">
+                <span class="material-symbols-outlined">tune</span>
+                Filters
+                <span class="cp-filter-badge" id="cpFilterBadge" hidden>0</span>
               </button>
             </div>
-          </div>
 
-          <!-- Insights Row -->
-          <div class="grid grid-cols-1 gap-8 mb-8">
-            <!-- Recent Insights -->
-            <div>
-              <div class="flex items-center gap-2 mb-3">
-                <span class="material-symbols-outlined text-lg" style="color:#1b1e42">insights</span>
-                <span class="text-base font-semibold text-cu-dark-blue">Recent Insights</span>
-              </div>
-              <ul class="grid grid-cols-2 gap-4">
-                <li class="bg-white rounded-xl border border-slate-100 shadow-soft p-4 flex items-center gap-4">
-                  <span class="material-symbols-outlined text-2xl" style="color:#1b1e42">trending_up</span>
-                  <div>
-                    <div class="font-semibold text-slate-800">Revenue up 12% this month</div>
-                    <div class="text-xs text-slate-500">Compared to last month</div>
+            <!-- Filters popup (portaled to <body> on init so it always overlays the full viewport) -->
+            <div class="cp-filter-modal-overlay" id="cpFilterOverlay" hidden>
+              <div class="cp-filter-modal" role="dialog" aria-modal="true" aria-labelledby="cpFilterModalTitle">
+                <div class="cp-filter-modal-head">
+                  <h3 id="cpFilterModalTitle">
+                    <span class="material-symbols-outlined">tune</span>
+                    Filters
+                  </h3>
+                  <button type="button" class="cp-filter-modal-close" id="cpFilterCloseBtn" aria-label="Close filters">
+                    <span class="material-symbols-outlined">close</span>
+                  </button>
+                </div>
+                <div class="cp-filter-modal-body">
+                  <div class="cp-field">
+                    <label for="cpYear">Year</label>
+                    <select id="cpYear" class="cp-select"></select>
                   </div>
-                </li>
-                <li class="bg-white rounded-xl border border-slate-100 shadow-soft p-4 flex items-center gap-4">
-                  <span class="material-symbols-outlined text-2xl text-emerald-500">group</span>
-                  <div>
-                    <div class="font-semibold text-slate-800">5 New Clients Added</div>
-                    <div class="text-xs text-slate-500">This Month</div>
+                  <div class="cp-field">
+                    <label for="cpMonth">Month</label>
+                    <select id="cpMonth" class="cp-select"></select>
                   </div>
-                </li>
-              </ul>
+                  <div class="cp-field">
+                    <label for="cpSector">Sector / Account Industry</label>
+                    <select id="cpSector" class="cp-select"></select>
+                  </div>
+                  <div class="cp-field">
+                    <label for="cpService">Service / Activity</label>
+                    <select id="cpService" class="cp-select"></select>
+                  </div>
+                  <div class="cp-field">
+                    <label for="cpCategory">Category</label>
+                    <select id="cpCategory" class="cp-select"></select>
+                  </div>
+                  <div class="cp-field">
+                    <label for="cpSaleType">Sale Type</label>
+                    <select id="cpSaleType" class="cp-select">
+                      <option value="all">All sale types</option>
+                      <option value="Direct Sales">Direct Sales</option>
+                      <option value="Through Leads">Through Leads</option>
+                      <option value="Through Opportunities">Through Opportunities</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="cp-filter-modal-foot">
+                  <button id="cpReset" type="button" class="cp-reset">
+                    <span class="material-symbols-outlined" style="font-size:18px;">restart_alt</span>
+                    Reset filters
+                  </button>
+                  <button id="cpFilterApply" type="button" class="cp-filter-apply">Apply Filters</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- KPI tiles -->
+            <div class="cp-kpigrid">
+              <div class="cp-kpi k-rev">
+                <div class="cp-kpi-top">
+                  <span class="cp-kpi-ico material-symbols-outlined">payments</span>
+                  <span class="cp-kpi-label">Total Revenue</span>
+                </div>
+                <div class="cp-kpi-value" id="cpKpiRevenue">—</div>
+                <div class="cp-kpi-sub" id="cpKpiRevenueSub">&nbsp;</div>
+              </div>
+              <div class="cp-kpi k-lead">
+                <div class="cp-kpi-top">
+                  <span class="cp-kpi-ico material-symbols-outlined">star</span>
+                  <span class="cp-kpi-label">Leads Generated</span>
+                </div>
+                <div class="cp-kpi-value" id="cpKpiLeads">—</div>
+                <div class="cp-kpi-sub" id="cpKpiLeadsSub">&nbsp;</div>
+              </div>
+              <div class="cp-kpi k-opp">
+                <div class="cp-kpi-top">
+                  <span class="cp-kpi-ico material-symbols-outlined">workspace_premium</span>
+                  <span class="cp-kpi-label">Opportunities</span>
+                </div>
+                <div class="cp-kpi-value" id="cpKpiOpps">—</div>
+                <div class="cp-kpi-sub" id="cpKpiOppsSub">&nbsp;</div>
+              </div>
+              <div class="cp-kpi k-win">
+                <div class="cp-kpi-top">
+                  <span class="cp-kpi-ico material-symbols-outlined">trending_up</span>
+                  <span class="cp-kpi-label">Win Rate</span>
+                </div>
+                <div class="cp-kpi-value" id="cpKpiWin">—</div>
+                <div class="cp-kpi-sub" id="cpKpiWinSub">&nbsp;</div>
+              </div>
+              <div class="cp-kpi k-conv">
+                <div class="cp-kpi-top">
+                  <span class="cp-kpi-ico material-symbols-outlined">autorenew</span>
+                  <span class="cp-kpi-label">Conversion Rate</span>
+                </div>
+                <div class="cp-kpi-value" id="cpKpiConv">—</div>
+                <div class="cp-kpi-sub" id="cpKpiConvSub">&nbsp;</div>
+              </div>
+            </div>
+
+            <!-- Monthly revenue trend (large) -->
+            <div class="cp-row cols-full">
+              <div class="cp-card">
+                <div class="cp-card-head">
+                  <div>
+                    <h3>Monthly Revenue Trend</h3>
+                    <div class="cp-trend-hero" id="cpTrendHero" hidden>
+                      <span class="cp-trend-hero-value" id="cpTrendHeroValue">—</span>
+                      <span class="cp-trend-hero-delta" id="cpTrendHeroDelta" hidden></span>
+                    </div>
+                    <span class="cp-card-sub" id="cpTrendSub">by calendar month</span>
+                  </div>
+                  <div class="cp-compare-wrap" id="cpCompareYearsWrap">
+                    <span class="cp-compare-label">COMPARE YEARS</span>
+                    <button type="button" id="cpCompareFilterBtn" class="cp-compare-filter-btn" aria-haspopup="dialog" aria-expanded="false" aria-controls="cpComparePopup" title="Filter compare years">
+                      <span class="material-symbols-outlined">tune</span>
+                    </button>
+                    <div id="cpComparePopup" class="cp-compare-popup" hidden role="dialog" aria-modal="true" aria-label="Compare years">
+                      <div class="cp-compare-popup-head">
+                        <span>Compare years</span>
+                        <button type="button" id="cpComparePopupClose" class="cp-compare-popup-close" aria-label="Close">
+                          <span class="material-symbols-outlined">close</span>
+                        </button>
+                      </div>
+                      <div class="cp-compare-popup-body" aria-label="Compare years">
+                        <div class="cp-field" style="width:100%;margin:0;">
+                          <label for="cpCompareDropdownBtn">Select years</label>
+                          <div class="cp-dropdown" id="cpCompareDropdownWrap">
+                            <button type="button" id="cpCompareDropdownBtn" class="cp-select cp-dropdown-btn" aria-haspopup="listbox" aria-expanded="false">
+                              <span id="cpCompareDropdownLabel">Select years</span>
+                            </button>
+                            <div id="cpCompareDropdownMenu" class="cp-dropdown-menu" hidden role="listbox" aria-multiselectable="true"></div>
+                          </div>
+                        </div>
+                        <div class="cp-compare-popup-hint">Select one or more years to compare.</div>
+                        <!-- keep hidden chip container for legacy JS hook (not visible) -->
+                        <div id="cpCompareYears" hidden aria-hidden="true"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="cp-chartbox xl" id="cpBoxTrend">
+                  <canvas id="cpRevTrend"></canvas>
+                  <div class="cp-empty"><span class="material-symbols-outlined">bar_chart_off</span>No data for the selected filters</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Monthly revenue by sector (stacked) + lead/opportunity/sales trend -->
+            <div class="cp-row cols-1-1">
+              <div class="cp-card">
+                <div class="cp-card-head">
+                  <h3>Monthly Revenue by Sector</h3>
+                  <span class="cp-card-sub">total per month — hover a bar for the top sectors, click a chip below to filter</span>
+                </div>
+                <div class="cp-chartbox" id="cpBoxSectorStack">
+                  <canvas id="cpSectorStack"></canvas>
+                  <div class="cp-empty"><span class="material-symbols-outlined">bar_chart_off</span>No data for the selected filters</div>
+                </div>
+                <div class="cp-sector-legend" id="cpSectorLegend" role="group" aria-label="Filter by sector"></div>
+              </div>
+              <div class="cp-card">
+                <div class="cp-card-head">
+                  <h3>Lead &amp; Opportunity Trend</h3>
+                  <span class="cp-card-sub">leads → opportunities → sales, month by month</span>
+                </div>
+                <div class="cp-chartbox tall" id="cpBoxPipelineTrend">
+                  <canvas id="cpPipelineTrend"></canvas>
+                  <div class="cp-empty"><span class="material-symbols-outlined">bar_chart_off</span>No pipeline activity for the selected filters</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Sector revenue (click to cross-filter) + sector performance -->
+            <div class="cp-row cols-1-1">
+              <div class="cp-card">
+                <div class="cp-card-head">
+                  <h3>Revenue by Sector</h3>
+                  <span class="cp-card-sub" id="cpSectorRevSub">click a bar to filter the dashboard</span>
+                </div>
+                <div class="cp-chartbox" id="cpBoxSectorRev">
+                  <canvas id="cpSectorRev"></canvas>
+                  <div class="cp-empty"><span class="material-symbols-outlined">bar_chart_off</span>No data for the selected filters</div>
+                </div>
+              </div>
+              <div class="cp-card">
+                <div class="cp-card-head">
+                  <div>
+                    <h3>Sector Performance</h3>
+                    <span class="cp-card-sub" id="cpSectorPerfSub">ranked by total revenue · click a sector to filter</span>
+                  </div>
+                  <select id="cpSectorPerfView" class="cp-select" aria-label="Sector Performance: view by" style="min-width:150px;flex:0 0 auto;">
+                    <option value="revenue">View by: Revenue</option>
+                    <option value="leads">View by: Leads</option>
+                    <option value="opportunities">View by: Opportunities</option>
+                    <option value="sales">View by: Sales</option>
+                    <option value="pipeline">View by: Pipeline</option>
+                  </select>
+                </div>
+                <div class="cp-chartbox" id="cpBoxSectorPerf">
+                  <canvas id="cpSectorPerf"></canvas>
+                  <div class="cp-empty"><span class="material-symbols-outlined">bar_chart_off</span>No comparable data for the selected filters</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Leads funnel + Opps pipeline -->
+            <div class="cp-row cols-1-1">
+              <div class="cp-card">
+                <div class="cp-card-head">
+                  <h3>Lead Progression</h3>
+                  <span class="cp-card-sub">how leads are moving</span>
+                </div>
+                <div class="cp-chartbox" id="cpBoxLeadFunnel">
+                  <canvas id="cpLeadFunnel"></canvas>
+                  <div class="cp-empty"><span class="material-symbols-outlined">bar_chart_off</span>No leads for the selected filters</div>
+                </div>
+              </div>
+              <div class="cp-card">
+                <div class="cp-card-head">
+                  <h3>Opportunity Pipeline</h3>
+                  <span class="cp-card-sub">how opportunities are progressing</span>
+                </div>
+                <div class="cp-chartbox" id="cpBoxOppPipeline">
+                  <canvas id="cpOppPipeline"></canvas>
+                  <div class="cp-empty"><span class="material-symbols-outlined">bar_chart_off</span>No opportunities for the selected filters</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Service / Activity Performance: drill-down Activity -> Category -> Program Name -->
+            <div class="cp-row cols-full">
+              <div class="cp-card">
+                <div class="cp-card-head">
+                  <h3>Service / Activity Performance</h3>
+                  <span class="cp-card-sub">click a row to drill into Category, then Program Name</span>
+                </div>
+                <div class="cp-drill-wrap" id="cpBoxServiceTable">
+                  <div class="cp-drill-scroll">
+                    <table class="cp-drill-table" id="cpServiceTable">
+                      <thead>
+                        <tr><th>Activity / Category / Program</th><th>Revenue</th><th>Leads</th><th>Opportunities</th><th>Sales</th></tr>
+                      </thead>
+                      <tbody id="cpServiceTableBody"></tbody>
+                    </table>
+                  </div>
+                  <div class="cp-table-empty" id="cpServiceTableEmpty"><span class="material-symbols-outlined">bar_chart_off</span>No data for the selected filters</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Sale type + Category revenue -->
+            <div class="cp-row cols-1-1">
+              <div class="cp-card">
+                <div class="cp-card-head">
+                  <h3>Revenue by Sale Type</h3>
+                  <span class="cp-card-sub">Direct · Leads · Opps</span>
+                </div>
+                <div class="cp-chartbox" id="cpBoxSaleType">
+                  <canvas id="cpSaleTypeChart"></canvas>
+                  <div class="cp-empty"><span class="material-symbols-outlined">bar_chart_off</span>No data for the selected filters</div>
+                </div>
+              </div>
+              <div class="cp-card">
+                <div class="cp-card-head">
+                  <h3>Revenue by Category</h3>
+                  <span class="cp-card-sub">share of revenue by category</span>
+                </div>
+                <div class="cp-chartbox" id="cpBoxCategoryRev">
+                  <canvas id="cpCategoryRev"></canvas>
+                  <div class="cp-empty"><span class="material-symbols-outlined">bar_chart_off</span>No data for the selected filters</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Management Insights (auto-generated from the filtered data) -->
+            <div class="cp-row cols-full">
+              <div class="cp-card">
+                <div class="cp-card-head">
+                  <h3>Management Insights</h3>
+                  <span class="cp-card-sub">calculated live from the filters above</span>
+                </div>
+                <div class="cp-insights" id="cpInsights"></div>
+              </div>
             </div>
           </div>
 
-          <!-- Client-wise Visualization Section -->
-          <div class="mb-8">
-            <!-- Analytics section header removed -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-
-            </div>
-          </div>
-
-          <!-- Priority Panel: High-Value Clients -->
-          <div>
-            <div class="flex items-center gap-2 mb-3">
-              <span class="material-symbols-outlined text-lg" style="color:#3eb2ed">flag</span>
-              <span class="text-base font-semibold" style="color:#3eb2ed">High-Value Clients</span>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div class="bg-white rounded-xl border border-[#3eb2ed20] shadow-soft p-4 flex flex-col items-center">
-                <span class="material-symbols-outlined text-3xl mb-1" style="color:#3eb2ed">workspace_premium</span>
-                <div class="font-bold text-slate-800">MERIDIAN INDUSTRIES LIMITED</div>
-                <div class="text-xs text-slate-500">$45,000 Revenue</div>
-              </div>
-              <div class="bg-white rounded-xl border border-[#3eb2ed20] shadow-soft p-4 flex flex-col items-center">
-                <span class="material-symbols-outlined text-3xl mb-1" style="color:#3eb2ed">workspace_premium</span>
-                <div class="font-bold text-slate-800">True Ceylon Species</div>
-                <div class="text-xs text-slate-500">$32,000 Revenue</div>
-              </div>
-              <div class="bg-white rounded-xl border border-[#3eb2ed20] shadow-soft p-4 flex flex-col items-center">
-                <span class="material-symbols-outlined text-3xl mb-1" style="color:#3eb2ed">workspace_premium</span>
-                <div class="font-bold text-slate-800">Yester Jeans Ltd.</div>
-                <div class="text-xs text-slate-500">$28,000 Revenue</div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Chart.js Scripts for Home Tab Visualizations -->
-          <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+          <!-- Chart.js -->
+          <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
           <script>
-            document.addEventListener('DOMContentLoaded', function () {
-              // Donut chart for All Accounts card — count from accounts table
-              function buildAccountsDonut() {
-                var acctTable = document.querySelector('#all-accounts table, #accounts table');
-                var active = 7, inactive = 3, newCount = 2;
-                if (acctTable) {
-                  var rows = Array.from(acctTable.querySelectorAll('tbody tr'));
-                  active = 0; inactive = 0; newCount = 0;
-                  var now = new Date();
-                  rows.forEach(function(tr) {
-                    var cells = tr.querySelectorAll('td');
-                    var rowText = tr.textContent || '';
-                    if (/inactive/i.test(rowText)) inactive++;
-                    else active++;
-                    // "New this month" — check date cell if present
-                    cells.forEach(function(td) {
-                      var d = new Date(td.textContent.trim());
-                      if (!isNaN(d) && d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear()) newCount++;
-                    });
-                  });
-                  var total = active + inactive;
-                  var el;
-                  el = document.getElementById('acctActive');   if (el) el.textContent = active;
-                  el = document.getElementById('acctInactive'); if (el) el.textContent = inactive;
-                  el = document.getElementById('acctNew');      if (el) el.textContent = newCount;
-                  el = document.getElementById('acctTotal');    if (el) el.textContent = total;
+          (function () {
+            if (typeof Chart === 'undefined') return;
+
+            /* ---------- Reference data ---------- */
+            var MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+            var YEARS = [2024, 2025, 2026];
+            var CURRENT_YEAR = 2026, CURRENT_MONTH = 9; /* partial year to date */
+            var SECTORS = ['Apparel','Textiles','Footwear & Leather','Food & Agriculture','Chemicals','Consumer Retail'];
+            var SERVICES = ['Certification','Inspection','Lab Testing','Auditing','Training','Advisory'];
+            var CATEGORIES = ['Sustainability','Quality Assurance','Compliance','Capacity Building'];
+            var SALE_TYPES = ['Direct Sales','Through Leads','Through Opportunities'];
+            var LEAD_STAGES = ['New','Contacted','Qualified','Converted'];
+            var OPP_STAGES = ['Prospecting','Proposal','Negotiation','Won'];
+            var PROGRAM_NAMES = ['Program Alpha','Program Beta','Program Gamma','Program Delta'];
+
+            /* Fixed per-sector colors so a sector reads the same way in every chart on this dashboard */
+            var SECTOR_COLORS = { 'Apparel': '#1b1e42', 'Textiles': '#3eb2ed', 'Footwear & Leather': '#10b981', 'Food & Agriculture': '#f97316', 'Chemicals': '#8b5cf6', 'Consumer Retail': '#ef4444' };
+
+            var RATES_TO_LKR = { LKR: 1, USD: 305.50, BDT: 2.78, CNY: 42.10, HKD: 39.20, INR: 3.66 };
+
+            /* ---------- Seeded synthetic dataset (stable across reloads) ---------- */
+            function mulberry32(a) {
+              return function () {
+                a |= 0; a = a + 0x6D2B79F5 | 0;
+                var t = Math.imul(a ^ a >>> 15, 1 | a);
+                t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+                return ((t ^ t >>> 14) >>> 0) / 4294967296;
+              };
+            }
+            var rnd = mulberry32(20260909);
+            function pick(arr) { return arr[Math.floor(rnd() * arr.length)]; }
+            function between(a, b) { return a + rnd() * (b - a); }
+
+            var sectorWeight = { 'Apparel': 1.6, 'Textiles': 1.35, 'Footwear & Leather': 0.9, 'Food & Agriculture': 1.1, 'Chemicals': 0.7, 'Consumer Retail': 1.0 };
+            var serviceWeight = { 'Certification': 1.5, 'Inspection': 1.2, 'Lab Testing': 1.0, 'Auditing': 0.85, 'Training': 0.6, 'Advisory': 0.95 };
+
+            var deals = [], leads = [], opps = [];
+            YEARS.forEach(function (y) {
+              var maxMonth = (y === CURRENT_YEAR) ? CURRENT_MONTH : 12;
+              var yearGrowth = (y === 2024) ? 0.80 : (y === 2025) ? 1.0 : 1.19;
+              for (var m = 1; m <= maxMonth; m++) {
+                var seasonal = 1 + 0.22 * Math.sin(((m - 2) / 12) * Math.PI * 2);
+
+                var dCount = Math.round(between(11, 19));
+                for (var i = 0; i < dCount; i++) {
+                  var sector = pick(SECTORS), service = pick(SERVICES);
+                  var rev = between(180000, 2100000) * sectorWeight[sector] * serviceWeight[service] * yearGrowth * seasonal;
+                  deals.push({ year: y, month: m, sector: sector, service: service, category: pick(CATEGORIES), saleType: pick(SALE_TYPES), program: pick(PROGRAM_NAMES), revenue: Math.round(rev) });
                 }
-                var ctx = document.getElementById('donutGrowRelationships');
-                if (ctx) {
-                  new Chart(ctx, {
-                    type: 'doughnut',
-                    data: {
-                      datasets: [{
-                        data: [active, inactive],
-                        backgroundColor: ['#10b981', '#f97316'],
-                        borderWidth: 3,
-                        borderColor: '#fff',
-                      }],
-                    },
-                    options: {
-                      cutout: '78%',
-                      plugins: { legend: { display: false }, tooltip: { enabled: false } },
-                      responsive: false,
-                      maintainAspectRatio: false,
-                    },
-                  });
+
+                var lCount = Math.round(between(14, 24));
+                for (var j = 0; j < lCount; j++) {
+                  var lr = rnd();
+                  var lstage = lr < 0.30 ? 'New' : lr < 0.54 ? 'Contacted' : lr < 0.74 ? 'Qualified' : lr < 0.88 ? 'Converted' : 'Lost';
+                  leads.push({ year: y, month: m, sector: pick(SECTORS), service: pick(SERVICES), category: pick(CATEGORIES), stage: lstage });
+                }
+
+                var oCount = Math.round(between(9, 16));
+                for (var k = 0; k < oCount; k++) {
+                  var or = rnd();
+                  var ostage = or < 0.24 ? 'Prospecting' : or < 0.46 ? 'Proposal' : or < 0.64 ? 'Negotiation' : or < 0.85 ? 'Won' : 'Lost';
+                  opps.push({ year: y, month: m, sector: pick(SECTORS), service: pick(SERVICES), category: pick(CATEGORIES), saleType: (rnd() < 0.5 ? 'Through Leads' : 'Through Opportunities'), stage: ostage });
                 }
               }
-              setTimeout(buildAccountsDonut, 600);
             });
-          </script>
-          <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
-          <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-treemap@4"></script>
-          <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-matrix@4"></script>
-          <script>
-            document.addEventListener('DOMContentLoaded', function () {
-              // Donut charts for performance cards (with legend for My Accounts)
-              // Track Chart.js instances to prevent canvas reuse errors
-              const donutCharts = {};
-              function donutChart(id, data, colors) {
-                const ctx = document.getElementById(id);
-                if (!ctx) return;
-                // Destroy previous chart instance if it exists
-                if (donutCharts[id]) {
-                  donutCharts[id].destroy();
+
+            /* ---------- Elements ---------- */
+            var $ = function (id) { return document.getElementById(id); };
+            var elYear = $('cpYear'), elMonth = $('cpMonth'), elSector = $('cpSector'),
+                elService = $('cpService'), elCategory = $('cpCategory'), elSaleType = $('cpSaleType'),
+                elCurrency = $('cpCurrency'), elReset = $('cpReset'),
+                elCompareWrap = $('cpCompareYears'), elSectorPerfView = $('cpSectorPerfView'),
+                elCompareFilterBtn = $('cpCompareFilterBtn'), elComparePopup = $('cpComparePopup'),
+                elComparePopupClose = $('cpComparePopupClose'), elCompareWrapOuter = $('cpCompareYearsWrap'),
+                elCompareDropdownBtn = $('cpCompareDropdownBtn'), elCompareDropdownLabel = $('cpCompareDropdownLabel'),
+                elCompareDropdownMenu = $('cpCompareDropdownMenu'), elCompareDropdownWrap = $('cpCompareDropdownWrap'),
+                elFilterOpenBtn = $('cpFilterOpenBtn'), elFilterOverlay = $('cpFilterOverlay'),
+                elFilterCloseBtn = $('cpFilterCloseBtn'), elFilterApplyBtn = $('cpFilterApply'),
+                elFilterSummary = $('cpFilterSummary'), elFilterBadge = $('cpFilterBadge');
+
+            /* ---------- Filters popup: Year/Month/Sector/Service/Category/Sale Type only apply on "Apply Filters" ---------- */
+            var FILTER_FIELDS = { year: elYear, month: elMonth, sector: elSector, service: elService, category: elCategory, saleType: elSaleType };
+            var lastAppliedFilters = null;
+            function snapshotFilterFields() {
+              var snap = {};
+              Object.keys(FILTER_FIELDS).forEach(function (k) { snap[k] = FILTER_FIELDS[k].value; });
+              return snap;
+            }
+            function applyFilterFieldsSnapshot(snap) {
+              Object.keys(FILTER_FIELDS).forEach(function (k) { if (snap[k] !== undefined) FILTER_FIELDS[k].value = snap[k]; });
+            }
+            if (elFilterOverlay && elFilterOverlay.parentNode !== document.body) {
+              document.body.appendChild(elFilterOverlay); /* portal so it always overlays the full viewport */
+            }
+            function openFilterModal() {
+              lastAppliedFilters = snapshotFilterFields();
+              elFilterOverlay.hidden = false;
+              if (elFilterOpenBtn) elFilterOpenBtn.setAttribute('aria-expanded', 'true');
+              document.body.style.overflow = 'hidden';
+              try { elYear.focus(); } catch (e) {}
+            }
+            function closeFilterModal(revert) {
+              if (revert && lastAppliedFilters) applyFilterFieldsSnapshot(lastAppliedFilters);
+              elFilterOverlay.hidden = true;
+              if (elFilterOpenBtn) elFilterOpenBtn.setAttribute('aria-expanded', 'false');
+              document.body.style.overflow = '';
+            }
+            if (elFilterOpenBtn && elFilterOverlay) {
+              elFilterOpenBtn.addEventListener('click', openFilterModal);
+              if (elFilterCloseBtn) elFilterCloseBtn.addEventListener('click', function () { closeFilterModal(true); });
+              elFilterOverlay.addEventListener('click', function (e) { if (e.target === elFilterOverlay) closeFilterModal(true); });
+              document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !elFilterOverlay.hidden) closeFilterModal(true); });
+              if (elFilterApplyBtn) elFilterApplyBtn.addEventListener('click', function () {
+                closeFilterModal(false);
+                update();
+              });
+            }
+
+            function fillSelect(el, values, allLabel) {
+              el.innerHTML = '<option value="all">' + allLabel + '</option>' +
+                values.map(function (v) { return '<option value="' + v + '">' + v + '</option>'; }).join('');
+            }
+            fillSelect(elYear, YEARS.map(String), 'All years');
+            elMonth.innerHTML = '<option value="all">All months</option>' +
+              MONTHS.map(function (m, i) { return '<option value="' + (i + 1) + '">' + m + '</option>'; }).join('');
+            fillSelect(elSector, SECTORS, 'All sectors');
+            fillSelect(elService, SERVICES, 'All services');
+            fillSelect(elCategory, CATEGORIES, 'All categories');
+
+            /* ---------- Compare-years dropdown (Monthly Revenue Trend) — filter-icon popup ---------- */
+            var YEAR_LINE_COLORS = ['#3eb2ed', '#7c3aed', '#10b981', '#f97316', '#ef4444'];
+            var compareYears = new Set();
+            function updateCompareDropdownLabel() {
+              if (!elCompareDropdownLabel) return;
+              if (compareYears.size === 0) elCompareDropdownLabel.textContent = 'Select years';
+              else elCompareDropdownLabel.textContent = Array.from(compareYears).sort().join(', ');
+            }
+            (function buildYearDropdown() {
+              if (!elCompareDropdownMenu || YEARS.length < 2) return;
+              elCompareDropdownMenu.innerHTML = '';
+              YEARS.forEach(function (y) {
+                var row = document.createElement('label');
+                row.className = 'cp-dropdown-option';
+                row.setAttribute('role', 'option');
+                var cb = document.createElement('input');
+                cb.type = 'checkbox';
+                cb.value = String(y);
+                cb.checked = compareYears.has(y);
+                var txt = document.createElement('span');
+                txt.textContent = String(y);
+                row.appendChild(cb);
+                row.appendChild(txt);
+                if (cb.checked) row.classList.add('is-checked');
+                function toggleYear() {
+                  if (cb.checked) compareYears.add(y); else compareYears.delete(y);
+                  row.classList.toggle('is-checked', cb.checked);
+                  updateCompareDropdownLabel();
+                  update();
                 }
-                donutCharts[id] = new Chart(ctx.getContext('2d'), {
-                  type: 'doughnut',
-                  data: {
-                    datasets: [{
-                      data: data,
-                      backgroundColor: colors,
-                      borderWidth: 4,
-                      borderColor: '#fff',
-                    }],
-                  },
-                  options: {
-                    cutout: '78%',
-                    plugins: {
-                      legend: { display: false },
-                      tooltip: {
-                        backgroundColor: '#1b1e42',
-                        titleColor: '#fff',
-                        bodyColor: '#fff',
-                        borderColor: '#3eb2ed',
-                        borderWidth: 1,
-                        padding: 14,
-                        callbacks: {
-                          label: function (context) {
-                            const label = context.dataset.labels ? context.dataset.labels[context.dataIndex] : '';
-                            const value = context.parsed;
-                            const total = context.dataset.data.reduce((a, b) => a + b, 0);
-                            const pct = total ? Math.round((value / total) * 100) : 0;
-                            return `${label}: ${value} (${pct}%)`;
-                          }
-                        }
-                      }
-                    },
-                    responsive: false,
-                    maintainAspectRatio: false,
-                  },
+                cb.addEventListener('change', toggleYear);
+                row.addEventListener('click', function (e) {
+                  if (e.target !== cb) { e.preventDefault(); cb.checked = !cb.checked; toggleYear(); }
                 });
+                elCompareDropdownMenu.appendChild(row);
+              });
+              updateCompareDropdownLabel();
+            })();
+            /* Compare-years filter icon → popup open/close + dropdown toggle */
+            (function bindComparePopup() {
+              if (!elCompareFilterBtn || !elComparePopup) return;
+              function openComparePopup() {
+                elComparePopup.hidden = false;
+                elCompareFilterBtn.setAttribute('aria-expanded', 'true');
               }
-              donutChart('donutCloseDeals', [5, 2], ['#fbbf24', '#60a5fa']);
-              // My Accounts donut: 7 Active, 3 Inactive (no Pending)
-              donutChart('donutPlanAccounts', [7, 3], ['#3eb2ed', '#a7f3d0']);
-              donutChart('donutGrowRelationships', [7, 3], ['#10b981', '#f97316']);
+              function closeComparePopup() {
+                elComparePopup.hidden = true;
+                elCompareFilterBtn.setAttribute('aria-expanded', 'false');
+                if (elCompareDropdownMenu) elCompareDropdownMenu.hidden = true;
+                if (elCompareDropdownBtn) elCompareDropdownBtn.setAttribute('aria-expanded', 'false');
+              }
+              function toggleDropdownMenu(e) {
+                if (e) e.stopPropagation();
+                if (!elCompareDropdownMenu || !elCompareDropdownBtn) return;
+                var willOpen = elCompareDropdownMenu.hidden;
+                elCompareDropdownMenu.hidden = !willOpen;
+                elCompareDropdownBtn.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
+              }
+              elCompareFilterBtn.addEventListener('click', function (e) {
+                e.stopPropagation();
+                if (elComparePopup.hidden) openComparePopup(); else closeComparePopup();
+              });
+              if (elCompareDropdownBtn) elCompareDropdownBtn.addEventListener('click', toggleDropdownMenu);
+              if (elComparePopupClose) elComparePopupClose.addEventListener('click', function (e) { e.stopPropagation(); closeComparePopup(); });
+              elComparePopup.addEventListener('click', function (e) { e.stopPropagation(); });
+              if (elCompareDropdownMenu) elCompareDropdownMenu.addEventListener('click', function (e) { e.stopPropagation(); });
+              document.addEventListener('click', function () {
+                if (elCompareDropdownMenu && !elCompareDropdownMenu.hidden) {
+                  elCompareDropdownMenu.hidden = true;
+                  if (elCompareDropdownBtn) elCompareDropdownBtn.setAttribute('aria-expanded', 'false');
+                } else if (elComparePopup && !elComparePopup.hidden) { closeComparePopup(); }
+              });
+              document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape') {
+                  if (elCompareDropdownMenu && !elCompareDropdownMenu.hidden) {
+                    elCompareDropdownMenu.hidden = true;
+                    if (elCompareDropdownBtn) elCompareDropdownBtn.setAttribute('aria-expanded', 'false');
+                  } else if (elComparePopup && !elComparePopup.hidden) closeComparePopup();
+                }
+              });
+            })();
 
-              // Donut: Clients by Status (with center label, legend, and percentages)
-              // (Removed: Clients by Status donut chart. Guard code in case of future re-addition)
-              const donutClientsElem = document.getElementById('donutClientsByStatus');
-              if (donutClientsElem) {
-                const clientStatusData = [9, 3];
-                const clientStatusLabels = ['Active', 'Inactive'];
-                const clientStatusColors = ['#10b981', '#fbbf24'];
-                new Chart(donutClientsElem.getContext('2d'), {
-                  type: 'doughnut',
-                  data: {
-                    labels: clientStatusLabels,
-                    datasets: [{
-                      data: clientStatusData,
-                      backgroundColor: clientStatusColors,
-                      borderWidth: 4,
-                      borderColor: '#fff',
-                      labels: clientStatusLabels
-                    }],
-                  },
-                  options: {
-                    cutout: '78%',
-                    plugins: {
-                      legend: { display: false },
-                      tooltip: {
-                        backgroundColor: '#1b1e42',
-                        titleColor: '#fff',
-                        bodyColor: '#fff',
-                        borderColor: '#3eb2ed',
-                        borderWidth: 1,
-                        padding: 14,
-                        callbacks: {
-                          label: function (context) {
-                            const label = context.label;
-                            const value = context.parsed;
-                            const total = context.dataset.data.reduce((a, b) => a + b, 0);
-                            const pct = total ? Math.round((value / total) * 100) : 0;
-                            return `${label}: ${value} (${pct}%)`;
-                          }
-                        }
-                      }
-                    },
-                    responsive: false,
-                    maintainAspectRatio: false,
-                  },
+            /* ---------- Filtering ---------- */
+            function getFilters() {
+              return {
+                year: elYear.value, month: elMonth.value, sector: elSector.value,
+                service: elService.value, category: elCategory.value, saleType: elSaleType.value,
+                currency: elCurrency.value
+              };
+            }
+            function matchCommon(r, f, opts) {
+              opts = opts || {};
+              if (!opts.ignoreYear && f.year !== 'all' && r.year !== +f.year) return false;
+              if (f.month !== 'all' && r.month !== +f.month) return false;
+              if (!opts.ignoreSector && f.sector !== 'all' && r.sector !== f.sector) return false;
+              if (f.service !== 'all' && r.service !== f.service) return false;
+              if (f.category !== 'all' && r.category !== f.category) return false;
+              return true;
+            }
+            function filterDeals(f, opts) {
+              return deals.filter(function (r) {
+                if (!matchCommon(r, f, opts)) return false;
+                if (f.saleType !== 'all' && r.saleType !== f.saleType) return false;
+                return true;
+              });
+            }
+            function filterLeads(f, opts) {
+              if (f.saleType === 'Direct Sales' || f.saleType === 'Through Opportunities') return [];
+              return leads.filter(function (r) { return matchCommon(r, f, opts); });
+            }
+            function filterOpps(f, opts) {
+              if (f.saleType === 'Direct Sales') return [];
+              return opps.filter(function (r) {
+                if (!matchCommon(r, f, opts)) return false;
+                if (f.saleType !== 'all' && r.saleType !== f.saleType) return false;
+                return true;
+              });
+            }
+
+            /* ---------- Formatting ---------- */
+            function convert(lkr, cur) { return lkr / (RATES_TO_LKR[cur] || 1); }
+            function abbr(n) {
+              var s = n < 0 ? '-' : ''; n = Math.abs(n);
+              if (n >= 1e12) return s + (n / 1e12).toFixed(2).replace(/\.?0+$/, '') + 'T';
+              if (n >= 1e9)  return s + (n / 1e9).toFixed(2).replace(/\.?0+$/, '') + 'B';
+              if (n >= 1e6)  return s + (n / 1e6).toFixed(2).replace(/\.?0+$/, '') + 'M';
+              if (n >= 1e3)  return s + (n / 1e3).toFixed(1).replace(/\.?0+$/, '') + 'K';
+              return s + n.toFixed(0);
+            }
+            function money(lkr, cur, opts) {
+              opts = opts || {};
+              var v = convert(lkr, cur);
+              if (opts.full) return cur + ' ' + v.toLocaleString(undefined, { maximumFractionDigits: 0 });
+              return cur + ' ' + abbr(v);
+            }
+            function hexToRgba(hex, alpha) {
+              var h = hex.replace('#', '');
+              var r = parseInt(h.substring(0, 2), 16), g = parseInt(h.substring(2, 4), 16), b = parseInt(h.substring(4, 6), 16);
+              return 'rgba(' + r + ',' + g + ',' + b + ',' + alpha + ')';
+            }
+            function verticalGradient(ctx, area, colorTop, colorBottom) {
+              var g = ctx.createLinearGradient(0, area.top, 0, area.bottom);
+              g.addColorStop(0, colorTop);
+              g.addColorStop(1, colorBottom);
+              return g;
+            }
+
+            /* ---------- Chart registry & theme ---------- */
+            var charts = {};
+            Chart.defaults.font.family = "'Inter','system-ui',sans-serif";
+            Chart.defaults.color = '#64748b';
+            var GRID = '#eef2f6';
+            var TIP = {
+              backgroundColor: '#1b1e42', titleColor: '#fff', bodyColor: '#e2e8f0',
+              borderColor: '#3eb2ed', borderWidth: 1, padding: 10, cornerRadius: 8, displayColors: true
+            };
+
+            function render(id, box, hasData, config) {
+              var boxEl = document.getElementById(box);
+              var cv = document.getElementById(id);
+              if (charts[id]) { charts[id].destroy(); delete charts[id]; }
+              if (boxEl) boxEl.classList.toggle('is-empty', !hasData);
+              if (!hasData || !cv || !cv.getContext) return;
+              charts[id] = new Chart(cv.getContext('2d'), config);
+            }
+            function sumBy(rows, keyFn, valFn) {
+              var map = {};
+              rows.forEach(function (r) { var k = keyFn(r); map[k] = (map[k] || 0) + (valFn ? valFn(r) : 1); });
+              return map;
+            }
+
+            /* ---------- Management Insights (computed fresh from the filtered data each render) ---------- */
+            function buildInsights(dealsRows, leadRows, oppRows, f) {
+              var box = $('cpInsights');
+              if (!box) return;
+              var cur = elCurrency.value;
+              var cards = [];
+
+              var monthRev = {};
+              dealsRows.forEach(function (r) { monthRev[r.month] = (monthRev[r.month] || 0) + r.revenue; });
+              var monthsWithData = Object.keys(monthRev).map(Number).sort(function (a, b) { return a - b; });
+
+              var sectorRev = {};
+              dealsRows.forEach(function (r) { sectorRev[r.sector] = (sectorRev[r.sector] || 0) + r.revenue; });
+              var sectorsWithData = Object.keys(sectorRev).sort(function (a, b) { return sectorRev[b] - sectorRev[a]; });
+              var totalRevAll = dealsRows.reduce(function (s, r) { return s + r.revenue; }, 0);
+
+              var serviceRev = {};
+              dealsRows.forEach(function (r) { serviceRev[r.service] = (serviceRev[r.service] || 0) + r.revenue; });
+              var servicesWithData = Object.keys(serviceRev).sort(function (a, b) { return serviceRev[b] - serviceRev[a]; });
+
+              function addCard(icon, title, text) { cards.push({ icon: icon, title: title, text: text }); }
+
+              if (f.sector === 'all' && sectorsWithData.length >= 1 && totalRevAll > 0) {
+                var topSector = sectorsWithData[0];
+                var sectorPct = (sectorRev[topSector] / totalRevAll) * 100;
+                addCard('emoji_events', 'Highest revenue sector',
+                  '<b>' + topSector + '</b> leads with ' + money(sectorRev[topSector], cur, { full: true }) + ' — ' + sectorPct.toFixed(0) + '% of total revenue.');
+              }
+
+              if (f.month === 'all' && monthsWithData.length >= 2) {
+                var bestMonth = monthsWithData.slice().sort(function (a, b) { return monthRev[b] - monthRev[a]; })[0];
+                addCard('calendar_month', 'Highest revenue month',
+                  '<b>' + MONTHS[bestMonth - 1] + '</b> generated ' + money(monthRev[bestMonth], cur, { full: true }) + ', the strongest month in view.');
+              }
+
+              if (f.service === 'all' && servicesWithData.length >= 1) {
+                var topService = servicesWithData[0];
+                addCard('handyman', 'Best-performing service',
+                  '<b>' + topService + '</b> generated the most revenue at ' + money(serviceRev[topService], cur, { full: true }) + '.');
+              }
+
+              if (f.month === 'all' && monthsWithData.length >= 2) {
+                var lastM = monthsWithData[monthsWithData.length - 1];
+                var prevM = monthsWithData[monthsWithData.length - 2];
+                if (monthRev[prevM] > 0) {
+                  var momPct = ((monthRev[lastM] - monthRev[prevM]) / monthRev[prevM]) * 100;
+                  addCard(momPct >= 0 ? 'trending_up' : 'trending_down', 'Month-on-month revenue',
+                    'Revenue ' + (momPct >= 0 ? 'grew' : 'declined') + ' <b>' + Math.abs(momPct).toFixed(1) + '%</b> from ' + MONTHS[prevM - 1] + ' to ' + MONTHS[lastM - 1] + '.');
+                }
+              }
+
+              if (f.sector === 'all' && sectorsWithData.length >= 3) {
+                addCard('leaderboard', 'Top-performing sectors',
+                  sectorsWithData.slice(0, 3).map(function (s, i) { return (i + 1) + '. ' + s; }).join(' &nbsp; '));
+              }
+
+              if (f.service === 'all' && servicesWithData.length >= 3) {
+                addCard('workspace_premium', 'Top-performing services',
+                  servicesWithData.slice(0, 3).map(function (s, i) { return (i + 1) + '. ' + s; }).join(' &nbsp; '));
+              }
+
+              if (!cards.length) {
+                box.innerHTML = '<div class="cp-insights-none">Not enough data in the current view for insights — try broadening the filters.</div>';
+                return;
+              }
+              box.innerHTML = cards.map(function (c) {
+                return '<div class="cp-insight-card"><span class="cp-insight-ico material-symbols-outlined">' + c.icon + '</span>' +
+                  '<div><div class="cp-insight-title">' + c.title + '</div><div class="cp-insight-text">' + c.text + '</div></div></div>';
+              }).join('');
+            }
+
+            /* ---------- Service / Activity Performance: drill-down table (Activity -> Category -> Program) ---------- */
+            var expandedServices = new Set();
+            var expandedCategories = new Set(); /* keyed "service|category" */
+            function buildServiceTable(dealsRows, leadRows, oppRows) {
+              var tbody = $('cpServiceTableBody');
+              var wrapEl = $('cpBoxServiceTable');
+              if (!tbody || !wrapEl) return;
+              var cur = elCurrency.value;
+              tbody.innerHTML = '';
+
+              var svcRows = SERVICES.map(function (svc) {
+                var svcDeals = dealsRows.filter(function (r) { return r.service === svc; });
+                var svcLeads = leadRows.filter(function (r) { return r.service === svc; });
+                var svcOpps = oppRows.filter(function (r) { return r.service === svc; });
+                return {
+                  key: svc, revenue: svcDeals.reduce(function (s, r) { return s + r.revenue; }, 0),
+                  leads: svcLeads.length, opps: svcOpps.length, sales: svcDeals.length,
+                  deals: svcDeals, leadRows: svcLeads, oppRows: svcOpps
+                };
+              }).filter(function (o) { return o.revenue > 0 || o.leads > 0 || o.opps > 0 || o.sales > 0; })
+                .sort(function (a, b) { return b.revenue - a.revenue; });
+
+              wrapEl.classList.toggle('is-empty', svcRows.length === 0);
+              if (!svcRows.length) return;
+
+              function rowHtml(level, indentClass, label, revenue, leads, opps, sales, expandable, isExpanded) {
+                var chevron = expandable ? '<span class="material-symbols-outlined cp-drill-chevron">chevron_right</span>' : '';
+                return '<td><span class="cp-drill-label-cell ' + indentClass + '">' + chevron + label + '</span></td>' +
+                  '<td>' + money(revenue, cur, { full: true }) + '</td>' +
+                  '<td>' + (leads === null ? '—' : leads.toLocaleString()) + '</td>' +
+                  '<td>' + (opps === null ? '—' : opps.toLocaleString()) + '</td>' +
+                  '<td>' + sales.toLocaleString() + '</td>';
+              }
+
+              svcRows.forEach(function (svcRow) {
+                var svcExpanded = expandedServices.has(svcRow.key);
+                var tr1 = document.createElement('tr');
+                tr1.className = 'cp-drill-row level-1' + (svcExpanded ? ' is-expanded' : '');
+                tr1.innerHTML = rowHtml(1, '', svcRow.key, svcRow.revenue, svcRow.leads, svcRow.opps, svcRow.sales, true, svcExpanded);
+                tr1.addEventListener('click', function () {
+                  if (expandedServices.has(svcRow.key)) expandedServices.delete(svcRow.key); else expandedServices.add(svcRow.key);
+                  buildServiceTable(dealsRows, leadRows, oppRows);
                 });
-                // Center label and legend values
-                const totalClients = clientStatusData.reduce((a, b) => a + b, 0);
-                if (document.getElementById('donutClientsTotal')) document.getElementById('donutClientsTotal').textContent = totalClients;
-                if (document.getElementById('legendActiveCount')) document.getElementById('legendActiveCount').textContent = clientStatusData[0];
-                if (document.getElementById('legendInactiveCount')) document.getElementById('legendInactiveCount').textContent = clientStatusData[1];
-                if (document.getElementById('legendActivePct')) document.getElementById('legendActivePct').textContent = Math.round((clientStatusData[0] / totalClients) * 100) + '%';
-                if (document.getElementById('legendInactivePct')) document.getElementById('legendInactivePct').textContent = Math.round((clientStatusData[1] / totalClients) * 100) + '%';
+                tbody.appendChild(tr1);
+                if (!svcExpanded) return;
+
+                var catRows = CATEGORIES.map(function (cat) {
+                  var catDeals = svcRow.deals.filter(function (r) { return r.category === cat; });
+                  var catLeads = svcRow.leadRows.filter(function (r) { return r.category === cat; });
+                  var catOpps = svcRow.oppRows.filter(function (r) { return r.category === cat; });
+                  return {
+                    key: cat, revenue: catDeals.reduce(function (s, r) { return s + r.revenue; }, 0),
+                    leads: catLeads.length, opps: catOpps.length, sales: catDeals.length, deals: catDeals
+                  };
+                }).filter(function (o) { return o.revenue > 0 || o.leads > 0 || o.opps > 0 || o.sales > 0; })
+                  .sort(function (a, b) { return b.revenue - a.revenue; });
+
+                catRows.forEach(function (catRow) {
+                  var catKey = svcRow.key + '|' + catRow.key;
+                  var catExpanded = expandedCategories.has(catKey);
+                  var tr2 = document.createElement('tr');
+                  tr2.className = 'cp-drill-row level-2' + (catExpanded ? ' is-expanded' : '');
+                  tr2.innerHTML = rowHtml(2, 'cp-drill-indent-2', catRow.key, catRow.revenue, catRow.leads, catRow.opps, catRow.sales, true, catExpanded);
+                  tr2.addEventListener('click', function (evt) {
+                    evt.stopPropagation();
+                    if (expandedCategories.has(catKey)) expandedCategories.delete(catKey); else expandedCategories.add(catKey);
+                    buildServiceTable(dealsRows, leadRows, oppRows);
+                  });
+                  tbody.appendChild(tr2);
+                  if (!catExpanded) return;
+
+                  var progRows = PROGRAM_NAMES.map(function (p) {
+                    var pDeals = catRow.deals.filter(function (r) { return r.program === p; });
+                    return { key: p, revenue: pDeals.reduce(function (s, r) { return s + r.revenue; }, 0), sales: pDeals.length };
+                  }).filter(function (o) { return o.revenue > 0 || o.sales > 0; })
+                    .sort(function (a, b) { return b.revenue - a.revenue; });
+
+                  progRows.forEach(function (progRow) {
+                    var tr3 = document.createElement('tr');
+                    tr3.className = 'cp-drill-row level-3';
+                    /* Leads/opportunities aren't tracked at the program level in this data model */
+                    tr3.innerHTML = rowHtml(3, 'cp-drill-indent-3', progRow.key, progRow.revenue, null, null, progRow.sales, false, false);
+                    tbody.appendChild(tr3);
+                  });
+                });
+              });
+            }
+
+            /* ---------- Main render ---------- */
+            function update() {
+              var f = getFilters();
+              var cur = f.currency;
+              var fd = filterDeals(f);
+              var fl = filterLeads(f);
+              var fo = filterOpps(f);
+
+              buildInsights(fd, fl, fo, f);
+
+              /* ----- KPIs ----- */
+              var totalRev = fd.reduce(function (s, r) { return s + r.revenue; }, 0);
+              $('cpKpiRevenue').textContent = fd.length ? money(totalRev, cur) : '—';
+              $('cpKpiRevenue').title = fd.length ? money(totalRev, cur, { full: true }) : '';
+
+              if (f.year !== 'all' && YEARS.indexOf(+f.year - 1) !== -1) {
+                var pf = Object.assign({}, f, { year: String(+f.year - 1) });
+                var prevRev = filterDeals(pf).reduce(function (s, r) { return s + r.revenue; }, 0);
+                if (prevRev > 0) {
+                  var pct = ((totalRev - prevRev) / prevRev) * 100;
+                  var cls = pct >= 0 ? 'up' : 'down';
+                  var arrow = pct >= 0 ? '▲' : '▼';
+                  $('cpKpiRevenueSub').innerHTML = '<span class="' + cls + '">' + arrow + ' ' + Math.abs(pct).toFixed(1) + '%</span> vs ' + (+f.year - 1);
+                } else { $('cpKpiRevenueSub').textContent = 'vs ' + (+f.year - 1) + ': n/a'; }
+              } else {
+                $('cpKpiRevenueSub').textContent = fd.length ? (fd.length + ' deals in view') : 'no deals in view';
               }
 
-              // --- Top Clients by Revenue: Multi-visualization ---
-              // (Code removed/commented out due to missing variable context and syntax error)
-              /*
-              // Stacked bar: breakdown by two products/segments
-              barChart = new Chart(ctxBar, {
-                type: 'bar',
-                data: {
-                  labels: topClients.map(c=>c.name),
-                  datasets: [
-                    {
-                      label: 'Product A',
-                      data: topClients.map(c=>c.breakdown[0]),
-                      backgroundColor: 'rgba(37,99,235,0.85)',
-                      borderRadius: 18,
-                      barPercentage: 0.7,
-                      categoryPercentage: 0.6,
-                      maxBarThickness: 38,
-                    },
-                    {
-                      label: 'Product B',
-                      data: topClients.map(c=>c.breakdown[1]),
-                      backgroundColor: 'rgba(16,185,129,0.75)',
-                      borderRadius: 18,
-                      barPercentage: 0.7,
-                      categoryPercentage: 0.6,
-                      maxBarThickness: 38,
-                    }
-                  ]
-                },
+              var leadsConverted = fl.filter(function (r) { return r.stage === 'Converted'; }).length;
+              $('cpKpiLeads').textContent = fl.length;
+              $('cpKpiLeadsSub').textContent = fl.length ? (leadsConverted + ' converted') : 'no leads in view';
+
+              var oppsOpen = fo.filter(function (r) { return r.stage !== 'Won' && r.stage !== 'Lost'; }).length;
+              $('cpKpiOpps').textContent = fo.length;
+              $('cpKpiOppsSub').textContent = fo.length ? (oppsOpen + ' still open') : 'no opps in view';
+
+              var won = fo.filter(function (r) { return r.stage === 'Won'; }).length;
+              var lost = fo.filter(function (r) { return r.stage === 'Lost'; }).length;
+              var wr = (won + lost) ? (won / (won + lost)) * 100 : 0;
+              $('cpKpiWin').textContent = (won + lost) ? wr.toFixed(0) + '%' : '—';
+              $('cpKpiWinSub').textContent = (won + lost) ? (won + ' won / ' + lost + ' lost') : 'no closed opps';
+
+              var salesCount = fd.length;
+              var pipelineCount = fl.length + fo.length;
+              var convRate = pipelineCount ? (salesCount / pipelineCount) * 100 : 0;
+              $('cpKpiConv').textContent = pipelineCount ? convRate.toFixed(1) + '%' : '—';
+              $('cpKpiConvSub').textContent = pipelineCount
+                ? (salesCount.toLocaleString() + ' sales / ' + pipelineCount.toLocaleString() + ' pipeline')
+                : 'no pipeline in view';
+
+              var moneyTick = function (v) { return abbr(convert(v, cur)); };
+
+              /* ----- Monthly revenue trend ----- */
+              /* Compare-years only when Year = All years — disable the filter-icon button + hide popups when not applicable */
+              if (elCompareFilterBtn) elCompareFilterBtn.classList.toggle('is-disabled', f.year !== 'all');
+              if (elCompareWrap) elCompareWrap.classList.toggle('is-disabled', f.year !== 'all');
+              if (elCompareDropdownBtn) { elCompareDropdownBtn.classList.toggle('is-disabled', f.year !== 'all'); elCompareDropdownBtn.disabled = (f.year !== 'all'); }
+              if (f.year !== 'all' && elComparePopup && !elComparePopup.hidden) elComparePopup.hidden = true;
+              if (f.year !== 'all' && elCompareDropdownMenu && !elCompareDropdownMenu.hidden) elCompareDropdownMenu.hidden = true;
+
+              var monthlyRevenue = function (rows) {
+                return MONTHS.map(function (_, i) {
+                  return rows.filter(function (r) { return r.month === i + 1; }).reduce(function (s, r) { return s + r.revenue; }, 0);
+                });
+              };
+
+              var trendDatasets = [];
+              var activeCompareYears = YEARS.filter(function (y) { return compareYears.has(y); });
+              if (f.year === 'all' && activeCompareYears.length > 0) {
+                /* Multi-year comparison mode */
+                activeCompareYears.sort().forEach(function (y, i) {
+                  var yf = Object.assign({}, f, { year: String(y) });
+                  trendDatasets.push({
+                    label: String(y),
+                    data: monthlyRevenue(filterDeals(yf)),
+                    borderColor: YEAR_LINE_COLORS[i % YEAR_LINE_COLORS.length],
+                    backgroundColor: 'transparent',
+                    fill: false, tension: 0.35, borderWidth: 2.5, pointRadius: 2.5, pointHoverRadius: 5
+                  });
+                });
+                $('cpTrendSub').textContent = 'comparing ' + activeCompareYears.join(', ');
+              } else {
+                /* Single series (+ faint prior-year reference line when one year is selected) */
+                /* Plain line + dots per month — no area fill, so the shape and monthly markers read clearly on their own. */
+                trendDatasets.push({
+                  label: (f.year === 'all' ? 'All years' : String(f.year)),
+                  data: monthlyRevenue(fd), borderColor: '#3eb2ed', backgroundColor: '#3eb2ed',
+                  fill: false, tension: 0.4, cubicInterpolationMode: 'monotone', borderWidth: 3,
+                  pointRadius: 4, pointBackgroundColor: '#fff', pointBorderColor: '#3eb2ed', pointBorderWidth: 2,
+                  pointHoverRadius: 6, pointHoverBackgroundColor: '#3eb2ed', pointHoverBorderColor: '#fff', pointHoverBorderWidth: 2
+                });
+                $('cpTrendSub').textContent = (f.year === 'all' ? 'all years combined' : 'calendar ' + f.year);
+                if (f.year !== 'all' && YEARS.indexOf(+f.year - 1) !== -1) {
+                  var pf2 = Object.assign({}, f, { year: String(+f.year - 1) });
+                  trendDatasets.push({
+                    label: String(+f.year - 1),
+                    data: monthlyRevenue(filterDeals(pf2)),
+                    borderColor: '#cbd5e1', backgroundColor: 'transparent', borderDash: [5, 4],
+                    fill: false, tension: 0.35, borderWidth: 2, pointRadius: 0, pointHoverRadius: 4
+                  });
+                }
+              }
+              var hasTrendData = trendDatasets.some(function (ds) { return ds.data.some(function (v) { return v > 0; }); });
+              var isCompareMode = trendDatasets.length > 1 && f.year === 'all' && activeCompareYears.length > 0;
+
+              /* Hero stat: big total + delta chip above the chart. Only meaningful for a single series. */
+              var heroEl = $('cpTrendHero'), heroValueEl = $('cpTrendHeroValue'), heroDeltaEl = $('cpTrendHeroDelta');
+              if (heroEl) {
+                if (!isCompareMode && trendDatasets.length) {
+                  var heroTotal = trendDatasets[0].data.reduce(function (s, v) { return s + v; }, 0);
+                  heroValueEl.textContent = heroTotal ? money(heroTotal, cur, { full: true }) : '—';
+                  var priorDs = trendDatasets[1];
+                  var priorTotal = priorDs ? priorDs.data.reduce(function (s, v) { return s + v; }, 0) : 0;
+                  if (priorDs && priorTotal > 0) {
+                    var heroPct = ((heroTotal - priorTotal) / priorTotal) * 100;
+                    var heroUp = heroPct >= 0;
+                    heroDeltaEl.className = 'cp-trend-hero-delta ' + (heroUp ? 'pill-up' : 'pill-down');
+                    heroDeltaEl.innerHTML = '<span class="' + (heroUp ? 'up' : 'down') + '">' + (heroUp ? '▲' : '▼') + ' ' + Math.abs(heroPct).toFixed(1) + '%</span>';
+                    heroDeltaEl.hidden = false;
+                  } else { heroDeltaEl.hidden = true; }
+                  heroEl.hidden = false;
+                } else {
+                  heroEl.hidden = true;
+                }
+              }
+
+              render('cpRevTrend', 'cpBoxTrend', hasTrendData, {
+                type: 'line', data: { labels: MONTHS, datasets: trendDatasets },
                 options: {
-                  indexAxis: 'y',
+                  responsive: true, maintainAspectRatio: false, interaction: { mode: 'index', intersect: false },
+                  animation: { duration: 500, easing: 'easeOutQuart' },
                   plugins: {
-                    legend: { display: true, position: 'top' },
-                    tooltip: {
-                      backgroundColor: '#1b1e42',
-                      titleColor: '#fff',
-                      bodyColor: '#fff',
-                      borderColor: '#2563eb',
-                      borderWidth: 1,
-                      padding: 16,
-                      callbacks: {
-                        label: function(context) {
-                          return `${context.dataset.label}: $${context.parsed.x.toLocaleString()}`;
-                        }
+                    legend: { display: trendDatasets.length > 1, position: 'bottom', labels: { boxWidth: 10, boxHeight: 10, usePointStyle: true } },
+                    tooltip: Object.assign({}, TIP, { padding: 12, cornerRadius: 10, callbacks: {
+                      label: function (ctx) { return ctx.dataset.label + ': ' + money(ctx.parsed.y, cur, { full: true }); },
+                      afterBody: function (items) {
+                        if (!items.length || trendDatasets.length > 1) return '';
+                        var idx = items[0].dataIndex;
+                        var series = items[0].dataset.data;
+                        if (idx === 0 || !series[idx - 1]) return '';
+                        var pct = ((series[idx] - series[idx - 1]) / series[idx - 1]) * 100;
+                        var arrow = pct >= 0 ? '▲' : '▼';
+                        return arrow + ' ' + Math.abs(pct).toFixed(1) + '% vs prior month';
                       }
-                    },
-                    datalabels: {
-                      anchor: 'end',
-                      align: 'end',
-                      color: '#1e293b',
-                      font: { weight: 'bold', size: 14 },
-                      formatter: function(value) { return '$' + value.toLocaleString(); }
-                    }
+                    } })
                   },
                   scales: {
-                    x: {
-                      stacked: true,
-                      grid: { color: '#e5e7eb', drawBorder: false },
-                      ticks: {
-                        color: '#64748b',
-                        font: { size: 14 },
-                        callback: function(value) { return '$' + value.toLocaleString(); },
-                      },
-                      beginAtZero: true,
-                    },
-                    y: {
-                      stacked: true,
-                      grid: { display: false },
-                      ticks: {
-                        color: '#334155',
-                        font: { size: 15, weight: 'bold' },
-                        callback: function(value, idx, values) {
-                          return this.getLabelForValue ? this.getLabelForValue(value) : value;
-                        },
-                        maxRotation: 0,
-                        minRotation: 0,
-                        padding: 10,
-                      }
-                    }
-                  },
-                  responsive: false,
-                  maintainAspectRatio: false,
-                },
-                plugins: [ChartDataLabels]
+                    x: { grid: { display: false }, border: { display: false } },
+                    y: { beginAtZero: true, grid: { color: GRID }, border: { display: false }, ticks: { callback: moneyTick, maxTicksLimit: 6 } }
+                  }
+                }
               });
-              // ...heatmap and treemap code also commented out...
-              */
+
+              /* ----- Monthly revenue by sector: clean total-per-month bars + clickable sector breakdown ----- */
+              /* A single accent-gradient bar per month keeps the chart trivially readable; the sector split
+                 lives in the hover tooltip (top contributors) and the chip row below (click to cross-filter). */
+              var stackRows = filterDeals(f, { ignoreSector: true });
+              var monthlyTotalBySector = MONTHS.map(function (_, i) {
+                var map = {};
+                stackRows.filter(function (r) { return r.month === i + 1; }).forEach(function (r) { map[r.sector] = (map[r.sector] || 0) + r.revenue; });
+                return map;
+              });
+              var monthlyTotals = monthlyTotalBySector.map(function (map) {
+                return Object.keys(map).reduce(function (s, k) { return s + map[k]; }, 0);
+              });
+              var stackHasData = monthlyTotals.some(function (v) { return v > 0; });
+              render('cpSectorStack', 'cpBoxSectorStack', stackHasData, {
+                type: 'bar',
+                data: { labels: MONTHS, datasets: [{
+                  label: 'Total Revenue', data: monthlyTotals,
+                  backgroundColor: function (context) {
+                    var area = context.chart.chartArea;
+                    if (!area) return '#3eb2ed';
+                    return verticalGradient(context.chart.ctx, area, '#3eb2ed', '#1b1e42');
+                  },
+                  borderRadius: 8, maxBarThickness: 34, hoverBackgroundColor: '#1b1e42'
+                }] },
+                options: {
+                  responsive: true, maintainAspectRatio: false,
+                  animation: { duration: 500, easing: 'easeOutQuart' },
+                  plugins: {
+                    legend: { display: false },
+                    tooltip: Object.assign({}, TIP, { padding: 12, cornerRadius: 10, callbacks: {
+                      title: function (items) { return items[0].label; },
+                      label: function (ctx) { return 'Total: ' + money(ctx.parsed.y, cur, { full: true }); },
+                      afterBody: function (items) {
+                        var map = monthlyTotalBySector[items[0].dataIndex];
+                        var top = SECTORS.slice().sort(function (a, b) { return (map[b] || 0) - (map[a] || 0); })
+                          .filter(function (s) { return (map[s] || 0) > 0; }).slice(0, 3);
+                        if (!top.length) return '';
+                        return [''].concat(top.map(function (s) { return s + ': ' + money(map[s], cur, { full: true }); }));
+                      }
+                    } })
+                  },
+                  scales: {
+                    x: { grid: { display: false }, border: { display: false } },
+                    y: { beginAtZero: true, grid: { color: GRID }, border: { display: false }, ticks: { callback: moneyTick, maxTicksLimit: 6 } }
+                  }
+                }
+              });
+
+              /* Sector contribution chips beneath the chart — sorted by revenue, click to cross-filter */
+              var chipTotals = {};
+              SECTORS.forEach(function (s) { chipTotals[s] = 0; });
+              stackRows.forEach(function (r) { chipTotals[r.sector] = (chipTotals[r.sector] || 0) + r.revenue; });
+              var chipGrandTotal = SECTORS.reduce(function (s, sec) { return s + chipTotals[sec]; }, 0);
+              var legendEl = $('cpSectorLegend');
+              if (legendEl) {
+                var chipSectors = SECTORS.slice().sort(function (a, b) { return chipTotals[b] - chipTotals[a]; }).filter(function (s) { return chipTotals[s] > 0; });
+                legendEl.innerHTML = chipSectors.map(function (s) {
+                  var pct = chipGrandTotal ? (chipTotals[s] / chipGrandTotal) * 100 : 0;
+                  var active = f.sector === s, dim = f.sector !== 'all' && !active;
+                  return '<button type="button" class="cp-sector-chip' + (active ? ' is-active' : '') + (dim ? ' is-dim' : '') + '" data-sector="' + s.replace(/"/g, '&quot;') + '">' +
+                    '<span class="cp-sector-chip-dot" style="background:' + SECTOR_COLORS[s] + '"></span>' + s +
+                    '<span class="cp-sector-chip-pct">' + pct.toFixed(0) + '%</span></button>';
+                }).join('');
+                legendEl.querySelectorAll('.cp-sector-chip').forEach(function (chip) {
+                  chip.addEventListener('click', function () {
+                    var s = chip.getAttribute('data-sector');
+                    elSector.value = (elSector.value === s) ? 'all' : s;
+                    update();
+                  });
+                });
+              }
+
+              /* ----- Lead & Opportunity Trend: monthly leads generated / opportunities created / sales completed ----- */
+              var monthlyCount = function (rows) {
+                return MONTHS.map(function (_, i) { return rows.filter(function (r) { return r.month === i + 1; }).length; });
+              };
+              var pipelineDatasets = [
+                { label: 'Leads Generated', data: monthlyCount(fl), borderColor: '#3eb2ed', backgroundColor: 'transparent', fill: false, tension: 0.35, borderWidth: 2.5, pointRadius: 2.5, pointHoverRadius: 5 },
+                { label: 'Opportunities Created', data: monthlyCount(fo), borderColor: '#f97316', backgroundColor: 'transparent', fill: false, tension: 0.35, borderWidth: 2.5, pointRadius: 2.5, pointHoverRadius: 5 },
+                { label: 'Sales Completed', data: monthlyCount(fd), borderColor: '#10b981', backgroundColor: 'transparent', fill: false, tension: 0.35, borderWidth: 2.5, pointRadius: 2.5, pointHoverRadius: 5 }
+              ];
+              var pipelineHasData = pipelineDatasets.some(function (ds) { return ds.data.some(function (v) { return v > 0; }); });
+              render('cpPipelineTrend', 'cpBoxPipelineTrend', pipelineHasData, {
+                type: 'line', data: { labels: MONTHS, datasets: pipelineDatasets },
+                options: {
+                  responsive: true, maintainAspectRatio: false, interaction: { mode: 'index', intersect: false },
+                  plugins: {
+                    legend: { position: 'bottom', labels: { boxWidth: 10, boxHeight: 10, usePointStyle: true } },
+                    tooltip: Object.assign({}, TIP, { callbacks: { label: function (ctx) { return ctx.dataset.label + ': ' + ctx.parsed.y.toLocaleString(); } } })
+                  },
+                  scales: { x: { grid: { display: false } }, y: { beginAtZero: true, grid: { color: GRID }, ticks: { precision: 0 } } }
+                }
+              });
+
+              /* ----- Revenue by sale type (doughnut) ----- */
+              var stMap = sumBy(fd, function (r) { return r.saleType; }, function (r) { return r.revenue; });
+              var stVals = SALE_TYPES.map(function (s) { return stMap[s] || 0; });
+              render('cpSaleTypeChart', 'cpBoxSaleType', fd.length > 0, {
+                type: 'doughnut',
+                data: { labels: SALE_TYPES, datasets: [{ data: stVals, backgroundColor: ['#1b1e42', '#3eb2ed', '#06b6d4'], borderColor: '#fff', borderWidth: 2 }] },
+                options: {
+                  responsive: true, maintainAspectRatio: false, cutout: '62%',
+                  plugins: {
+                    legend: { position: 'bottom', labels: { boxWidth: 10, boxHeight: 10, usePointStyle: true, padding: 12 } },
+                    tooltip: Object.assign({}, TIP, { callbacks: { label: function (ctx) {
+                      var tot = ctx.dataset.data.reduce(function (a, b) { return a + b; }, 0);
+                      var p = tot ? Math.round((ctx.parsed / tot) * 100) : 0;
+                      return ctx.label + ': ' + money(ctx.parsed, cur, { full: true }) + ' (' + p + '%)';
+                    } } })
+                  }
+                }
+              });
+
+              /* ----- Revenue by sector (horizontal bar, sorted, click to cross-filter) ----- */
+              /* Ignores the Sector filter on itself so the full ranking always stays visible; the
+                 selected sector (if any) is highlighted instead of collapsing the chart to one bar. */
+              var secRows = filterDeals(f, { ignoreSector: true });
+              var secMap = sumBy(secRows, function (r) { return r.sector; }, function (r) { return r.revenue; });
+              var secSorted = SECTORS.slice().map(function (s) { return { s: s, v: secMap[s] || 0 }; })
+                .sort(function (a, b) { return b.v - a.v; }).filter(function (o) { return o.v > 0; });
+              $('cpSectorRevSub').textContent = (f.sector === 'all')
+                ? 'click a bar to filter the dashboard'
+                : ('filtering by ' + f.sector + ' — click its bar again to clear');
+              render('cpSectorRev', 'cpBoxSectorRev', secSorted.length > 0, {
+                type: 'bar',
+                data: { labels: secSorted.map(function (o) { return o.s; }),
+                  datasets: [{ label: 'Revenue', data: secSorted.map(function (o) { return o.v; }),
+                    backgroundColor: secSorted.map(function (o) {
+                      if (f.sector === 'all') return '#1b1e42';
+                      return o.s === f.sector ? '#3eb2ed' : '#d6dce5';
+                    }),
+                    borderRadius: 6, barThickness: 22 }] },
+                options: {
+                  indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+                  onHover: function (evt, elements) { evt.native.target.style.cursor = elements.length ? 'pointer' : 'default'; },
+                  onClick: function (evt, elements, chart) {
+                    if (!elements.length) return;
+                    var label = chart.data.labels[elements[0].index];
+                    elSector.value = (elSector.value === label) ? 'all' : label;
+                    update();
+                  },
+                  plugins: { legend: { display: false }, tooltip: Object.assign({}, TIP, { callbacks: { label: function (ctx) { return money(ctx.parsed.x, cur, { full: true }); } } }) },
+                  scales: { x: { beginAtZero: true, grid: { color: GRID }, ticks: { callback: moneyTick } }, y: { grid: { display: false } } }
+                }
+              });
+
+              /* ----- Sector Performance: grouped bar, switchable metric, click to cross-filter ----- */
+              /* Ignores the Sector filter on itself (like Revenue by Sector) so every sector always ranks. */
+              var perfDeals = filterDeals(f, { ignoreSector: true });
+              var perfLeads = filterLeads(f, { ignoreSector: true });
+              var perfOpps = filterOpps(f, { ignoreSector: true });
+              var perfTotalRev = {}, perfLeadRev = {}, perfOppRev = {}, perfLeadCount = {}, perfOppCount = {}, perfSalesCount = {};
+              SECTORS.forEach(function (s) {
+                var sd = perfDeals.filter(function (r) { return r.sector === s; });
+                perfTotalRev[s] = sd.reduce(function (sum, r) { return sum + r.revenue; }, 0);
+                perfLeadRev[s] = sd.filter(function (r) { return r.saleType === 'Through Leads'; }).reduce(function (sum, r) { return sum + r.revenue; }, 0);
+                perfOppRev[s] = sd.filter(function (r) { return r.saleType === 'Through Opportunities'; }).reduce(function (sum, r) { return sum + r.revenue; }, 0);
+                perfLeadCount[s] = perfLeads.filter(function (r) { return r.sector === s; }).length;
+                perfOppCount[s] = perfOpps.filter(function (r) { return r.sector === s; }).length;
+                perfSalesCount[s] = sd.length;
+              });
+
+              var perfView = elSectorPerfView ? elSectorPerfView.value : 'revenue';
+              var perfSeries, perfIsMoney, perfViewLabel;
+              if (perfView === 'leads') {
+                perfSeries = [{ label: 'Leads', color: '#3eb2ed', map: perfLeadCount }]; perfIsMoney = false; perfViewLabel = 'leads';
+              } else if (perfView === 'opportunities') {
+                perfSeries = [{ label: 'Opportunities', color: '#f97316', map: perfOppCount }]; perfIsMoney = false; perfViewLabel = 'opportunities';
+              } else if (perfView === 'sales') {
+                perfSeries = [{ label: 'Sales', color: '#10b981', map: perfSalesCount }]; perfIsMoney = false; perfViewLabel = 'sales';
+              } else if (perfView === 'pipeline') {
+                perfSeries = [
+                  { label: 'Leads', color: '#3eb2ed', map: perfLeadCount },
+                  { label: 'Opportunities', color: '#f97316', map: perfOppCount },
+                  { label: 'Sales', color: '#10b981', map: perfSalesCount }
+                ];
+                perfIsMoney = false; perfViewLabel = 'pipeline volume';
+              } else {
+                perfSeries = [
+                  { label: 'Total Revenue', color: '#1b1e42', map: perfTotalRev },
+                  { label: 'Lead Revenue', color: '#3eb2ed', map: perfLeadRev },
+                  { label: 'Opportunity Revenue', color: '#06b6d4', map: perfOppRev }
+                ];
+                perfIsMoney = true; perfViewLabel = 'total revenue';
+              }
+
+              var perfSectorsSorted = SECTORS.slice()
+                .sort(function (a, b) { return (perfSeries[0].map[b] || 0) - (perfSeries[0].map[a] || 0); })
+                .filter(function (s) { return perfSeries.some(function (sr) { return (sr.map[s] || 0) > 0; }); });
+              $('cpSectorPerfSub').textContent = perfSectorsSorted.length
+                ? ('ranked by ' + perfViewLabel + ' — click a sector to filter')
+                : 'no comparable data for the selected filters';
+
+              var perfDatasets = perfSeries.map(function (sr) {
+                return {
+                  label: sr.label,
+                  data: perfSectorsSorted.map(function (s) { return sr.map[s] || 0; }),
+                  backgroundColor: perfSectorsSorted.map(function (s) {
+                    if (f.sector === 'all') return sr.color;
+                    return (s === f.sector) ? sr.color : hexToRgba(sr.color, 0.25);
+                  }),
+                  borderRadius: 5, barThickness: perfSeries.length > 1 ? 12 : 20
+                };
+              });
+
+              render('cpSectorPerf', 'cpBoxSectorPerf', perfSectorsSorted.length > 0, {
+                type: 'bar',
+                data: { labels: perfSectorsSorted, datasets: perfDatasets },
+                options: {
+                  indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+                  onHover: function (evt, elements) { evt.native.target.style.cursor = elements.length ? 'pointer' : 'default'; },
+                  onClick: function (evt, elements, chart) {
+                    if (!elements.length) return;
+                    var label = chart.data.labels[elements[0].index];
+                    elSector.value = (elSector.value === label) ? 'all' : label;
+                    update();
+                  },
+                  plugins: {
+                    legend: { display: perfDatasets.length > 1, position: 'bottom', labels: { boxWidth: 10, boxHeight: 10, usePointStyle: true } },
+                    tooltip: Object.assign({}, TIP, { callbacks: { label: function (ctx) {
+                      return ctx.dataset.label + ': ' + (perfIsMoney ? money(ctx.parsed.x, cur, { full: true }) : ctx.parsed.x.toLocaleString());
+                    } } })
+                  },
+                  scales: {
+                    x: { beginAtZero: true, grid: { color: GRID }, ticks: perfIsMoney ? { callback: moneyTick } : { precision: 0 } },
+                    y: { grid: { display: false } }
+                  }
+                }
+              });
+
+              /* ----- Lead progression (funnel-style horizontal bar) ----- */
+              var lstageCounts = LEAD_STAGES.map(function (st) { return fl.filter(function (r) { return r.stage === st; }).length; });
+              render('cpLeadFunnel', 'cpBoxLeadFunnel', fl.length > 0, {
+                type: 'bar',
+                data: { labels: LEAD_STAGES, datasets: [{ label: 'Leads', data: lstageCounts,
+                  backgroundColor: ['#3eb2ed', '#38bdf8', '#0ea5e9', '#0369a1'], borderRadius: 6, barThickness: 26 }] },
+                options: {
+                  indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+                  plugins: { legend: { display: false }, tooltip: Object.assign({}, TIP, { callbacks: { label: function (ctx) { return ctx.parsed.x + ' leads'; } } }) },
+                  scales: { x: { beginAtZero: true, grid: { color: GRID }, ticks: { precision: 0 } }, y: { grid: { display: false } } }
+                }
+              });
+
+              /* ----- Opportunity pipeline ----- */
+              var ostageCounts = OPP_STAGES.map(function (st) { return fo.filter(function (r) { return r.stage === st; }).length; });
+              render('cpOppPipeline', 'cpBoxOppPipeline', fo.length > 0, {
+                type: 'bar',
+                data: { labels: OPP_STAGES, datasets: [{ label: 'Opportunities', data: ostageCounts,
+                  backgroundColor: ['#fdba74', '#fb923c', '#f97316', '#10b981'], borderRadius: 6, barThickness: 26 }] },
+                options: {
+                  indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+                  plugins: { legend: { display: false }, tooltip: Object.assign({}, TIP, { callbacks: { label: function (ctx) { return ctx.parsed.x + ' opportunities'; } } }) },
+                  scales: { x: { beginAtZero: true, grid: { color: GRID }, ticks: { precision: 0 } }, y: { grid: { display: false } } }
+                }
+              });
+
+              /* ----- Service / Activity Performance: drill-down table (Activity -> Category -> Program) ----- */
+              buildServiceTable(fd, fl, fo);
+
+              /* ----- Revenue by category (doughnut) ----- */
+              var catMap = sumBy(fd, function (r) { return r.category; }, function (r) { return r.revenue; });
+              var catVals = CATEGORIES.map(function (c) { return catMap[c] || 0; });
+              render('cpCategoryRev', 'cpBoxCategoryRev', fd.length > 0, {
+                type: 'doughnut',
+                data: { labels: CATEGORIES, datasets: [{ data: catVals, backgroundColor: ['#1b1e42', '#3eb2ed', '#10b981', '#8b5cf6'], borderColor: '#fff', borderWidth: 2 }] },
+                options: {
+                  responsive: true, maintainAspectRatio: false, cutout: '62%',
+                  plugins: {
+                    legend: { position: 'bottom', labels: { boxWidth: 10, boxHeight: 10, usePointStyle: true, padding: 12 } },
+                    tooltip: Object.assign({}, TIP, { callbacks: { label: function (ctx) {
+                      var tot = ctx.dataset.data.reduce(function (a, b) { return a + b; }, 0);
+                      var p = tot ? Math.round((ctx.parsed / tot) * 100) : 0;
+                      return ctx.label + ': ' + money(ctx.parsed, cur, { full: true }) + ' (' + p + '%)';
+                    } } })
+                  }
+                }
+              });
+            }
+
+            /* ---------- Wiring ---------- */
+            [elYear, elMonth, elSector, elService, elCategory, elSaleType, elCurrency].forEach(function (el) {
+              el.addEventListener('change', update);
             });
+            if (elSectorPerfView) elSectorPerfView.addEventListener('change', update);
+            elReset.addEventListener('click', function () {
+              elYear.value = 'all'; elMonth.value = 'all'; elSector.value = 'all';
+              elService.value = 'all'; elCategory.value = 'all'; elSaleType.value = 'all';
+              elCurrency.value = 'LKR';
+              if (elSectorPerfView) elSectorPerfView.value = 'revenue';
+              compareYears.clear();
+              if (elCompareWrap) elCompareWrap.querySelectorAll('.cp-yearchip').forEach(function (chip) {
+                chip.classList.remove('is-active');
+                chip.setAttribute('aria-pressed', 'false');
+              });
+              expandedServices.clear();
+              expandedCategories.clear();
+              update();
+            });
+
+            /* Re-flow charts when the Home tab becomes visible again */
+            function resizeAll() { Object.keys(charts).forEach(function (k) { try { charts[k].resize(); } catch (e) {} }); }
+            document.querySelectorAll('[data-tab="home"]').forEach(function (b) {
+              b.addEventListener('click', function () { setTimeout(resizeAll, 60); });
+            });
+            window.addEventListener('hashchange', function () {
+              if ((location.hash || '').toLowerCase().indexOf('home') !== -1) setTimeout(resizeAll, 60);
+            });
+
+            update();
+          })();
           </script>
         </section>
 
