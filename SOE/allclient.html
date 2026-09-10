@@ -1661,7 +1661,9 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
             #home .cp-card {
               background: #fff; border: 1px solid #e2e8f0; border-radius: 1rem;
               box-shadow: 0 4px 20px rgba(15,23,42,0.06); padding: 1.25rem 1.25rem 1rem; display: flex; flex-direction: column;
+              overflow: hidden;
             }
+            #home #cpBoxSectorRev { overflow: hidden; }
             #home .cp-card-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 0.35rem; flex-wrap: wrap; }
             #home .cp-card h3 { font-size: 0.95rem; font-weight: 700; color: #1b1e42; margin: 0; }
             #home .cp-card .cp-card-sub { font-size: 0.72rem; color: #94a3b8; }
@@ -1936,7 +1938,7 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
               <div class="cp-kpi k-conv">
                 <div class="cp-kpi-top">
                   <span class="cp-kpi-ico material-symbols-outlined">autorenew</span>
-                  <span class="cp-kpi-label">Conversion Rate</span>
+                  <span class="cp-kpi-label">Sales Conversion Rate</span>
                 </div>
                 <div class="cp-kpi-value" id="cpKpiConv">—</div>
                 <div class="cp-kpi-sub" id="cpKpiConvSub">&nbsp;</div>
@@ -2008,8 +2010,15 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
                           <span class="material-symbols-outlined">close</span>
                         </button>
                       </div>
-                      <div class="cp-compare-popup-body" aria-label="Filter sectors">
-                        <div id="cpSectorOptions" class="cp-sector-options-list"></div>
+                      <div class="cp-compare-popup-body" aria-label="Filter sectors" style="gap:10px;">
+                        <div>
+                          <div style="font-size:0.70rem; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:#64748b; margin-bottom:6px;">Year</div>
+                          <div id="cpSectorYearOptions" class="cp-sector-options-list" style="max-height:120px;"></div>
+                        </div>
+                        <div>
+                          <div style="font-size:0.70rem; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:#64748b; margin-bottom:6px;">Sectors</div>
+                          <div id="cpSectorOptions" class="cp-sector-options-list" style="max-height:140px;"></div>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -2022,7 +2031,32 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
               </div>
               <div class="cp-card">
                 <div class="cp-card-head">
-                  <h3>Lead &amp; Opportunity Trend</h3>
+                  <div>
+                    <h3>Sector Performance</h3>
+                  </div>
+                  <div class="cp-compare-wrap" id="cpLeadOppFilterWrap">
+                    <button type="button" id="cpLeadOppFilterBtn" class="cp-compare-filter-btn" aria-haspopup="dialog" aria-expanded="false" aria-controls="cpLeadOppFilterPopup" title="Filter year & sectors">
+                      <span class="material-symbols-outlined">tune</span>
+                    </button>
+                    <div id="cpLeadOppFilterPopup" class="cp-compare-popup" hidden role="dialog" aria-modal="true" aria-label="Filter Lead & Opportunity">
+                      <div class="cp-compare-popup-head">
+                        <span>Filter</span>
+                        <button type="button" id="cpLeadOppFilterPopupClose" class="cp-compare-popup-close" aria-label="Close">
+                          <span class="material-symbols-outlined">close</span>
+                        </button>
+                      </div>
+                      <div class="cp-compare-popup-body" aria-label="Filter Lead & Opportunity" style="gap:10px;">
+                        <div>
+                          <div style="font-size:0.70rem; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:#64748b; margin-bottom:6px;">Year</div>
+                          <div id="cpLeadOppYearOptions" class="cp-sector-options-list" style="max-height:120px;"></div>
+                        </div>
+                        <div>
+                          <div style="font-size:0.70rem; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:#64748b; margin-bottom:6px;">Sectors</div>
+                          <div id="cpLeadOppSectorOptions" class="cp-sector-options-list" style="max-height:140px;"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
                 <div class="cp-chartbox tall" id="cpBoxPipelineTrend">
                   <canvas id="cpPipelineTrend"></canvas>
@@ -2032,14 +2066,19 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
             </div>
 
             <!-- Sector revenue (click to cross-filter) + sector performance -->
-            <div class="cp-row cols-1-1">
+            <div class="cp-row cols-full">
               <div class="cp-card">
                 <div class="cp-card-head">
-                  <div>
-                    <h3>Yearly Revenue by Sector</h3>
+                  <h3>Yearly Revenue by Sector</h3>
                     <span class="cp-card-sub" id="cpSectorRevSub">click a bar to filter the dashboard</span>
                   </div>
-                  <div class="cp-compare-wrap" id="cpYearlySectorFilterWrap">
+                  <div style="display:flex; align-items:center; gap:8px;">
+                    <select id="cpYearlyRevView" class="cp-select" aria-label="Yearly Revenue view" style="min-width:190px; flex:0 0 auto;">
+                      <option value="sales">Sales Revenue</option>
+                      <option value="leadForecast">Lead Revenue Forecast</option>
+                      <option value="oppForecast">Opportunity Revenue Forecast</option>
+                    </select>
+                    <div class="cp-compare-wrap" id="cpYearlySectorFilterWrap">
                     <button type="button" id="cpYearlySectorFilterBtn" class="cp-compare-filter-btn" aria-haspopup="dialog" aria-expanded="false" aria-controls="cpYearlySectorFilterPopup" title="Filter yearly">
                       <span class="material-symbols-outlined">tune</span>
                     </button>
@@ -2056,12 +2095,13 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
                     </div>
                   </div>
                 </div>
+                </div>
                 <div class="cp-chartbox" id="cpBoxSectorRev">
                   <canvas id="cpSectorRev"></canvas>
                   <div class="cp-empty"><span class="material-symbols-outlined">bar_chart_off</span>No data for the selected filters</div>
                 </div>
               </div>
-              <div class="cp-card">
+              <div class="cp-card" hidden style="display:none !important;">
                 <div class="cp-card-head">
                   <div>
                     <h3>Sector Performance</h3>
@@ -2096,7 +2136,7 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
               </div>
               <div class="cp-card">
                 <div class="cp-card-head">
-                  <h3>Opportunity Pipeline</h3>
+                  <h3>Opportunity Progression</h3>
                   <span class="cp-card-sub">how opportunities are progressing</span>
                 </div>
                 <div class="cp-chartbox" id="cpBoxOppPipeline">
@@ -2131,8 +2171,33 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
             <div class="cp-row cols-1-1">
               <div class="cp-card">
                 <div class="cp-card-head">
-                  <h3>Revenue by Sale Type</h3>
-                  <span class="cp-card-sub">Direct · Leads · Opps</span>
+                  <div>
+                    <h3>Sale Revenue and Forecast Revenue by Sale Type</h3>
+                    <span class="cp-card-sub" id="cpSaleTypeSub">Direct · Leads · Opps · x: Value</span>
+                  </div>
+                  <div class="cp-compare-wrap" id="cpSaleTypeFilterWrap">
+                    <button type="button" id="cpSaleTypeFilterBtn" class="cp-compare-filter-btn" aria-haspopup="dialog" aria-expanded="false" aria-controls="cpSaleTypeFilterPopup" title="Filter year & month">
+                      <span class="material-symbols-outlined">tune</span>
+                    </button>
+                    <div id="cpSaleTypeFilterPopup" class="cp-compare-popup" hidden role="dialog" aria-modal="true" aria-label="Filter sale type">
+                      <div class="cp-compare-popup-head">
+                        <span>Filter</span>
+                        <button type="button" id="cpSaleTypeFilterPopupClose" class="cp-compare-popup-close" aria-label="Close">
+                          <span class="material-symbols-outlined">close</span>
+                        </button>
+                      </div>
+                      <div class="cp-compare-popup-body" aria-label="Filter sale type" style="gap:10px;">
+                        <div>
+                          <div style="font-size:0.70rem; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:#64748b; margin-bottom:6px;">Year</div>
+                          <div id="cpSaleTypeYearOptions" class="cp-sector-options-list" style="max-height:120px;"></div>
+                        </div>
+                        <div>
+                          <div style="font-size:0.70rem; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:#64748b; margin-bottom:6px;">Month</div>
+                          <div id="cpSaleTypeMonthOptions" class="cp-sector-options-list" style="max-height:140px;"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
                 <div class="cp-chartbox" id="cpBoxSaleType">
                   <canvas id="cpSaleTypeChart"></canvas>
@@ -2141,8 +2206,8 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
               </div>
               <div class="cp-card">
                 <div class="cp-card-head">
-                  <h3>Revenue by Category</h3>
-                  <span class="cp-card-sub">share of revenue by category</span>
+                  <h3>Revenue and Forecast Revenue by Category</h3>
+                  <span class="cp-card-sub">x: Value, y: Categories</span>
                 </div>
                 <div class="cp-chartbox" id="cpBoxCategoryRev">
                   <canvas id="cpCategoryRev"></canvas>
@@ -2244,8 +2309,16 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
                 elCompareDropdownMenu = $('cpCompareDropdownMenu'), elCompareDropdownWrap = $('cpCompareDropdownWrap'),
                 elSectorFilterBtn = $('cpSectorFilterBtn'), elSectorFilterPopup = $('cpSectorFilterPopup'),
                 elSectorFilterPopupClose = $('cpSectorFilterPopupClose'), elSectorOptions = $('cpSectorOptions'),
+                elSectorYearOptions = $('cpSectorYearOptions'),
                 elYearlySectorFilterBtn = $('cpYearlySectorFilterBtn'), elYearlySectorFilterPopup = $('cpYearlySectorFilterPopup'),
                 elYearlySectorFilterPopupClose = $('cpYearlySectorFilterPopupClose'), elYearlySectorOptions = $('cpYearlySectorOptions'),
+                elYearlyRevView = $('cpYearlyRevView'),
+                elLeadOppFilterBtn = $('cpLeadOppFilterBtn'), elLeadOppFilterPopup = $('cpLeadOppFilterPopup'),
+                elLeadOppFilterPopupClose = $('cpLeadOppFilterPopupClose'), elLeadOppYearOptions = $('cpLeadOppYearOptions'),
+                elLeadOppSectorOptions = $('cpLeadOppSectorOptions'),
+                elSaleTypeFilterBtn = $('cpSaleTypeFilterBtn'), elSaleTypeFilterPopup = $('cpSaleTypeFilterPopup'),
+                elSaleTypeFilterPopupClose = $('cpSaleTypeFilterPopupClose'), elSaleTypeYearOptions = $('cpSaleTypeYearOptions'),
+                elSaleTypeMonthOptions = $('cpSaleTypeMonthOptions'),
                 elFilterOpenBtn = $('cpFilterOpenBtn'), elFilterOverlay = $('cpFilterOverlay'),
                 elFilterCloseBtn = $('cpFilterCloseBtn'), elFilterApplyBtn = $('cpFilterApply'),
                 elFilterSummary = $('cpFilterSummary'), elFilterBadge = $('cpFilterBadge');
@@ -2381,11 +2454,13 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
               });
             })();
 
-            /* ---------- Sector filter (Monthly Revenue by Sector) — filter-icon popup, multi-select ----- */
+            /* ---------- Sector filter (Monthly Revenue by Sector) — Year & Sectors, card-only ----- */
             var sectorFilter = new Set();
+            var sectorYearFilter = new Set();
             function refreshSectorChartOnly() {
               var f = getFilters();
               var stackRows = filterDeals(f, { ignoreSector: true });
+              if (sectorYearFilter.size > 0) stackRows = stackRows.filter(function (r) { return sectorYearFilter.has(String(r.year)); });
               var monthlyTotalBySector = MONTHS.map(function (_, i) {
                 var map = {};
                 stackRows.filter(function (r) { return r.month === i + 1; }).forEach(function (r) { map[r.sector] = (map[r.sector] || 0) + r.revenue; });
@@ -2434,6 +2509,28 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
                 }
               });
             }
+            (function buildSectorYearOptions() {
+              if (!elSectorYearOptions) return;
+              elSectorYearOptions.innerHTML = '';
+              YEARS.forEach(function (y) {
+                var row = document.createElement('label');
+                row.className = 'cp-dropdown-option';
+                row.setAttribute('role', 'option');
+                var cb = document.createElement('input');
+                cb.type = 'checkbox'; cb.value = String(y); cb.checked = sectorYearFilter.has(String(y));
+                var txt = document.createElement('span'); txt.textContent = String(y); txt.style.flex = '1';
+                row.appendChild(cb); row.appendChild(txt);
+                if (cb.checked) row.classList.add('is-checked');
+                function toggleYear() {
+                  if (cb.checked) sectorYearFilter.add(String(y)); else sectorYearFilter.delete(String(y));
+                  row.classList.toggle('is-checked', cb.checked);
+                  refreshSectorChartOnly();
+                }
+                cb.addEventListener('change', toggleYear);
+                row.addEventListener('click', function (e) { if (e.target !== cb) { e.preventDefault(); cb.checked = !cb.checked; toggleYear(); } });
+                elSectorYearOptions.appendChild(row);
+              });
+            })();
             (function buildSectorOptions() {
               if (!elSectorOptions) return;
               elSectorOptions.innerHTML = '';
@@ -2498,7 +2595,11 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
               var cur = f.currency;
               var secRows = filterDeals(f, { ignoreSector: true });
               if (yearlySectorFilter.size > 0) secRows = secRows.filter(function (r) { return yearlySectorFilter.has(String(r.year)); });
-              var secMap = sumBy(secRows, function (r) { return r.sector; }, function (r) { return r.revenue; });
+              var view = elYearlyRevView ? elYearlyRevView.value : 'sales';
+              var viewRows = secRows;
+              if (view === 'leadForecast') viewRows = secRows.filter(function (r) { return r.saleType === 'Through Leads'; });
+              else if (view === 'oppForecast') viewRows = secRows.filter(function (r) { return r.saleType === 'Through Opportunities'; });
+              var secMap = sumBy(viewRows, function (r) { return r.sector; }, function (r) { return r.revenue; });
               var secSorted = SECTORS.slice().map(function (s) { return { s: s, v: secMap[s] || 0 }; })
                 .sort(function (a, b) { return b.v - a.v; }).filter(function (o) { return o.v > 0; });
               $('cpSectorRevSub').textContent = (f.sector === 'all')
@@ -2561,7 +2662,7 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
                     elSector.value = (elSector.value === label) ? 'all' : label;
                     update();
                   },
-                  layout: { padding: { right: 36, top: 8 } },
+                  layout: { padding: { right: 48, top: 8 } },
                   plugins: { legend: { display: false }, tooltip: Object.assign({}, TIP, { callbacks: { label: function (ctx) { return money(ctx.parsed.x, cur, { full: true }); } } }) },
                   scales: { x: { beginAtZero: true, grid: { color: GRID }, ticks: { callback: moneyTick } }, y: { grid: { display: false } } }
                 }
@@ -2618,6 +2719,165 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
               document.addEventListener('keydown', function (e) {
                 if (e.key === 'Escape' && elYearlySectorFilterPopup && !elYearlySectorFilterPopup.hidden) closePopup();
               });
+            })();
+            if (elYearlyRevView) elYearlyRevView.addEventListener('change', function () { refreshYearlySectorChartOnly(); });
+
+            /* ---------- Lead & Opportunity filter — Year & Sectors, card-only ----- */
+            var leadOppYearFilter = new Set();
+            var leadOppSectorFilter = new Set();
+            function refreshLeadOppChartOnly() {
+              var f = getFilters();
+              var fd = filterDeals(f);
+              var fl = filterLeads(f);
+              var fo = filterOpps(f);
+              if (leadOppYearFilter.size > 0) {
+                fd = fd.filter(function (r) { return leadOppYearFilter.has(String(r.year)); });
+                fl = fl.filter(function (r) { return leadOppYearFilter.has(String(r.year)); });
+                fo = fo.filter(function (r) { return leadOppYearFilter.has(String(r.year)); });
+              }
+              if (leadOppSectorFilter.size > 0) {
+                fd = fd.filter(function (r) { return leadOppSectorFilter.has(r.sector); });
+                fl = fl.filter(function (r) { return leadOppSectorFilter.has(r.sector); });
+                fo = fo.filter(function (r) { return leadOppSectorFilter.has(r.sector); });
+              }
+              var monthlyCountLocal = function (rows) {
+                return MONTHS.map(function (_, i) { return rows.filter(function (r) { return r.month === i + 1; }).length; });
+              };
+              var pipelineDatasetsLocal = [
+                { label: 'Leads Created', data: monthlyCountLocal(fl), backgroundColor: '#8B3A3A', borderColor: '#8B3A3A', borderWidth: 1, borderRadius: 0, borderSkipped: false, barPercentage: 0.85, categoryPercentage: 0.72 },
+                { label: 'Opportunities Created', data: monthlyCountLocal(fo), backgroundColor: '#C86B6B', borderColor: '#C86B6B', borderWidth: 1, borderRadius: 0, borderSkipped: false, barPercentage: 0.85, categoryPercentage: 0.72 },
+                { label: 'Sales Created', data: monthlyCountLocal(fd), backgroundColor: '#E0B8B8', borderColor: '#E0B8B8', borderWidth: 1, borderRadius: 0, borderSkipped: false, barPercentage: 0.85, categoryPercentage: 0.72 }
+              ];
+              var pipelineHasDataLocal = pipelineDatasetsLocal.some(function (ds) { return ds.data.some(function (v) { return v > 0; }); });
+              render('cpPipelineTrend', 'cpBoxPipelineTrend', pipelineHasDataLocal, {
+                type: 'bar', data: { labels: MONTHS, datasets: pipelineDatasetsLocal },
+                options: {
+                  responsive: true, maintainAspectRatio: false, interaction: { mode: 'index', intersect: false },
+                  plugins: {
+                    legend: { position: 'bottom', align: 'center', labels: { boxWidth: 10, boxHeight: 10, usePointStyle: true, padding: 14, color: '#64748b', font: { size: 11, weight: '600' } } },
+                    tooltip: Object.assign({}, TIP, { callbacks: { label: function (ctx) { return ctx.dataset.label + ': ' + ctx.parsed.y.toLocaleString(); } } })
+                  },
+                  scales: {
+                    x: { grid: { display: false }, border: { display: false }, ticks: { color: '#64748b' } },
+                    y: { beginAtZero: true, max: 70, grid: { color: '#e5e7eb' }, border: { display: false }, ticks: { precision: 0, stepSize: 10, color: '#64748b' } }
+                  }
+                }
+              });
+            }
+            (function buildLeadOppYearOptions() {
+              if (!elLeadOppYearOptions) return;
+              elLeadOppYearOptions.innerHTML = '';
+              YEARS.forEach(function (y) {
+                var row = document.createElement('label');
+                row.className = 'cp-dropdown-option';
+                var cb = document.createElement('input'); cb.type = 'checkbox'; cb.value = String(y); cb.checked = leadOppYearFilter.has(String(y));
+                var txt = document.createElement('span'); txt.textContent = String(y); txt.style.flex = '1';
+                row.appendChild(cb); row.appendChild(txt);
+                if (cb.checked) row.classList.add('is-checked');
+                function toggleYear() {
+                  if (cb.checked) leadOppYearFilter.add(String(y)); else leadOppYearFilter.delete(String(y));
+                  row.classList.toggle('is-checked', cb.checked);
+                  refreshLeadOppChartOnly();
+                }
+                cb.addEventListener('change', toggleYear);
+                row.addEventListener('click', function (e) { if (e.target !== cb) { e.preventDefault(); cb.checked = !cb.checked; toggleYear(); } });
+                elLeadOppYearOptions.appendChild(row);
+              });
+            })();
+            (function buildLeadOppSectorOptions() {
+              if (!elLeadOppSectorOptions) return;
+              elLeadOppSectorOptions.innerHTML = '';
+              SECTORS.forEach(function (s) {
+                var row = document.createElement('label');
+                row.className = 'cp-dropdown-option';
+                var cb = document.createElement('input'); cb.type = 'checkbox'; cb.value = s; cb.checked = leadOppSectorFilter.has(s);
+                var dot = document.createElement('span'); dot.style.width = '10px'; dot.style.height = '10px'; dot.style.borderRadius = '50%'; dot.style.flexShrink = '0'; dot.style.background = SECTOR_COLORS[s] || '#64748b';
+                var txt = document.createElement('span'); txt.textContent = s; txt.style.flex = '1';
+                row.appendChild(cb); row.appendChild(dot); row.appendChild(txt);
+                if (cb.checked) row.classList.add('is-checked');
+                function toggleSector() {
+                  if (cb.checked) leadOppSectorFilter.add(s); else leadOppSectorFilter.delete(s);
+                  row.classList.toggle('is-checked', cb.checked);
+                  refreshLeadOppChartOnly();
+                }
+                cb.addEventListener('change', toggleSector);
+                row.addEventListener('click', function (e) { if (e.target !== cb) { e.preventDefault(); cb.checked = !cb.checked; toggleSector(); } });
+                elLeadOppSectorOptions.appendChild(row);
+              });
+            })();
+            (function bindLeadOppPopup() {
+              if (!elLeadOppFilterBtn || !elLeadOppFilterPopup) return;
+              function openPopup(){ elLeadOppFilterPopup.hidden=false; elLeadOppFilterBtn.setAttribute('aria-expanded','true'); }
+              function closePopup(){ elLeadOppFilterPopup.hidden=true; elLeadOppFilterBtn.setAttribute('aria-expanded','false'); }
+              elLeadOppFilterBtn.addEventListener('click', function(e){ e.stopPropagation(); if(elLeadOppFilterPopup.hidden) openPopup(); else closePopup(); });
+              if (elLeadOppFilterPopupClose) elLeadOppFilterPopupClose.addEventListener('click', function(e){ e.stopPropagation(); closePopup(); });
+              elLeadOppFilterPopup.addEventListener('click', function(e){ e.stopPropagation(); });
+              document.addEventListener('click', function(){ if(elLeadOppFilterPopup && !elLeadOppFilterPopup.hidden) closePopup(); });
+              document.addEventListener('keydown', function(e){ if(e.key==='Escape' && elLeadOppFilterPopup && !elLeadOppFilterPopup.hidden) closePopup(); });
+            })();
+
+            /* ---------- Sale Type filter — Year & Month, card-only (bar, x: Value) ----- */
+            var saleTypeYearFilter = new Set();
+            var saleTypeMonthFilter = new Set();
+            function refreshSaleTypeChartOnly() {
+              var f = getFilters();
+              var cur = f.currency;
+              var fd = filterDeals(f);
+              if (saleTypeYearFilter.size > 0) fd = fd.filter(function (r) { return saleTypeYearFilter.has(String(r.year)); });
+              if (saleTypeMonthFilter.size > 0) fd = fd.filter(function (r) { return saleTypeMonthFilter.has(String(r.month)); });
+              var stMap = sumBy(fd, function (r) { return r.saleType; }, function (r) { return r.revenue; });
+              var stVals = SALE_TYPES.map(function (s) { return stMap[s] || 0; });
+              var hasData = stVals.some(function (v) { return v > 0; });
+              render('cpSaleTypeChart', 'cpBoxSaleType', hasData, {
+                type: 'bar',
+                data: { labels: SALE_TYPES, datasets: [{ label: 'Revenue', data: stVals, backgroundColor: ['#1b1e42', '#3eb2ed', '#06b6d4'], borderRadius: 6, barThickness: 22 }] },
+                options: {
+                  indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+                  plugins: { legend: { display: false }, tooltip: Object.assign({}, TIP, { callbacks: { label: function (ctx) { return ctx.label + ': ' + money(ctx.parsed.x, cur, { full: true }); } } }) },
+                  scales: { x: { beginAtZero: true, grid: { color: GRID }, ticks: { callback: moneyTick } }, y: { grid: { display: false } } }
+                }
+              });
+            }
+            (function buildSaleTypeYearOptions() {
+              if (!elSaleTypeYearOptions) return;
+              elSaleTypeYearOptions.innerHTML = '';
+              YEARS.forEach(function (y) {
+                var row = document.createElement('label'); row.className = 'cp-dropdown-option';
+                var cb = document.createElement('input'); cb.type = 'checkbox'; cb.value = String(y); cb.checked = saleTypeYearFilter.has(String(y));
+                var txt = document.createElement('span'); txt.textContent = String(y); txt.style.flex = '1';
+                row.appendChild(cb); row.appendChild(txt);
+                if (cb.checked) row.classList.add('is-checked');
+                function toggleYear(){ if(cb.checked) saleTypeYearFilter.add(String(y)); else saleTypeYearFilter.delete(String(y)); row.classList.toggle('is-checked', cb.checked); refreshSaleTypeChartOnly(); }
+                cb.addEventListener('change', toggleYear);
+                row.addEventListener('click', function(e){ if(e.target!==cb){ e.preventDefault(); cb.checked=!cb.checked; toggleYear(); } });
+                elSaleTypeYearOptions.appendChild(row);
+              });
+            })();
+            (function buildSaleTypeMonthOptions() {
+              if (!elSaleTypeMonthOptions) return;
+              elSaleTypeMonthOptions.innerHTML = '';
+              MONTHS.forEach(function (m, i) {
+                var val = String(i+1);
+                var row = document.createElement('label'); row.className = 'cp-dropdown-option';
+                var cb = document.createElement('input'); cb.type = 'checkbox'; cb.value = val; cb.checked = saleTypeMonthFilter.has(val);
+                var txt = document.createElement('span'); txt.textContent = m; txt.style.flex = '1';
+                row.appendChild(cb); row.appendChild(txt);
+                if (cb.checked) row.classList.add('is-checked');
+                function toggleMonth(){ if(cb.checked) saleTypeMonthFilter.add(val); else saleTypeMonthFilter.delete(val); row.classList.toggle('is-checked', cb.checked); refreshSaleTypeChartOnly(); }
+                cb.addEventListener('change', toggleMonth);
+                row.addEventListener('click', function(e){ if(e.target!==cb){ e.preventDefault(); cb.checked=!cb.checked; toggleMonth(); } });
+                elSaleTypeMonthOptions.appendChild(row);
+              });
+            })();
+            (function bindSaleTypePopup() {
+              if (!elSaleTypeFilterBtn || !elSaleTypeFilterPopup) return;
+              function openPopup(){ elSaleTypeFilterPopup.hidden=false; elSaleTypeFilterBtn.setAttribute('aria-expanded','true'); }
+              function closePopup(){ elSaleTypeFilterPopup.hidden=true; elSaleTypeFilterBtn.setAttribute('aria-expanded','false'); }
+              elSaleTypeFilterBtn.addEventListener('click', function(e){ e.stopPropagation(); if(elSaleTypeFilterPopup.hidden) openPopup(); else closePopup(); });
+              if (elSaleTypeFilterPopupClose) elSaleTypeFilterPopupClose.addEventListener('click', function(e){ e.stopPropagation(); closePopup(); });
+              elSaleTypeFilterPopup.addEventListener('click', function(e){ e.stopPropagation(); });
+              document.addEventListener('click', function(){ if(elSaleTypeFilterPopup && !elSaleTypeFilterPopup.hidden) closePopup(); });
+              document.addEventListener('keydown', function(e){ if(e.key==='Escape' && elSaleTypeFilterPopup && !elSaleTypeFilterPopup.hidden) closePopup(); });
             })();
 
             /* ---------- Filtering ---------- */
@@ -3008,6 +3268,7 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
 
               /* ----- Monthly revenue by sector: sector-wise linear (one line per sector) ----- */
               var stackRows = filterDeals(f, { ignoreSector: true });
+              if (sectorYearFilter.size > 0) stackRows = stackRows.filter(function (r) { return sectorYearFilter.has(String(r.year)); });
               var monthlyTotalBySector = MONTHS.map(function (_, i) {
                 var map = {};
                 stackRows.filter(function (r) { return r.month === i + 1; }).forEach(function (r) { map[r.sector] = (map[r.sector] || 0) + r.revenue; });
@@ -3080,15 +3341,25 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
                 });
               }
 
-              /* ----- Lead & Opportunity Trend: monthly leads generated / opportunities created / sales completed ----- */
+              /* ----- Lead & Opportunity Trend: card-only Year/Sector filter ----- */
+              var fd2 = fd, fl2 = fl, fo2 = fo;
+              if (leadOppYearFilter.size > 0) {
+                fd2 = fd2.filter(function (r) { return leadOppYearFilter.has(String(r.year)); });
+                fl2 = fl2.filter(function (r) { return leadOppYearFilter.has(String(r.year)); });
+                fo2 = fo2.filter(function (r) { return leadOppYearFilter.has(String(r.year)); });
+              }
+              if (leadOppSectorFilter.size > 0) {
+                fd2 = fd2.filter(function (r) { return leadOppSectorFilter.has(r.sector); });
+                fl2 = fl2.filter(function (r) { return leadOppSectorFilter.has(r.sector); });
+                fo2 = fo2.filter(function (r) { return leadOppSectorFilter.has(r.sector); });
+              }
               var monthlyCount = function (rows) {
                 return MONTHS.map(function (_, i) { return rows.filter(function (r) { return r.month === i + 1; }).length; });
               };
-              /* grouped bars like reference — 3 shades, y 0-70, grid like image */
               var pipelineDatasets = [
-                { label: 'Leads Created', data: monthlyCount(fl), backgroundColor: '#8B3A3A', borderColor: '#8B3A3A', borderWidth: 1, borderRadius: 0, borderSkipped: false, barPercentage: 0.85, categoryPercentage: 0.72 },
-                { label: 'Opportunities Created', data: monthlyCount(fo), backgroundColor: '#C86B6B', borderColor: '#C86B6B', borderWidth: 1, borderRadius: 0, borderSkipped: false, barPercentage: 0.85, categoryPercentage: 0.72 },
-                { label: 'Sales Created', data: monthlyCount(fd), backgroundColor: '#E0B8B8', borderColor: '#E0B8B8', borderWidth: 1, borderRadius: 0, borderSkipped: false, barPercentage: 0.85, categoryPercentage: 0.72 }
+                { label: 'Leads Created', data: monthlyCount(fl2), backgroundColor: '#8B3A3A', borderColor: '#8B3A3A', borderWidth: 1, borderRadius: 0, borderSkipped: false, barPercentage: 0.85, categoryPercentage: 0.72 },
+                { label: 'Opportunities Created', data: monthlyCount(fo2), backgroundColor: '#C86B6B', borderColor: '#C86B6B', borderWidth: 1, borderRadius: 0, borderSkipped: false, barPercentage: 0.85, categoryPercentage: 0.72 },
+                { label: 'Sales Created', data: monthlyCount(fd2), backgroundColor: '#E0B8B8', borderColor: '#E0B8B8', borderWidth: 1, borderRadius: 0, borderSkipped: false, barPercentage: 0.85, categoryPercentage: 0.72 }
               ];
               var pipelineHasData = pipelineDatasets.some(function (ds) { return ds.data.some(function (v) { return v > 0; }); });
               render('cpPipelineTrend', 'cpBoxPipelineTrend', pipelineHasData, {
@@ -3106,22 +3377,19 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
                 }
               });
 
-              /* ----- Revenue by sale type (doughnut) ----- */
-              var stMap = sumBy(fd, function (r) { return r.saleType; }, function (r) { return r.revenue; });
+              /* ----- Sale Revenue and Forecast Revenue by Sale Type (bar, x: Value, Year & Month card-only) ----- */
+              var fdSale = fd;
+              if (saleTypeYearFilter.size > 0) fdSale = fdSale.filter(function (r) { return saleTypeYearFilter.has(String(r.year)); });
+              if (saleTypeMonthFilter.size > 0) fdSale = fdSale.filter(function (r) { return saleTypeMonthFilter.has(String(r.month)); });
+              var stMap = sumBy(fdSale, function (r) { return r.saleType; }, function (r) { return r.revenue; });
               var stVals = SALE_TYPES.map(function (s) { return stMap[s] || 0; });
-              render('cpSaleTypeChart', 'cpBoxSaleType', fd.length > 0, {
-                type: 'doughnut',
-                data: { labels: SALE_TYPES, datasets: [{ data: stVals, backgroundColor: ['#1b1e42', '#3eb2ed', '#06b6d4'], borderColor: '#fff', borderWidth: 2 }] },
+              render('cpSaleTypeChart', 'cpBoxSaleType', stVals.some(function(v){ return v>0; }), {
+                type: 'bar',
+                data: { labels: SALE_TYPES, datasets: [{ label: 'Revenue', data: stVals, backgroundColor: ['#1b1e42', '#3eb2ed', '#06b6d4'], borderRadius: 6, barThickness: 22 }] },
                 options: {
-                  responsive: true, maintainAspectRatio: false, cutout: '62%',
-                  plugins: {
-                    legend: { position: 'bottom', labels: { boxWidth: 10, boxHeight: 10, usePointStyle: true, padding: 12 } },
-                    tooltip: Object.assign({}, TIP, { callbacks: { label: function (ctx) {
-                      var tot = ctx.dataset.data.reduce(function (a, b) { return a + b; }, 0);
-                      var p = tot ? Math.round((ctx.parsed / tot) * 100) : 0;
-                      return ctx.label + ': ' + money(ctx.parsed, cur, { full: true }) + ' (' + p + '%)';
-                    } } })
-                  }
+                  indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+                  plugins: { legend: { display: false }, tooltip: Object.assign({}, TIP, { callbacks: { label: function (ctx) { return ctx.label + ': ' + money(ctx.parsed.x, cur, { full: true }); } } }) },
+                  scales: { x: { beginAtZero: true, grid: { color: GRID }, ticks: { callback: moneyTick } }, y: { grid: { display: false } } }
                 }
               });
 
@@ -3130,7 +3398,11 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
                  selected sector (if any) is highlighted instead of collapsing the chart to one bar. */
               var secRows = filterDeals(f, { ignoreSector: true });
               if (yearlySectorFilter.size > 0) secRows = secRows.filter(function (r) { return yearlySectorFilter.has(String(r.year)); });
-              var secMap = sumBy(secRows, function (r) { return r.sector; }, function (r) { return r.revenue; });
+              var view = elYearlyRevView ? elYearlyRevView.value : 'sales';
+              var viewRows = secRows;
+              if (view === 'leadForecast') viewRows = secRows.filter(function (r) { return r.saleType === 'Through Leads'; });
+              else if (view === 'oppForecast') viewRows = secRows.filter(function (r) { return r.saleType === 'Through Opportunities'; });
+              var secMap = sumBy(viewRows, function (r) { return r.sector; }, function (r) { return r.revenue; });
               var secSorted = SECTORS.slice().map(function (s) { return { s: s, v: secMap[s] || 0 }; })
                 .sort(function (a, b) { return b.v - a.v; }).filter(function (o) { return o.v > 0; });
               $('cpSectorRevSub').textContent = (function(){
@@ -3195,7 +3467,7 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
                     elSector.value = (elSector.value === label) ? 'all' : label;
                     update();
                   },
-                  layout: { padding: { right: 36, top: 8 } },
+                  layout: { padding: { right: 48, top: 8 } },
                   plugins: { legend: { display: false }, tooltip: Object.assign({}, TIP, { callbacks: { label: function (ctx) { return money(ctx.parsed.x, cur, { full: true }); } } }) },
                   scales: { x: { beginAtZero: true, grid: { color: GRID }, ticks: { callback: moneyTick } }, y: { grid: { display: false } } }
                 }
@@ -3314,22 +3586,16 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
               /* ----- Service / Activity Performance: drill-down table (Activity -> Category -> Program) ----- */
               buildServiceTable(fd, fl, fo);
 
-              /* ----- Revenue by category (doughnut) ----- */
+              /* ----- Revenue and Forecast Revenue by Category (bar, x: Value, y: Categories) ----- */
               var catMap = sumBy(fd, function (r) { return r.category; }, function (r) { return r.revenue; });
               var catVals = CATEGORIES.map(function (c) { return catMap[c] || 0; });
-              render('cpCategoryRev', 'cpBoxCategoryRev', fd.length > 0, {
-                type: 'doughnut',
-                data: { labels: CATEGORIES, datasets: [{ data: catVals, backgroundColor: ['#1b1e42', '#3eb2ed', '#10b981', '#8b5cf6'], borderColor: '#fff', borderWidth: 2 }] },
+              render('cpCategoryRev', 'cpBoxCategoryRev', catVals.some(function(v){ return v>0; }), {
+                type: 'bar',
+                data: { labels: CATEGORIES, datasets: [{ label: 'Revenue', data: catVals, backgroundColor: ['#1b1e42', '#3eb2ed', '#10b981', '#8b5cf6'], borderRadius: 6, barThickness: 22 }] },
                 options: {
-                  responsive: true, maintainAspectRatio: false, cutout: '62%',
-                  plugins: {
-                    legend: { position: 'bottom', labels: { boxWidth: 10, boxHeight: 10, usePointStyle: true, padding: 12 } },
-                    tooltip: Object.assign({}, TIP, { callbacks: { label: function (ctx) {
-                      var tot = ctx.dataset.data.reduce(function (a, b) { return a + b; }, 0);
-                      var p = tot ? Math.round((ctx.parsed / tot) * 100) : 0;
-                      return ctx.label + ': ' + money(ctx.parsed, cur, { full: true }) + ' (' + p + '%)';
-                    } } })
-                  }
+                  indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+                  plugins: { legend: { display: false }, tooltip: Object.assign({}, TIP, { callbacks: { label: function (ctx) { return ctx.label + ': ' + money(ctx.parsed.x, cur, { full: true }); } } }) },
+                  scales: { x: { beginAtZero: true, grid: { color: GRID }, ticks: { callback: moneyTick } }, y: { grid: { display: false } } }
                 }
               });
             }
