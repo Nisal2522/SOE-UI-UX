@@ -6395,6 +6395,7 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
             #reports .rp-table tbody tr.rp-row:nth-child(odd) { background: #ffffff; }
             #reports .rp-table tbody tr.rp-row:nth-child(even) { background: #f8fafc; }
             #reports .rp-table tbody tr.rp-row:hover, #reports .rp-table tbody tr.rp-row:hover td { background: #eaf5fd; }
+            #reports .rp-table tbody tr.rp-row td[data-metric]:hover { background: #d4ebfb; box-shadow: inset 0 0 0 1px rgba(62,178,237,0.35); }
 
             /* total row */
             #reports .rp-table tbody tr.rp-total td { background: #eef2f7; color: #0f172a; font-weight: 700; border-top: 2px solid #1b1e42; border-bottom: none; }
@@ -6569,7 +6570,7 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
                   <table class="rp-table">
                     <thead>
                       <tr>
-                        <th>Account</th><th>Account Industry</th><th>Opportunity Status</th>
+                        <th>Account</th><th>Account Industry</th><th id="rpStatusHeader">Opportunity Status</th>
                         <th>Activity</th><th>Category</th><th>Program Name</th>
                         <th class="rp-num">Forecast Amount</th><th>Currency</th><th class="rp-num">Convert to LKR</th>
                       </tr>
@@ -6625,9 +6626,9 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
                 var amt = Math.round(between(150000, 3200000) * sectorWeight[sec] / (RATES_TO_LKR[cur] > 5 ? RATES_TO_LKR[cur] / 40 : 1));
                 var r = rnd(), path, status;
                 if (r < 0.34) { path = 'newLeadOnly'; status = pick(LEAD_STATUS); }
-                else if (r < 0.52) { path = 'leadToOpp'; status = 'Converted to Opp'; }
+                else if (r < 0.52) { path = 'leadToOpp'; status = 'Converted'; }
                 else if (r < 0.70) { path = 'newOpp'; status = pick(['Prospecting', 'Proposal', 'Negotiation']); }
-                else if (r < 0.86) { path = 'oppToSale'; status = 'Won'; }
+                else if (r < 0.86) { path = 'oppToSale'; status = 'Closed-Won'; }
                 else { path = 'directSale'; status = 'Direct Sale'; }
                 RECORDS.push({
                   sector: sec, account: pick(ACCOUNTS), industry: sec, status: status,
@@ -6651,10 +6652,11 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
             }
             var byId = function (id) { return document.getElementById(id); };
 
-            /* one metric group = Count cell (group divider) + compact Value cell with full LKR tooltip */
-            function grpCells(count, value, extra) {
-              return '<td class="rp-count rp-grp' + (extra || '') + '">' + count + '</td>' +
-                '<td class="rp-value' + (extra || '') + '" title="' + fmtLKR(value) + '">' + compact(value) + '</td>';
+            /* one metric group = Count cell (group divider) + compact Value cell with full LKR tooltip.
+               `metric` tags both cells so a click knows which column's detail to show. */
+            function grpCells(metric, count, value) {
+              return '<td class="rp-count rp-grp" data-metric="' + metric + '">' + count + '</td>' +
+                '<td class="rp-value" data-metric="' + metric + '" title="' + fmtLKR(value) + '">' + compact(value) + '</td>';
             }
 
             function pad2(n) { return n < 10 ? '0' + n : '' + n; }
@@ -6742,13 +6744,13 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
                 tr.className = 'rp-row';
                 tr.setAttribute('data-sector', sec);
                 tr.innerHTML =
-                  '<td class="rp-sector">' + sec + '</td>' +
-                  grpCells(nl.count, nl.value) +
-                  grpCells(l2o.count, l2o.value) +
-                  grpCells(no.count, no.value) +
-                  grpCells(o2s.count, o2s.value) +
-                  grpCells(ds.count, ds.value) +
-                  '<td class="rp-value rp-grand rp-grp" title="' + fmtLKR(totalSale) + '">' + compact(totalSale) + '</td>';
+                  '<td class="rp-sector" data-metric="all">' + sec + '</td>' +
+                  grpCells('nl', nl.count, nl.value) +
+                  grpCells('l2o', l2o.count, l2o.value) +
+                  grpCells('no', no.count, no.value) +
+                  grpCells('o2s', o2s.count, o2s.value) +
+                  grpCells('ds', ds.count, ds.value) +
+                  '<td class="rp-value rp-grand rp-grp" data-metric="ts" title="' + fmtLKR(totalSale) + '">' + compact(totalSale) + '</td>';
                 tb.appendChild(tr);
               });
 
@@ -6756,11 +6758,11 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
               tot.className = 'rp-total';
               tot.innerHTML =
                 '<td class="rp-sector">All sectors</td>' +
-                grpCells(T.nl[0], T.nl[1]) +
-                grpCells(T.l2o[0], T.l2o[1]) +
-                grpCells(T.no[0], T.no[1]) +
-                grpCells(T.o2s[0], T.o2s[1]) +
-                grpCells(T.ds[0], T.ds[1]) +
+                grpCells('nl', T.nl[0], T.nl[1]) +
+                grpCells('l2o', T.l2o[0], T.l2o[1]) +
+                grpCells('no', T.no[0], T.no[1]) +
+                grpCells('o2s', T.o2s[0], T.o2s[1]) +
+                grpCells('ds', T.ds[0], T.ds[1]) +
                 '<td class="rp-value rp-grand rp-grp" title="' + fmtLKR(T.ts) + '">' + compact(T.ts) + '</td>';
               tb.appendChild(tot);
             }
@@ -6775,14 +6777,28 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
               return '<span class="rp-chip ' + cls + '">' + s + '</span>';
             }
 
+            var METRICS = {
+              nl:  { label: 'New Lead',      statusHeader: 'Lead Status',        forceStatus: 'New',              test: function (r) { return r.path === 'newLeadOnly' || r.path === 'leadToOpp'; } },
+              l2o: { label: 'Lead to Opper', statusHeader: 'Lead Status',        forceStatus: 'Converted',        test: function (r) { return r.path === 'leadToOpp'; } },
+              no:  { label: 'New Opper',     statusHeader: 'Opportunity Status', forceStatus: 'Prospecting',       test: function (r) { return r.path === 'newOpp'; } },
+              o2s: { label: 'Op to Sale',    statusHeader: 'Sale Status',        forceStatus: 'Closed-Won',       test: function (r) { return r.path === 'oppToSale'; } },
+              ds:  { label: 'Direct Sale',   statusHeader: 'Sale Status',        forceStatus: 'Direct Sale',      test: function (r) { return r.path === 'directSale'; } },
+              ts:  { label: 'Total Sale',    statusHeader: 'Sale Status',        forceStatus: null,               test: function (r) { return r.path === 'oppToSale' || r.path === 'directSale'; } },
+              all: { label: 'All Records',   statusHeader: 'Status',             forceStatus: null,               test: function () { return true; } }
+            };
+
             var overlay = byId('rpModalOverlay');
-            var currentSector = null;
-            function openModal(sector) {
+            var currentSector = null, currentMetric = 'nl';
+            function openModal(sector, metric) {
               if (!overlay) return;
               currentSector = sector;
-              var recs = currentRecords().filter(function (r) { return r.sector === sector && (r.path === 'newLeadOnly' || r.path === 'leadToOpp'); });
-              byId('rpModalTitle').textContent = sector + ' — New Leads';
-              byId('rpModalSub').textContent = 'Leads generated in the selected period';
+              currentMetric = METRICS[metric] ? metric : 'nl';
+              var cfg = METRICS[currentMetric];
+              var recs = currentRecords().filter(function (r) { return r.sector === sector && cfg.test(r); });
+              byId('rpModalTitle').textContent = sector + ' — ' + cfg.label;
+              byId('rpModalSub').textContent = cfg.label + ' details for the selected period';
+              var stHead = byId('rpStatusHeader');
+              if (stHead) stHead.textContent = cfg.statusHeader || 'Status';
               var body = byId('rpDetailBody');
               var empty = byId('rpDetailEmpty');
               var foot = byId('rpModalFoot');
@@ -6796,11 +6812,12 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
                 var totalLKR = 0;
                 recs.forEach(function (r) {
                   totalLKR += r.lkr;
+                  var st = cfg.forceStatus || r.status;
                   var tr = document.createElement('tr');
                   tr.innerHTML =
                     '<td>' + r.account + '</td>' +
                     '<td>' + r.industry + '</td>' +
-                    '<td>' + statusChip(r.status) + '</td>' +
+                    '<td>' + statusChip(st) + '</td>' +
                     '<td>' + r.activity + '</td>' +
                     '<td>' + r.category + '</td>' +
                     '<td>' + r.program + '</td>' +
@@ -6835,7 +6852,7 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
             }
             function commitRange() {
               renderSummary(); updateNote();
-              if (overlay && !overlay.hidden && currentSector) openModal(currentSector);
+              if (overlay && !overlay.hidden && currentSector) openModal(currentSector, currentMetric);
             }
             function applyRange() {
               var f = fromInput(elFrom.value), t = fromInput(elTo.value);
@@ -6866,7 +6883,10 @@ input::placeholder, textarea::placeholder, select { color: #9ca3af }
               var tb = byId('rpSummaryBody');
               if (tb) tb.addEventListener('click', function (e) {
                 var tr = e.target.closest('tr.rp-row');
-                if (tr) openModal(tr.getAttribute('data-sector'));
+                if (!tr) return;
+                var cell = e.target.closest('td');
+                var metric = (cell && cell.getAttribute('data-metric')) || 'nl';
+                openModal(tr.getAttribute('data-sector'), metric);
               });
               var presets = byId('rpPresets');
               if (presets) presets.addEventListener('click', function (e) {
